@@ -155,7 +155,7 @@ const AddOnPackageView = () => {
       {/* DIRECT PACKAGE ASSIGNMENT */}
       <Card sx={{ margin: '2rem', mt: 2, boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}>
         <CardContent>
-          <div style={{ marginBottom: "1rem", color: "#000", fontWeight: "bold", fontSize: "1.25rem"     }}>Assign Add-On Package to Member</div>
+          <div style={{ marginBottom: "1rem", color: "#000", fontWeight: "bold", fontSize: "1.25rem"     }}>Assign Add-On Package to Vendor</div>
           <div style={{ padding: "0 1rem 1rem 1rem" }}>
             <form onSubmit={handleAssignSubmit}>
                 <Grid container spacing={3}>
@@ -183,7 +183,7 @@ const AddOnPackageView = () => {
                     <TextField
                       fullWidth
                       required
-                      label="Member ID"
+                      label="Vendor ID"
                       name="member_id"
                       value={assignData.member_id}
                       onChange={handleAssignChange}

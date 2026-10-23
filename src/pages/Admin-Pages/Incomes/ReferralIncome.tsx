@@ -274,7 +274,7 @@ const ReferralIncome = () => {
                 Detailed Records ({referralBenefits.length})
               </ToggleButton>
               <ToggleButton value="summary">
-                Member Summary ({summaryList.length})
+                Vendor Summary ({summaryList.length})
               </ToggleButton>
             </ToggleButtonGroup>
 
@@ -283,8 +283,8 @@ const ReferralIncome = () => {
               size="small"
               placeholder={
                 viewMode === "detailed"
-                  ? "Search by Sponsor Name, Sponsor ID, Member..."
-                  : "Search by Member ID or Name..."
+                  ? "Search by Sponsor Name, Sponsor ID, Vendor..."
+                  : "Search by Vendor ID or Name..."
               }
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}

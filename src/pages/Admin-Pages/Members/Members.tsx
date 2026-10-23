@@ -242,8 +242,8 @@ export const Members = () => {
   const { memberdata, isLoading } = useMembers("All");
   return (
     <MemberTable
-      title="All Members"
-      summaryTitle="List of All Members"
+      title="All Vendors"
+      summaryTitle="List of All Vendors"
       showEdit
       showView
       data={memberdata}
@@ -256,8 +256,8 @@ export const ActiveMembers = () => {
   const { memberdata, isLoading } = useMembers("active")
   return (
     <MemberTable
-      title="Active Members"
-      summaryTitle="List of Active Members"
+      title="Active Vendors"
+      summaryTitle="List of Active Vendors"
       showView
       showDashboard
       data={memberdata}
@@ -270,8 +270,8 @@ export const InActiveMembers = () => {
   const { memberdata, isLoading } = useMembers("Inactive")
   return (
     <MemberTable
-      title="Inactive Members"
-      summaryTitle="List of Inactive Members"
+      title="Inactive Vendors"
+      summaryTitle="List of Inactive Vendors"
       showView
       data={memberdata}
       isLoading={isLoading}
@@ -326,8 +326,8 @@ export const PendingMembers = () => {
   return (
     <>
       <MemberTable
-        title="Pending Members"
-        summaryTitle="List of Pending Members"
+        title="Pending Vendors"
+        summaryTitle="List of Pending Vendors"
         data={memberdata}
         showActivate={true}
         isLoading={isLoading}
@@ -343,19 +343,19 @@ export const PendingMembers = () => {
         fullWidth
       >
         <DialogTitle sx={{ backgroundColor: primaryColor, color: '#fff', fontWeight: 600 }}>
-          Confirm Member Activation
+          Confirm Vendor Activation
         </DialogTitle>
 
         <DialogContent sx={{ pt: 3 }}>
-          {/* Member Details */}
+          {/* Vendor Details */}
           <Box sx={{ backgroundColor: '#f5f7fa', borderRadius: 2, p: 2, mb: 3 }}>
             <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-              Member Details
+              Vendor Details
             </Typography>
             <Divider sx={{ mb: 1.5 }} />
             <Grid container spacing={1.5}>
               <Grid item xs={6}>
-                <Typography variant="caption" color="text.secondary">Member ID</Typography>
+                <Typography variant="caption" color="text.secondary">Vendor ID</Typography>
                 <Typography variant="body2" fontWeight={600}>{selectedMember?.Member_id}</Typography>
               </Grid>
               <Grid item xs={6}>
@@ -389,7 +389,7 @@ export const PendingMembers = () => {
               value={investmentAmount}
               onChange={(e) => setInvestmentAmount(e.target.value)}
               placeholder="e.g. 1000"
-              helperText="Enter the investment amount to activate this member"
+              helperText="Enter the investment amount to activate this vendor"
               autoFocus
               InputProps={{
                 startAdornment: <InputAdornment position="start">₹</InputAdornment>,
@@ -483,11 +483,11 @@ export const PermissionsMembers = () => {
   return (
     <>
       <Grid className="filter-container" sx={{ margin: '2rem', mt: 2 }}>
-        <Typography variant="h4">Member Permissions</Typography>
+        <Typography variant="h4">Vendor Permissions</Typography>
       </Grid>
       <Card sx={{ margin: '2rem', mt: 2 }}>
         <CardContent>
-          <div style={{ marginBottom: "1rem", color: "#000", fontWeight: "bold", fontSize: "1.25rem"     }}>List of ROI Active Members</div>
+          <div style={{ marginBottom: "1rem", color: "#000", fontWeight: "bold", fontSize: "1.25rem"     }}>List of ROI Active Vendors</div>
           <DataTable
                 columns={getPermissionsColumns(onToggleRequest, isUpdating)}
                 data={filteredData}
@@ -540,12 +540,12 @@ export const PermissionsMembers = () => {
           </Box>
 
           <Typography variant="h5" sx={{ fontWeight: 700, color: '#1a237e', mb: 1.5 }}>
-            {selectedMember?.currentStatus.toLowerCase() === 'active' ? 'Inactive Member?' : 'Active Member?'}
+            {selectedMember?.currentStatus.toLowerCase() === 'active' ? 'Inactive Vendor?' : 'Active Vendor?'}
           </Typography>
 
           <Typography variant="body1" sx={{ color: '#5f6368', px: 2, mb: 4, lineHeight: 1.6 }}>
             Are you sure you want to {selectedMember?.currentStatus.toLowerCase() === 'active' ? 'Inactive' : 'Active'}{' '}
-            this member <strong>{selectedMember?.name}</strong>?
+            this vendor <strong>{selectedMember?.name}</strong>?
           </Typography>
 
           <Box sx={{ display: 'flex', gap: 2, width: '100%', px: 2 }}>

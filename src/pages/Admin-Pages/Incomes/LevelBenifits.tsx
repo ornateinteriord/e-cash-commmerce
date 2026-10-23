@@ -112,7 +112,7 @@ const LevelBenifits = () => {
           Level Bonus
         </Typography>
         <Typography variant="body2" sx={{ color: '#64748b', mt: 0.5 }}>
-          Track all multilevel commission payouts (Level 2 to Level 7), upline beneficiaries, downline members, rates, and statuses
+          Track all multilevel commission payouts (Level 2 to Level 7), upline beneficiaries, downline vendors, rates, and statuses
         </Typography>
       </Box>
 
@@ -276,7 +276,7 @@ const LevelBenifits = () => {
                 Detailed Records ({levelBenefits.length})
               </ToggleButton>
               <ToggleButton value="summary">
-                Member Summary ({summaryList.length})
+                Vendor Summary ({summaryList.length})
               </ToggleButton>
             </ToggleButtonGroup>
 
@@ -285,8 +285,8 @@ const LevelBenifits = () => {
               size="small"
               placeholder={
                 viewMode === "detailed"
-                  ? "Search by Sponsor/Upline Name, ID, Member..."
-                  : "Search by Member ID or Name..."
+                  ? "Search by Sponsor/Upline Name, ID, Vendor..."
+                  : "Search by Vendor ID or Name..."
               }
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}

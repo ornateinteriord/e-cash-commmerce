@@ -115,7 +115,7 @@ const PayWithdrawalDialog: React.FC<PayWithdrawalDialogProps> = ({ open, onClose
                         <Typography variant="body2" color="text.secondary">Mobile Number</Typography>
                         <Typography variant="body2" fontWeight="600">{member?.contactno || 'Not Provided'}</Typography>
 
-                        <Typography variant="body2" color="text.secondary">Member ID</Typography>
+                        <Typography variant="body2" color="text.secondary">Vendor ID</Typography>
                         <Typography variant="body2" fontWeight="600" sx={{ fontFamily: 'monospace' }}>{request.member_id}</Typography>
                     </Box>
                 </Box>

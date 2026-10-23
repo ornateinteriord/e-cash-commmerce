@@ -128,7 +128,7 @@ const P2PTransfer: React.FC = () => {
   const handleLookup = async (memberIdToLookup: string) => {
     const cleanId = memberIdToLookup.trim();
     if (!cleanId) {
-      toast.error('Please enter a valid Member ID');
+      toast.error('Please enter a valid Vendor ID');
       return;
     }
 
@@ -143,10 +143,10 @@ const P2PTransfer: React.FC = () => {
         setRecipient(result);
         setStep(3);
       } else {
-        toast.error('Member not found. Please verify the ID/QR.');
+        toast.error('Vendor not found. Please verify the ID/QR.');
       }
     } catch (err: any) {
-      toast.error(err?.response?.data?.message || 'Member not found. Please verify the ID/QR.');
+      toast.error(err?.response?.data?.message || 'Vendor not found. Please verify the ID/QR.');
     }
   };
 
@@ -251,7 +251,7 @@ const P2PTransfer: React.FC = () => {
             P2P Transfer
           </Typography>
           <Typography variant="caption" sx={{ color: '#8c6b7d', fontWeight: 600 }}>
-            Instant member-to-member wallet transfer
+            Instant vendor-to-vendor wallet transfer
           </Typography>
         </Box>
       </Box>
@@ -465,7 +465,7 @@ const P2PTransfer: React.FC = () => {
                   )}
                 </Box>
                 <Typography variant="caption" sx={{ color: '#8c6b7d', mt: 1.5, display: 'block', mb: 2, fontWeight: 600 }}>
-                  Align Member QR Code inside the camera frame
+                  Align Vendor QR Code inside the camera frame
                 </Typography>
                 <Button
                   type="button"
@@ -493,7 +493,7 @@ const P2PTransfer: React.FC = () => {
                 <Stack spacing={2.5} sx={{ mb: 2 }}>
                   <TextField
                     fullWidth
-                    placeholder="Enter Member ID (e.g. MEM123456)"
+                    placeholder="Enter Vendor ID (e.g. MEM123456)"
                     value={manualId}
                     onChange={(e) => setManualId(e.target.value)}
                     sx={{
@@ -525,7 +525,7 @@ const P2PTransfer: React.FC = () => {
                       '&:hover': { background: 'linear-gradient(135deg, #4e1739 0%, #6D214F 100%)' }
                     }}
                   >
-                    {lookupMutation.isPending ? <CircularProgress size={24} sx={{ color: '#FFF8F0' }} /> : 'Lookup Member'}
+                    {lookupMutation.isPending ? <CircularProgress size={24} sx={{ color: '#FFF8F0' }} /> : 'Lookup Vendor'}
                   </Button>
 
                   <Divider sx={{ borderColor: '#f0d0d8', my: 0.5 }}>
@@ -575,7 +575,7 @@ const P2PTransfer: React.FC = () => {
                   {recipient.name || recipient.username}
                 </Typography>
                 <Typography variant="caption" sx={{ color: '#6D214F', fontWeight: 800, display: 'block', mt: 0.2 }}>
-                  Member ID: {recipient.member_id}
+                  Vendor ID: {recipient.member_id}
                 </Typography>
               </Box>
 

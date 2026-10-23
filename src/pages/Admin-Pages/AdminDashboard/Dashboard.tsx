@@ -198,8 +198,8 @@ const AdminDashboard = () => {
           <Grid item xs={12} sm={6} md={4} lg={2.4}>
             <StatCard
               amount={totalMembers}
-              title="Total Members"
-              subTitle={`${totalMembers} members in total`}
+              title="Total Vendors"
+              subTitle={`${totalMembers} vendors in total`}
               icon={<PeopleIcon />}
               color="#FFD700"
               onClick={() => navigate('/admin/members')}
@@ -208,8 +208,8 @@ const AdminDashboard = () => {
           <Grid item xs={12} sm={6} md={4} lg={2.4}>
             <StatCard
               amount={activeMembers}
-              title="Active Members"
-              subTitle={`${activeMembers} active members`}
+              title="Active Vendors"
+              subTitle={`${activeMembers} active vendors`}
               icon={<PersonAddIcon />}
               color="#10b981"
               onClick={() => navigate('/admin/members/active')}
@@ -218,7 +218,7 @@ const AdminDashboard = () => {
           <Grid item xs={12} sm={6} md={4} lg={2.4}>
             <StatCard
               amount={pendingMembers}
-              title="Pending Members"
+              title="Pending Vendors"
               subTitle={`${pendingMembers} pending activation`}
               icon={<HistoryIcon />}
               color="#f59e0b"
@@ -251,7 +251,7 @@ const AdminDashboard = () => {
       {/* Member Statistics Table */}
       <Box>
         <Typography variant="subtitle2" sx={{ fontWeight: 900, color: 'white', mb: 2, letterSpacing: '1px' }}>
-          MEMBER STATISTICS ({sortedMembers.length} MEMBERS)
+          VENDOR STATISTICS ({sortedMembers.length} VENDORS)
         </Typography>
         <Paper elevation={0} sx={{ 
           p: 3, 

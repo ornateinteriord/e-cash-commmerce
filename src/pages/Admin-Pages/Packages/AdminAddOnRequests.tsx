@@ -30,7 +30,7 @@ const AdminAddOnRequests = () => {
 
   const columns = [
     { name: 'Request ID', selector: (row: any) => row.request_id, sortable: true, wrap: true },
-    { name: 'Member ID', selector: (row: any) => row.member_id, sortable: true },
+    { name: 'Vendor ID', selector: (row: any) => row.member_id, sortable: true },
     {
       name: 'Amount Requested',
       selector: (row: any) => `${row.requested_amount}`,

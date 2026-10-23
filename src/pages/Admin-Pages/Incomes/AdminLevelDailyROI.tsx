@@ -147,7 +147,7 @@ const AdminLevelDailyROI = () => {
       width: '100px',
     },
     {
-      name: 'Downline Member',
+      name: 'Downline Vendor',
       selector: (row: any) => row.related_member_id || '-',
       sortable: true,
       width: '140px',
@@ -205,7 +205,7 @@ const AdminLevelDailyROI = () => {
       minWidth: '170px',
     },
     {
-      name: 'From Member (Investor)',
+      name: 'From Vendor (Investor)',
       selector: (row: any) => `${row.from_member_name || '-'} (${row.from_member_id})`,
       sortable: true,
       minWidth: '170px',
@@ -552,7 +552,7 @@ const AdminLevelDailyROI = () => {
 
             <TextField
               size="small"
-              placeholder={viewMode === 'transactions' ? "Search sponsor, member, tx..." : "Search sponsor, investor..."}
+              placeholder={viewMode === 'transactions' ? "Search sponsor, vendor, tx..." : "Search sponsor, investor..."}
               value={searchQuery}
               onChange={(e) => {
                 setSearchQuery(e.target.value);

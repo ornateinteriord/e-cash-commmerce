@@ -37,7 +37,7 @@ const WithdrawalRequests: React.FC = () => {
                     Withdrawal Requests
                 </Typography>
                 <Typography variant="body1" sx={{ color: '#64748b', fontSize: { xs: '0.875rem', sm: '1rem' } }}>
-                    Manage and approve member withdrawal requests from commission wallet
+                    Manage and approve vendor withdrawal requests from commission wallet
                 </Typography>
             </Box>
 
@@ -82,8 +82,8 @@ const WithdrawalRequests: React.FC = () => {
                             <TableHead sx={{ bgcolor: '#f1f5f9' }}>
                                 <TableRow>
                                     <TableCell sx={{ fontWeight: 600, color: '#475569' }}>Date</TableCell>
-                                    <TableCell sx={{ fontWeight: 600, color: '#475569' }}>Member Name</TableCell>
-                                    <TableCell sx={{ fontWeight: 600, color: '#475569' }}>Member ID</TableCell>
+                                    <TableCell sx={{ fontWeight: 600, color: '#475569' }}>Vendor Name</TableCell>
+                                    <TableCell sx={{ fontWeight: 600, color: '#475569' }}>Vendor ID</TableCell>
                                     <TableCell sx={{ fontWeight: 600, color: '#475569' }}>Amount</TableCell>
                                     <TableCell sx={{ fontWeight: 600, color: '#475569' }}>Status</TableCell>
                                     <TableCell sx={{ fontWeight: 600, color: '#475569' }}>Action</TableCell>

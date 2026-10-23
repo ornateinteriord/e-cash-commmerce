@@ -167,10 +167,10 @@ const MyQR: React.FC = () => {
           setRecipient(result);
           setPaymentDialogOpen(true);
         } else {
-          toast.error('Member not found. Please verify the ID/QR.');
+          toast.error('Vendor not found. Please verify the ID/QR.');
         }
       } catch (err: any) {
-        toast.error(err?.response?.data?.message || 'Member lookup failed.');
+        toast.error(err?.response?.data?.message || 'Vendor lookup failed.');
       }
     },
     [currentUserId, memberDetails, lookupMutation, stopCamera]
@@ -297,7 +297,7 @@ const MyQR: React.FC = () => {
   const handleManualSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (!manualInput.trim()) {
-      toast.error('Please enter a Member ID');
+      toast.error('Please enter a Vendor ID');
       return;
     }
     handleLookup(manualInput);
@@ -329,7 +329,7 @@ const MyQR: React.FC = () => {
         idToken: 'BYPASS_TOKEN',
       });
 
-      toast.success(`₹${numAmount.toLocaleString()} successfully transferred to ${recipient?.Name || 'Member'}!`);
+      toast.success(`₹${numAmount.toLocaleString()} successfully transferred to ${recipient?.Name || 'Vendor'}!`);
       setPaymentDialogOpen(false);
       setAmount('');
       setRecipient(null);
@@ -679,7 +679,7 @@ const MyQR: React.FC = () => {
               >
                 <TextField
                   fullWidth
-                  placeholder="Or enter Member ID to transfer"
+                  placeholder="Or enter Vendor ID to transfer"
                   value={manualInput}
                   onChange={(e) => setManualInput(e.target.value)}
                   variant="standard"
@@ -1033,7 +1033,7 @@ const MyQR: React.FC = () => {
                 <Box>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                     <Typography sx={{ fontWeight: 900, fontSize: '1.1rem', lineHeight: 1.2 }}>
-                      {recipient?.Name || 'Member'}
+                      {recipient?.Name || 'Vendor'}
                     </Typography>
                     <CheckCircleIcon sx={{ fontSize: 16, color: '#38BDF8' }} />
                   </Box>

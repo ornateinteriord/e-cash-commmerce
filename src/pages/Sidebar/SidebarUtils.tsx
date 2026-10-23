@@ -50,10 +50,10 @@ export const UserSideBarMenuItems: SideBarMenuItemType[] = [
     isExpandable: true,
     subItems: [
       { name: "My Direct", path: "/user/team/direct", icon: <PeopleIcon /> },
-      { name: "My Member", path: "/user/team", icon: <GroupIcon /> },
+      { name: "My Vendor", path: "/user/team", icon: <GroupIcon /> },
       { name: "Network Tree", path: "/user/team/tree", icon: <AccountTreeIcon /> },
       {
-        name: "Register Member",
+        name: "Register Vendor",
         path: "/user/team/new-register",
         icon: <PersonAddIcon />,
       },
@@ -180,23 +180,23 @@ export const AdminSideBarMenuItems: SideBarMenuItemType[] = [
     ],
   },
   {
-    name: "Members",
+    name: "Vendors",
     icon: <GroupIcon />,
     isExpandable: true,
     subItems: [
-      { name: "All Members", path: "/admin/members", icon: <PeopleIcon /> },
+      { name: "All Vendors", path: "/admin/members", icon: <PeopleIcon /> },
       {
-        name: "Pending Members",
+        name: "Pending Vendors",
         path: "/admin/members/pending",
         icon: <PersonAddIcon />,
       },
       {
-        name: "Active Members",
+        name: "Active Vendors",
         path: "/admin/members/active",
         icon: <CheckCircleIcon />,
       },
       {
-        name: "Inactive Members",
+        name: "Inactive Vendors",
         path: "/admin/members/inactive",
         icon: <PersonIcon />,
       },
@@ -306,7 +306,7 @@ export const Admin01SideBarMenuItems: SideBarMenuItemType[] = [
     icon: <LucideIcons.Settings />,
     isExpandable: true,
     subItems: [
-      { name: "Members", path: "/admin_01/members", icon: <PeopleIcon /> },
+      { name: "Vendors", path: "/admin_01/members", icon: <PeopleIcon /> },
       // { name: "Agents", path: "/banking/agents", icon: <PersonIcon /> },
       // { name: "Interests", path: "/banking/interestrate", icon: <PercentIcon /> },
     ],

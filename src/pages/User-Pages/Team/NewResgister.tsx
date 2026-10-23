@@ -150,7 +150,7 @@ const NewResgister: React.FC = () => {
     <Box sx={{ minHeight: "100vh", bgcolor: '#F8FAFC', p: { xs: 2, md: 5 }, pt: { xs: 4, md: 10 } }}>
       <Box sx={{ maxWidth: '800px', mx: 'auto' }}>
         <Typography variant="h5" sx={{ color: '#0F172A', fontWeight: 800, mb: 1, textAlign: 'center' }}>
-          Create New Member
+          Create New Vendor
         </Typography>
        
 
@@ -188,9 +188,9 @@ const NewResgister: React.FC = () => {
               />
             </Box>
 
-            {/* New Member Details Section */}
+            {/* New Vendor Details Section */}
             <Typography variant="h6" sx={{ color: '#0284C7', fontWeight: 700, mb: 3, display: 'flex', alignItems: 'center', gap: 1 }}>
-              <PersonIcon /> New Member Details
+              <PersonIcon /> New Vendor Details
             </Typography>
             
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
@@ -201,7 +201,7 @@ const NewResgister: React.FC = () => {
                 onChange={handleInputChange}
                 fullWidth
                 variant="outlined"
-                placeholder="Enter member's full name"
+                placeholder="Enter vendor's full name"
                 InputProps={{
                   startAdornment: <InputAdornment position="start"><PersonIcon sx={{ color: '#0284C7' }} /></InputAdornment>,
                 }}
@@ -327,7 +327,7 @@ const NewResgister: React.FC = () => {
                   transition: 'all 0.2s'
                 }}
               >
-                {isPending ? 'Processing Registration...' : 'Register Member'}
+                {isPending ? 'Processing Registration...' : 'Register Vendor'}
               </Button>
             </Box>
           </CardContent>
@@ -374,7 +374,7 @@ const NewResgister: React.FC = () => {
               Registration Successful!
             </Typography>
             <Typography variant="body2" sx={{ color: '#7A5060', fontWeight: 600, mt: 0.5, fontSize: '0.85rem' }}>
-              New member has been successfully added to your network.
+              New vendor has been successfully added to your network.
             </Typography>
           </DialogTitle>
 
@@ -388,7 +388,7 @@ const NewResgister: React.FC = () => {
               flexDirection: 'column',
               gap: 1.5
             }}>
-              {/* Member ID */}
+              {/* Vendor ID */}
               <Box sx={{
                 display: 'flex',
                 justifyContent: 'space-between',
@@ -397,7 +397,7 @@ const NewResgister: React.FC = () => {
                 borderBottom: '1px dashed #f0d0d8'
               }}>
                 <Typography sx={{ color: '#7A5060', fontSize: '0.82rem', fontWeight: 700 }}>
-                  Member ID
+                  Vendor ID
                 </Typography>
                 <Typography sx={{ color: '#6D214F', fontWeight: 900, fontSize: '1.15rem', fontFamily: 'monospace' }}>
                   {registrationData.memberId}
@@ -412,7 +412,7 @@ const NewResgister: React.FC = () => {
                 </Typography>
               </Box>
 
-              {/* Member Name */}
+              {/* Vendor Name */}
               {registrationData.name && (
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <Typography sx={{ color: '#7A5060', fontSize: '0.82rem', fontWeight: 600 }}>Name</Typography>
@@ -434,7 +434,7 @@ const NewResgister: React.FC = () => {
             </Box>
 
             <Typography variant="caption" sx={{ display: 'block', mt: 2, color: '#7A5060', textAlign: 'center', fontWeight: 600 }}>
-              Please securely share these login credentials with the member.
+              Please securely share these login credentials with the vendor.
             </Typography>
           </DialogContent>
 

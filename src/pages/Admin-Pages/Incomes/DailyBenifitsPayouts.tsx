@@ -106,7 +106,7 @@ const SingleLevelIncomeAdmin = () => {
             Daily Incentive
           </Typography>
           <Typography variant="body2" sx={{ color: '#64748b', mt: 0.5 }}>
-            Track all daily return payouts (1% Daily), member details, cycle progress, and transaction statuses
+            Track all daily return payouts (1% Daily), vendor details, cycle progress, and transaction statuses
           </Typography>
         </Box>
         <TriggerMissingROIButton defaultType="daily_incentive" pageTitle="Daily Incentive" label="Trigger Missing Incentive" />
@@ -272,7 +272,7 @@ const SingleLevelIncomeAdmin = () => {
                 Detailed Records ({benefitsList.length})
               </ToggleButton>
               <ToggleButton value="summary">
-                Member Summary ({summaryList.length})
+                Vendor Summary ({summaryList.length})
               </ToggleButton>
             </ToggleButtonGroup>
 
@@ -281,8 +281,8 @@ const SingleLevelIncomeAdmin = () => {
               size="small"
               placeholder={
                 viewMode === "detailed"
-                  ? "Search by Member Name, Member ID, Mobile..."
-                  : "Search by Member ID or Name..."
+                  ? "Search by Vendor Name, Vendor ID, Mobile..."
+                  : "Search by Vendor ID or Name..."
               }
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}

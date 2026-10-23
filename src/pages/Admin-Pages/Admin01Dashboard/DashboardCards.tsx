@@ -53,7 +53,7 @@ const DashboardCards = ({ counts, recentData }: DashboardCardsProps) => {
       },
     },
     {
-      name: 'Member Num',
+      name: 'Vendor Num',
       selector: (row: any) => row.memberNum,
       sortable: true,
       center: true,
@@ -109,13 +109,13 @@ const DashboardCards = ({ counts, recentData }: DashboardCardsProps) => {
     <Box sx={{ p: 3 }}>
       {/* Stats Cards Row */}
       <Grid container spacing={2} sx={{ mb: 3 }}>
-        {/* Total Members Card */}
+        {/* Total Vendors Card */}
         <Grid item xs={12} sm={6} md={3}>
           <DashboardCard
             icon={<SupervisorAccountIcon sx={{ color: 'white' }} />}
-            title="Total Members"
+            title="Total Vendors"
             status="Active"
-            description={`${counts.totalMembers} Members`}
+            description={`${counts.totalMembers} Vendors`}
             sx={{
               background: '#667eea',
               borderRadius: '16px',
@@ -183,12 +183,12 @@ const DashboardCards = ({ counts, recentData }: DashboardCardsProps) => {
 
       {/* Second Row with Two Cards */}
       <Grid container spacing={2} sx={{ mb: 3 }}>
-        {/* Members Card with Table as Footer */}
+        {/* Vendors Card with Table as Footer */}
         <Grid item xs={12} md={8}>
           <DashboardCard
             icon={<StorageIcon sx={{ color: 'white' }} />}
-            title="Members"
-            status="Summary of recent members"
+            title="Vendors"
+            status="Summary of recent vendors"
             showActionButton={true}
             actionButtonLabel="More Information"
             onActionClick={() => navigate('/admin_01/members')}

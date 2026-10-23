@@ -89,7 +89,7 @@ const KYCApproval: React.FC = () => {
           <Table>
             <TableHead>
               <TableRow sx={{ backgroundColor: '#0a2558' }}>
-                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Member ID</TableCell>
+                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Vendor ID</TableCell>
                 <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Name</TableCell>
                 <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Account Number</TableCell>
                 <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>IFSC Code</TableCell>
@@ -156,14 +156,14 @@ const KYCApproval: React.FC = () => {
         <DialogContent>
           {selectedKYC && (
             <Box sx={{ py: 2 }}>
-              <Typography variant="h6" gutterBottom>Member Information</Typography>
+              <Typography variant="h6" gutterBottom>Vendor Information</Typography>
               <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2, mb: 3 }}>
                 <Box>
-                  <Typography variant="body2" color="textSecondary">Member ID</Typography>
+                  <Typography variant="body2" color="textSecondary">Vendor ID</Typography>
                   <Typography>{selectedKYC?.Member_id}</Typography>
                 </Box>
                 <Box>
-                  <Typography variant="body2" color="textSecondary">Member Name</Typography>
+                  <Typography variant="body2" color="textSecondary">Vendor Name</Typography>
                   <Typography>{selectedKYC?.Name}</Typography>
                 </Box>
                 <Box>
