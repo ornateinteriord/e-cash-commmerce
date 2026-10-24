@@ -1,4 +1,5 @@
-import { ChevronDown, LogOutIcon, Menu as MenuIcon, Settings, User, Headphones, Home, MessageCircle } from 'lucide-react';
+import { ChevronDown, LogOutIcon, Menu as MenuIcon, Settings, User, Headphones, MessageCircle } from 'lucide-react';
+import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import "./navbar.scss";
 import { AppBar, Avatar, Box, Divider, Menu, MenuItem, Toolbar, Typography, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -61,12 +62,12 @@ const Navbar = ({ shouldHide, onToggleSidebar }: NavbarProps) => {
         sx={{
           background: "#FFFFFF",
           borderBottom: '1px solid #E2E8F0',
-          boxShadow: '0 2px 12px rgba(31, 51, 59, 0.05)',
+          boxShadow: '0 4px 18px rgba(31, 51, 59, 0.05)',
           zIndex: (theme) => theme.zIndex.drawer + 1
         }}
       >
         <Toolbar sx={{ 
-          height: { xs: 56, md: 64 }, 
+          height: { xs: 58, md: 64 }, 
           px: { xs: 2, md: 3 }, 
           display: 'flex', 
           justifyContent: 'space-between',
@@ -75,16 +76,17 @@ const Navbar = ({ shouldHide, onToggleSidebar }: NavbarProps) => {
           {isLoggedIn && userRole === "USER" ? (
             // USER mobile-app style layout
             <>
+              {/* Left Side: Avatar with Name & Menu Trigger */}
               <Box 
                 onClick={handleMenuOpen} 
                 sx={{ 
                   cursor: 'pointer', 
                   display: 'flex', 
                   alignItems: 'center', 
-                  gap: 1.5,
+                  gap: 1.2,
                   padding: '4px 8px',
-                  borderRadius: '12px',
-                  transition: 'background 0.2s',
+                  borderRadius: '14px',
+                  transition: 'all 0.2s ease',
                   '&:hover': {
                     bgcolor: 'rgba(254, 128, 1, 0.08)'
                   }
@@ -92,37 +94,93 @@ const Navbar = ({ shouldHide, onToggleSidebar }: NavbarProps) => {
               >
                 <Avatar
                   sx={{
-                    width: { xs: 36, md: 40 },
-                    height: { xs: 36, md: 40 },
-                    bgcolor: '#FE8001',
+                    width: { xs: 38, md: 42 },
+                    height: { xs: 38, md: 42 },
+                    background: 'linear-gradient(135deg, #FE8001 0%, #FFA033 100%)',
                     color: '#FFFFFF',
                     fontWeight: 900,
-                    fontSize: { xs: '0.95rem', md: '1.1rem' },
-                    boxShadow: '0 2px 8px rgba(254, 128, 1, 0.25)'
+                    fontSize: { xs: '1rem', md: '1.15rem' },
+                    boxShadow: '0 3px 10px rgba(254, 128, 1, 0.35)',
+                    border: '2px solid rgba(255, 255, 255, 0.9)'
                   }}
                 >
                   {memberDetails?.Name?.charAt(0).toUpperCase() || 'U'}
                 </Avatar>
+
+                <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+                  <Typography sx={{ fontWeight: 800, fontSize: '0.92rem', color: '#1F333B', lineHeight: 1.2 }}>
+                    {memberDetails?.Name || 'Member'}
+                  </Typography>
+                  <Typography sx={{ fontSize: '0.72rem', color: '#FE8001', fontWeight: 700 }}>
+                    ID: {memberDetails?.Member_id || userId || ''}
+                  </Typography>
+                </Box>
+                <ChevronDown size={16} color="#64748B" />
               </Box>
 
+              {/* Right Side: Scanner, Support Chat & Logout Buttons */}
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                {/* 1. QR Scanner Icon */}
+                <IconButton
+                  onClick={() => navigate('/user/my-qr')}
+                  title="Scan & Pay / QR Scanner"
+                  sx={{
+                    color: "#FE8001",
+                    bgcolor: "rgba(254, 128, 1, 0.08)",
+                    border: "1px solid rgba(254, 128, 1, 0.25)",
+                    borderRadius: "12px",
+                    p: 1,
+                    transition: "all 0.2s ease",
+                    '&:hover': {
+                      bgcolor: 'rgba(254, 128, 1, 0.18)',
+                      transform: 'translateY(-1px)',
+                      boxShadow: '0 3px 10px rgba(254, 128, 1, 0.25)'
+                    }
+                  }}
+                >
+                  <QrCodeScannerIcon sx={{ fontSize: 22 }} />
+                </IconButton>
+
+                {/* 2. Support Chat Icon */}
                 <IconButton
                   onClick={() => navigate('/user/support-chat')}
-                  sx={{ color: "#1F333B", '&:hover': { bgcolor: 'rgba(254, 128, 1, 0.08)', color: '#FE8001' } }}
+                  title="Support Chat"
+                  sx={{
+                    color: "#1F333B",
+                    bgcolor: "rgba(31, 51, 59, 0.04)",
+                    border: "1px solid #E2E8F0",
+                    borderRadius: "12px",
+                    p: 1,
+                    transition: "all 0.2s ease",
+                    '&:hover': {
+                      bgcolor: 'rgba(254, 128, 1, 0.08)',
+                      color: '#FE8001',
+                      transform: 'translateY(-1px)'
+                    }
+                  }}
                 >
-                  <Headphones size={22} />
+                  <Headphones size={20} />
                 </IconButton>
-                <IconButton
-                  onClick={() => navigate('/user/dashboard')}
-                  sx={{ color: "#1F333B", '&:hover': { bgcolor: 'rgba(254, 128, 1, 0.08)', color: '#FE8001' } }}
-                >
-                  <Home size={22} />
-                </IconButton>
+
+                {/* 3. Logout Icon */}
                 <IconButton
                   onClick={handleLogout}
-                  sx={{ color: "#EF4444", '&:hover': { bgcolor: 'rgba(239, 68, 68, 0.1)' } }}
+                  title="Logout"
+                  sx={{
+                    color: "#EF4444",
+                    bgcolor: "rgba(239, 68, 68, 0.08)",
+                    border: "1px solid rgba(239, 68, 68, 0.25)",
+                    borderRadius: "12px",
+                    p: 1,
+                    transition: "all 0.2s ease",
+                    '&:hover': {
+                      bgcolor: 'rgba(239, 68, 68, 0.18)',
+                      transform: 'translateY(-1px)',
+                      boxShadow: '0 3px 10px rgba(239, 68, 68, 0.25)'
+                    }
+                  }}
                 >
-                  <LogOutIcon size={22} />
+                  <LogOutIcon size={20} />
                 </IconButton>
               </Box>
             </>
@@ -152,7 +210,7 @@ const Navbar = ({ shouldHide, onToggleSidebar }: NavbarProps) => {
                     gap: 0.5
                   }}
                 >
-                  <Box component="span" sx={{ color: '#FE8001' }}>E</Box>cash
+                  <Box component="span" sx={{ color: '#FE8001' }}>E</Box> shopy
                 </Typography>
               </Box>
 

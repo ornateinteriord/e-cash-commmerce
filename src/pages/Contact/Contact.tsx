@@ -39,7 +39,7 @@ const Contact = () => {
                                     </Box>
                                     <Box>
                                         <Typography sx={{ color: '#64748b', fontSize: '0.9rem', mb: 0.5 }}>Email Us</Typography>
-                                        <Typography sx={{ fontWeight: 700, color: '#0f172a' }}>support@ecash.com</Typography>
+                                        <Typography sx={{ fontWeight: 700, color: '#0f172a' }}>support@eshopy.com</Typography>
                                     </Box>
                                 </Box>
 

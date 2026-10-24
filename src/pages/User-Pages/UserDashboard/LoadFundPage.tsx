@@ -144,7 +144,7 @@ const LoadFundPage: React.FC = () => {
               </Typography>
             </Box>
 
-            {/* E-Cash Scanner QR Card */}
+            {/* E shopy Scanner QR Card */}
             <Box
               sx={{
                 display: 'flex',

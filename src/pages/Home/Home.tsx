@@ -11,13 +11,13 @@ const Home = () => {
     {
       title: "Smart Banking in Motion",
       tag: "DIGITAL BANKING EXPERIENCE",
-      text: "Experience seamless banking and loan services with Ecash.",
+      text: "Experience seamless banking and loan services with E shopy.",
       image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&q=80&w=1950",
     },
     {
       title: "Banking Solutions for Your Business",
       tag: "SAVE AND MANAGE YOUR MONEY",
-      text: "Your Financial Universe, One Destination: Complete Banking at Ecash.",
+      text: "Your Financial Universe, One Destination: Complete Banking at E shopy.",
       image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=1950",
     },
     {
@@ -124,10 +124,10 @@ const Home = () => {
             </Grid>
             <Grid item xs={12} md={7}>
               <Typography sx={{ color: '#1e3a8a', fontWeight: 700, textTransform: 'uppercase', mb: 1 }}>About Us</Typography>
-              <Typography variant="h3" sx={{ fontWeight: 800, color: '#0f172a', mb: 3 }}>ECASH</Typography>
+              <Typography variant="h3" sx={{ fontWeight: 800, color: '#0f172a', mb: 3 }}>E SHOPY</Typography>
               <Typography sx={{ color: '#475569', mb: 3, lineHeight: 1.8 }}>
                 As on: 2024-07-03<br/>
-                ECASH (CIN: U65100DL2022NPL407403) is a Private company incorporated on 25 Dec 2022. It is classified as Non-government company and is registered at Registrar of Companies, Delhi.
+                E SHOPY (CIN: U65100DL2022NPL407403) is a Private company incorporated on 25 Dec 2022. It is classified as Non-government company and is registered at Registrar of Companies, Delhi.
               </Typography>
               
               <Grid container spacing={4} sx={{ mt: 2 }}>

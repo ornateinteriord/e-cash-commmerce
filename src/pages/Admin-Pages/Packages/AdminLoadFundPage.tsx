@@ -13,7 +13,7 @@ const AdminLoadFundPage: React.FC = () => {
   const uploadQR = useUploadAdminQR();
 
   const [walletAddress, setWalletAddress] = useState<string>('');
-  const [networkText, setNetworkText] = useState<string>('Ecash-BEP20');
+  const [networkText, setNetworkText] = useState<string>('Eshopy-BEP20');
   const [qrCodeUrl, setQrCodeUrl] = useState<string>('');
   
   const [qrFile, setQrFile] = useState<File | null>(null);
@@ -23,7 +23,7 @@ const AdminLoadFundPage: React.FC = () => {
   useEffect(() => {
     if (config) {
       setWalletAddress(config.wallet_address || '');
-      setNetworkText(config.network_text || 'Ecash-BEP20');
+      setNetworkText(config.network_text || 'Eshopy-BEP20');
       setQrCodeUrl(config.qr_code_url || '');
       if (config.qr_code_url) {
         setQrPreview(config.qr_code_url);
@@ -141,7 +141,7 @@ const AdminLoadFundPage: React.FC = () => {
                 <Stack spacing={3}>
                   <TextField
                     fullWidth
-                    label="Ecash Wallet Address"
+                    label="E shopy Wallet Address"
                     variant="outlined"
                     value={walletAddress}
                     onChange={(e) => setWalletAddress(e.target.value)}
@@ -151,11 +151,11 @@ const AdminLoadFundPage: React.FC = () => {
 
                   <TextField
                     fullWidth
-                    label="Ecash Network Label (e.g. Ecash-BEP20)"
+                    label="E shopy Network Label (e.g. Eshopy-BEP20)"
                     variant="outlined"
                     value={networkText}
                     onChange={(e) => setNetworkText(e.target.value)}
-                    placeholder="Enter Ecash Network label"
+                    placeholder="Enter E shopy Network label"
                   />
 
                   <Button
@@ -187,7 +187,7 @@ const AdminLoadFundPage: React.FC = () => {
           <Card sx={{ borderRadius: '16px', boxShadow: '0 8px 24px rgba(0,0,0,0.08)', border: '1px solid rgba(0,0,0,0.06)' }}>
             <CardContent sx={{ p: 4, textAlign: 'center' }}>
               <Typography variant="h6" sx={{ color: '#0a2558', fontWeight: 700, mb: 3 }}>
-                Ecash QR Code Image
+                E shopy QR Code Image
               </Typography>
 
               <Stack spacing={3} alignItems="center">
@@ -274,7 +274,7 @@ const AdminLoadFundPage: React.FC = () => {
                   </Button>
                 )}
                 <Typography variant="caption" color="text.secondary">
-                  Please upload a high-resolution payment QR code containing your Ecash wallet address. Only JPG, PNG, or WEBP files are supported.
+                  Please upload a high-resolution payment QR code containing your E shopy wallet address. Only JPG, PNG, or WEBP files are supported.
                 </Typography>
               </Stack>
             </CardContent>

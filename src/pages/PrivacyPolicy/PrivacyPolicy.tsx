@@ -47,7 +47,7 @@ const PrivacyPolicy = () => {
                     </Typography>
                 </Box>
                 <Typography variant="body1" paragraph sx={{ lineHeight: 1.8 }}>
-                    Ecash (\"Ecash\", \"we\", \"us\", or \"our\") is committed to protecting
+                    E shopy (\"E shopy\", \"we\", \"us\", or \"our\") is committed to protecting
                     your privacy and personal information. This Privacy Policy explains how we collect, use, disclose,
                     and safeguard your information when you use our services and platform.
                 </Typography>
@@ -172,7 +172,7 @@ const PrivacyPolicy = () => {
                     please contact us at:
                 </Typography>
                 <Typography variant="body1">
-                    <strong>Email:</strong> support@ecash.com<br />
+                    <strong>Email:</strong> support@eshopy.com<br />
                     <strong>Phone:</strong> +91 9004478100, 0820-7966887<br />
                     <strong>Address:</strong> Shop No. G6, Asha Chandra Trade Centre, Udupi, Karnataka
                 </Typography>

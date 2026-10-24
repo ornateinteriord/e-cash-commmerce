@@ -62,7 +62,7 @@ const PackageDetail = () => {
               userSelect: 'none'
             }}
           >
-            Ecash
+            E shopy
           </Typography>
         </Box>
         

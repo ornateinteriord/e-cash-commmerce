@@ -261,8 +261,8 @@ const ShouldHideSidebar = () => {
 
 const ShouldHideNavbar = () => {
   const location = useLocation();
-  // Hide navbar on public/auth pages and user dashboard for plain screen experience
-  const noNavbarPaths = ["/", "/about", "/contact", "/services", "/gallery", "/login", "/register", "/recover-password", "/reset-password", "/forgot-password", "/user/dashboard"];
+  // Hide navbar on public/auth pages
+  const noNavbarPaths = ["/", "/about", "/contact", "/services", "/gallery", "/login", "/register", "/recover-password", "/reset-password", "/forgot-password"];
   return noNavbarPaths.includes(location.pathname);
 };
 

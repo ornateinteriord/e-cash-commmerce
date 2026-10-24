@@ -42,7 +42,7 @@ const DashboardQRDialog: React.FC<DashboardQRDialogProps> = ({ open, onClose, me
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const [activeTab, setActiveTab] = useState<'my_qr' | 'scan_pay'>('my_qr');
   
-  const qrData = `Ecash-P2P:${memberId}`;
+  const qrData = `Eshopy-P2P:${memberId}`;
   const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(qrData)}&margin=10`;
 
   const handleCopy = () => {
@@ -54,7 +54,7 @@ const DashboardQRDialog: React.FC<DashboardQRDialogProps> = ({ open, onClose, me
     if (navigator.share) {
       try {
         await navigator.share({
-          title: 'My Ecash QR',
+          title: 'My E shopy QR',
           text: `Pay me using my QR code! My Member ID is: ${memberId}`,
           url: qrImageUrl,
         });
@@ -73,7 +73,7 @@ const DashboardQRDialog: React.FC<DashboardQRDialogProps> = ({ open, onClose, me
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = `Ecash-QR-${memberId}.png`;
+      link.download = `Eshopy-QR-${memberId}.png`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);

@@ -41,7 +41,7 @@ const Terms = () => {
                     </Typography>
                 </Box>
                 <Typography variant="body1" paragraph sx={{ lineHeight: 1.8 }}>
-                    Welcome to Ecash (\"Ecash\", \"we\", \"us\", or \"our\"). These Terms
+                    Welcome to E shopy (\"E shopy\", \"we\", \"us\", or \"our\"). These Terms
                     and Conditions govern your use of our services and platform. By accessing or using our services,
                     you agree to be bound by these terms.
                 </Typography>
@@ -59,7 +59,7 @@ const Terms = () => {
                     </Typography>
                 </Box>
                 <Typography variant="body1" paragraph sx={{ lineHeight: 1.8 }}>
-                    To become a member of Ecash and use our services, you must:
+                    To become a member of E shopy and use our services, you must:
                 </Typography>
                 <Box component="ul" sx={{ pl: 4, mb: 2 }}>
                     <li>Be at least 18 years of age</li>
@@ -97,7 +97,7 @@ const Terms = () => {
                     Financial Services
                 </Typography>
                 <Typography variant="body1" paragraph sx={{ lineHeight: 1.8 }}>
-                    Ecash offers various financial services including:
+                    E shopy offers various financial services including:
                 </Typography>
                 <Box component="ul" sx={{ pl: 4 }}>
                     <li>Savings Accounts with competitive interest rates</li>
@@ -160,7 +160,7 @@ const Terms = () => {
                     Limitation of Liability
                 </Typography>
                 <Typography variant="body1" paragraph sx={{ lineHeight: 1.8 }}>
-                    Ecash shall not be liable for any indirect, incidental, special, or consequential damages arising out
+                    E shopy shall not be liable for any indirect, incidental, special, or consequential damages arising out
                     of or related to your use of our services. We do not guarantee uninterrupted or error-free service.
                 </Typography>
             </Paper>
@@ -174,7 +174,7 @@ const Terms = () => {
                     with or without notice, for any violation of these terms or for any other reason we deem appropriate.
                 </Typography>
                 <Typography variant="body1" paragraph sx={{ lineHeight: 1.8 }}>
-                    Upon termination, you remain liable for all outstanding obligations and amounts due to Ecash.
+                    Upon termination, you remain liable for all outstanding obligations and amounts due to E shopy.
                 </Typography>
             </Paper>
 
@@ -197,7 +197,7 @@ const Terms = () => {
                     For questions regarding these Terms and Conditions, please contact us:
                 </Typography>
                 <Typography variant="body1">
-                    <strong>Email:</strong> support@ecash.com<br />
+                    <strong>Email:</strong> support@eshopy.com<br />
                     <strong>Phone:</strong> +91 9004478100, 0820-7966887<br />
                     <strong>Address:</strong> Shop No. G6, Asha Chandra Trade Centre, Udupi, Karnataka
                 </Typography>

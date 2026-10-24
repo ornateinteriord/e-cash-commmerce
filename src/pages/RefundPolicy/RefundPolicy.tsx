@@ -47,7 +47,7 @@ const RefundPolicy = () => {
                     </Typography>
                 </Box>
                 <Typography variant="body1" paragraph sx={{ lineHeight: 1.8 }}>
-                    At Ecash (Ecash), we strive to provide excellent financial services
+                    At E shopy (E shopy), we strive to provide excellent financial services
                     to our members. This Refund Policy outlines the circumstances under which refunds may be requested and
                     processed for various fees and charges.
                 </Typography>
@@ -136,7 +136,7 @@ const RefundPolicy = () => {
                         Step 1: Contact Us
                     </Typography>
                     <Typography variant="body2" paragraph sx={{ lineHeight: 1.8, pl: 2 }}>
-                        Reach out to our support team via email at support@ecash.com or call us at +91 9004478100
+                        Reach out to our support team via email at support@eshopy.com or call us at +91 9004478100
                         within 7 days of the transaction.
                     </Typography>
 
@@ -199,7 +199,7 @@ const RefundPolicy = () => {
                     For refund requests or questions about this policy, please contact:
                 </Typography>
                 <Typography variant="body1">
-                    <strong>Email:</strong> support@ecash.com<br />
+                    <strong>Email:</strong> support@eshopy.com<br />
                     <strong>Phone:</strong> +91 9004478100, 0820-7966887<br />
                     <strong>Address:</strong> Shop No. G6, Asha Chandra Trade Centre, Udupi, Karnataka<br />
                     <strong>Office Hours:</strong> Monday - Saturday, 10:00 AM - 5:00 PM

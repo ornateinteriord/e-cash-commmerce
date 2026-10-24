@@ -14,10 +14,8 @@ import InventoryIcon from '@mui/icons-material/Inventory';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import ShareIcon from '@mui/icons-material/Share';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import AddIcon from '@mui/icons-material/Add';
 import BoltIcon from '@mui/icons-material/Bolt';
-import LogoutIcon from '@mui/icons-material/Logout';
 import GroupsIcon from '@mui/icons-material/Groups';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
@@ -33,150 +31,6 @@ import ProductsContainer from './ProductsContainer';
 import ReTopupDialog from './ReTopupDialog';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
 
-const carouselSlides = [
-  {
-    id: 1,
-    title: '⚡ Instant Add Credit',
-    desc: 'Zero fees on deposit requests. Fast credit approval.',
-    badge: 'PAYTM WALLET',
-    actionText: 'Add Fund',
-    route: '/user/load-fund',
-    bg: 'linear-gradient(135deg, #15242A 0%, #1F333B 55%, #FE8001 100%)',
-    accent: '#FE8001',
-  },
-  {
-    id: 2,
-    title: '🎁 Refer & Earn Rewards',
-    desc: 'Share your referral link with friends and earn rewards.',
-    badge: 'CASHBACK',
-    actionText: 'Invite',
-    route: '/user/team/new-register',
-    bg: 'linear-gradient(135deg, #1F333B 0%, #2A4550 55%, #FE8001 100%)',
-    accent: '#FFA733',
-  },
-  {
-    id: 3,
-    title: '🛡️ Member P2P Transfer',
-    desc: 'Send wallet funds instantly to any member via QR Code.',
-    badge: '0% FEES',
-    actionText: 'Transfer',
-    route: '/user/p2p-transfer',
-    bg: 'linear-gradient(135deg, #15242A 0%, #1F333B 55%, #35535F 100%)',
-    accent: '#FE8001',
-  },
-];
-
-const DashboardCarousel: React.FC<{ navigate: (to: string) => void }> = ({ navigate }) => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % carouselSlides.length);
-    }, 4000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const slide = carouselSlides[currentSlide];
-
-  return (
-    <Box sx={{ mb: 3, width: '100%', maxWidth: '420px' }}>
-      <Paper
-        elevation={0}
-        onClick={() => navigate(slide.route)}
-        sx={{
-          position: 'relative',
-          borderRadius: '18px',
-          background: slide.bg,
-          color: '#ffffff',
-          p: { xs: 1.8, sm: 2 },
-          boxShadow: '0 8px 24px rgba(0, 51, 102, 0.25)',
-          border: '1px solid rgba(255, 255, 255, 0.2)',
-          cursor: 'pointer',
-          minHeight: '105px',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-          overflow: 'hidden',
-          transition: 'all 0.3s ease-in-out',
-          '&:hover': {
-            transform: 'translateY(-2px)',
-            boxShadow: '0 12px 28px rgba(0, 51, 102, 0.35)',
-          },
-        }}
-      >
-        <Box
-          sx={{
-            position: 'absolute',
-            top: -25,
-            right: -25,
-            width: 90,
-            height: 90,
-            borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(255, 255, 255, 0.25) 0%, transparent 70%)',
-          }}
-        />
-
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 1 }}>
-          <Typography
-            sx={{
-              fontSize: '0.65rem',
-              fontWeight: 800,
-              color: slide.accent,
-              letterSpacing: '0.8px',
-              bgcolor: 'rgba(0,0,0,0.3)',
-              px: 1,
-              py: 0.3,
-              borderRadius: '6px',
-              textTransform: 'uppercase',
-            }}
-          >
-            {slide.badge}
-          </Typography>
-        </Box>
-
-        <Box sx={{ zIndex: 1, my: 0.4 }}>
-          <Typography sx={{ fontWeight: 800, fontSize: { xs: '0.92rem', sm: '0.98rem' }, color: '#ffffff', mb: 0.2 }}>
-            {slide.title}
-          </Typography>
-          <Typography sx={{ fontSize: '0.74rem', color: '#e0f2fe', lineHeight: 1.3, opacity: 0.95 }}>
-            {slide.desc}
-          </Typography>
-        </Box>
-
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 1, pt: 0.4 }}>
-          <Box sx={{ display: 'flex', gap: 0.8 }}>
-            {carouselSlides.map((_, idx) => (
-              <Box
-                key={idx}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setCurrentSlide(idx);
-                }}
-                sx={{
-                  width: currentSlide === idx ? 16 : 6,
-                  height: 6,
-                  borderRadius: '3px',
-                  bgcolor: currentSlide === idx ? slide.accent : 'rgba(255, 255, 255, 0.4)',
-                  transition: 'all 0.3s ease',
-                  cursor: 'pointer',
-                }}
-              />
-            ))}
-          </Box>
-          <Typography
-            sx={{
-              fontSize: '0.72rem',
-              fontWeight: 800,
-              color: slide.accent,
-            }}
-          >
-            {slide.actionText} →
-          </Typography>
-        </Box>
-      </Paper>
-    </Box>
-  );
-};
 
 const UserDashboard = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -244,8 +98,8 @@ const UserDashboard = () => {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: 'Join E-cash & Start Earning',
-          text: `Join E-cash with my referral code ${code} and unlock direct commissions & brokerage rewards!`,
+          title: 'Join E shopy & Start Earning',
+          text: `Join E shopy with my referral code ${code} and unlock direct commissions & brokerage rewards!`,
           url: referralLink,
         });
       } catch (err) {
@@ -320,223 +174,172 @@ const UserDashboard = () => {
         </Box>
       )}
 
-      {/* Top Paytm Style Plain App Header */}
+      {/* ── TOP EXECUTIVE WELCOME & IDENTITY BAR ────────────────── */}
       <Box sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
         width: '100%',
-        maxWidth: '420px',
-        mb: 2.5,
-        mt: 0.5
+        display: 'flex',
+        flexDirection: { xs: 'column', sm: 'row' },
+        justifyContent: 'space-between',
+        alignItems: { xs: 'stretch', sm: 'center' },
+        gap: { xs: 2, sm: 2.5 },
+        mb: 3.5,
+        mt: 1,
+        p: { xs: 2.2, sm: 3 },
+        borderRadius: '24px',
+        background: 'linear-gradient(135deg, #15242A 0%, #1F333B 65%, #2B444E 100%)',
+        boxShadow: '0 12px 32px rgba(21, 36, 42, 0.35)',
+        border: '1px solid rgba(254, 128, 1, 0.3)',
+        position: 'relative',
+        overflow: 'hidden',
       }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+        {/* Subtle decorative golden ambient glow */}
+        <Box sx={{
+          position: 'absolute', top: -45, right: -45,
+          width: 170, height: 170, borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(254, 128, 1, 0.22) 0%, transparent 70%)',
+          pointerEvents: 'none',
+        }} />
+        <Box sx={{
+          position: 'absolute', bottom: -35, left: -35,
+          width: 120, height: 120, borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(255, 160, 51, 0.12) 0%, transparent 70%)',
+          pointerEvents: 'none',
+        }} />
+
+        {/* User Identity: Avatar, Welcome, Name, Member ID & User ID badge */}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1.8, sm: 2.5 }, zIndex: 1 }}>
           <Avatar
             onClick={() => navigate('/user/account/profile')}
             sx={{
-              width: 44,
-              height: 44,
-              bgcolor: '#FE8001',
+              width: { xs: 54, sm: 62 },
+              height: { xs: 54, sm: 62 },
+              background: 'linear-gradient(135deg, #FE8001 0%, #FFA033 100%)',
               color: '#FFFFFF',
-              fontWeight: 800,
-              fontSize: '1rem',
+              fontWeight: 900,
+              fontSize: { xs: '1.25rem', sm: '1.45rem' },
               cursor: 'pointer',
-              boxShadow: '0 4px 12px rgba(109,33,79,0.2)',
-              border: '2px solid #E5989B'
+              boxShadow: '0 8px 22px rgba(254, 128, 1, 0.45)',
+              border: '2.5px solid rgba(255, 255, 255, 0.25)',
+              transition: 'transform 0.25s ease',
+              '&:hover': { transform: 'scale(1.05)' }
             }}
           >
             {(memberDetails?.Name || 'U').charAt(0).toUpperCase()}
           </Avatar>
+
           <Box>
-            <Typography sx={{ fontSize: '0.72rem', color: '#7a5060', fontWeight: 600 }}>
-              Welcome back 👋
-            </Typography>
-            <Typography sx={{ fontSize: '1rem', fontWeight: 900, color: '#1F333B', lineHeight: 1.2 }}>
-              {memberDetails?.Name || 'Member'}
-            </Typography>
-          </Box>
-        </Box>
-
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <IconButton
-            onClick={() => navigate('/user/my-qr')}
-            sx={{
-              bgcolor: '#ffffff',
-              color: '#FE8001',
-              border: '1px solid #FED7AA',
-              borderRadius: '12px',
-              p: 1,
-              '&:hover': { bgcolor: '#FFFFFF' }
-            }}
-          >
-            <QrCodeScannerIcon sx={{ fontSize: 22 }} />
-          </IconButton>
-          <IconButton
-            onClick={() => setLogoutDialogOpen(true)}
-            sx={{
-              bgcolor: '#ffffff',
-              color: '#c97579',
-              border: '1px solid #FED7AA',
-              borderRadius: '12px',
-              p: 1,
-              '&:hover': { bgcolor: '#ffeef0' }
-            }}
-          >
-            <LogoutIcon sx={{ fontSize: 20 }} />
-          </IconButton>
-        </Box>
-      </Box>
-
-      {/* Small Blue Slideshow Container (Paytm style) */}
-      <DashboardCarousel navigate={navigate} />
-
-      {/* User Virtual Card with Member ID & User ID */}
-      <Box sx={{
-        position: 'relative',
-        width: '100%',
-        maxWidth: '420px',
-        height: '210px',
-        mb: 3.5,
-        borderRadius: '24px',
-        background: 'linear-gradient(135deg, #15242A 0%, #1F333B 60%, #2A4550 100%)',
-        boxShadow: '0 16px 36px rgba(31, 51, 59, 0.45)',
-        overflow: 'hidden',
-        color: '#FFFFFF',
-        p: 2.8,
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        border: '1px solid rgba(254, 128, 1, 0.35)',
-        '&::before': {
-          content: '""',
-          position: 'absolute',
-          top: -40,
-          right: -40,
-          width: 180,
-          height: 180,
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(254, 128, 1, 0.25) 0%, transparent 70%)',
-        },
-        '&::after': {
-          content: '""',
-          position: 'absolute',
-          bottom: -30,
-          left: -30,
-          width: 140,
-          height: 140,
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(42, 69, 80, 0.4) 0%, transparent 70%)',
-        }
-      }}>
-        {/* Card Header: Chip & ECASH Logo */}
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 1 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Box sx={{
-              width: 32,
-              height: 24,
-              borderRadius: '6px',
-              background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
-              border: '1px solid #E06F00',
+            <Typography sx={{
+              fontSize: { xs: '0.8rem', sm: '0.88rem' },
+              color: '#FFA033',
+              fontWeight: 700,
+              letterSpacing: '0.5px',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 2px 6px rgba(254, 128, 1, 0.4)'
+              gap: 0.6,
+              textTransform: 'uppercase',
             }}>
-              <Box sx={{ width: 14, height: 10, border: '1px solid rgba(31, 51, 59, 0.3)', borderRadius: '2px' }} />
-            </Box>
-            <Typography
-              sx={{
-                fontWeight: 900,
-                fontSize: '1.25rem',
-                letterSpacing: '2px',
-                color: '#FE8001',
-                textShadow: '0 2px 8px rgba(0,0,0,0.4)',
-                userSelect: 'none'
-              }}
-            >
-              ECASH
+              Welcome back 👋
             </Typography>
-          </Box>
-        </Box>
-
-        {/* Middle Section: Login ID (Left) & User ID (Right) */}
-        <Box sx={{ 
-          display: 'flex', 
-          justifyContent: 'space-between', 
-          alignItems: 'center', 
-          zIndex: 1,
-          px: 0.5 
-        }}>
-          <Box>
-            <Typography sx={{ color: '#FFA733', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 700 }}>
-              Login ID
-            </Typography>
-            <Typography sx={{ 
-              fontFamily: 'monospace', 
-              fontSize: { xs: '1.05rem', sm: '1.2rem' }, 
-              fontWeight: 800, 
-              color: '#FFFFFF',
-              letterSpacing: '1px',
-              textShadow: '0 2px 6px rgba(0,0,0,0.4)'
-            }}>
-              {memberDetails?.Member_id || memberDetails?.member_id || memberId || 'N/A'}
-            </Typography>
-          </Box>
-
-          <Box sx={{ textAlign: 'right' }}>
-            <Typography sx={{ color: '#FFA733', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 700 }}>
-              User ID
-            </Typography>
-            <Typography sx={{ 
-              fontFamily: 'monospace', 
-              fontSize: { xs: '1.05rem', sm: '1.2rem' }, 
-              fontWeight: 800, 
-              color: '#FE8001',
-              letterSpacing: '1px',
-              textShadow: '0 2px 6px rgba(0,0,0,0.4)'
-            }}>
-              {memberDetails?.member_code || memberDetails?.user_id || memberDetails?.reference_id || '0101'}
-            </Typography>
-          </Box>
-        </Box>
-
-        {/* Bottom Section: Name & Level */}
-        <Box sx={{ zIndex: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-          <Box>
-            <Typography sx={{ color: '#FFA733', fontSize: '0.62rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 600 }}>
-              Name
-            </Typography>
-            <Typography sx={{ 
-              fontSize: { xs: '1rem', sm: '1.1rem' }, 
-              fontWeight: 800, 
-              textTransform: 'uppercase', 
-              letterSpacing: '1.5px', 
-              color: '#FFFFFF',
-              textShadow: '0 2px 6px rgba(0,0,0,0.4)'
-            }}>
-              {memberDetails?.Name || memberDetails?.name || 'Member'}
-            </Typography>
-          </Box>
-
-          <Box sx={{
-            bgcolor: 'rgba(254, 128, 1, 0.15)',
-            border: '1px solid rgba(254, 128, 1, 0.4)',
-            borderRadius: '6px',
-            px: 1.1,
-            py: 0.3,
-            backdropFilter: 'blur(4px)'
-          }}>
             <Typography sx={{
-              color: '#FE8001',
-              fontSize: '0.72rem',
-              fontWeight: 800,
-              letterSpacing: '1px'
+              fontSize: { xs: '1.25rem', sm: '1.5rem' },
+              fontWeight: 900,
+              color: '#FFFFFF',
+              lineHeight: 1.2,
+              letterSpacing: '0.3px',
+              mt: 0.3
             }}>
-              LEVEL {memberDetails?.level ?? 0}
+              {memberDetails?.Name || 'Member'}
             </Typography>
+
+            {/* Clickable ID Badges Row */}
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.2, mt: 0.8, flexWrap: 'wrap' }}>
+              {/* Member / Login ID */}
+              <Box
+                onClick={() => {
+                  const id = memberDetails?.Member_id || memberDetails?.member_id || memberId;
+                  if (id) {
+                    navigator.clipboard.writeText(id);
+                    toast.success(`Copied ID: ${id}`);
+                  }
+                }}
+                title="Click to copy ID"
+                sx={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 0.7,
+                  bgcolor: 'rgba(255, 255, 255, 0.08)',
+                  border: '1px solid rgba(254, 128, 1, 0.35)',
+                  px: 1.3,
+                  py: 0.35,
+                  borderRadius: '999px',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  '&:hover': {
+                    bgcolor: 'rgba(254, 128, 1, 0.18)',
+                    borderColor: '#FE8001',
+                    transform: 'translateY(-1px)'
+                  }
+                }}
+              >
+                <Typography sx={{ color: '#94A3B8', fontSize: '0.72rem', fontWeight: 600 }}>
+                  ID:
+                </Typography>
+                <Typography sx={{
+                  color: '#FE8001',
+                  fontFamily: 'monospace',
+                  fontWeight: 800,
+                  fontSize: { xs: '0.8rem', sm: '0.85rem' },
+                  letterSpacing: '0.5px'
+                }}>
+                  {memberDetails?.Member_id || memberDetails?.member_id || memberId || 'N/A'}
+                </Typography>
+                <ContentCopyIcon sx={{ fontSize: '0.85rem', color: '#FFA033', opacity: 0.85 }} />
+              </Box>
+
+              {/* User Code badge if different */}
+              {(memberDetails?.member_code || memberDetails?.user_id) && (
+                <Box sx={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 0.5,
+                  bgcolor: 'rgba(255, 255, 255, 0.05)',
+                  border: '1px solid rgba(255, 255, 255, 0.15)',
+                  px: 1.2,
+                  py: 0.35,
+                  borderRadius: '999px'
+                }}>
+                  <Typography sx={{ color: '#94A3B8', fontSize: '0.7rem', fontWeight: 600 }}>
+                    CODE:
+                  </Typography>
+                  <Typography sx={{ color: '#F8FAFC', fontFamily: 'monospace', fontWeight: 700, fontSize: '0.78rem' }}>
+                    {memberDetails?.member_code || memberDetails?.user_id}
+                  </Typography>
+                </Box>
+              )}
+
+              {/* Level Badge */}
+              <Box sx={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                bgcolor: 'rgba(254, 128, 1, 0.15)',
+                border: '1px solid rgba(254, 128, 1, 0.4)',
+                px: 1.1,
+                py: 0.3,
+                borderRadius: '8px'
+              }}>
+                <Typography sx={{ color: '#FFA033', fontSize: '0.7rem', fontWeight: 800, letterSpacing: '0.5px' }}>
+                  LEVEL {memberDetails?.level ?? 0}
+                </Typography>
+              </Box>
+            </Box>
           </Box>
         </Box>
+
+
       </Box>
+
+      {/* ── PACKAGE CONTAINER DIRECTLY BELOW NAME & ID ─────────── */}
+      <ProductsContainer />
 
       {/* Profile Settings (Quick Access Grid) immediately after Card */}
       <Box sx={{ mb: 4, width: '100%' }}>
@@ -689,7 +492,7 @@ const UserDashboard = () => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText sx={{ color: '#7a5060' }}>
-            Are you sure you want to log out of your Ecash account?
+            Are you sure you want to log out of your E shopy account?
           </DialogContentText>
         </DialogContent>
         <DialogActions sx={{ p: 2 }}>
@@ -716,8 +519,6 @@ const UserDashboard = () => {
         </DialogActions>
       </Dialog>
 
-      {/* Invest Amount */}
-      <ProductsContainer />
 
       {/* Credits Card */}
       <Paper elevation={0} sx={{
@@ -769,7 +570,7 @@ const UserDashboard = () => {
               <Box sx={{
                 p: { xs: 0.5, sm: 1.1 },
                 borderRadius: '12px',
-                bgcolor: 'rgba(254, 128, 1,  )',
+                bgcolor: 'rgba(254, 128, 1, 0.12)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',

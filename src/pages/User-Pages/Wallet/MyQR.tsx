@@ -151,6 +151,10 @@ const MyQR: React.FC = () => {
 
       if (cleanId.startsWith('Ecash-P2P:')) {
         cleanId = cleanId.replace('Ecash-P2P:', '').trim();
+      } else if (cleanId.startsWith('Eshopy-P2P:')) {
+        cleanId = cleanId.replace('Eshopy-P2P:', '').trim();
+      } else if (cleanId.startsWith('E-shopy-P2P:')) {
+        cleanId = cleanId.replace('E-shopy-P2P:', '').trim();
       }
 
       const myId = memberDetails?.Member_id || memberDetails?.member_id || currentUserId || '';
@@ -459,7 +463,7 @@ const MyQR: React.FC = () => {
         </IconButton>
         <Box>
           <Typography variant="h5" sx={{ fontWeight: 900, color: '#0F172A', letterSpacing: '-0.5px' }}>
-            E-cash Scanner & QR
+            E shopy Scanner & QR
           </Typography>
           <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 600 }}>
             Scan & Pay, Receive Money, or Deposit via UTR
@@ -774,7 +778,7 @@ const MyQR: React.FC = () => {
               </PaytmIconBadge>
             </Box>
 
-            {/* Company UPI QR Preview Box (E-cash Scanner) */}
+            {/* Company UPI QR Preview Box (E shopy Scanner) */}
             <Box
               sx={{
                 display: 'flex',

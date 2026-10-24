@@ -68,17 +68,17 @@ const ActivatePackage: React.FC = () => {
   // ];
 
   const packageOptions: PackageOption[] = [
-    { value: 'Ecash_1000',    label: 'Ecash Plan - 1,000',     amount: 1000 },
-    { value: 'Ecash_2000',    label: 'Ecash Plan - 2,000',     amount: 2000 },
-    { value: 'Ecash_5000',    label: 'Ecash Plan - 5,000',     amount: 5000 },
-    { value: 'Ecash_10000',   label: 'Ecash Plan - 10,000',    amount: 10000 },
-    { value: 'Ecash_25000',   label: 'Ecash Plan - 25,000',    amount: 25000 },
-    { value: 'Ecash_50000',   label: 'Ecash Plan - 50,000',    amount: 50000 },
-    { value: 'Ecash_100000',  label: 'Ecash Plan - 1,000,000',  amount: 100000 },
-    { value: 'Ecash_250000',  label: 'Ecash Plan - 2,50,000',  amount: 250000 },
-    { value: 'Ecash_500000',  label: 'Ecash Plan - 5,000,000',  amount: 500000 },
-    { value: 'Ecash_1000000', label: 'Ecash Plan - 10,00,000', amount: 1000000 },
-    { value: 'Ecash_2500000', label: 'Ecash Plan - 25,00,000', amount: 2500000 },
+    { value: 'Ecash_1000',    label: 'E shopy Plan - 1,000',     amount: 1000 },
+    { value: 'Ecash_2000',    label: 'E shopy Plan - 2,000',     amount: 2000 },
+    { value: 'Ecash_5000',    label: 'E shopy Plan - 5,000',     amount: 5000 },
+    { value: 'Ecash_10000',   label: 'E shopy Plan - 10,000',    amount: 10000 },
+    { value: 'Ecash_25000',   label: 'E shopy Plan - 25,000',    amount: 25000 },
+    { value: 'Ecash_50000',   label: 'E shopy Plan - 50,000',    amount: 50000 },
+    { value: 'Ecash_100000',  label: 'E shopy Plan - 1,000,000',  amount: 100000 },
+    { value: 'Ecash_250000',  label: 'E shopy Plan - 2,50,000',  amount: 250000 },
+    { value: 'Ecash_500000',  label: 'E shopy Plan - 5,000,000',  amount: 500000 },
+    { value: 'Ecash_1000000', label: 'E shopy Plan - 10,00,000', amount: 1000000 },
+    { value: 'Ecash_2500000', label: 'E shopy Plan - 25,00,000', amount: 2500000 },
   ];
 
   // Handle member ID search

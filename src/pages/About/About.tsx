@@ -15,7 +15,7 @@ const About = () => {
                         Who We Are
                     </Typography>
                     <Typography variant="h2" sx={{ fontWeight: 800, mb: 3, fontSize: { xs: '2.5rem', md: '3.5rem' } }}>
-                        About <span style={{ color: '#93c5fd' }}>Ecash</span>
+                        About <span style={{ color: '#93c5fd' }}>E shopy</span>
                     </Typography>
                     <Typography sx={{ fontSize: '1.1rem', lineHeight: 1.8, color: 'rgba(255,255,255,0.8)' }}>
                         Empowering growth and opportunity through flexible, transparent, and reliable financial solutions for individuals and businesses alike.
@@ -46,11 +46,11 @@ const About = () => {
                     </Grid>
                     <Grid item xs={12} md={6}>
                         <Typography variant="h4" sx={{ fontWeight: 800, mb: 3, color: '#0f172a' }}>
-                            ECASH
+                            E SHOPY
                         </Typography>
                         <Typography variant="body1" paragraph sx={{ lineHeight: 1.8, color: '#475569' }}>
                             <strong>As on: 2024-07-03</strong><br/>
-                            ECASH (CIN: U65100DL2022NPL407403) is a Private company incorporated on 25 Dec 2022. It is classified as Non-government company and is registered at Registrar of Companies, Delhi.
+                            E SHOPY (CIN: U65100DL2022NPL407403) is a Private company incorporated on 25 Dec 2022. It is classified as Non-government company and is registered at Registrar of Companies, Delhi.
                         </Typography>
                         <Typography variant="body1" paragraph sx={{ lineHeight: 1.8, color: '#475569' }}>
                             We are dedicated to providing comprehensive financial services to our valued members. Established with the vision of financial inclusion and empowerment, we have been serving our community with integrity, transparency, and excellence.

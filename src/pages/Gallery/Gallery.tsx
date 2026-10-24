@@ -24,7 +24,7 @@ const Gallery = () => {
                         Our <span style={{ color: '#93c5fd' }}>Gallery</span>
                     </Typography>
                     <Typography sx={{ fontSize: '1.1rem', color: 'rgba(255,255,255,0.8)' }}>
-                        A glimpse into our events, achievements, and everyday life at Ecash.
+                        A glimpse into our events, achievements, and everyday life at E shopy.
                     </Typography>
                 </Container>
             </Box>

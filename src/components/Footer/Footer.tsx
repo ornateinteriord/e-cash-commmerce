@@ -33,7 +33,7 @@ const Footer = () => {
                                             textShadow: '0 2px 10px rgba(56, 189, 248, 0.3)'
                                         }}
                                     >
-                                        Ecash
+                                        E shopy
                                     </Typography>
                                 </Box>
                                 <Typography variant="body1" sx={{ color: "#94a3b8", lineHeight: 1.7, pr: { md: 4 } }}>
@@ -73,7 +73,7 @@ const Footer = () => {
                                 </Typography>
                                 <Typography 
                                     component="a" 
-                                    href="mailto:support@ecash.com" 
+                                    href="mailto:support@eshopy.com" 
                                     sx={{ 
                                         color: "#94a3b8", 
                                         textDecoration: "none",
@@ -82,7 +82,7 @@ const Footer = () => {
                                         '&:hover': { color: "#38bdf8" }
                                     }}
                                 >
-                                    support@ecash.com
+                                    support@eshopy.com
                                 </Typography>
                                 
                                 <Box sx={{ display: "flex", gap: 1.5 }}>
@@ -119,7 +119,7 @@ const Footer = () => {
                             gap: { xs: 2, sm: 3 }
                         }}>
                             <Typography variant="body2" sx={{ color: "#f8fafc" }}>
-                                Copyright @ 2026 Ecash
+                                Copyright @ 2026 E shopy
                             </Typography>
                             <Box sx={{ width: { xs: "40px", sm: "1px" }, height: { xs: "1px", sm: "16px" }, bgcolor: "#334155" }} />
                             <Typography 

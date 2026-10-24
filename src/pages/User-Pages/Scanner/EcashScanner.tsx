@@ -81,9 +81,13 @@ const EcashScanner: React.FC = () => {
     let cleanId = scannedData.trim();
     if (!cleanId) return;
 
-    // Handle Ecash-P2P:ID format
+    // Handle Ecash-P2P: / Eshopy-P2P: ID format
     if (cleanId.startsWith('Ecash-P2P:')) {
       cleanId = cleanId.replace('Ecash-P2P:', '').trim();
+    } else if (cleanId.startsWith('Eshopy-P2P:')) {
+      cleanId = cleanId.replace('Eshopy-P2P:', '').trim();
+    } else if (cleanId.startsWith('E-shopy-P2P:')) {
+      cleanId = cleanId.replace('E-shopy-P2P:', '').trim();
     }
 
     const myId = memberDetails?.Member_id || memberDetails?.member_id || currentMemberId || '';
@@ -321,7 +325,7 @@ const EcashScanner: React.FC = () => {
 
         <Box sx={{ textAlign: 'center' }}>
           <Typography sx={{ fontWeight: 900, fontSize: '1.1rem', letterSpacing: '0.5px' }}>
-            E-cash Scanner
+            E shopy Scanner
           </Typography>
           <Typography variant="caption" sx={{ color: '#FE8001', fontWeight: 700 }}>
             Scan & Pay Instantly
@@ -351,7 +355,7 @@ const EcashScanner: React.FC = () => {
               backdropFilter: 'blur(8px)',
               '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.25)' },
             }}
-            title="View E-cash QR"
+            title="View E shopy QR"
           >
             <QrCode2Icon />
           </IconButton>
@@ -492,7 +496,7 @@ const EcashScanner: React.FC = () => {
             textShadow: '0 2px 8px rgba(0,0,0,0.8)',
           }}
         >
-          Align any E-cash QR code within frame
+          Align any E shopy QR code within frame
         </Typography>
       </Box>
 
@@ -780,7 +784,7 @@ const EcashScanner: React.FC = () => {
         )}
       </AnimatePresence>
 
-      {/* E-Cash Scanner QR Card Modal */}
+      {/* E shopy Scanner QR Card Modal */}
       <Dialog
         open={qrModalOpen}
         onClose={() => setQrModalOpen(false)}

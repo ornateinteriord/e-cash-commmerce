@@ -142,7 +142,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                                     size="small"
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        handleDownload(message.imageUrl!, message.text?.includes('Ecash-P2P:') || message.text?.includes('BMS-P2P:') || message.imageUrl?.includes('qrserver') ? 'P2P_QR_Code.png' : 'chat_image.png');
+                                        handleDownload(message.imageUrl!, message.text?.includes('Eshopy-P2P:') || message.text?.includes('Ecash-P2P:') || message.text?.includes('BMS-P2P:') || message.imageUrl?.includes('qrserver') ? 'P2P_QR_Code.png' : 'chat_image.png');
                                     }}
                                     sx={{
                                         position: 'absolute',

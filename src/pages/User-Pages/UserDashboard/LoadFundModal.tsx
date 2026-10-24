@@ -196,7 +196,7 @@ const LoadFundModal: React.FC<LoadFundModalProps> = ({ open, onClose }) => {
                     <Box
                       component="img"
                       src={config.qr_code_url}
-                      alt="Ecash QR Code"
+                      alt="E shopy QR Code"
                       sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
                       onError={(e: any) => {
                         e.target.onerror = null;
@@ -272,7 +272,7 @@ const LoadFundModal: React.FC<LoadFundModalProps> = ({ open, onClose }) => {
               <Box>
                 <TextField
                   fullWidth
-                  label="Amount (Ecash / ₹)"
+                  label="Amount (E shopy / ₹)"
                   variant="outlined"
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}

@@ -60,7 +60,7 @@ const PublicNavbar = () => {
                   userSelect: 'none'
                 }}
               >
-                Ecash
+                E shopy
               </Typography>
             </Box>
 
@@ -172,7 +172,7 @@ const PublicNavbar = () => {
                 userSelect: 'none'
               }}
             >
-              Ecash
+              E shopy
             </Typography>
           </Box>
           <IconButton onClick={handleDrawerToggle} sx={{ color: "#475569" }}><CloseIcon /></IconButton>

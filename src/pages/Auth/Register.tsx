@@ -243,7 +243,7 @@ const Register = () => {
         sponsor_id: formData.Sponsor_code,
         Sponsor_code: formData.Sponsor_code,
         Sponsor_name: formData.Sponsor_name,
-        spackage: 'Ecash Plan',
+        spackage: 'E shopy Plan',
         password: formData.password,
         otp: firebaseToken,
       };
@@ -324,7 +324,7 @@ const Register = () => {
               textShadow: '0 2px 12px rgba(109, 33, 79, 0.2)'
             }}
           >
-            ECASH
+            E SHOPY
           </Typography>
           <Typography
             variant={isMobile ? "h5" : "h3"}
