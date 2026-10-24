@@ -342,7 +342,7 @@ const NewResgister: React.FC = () => {
             sx: {
               bgcolor: '#ffffff',
               borderRadius: '24px',
-              border: '1.5px solid #f0d0d8',
+              border: '1.5px solid #FED7AA',
               boxShadow: '0 24px 48px rgba(109, 33, 79, 0.12)',
               p: { xs: 1, sm: 2 },
               maxWidth: '460px',
@@ -380,10 +380,10 @@ const NewResgister: React.FC = () => {
 
           <DialogContent sx={{ px: { xs: 2, sm: 3 }, py: 1 }}>
             <Box sx={{
-              bgcolor: '#FFF8F0',
+              bgcolor: '#FFFFFF',
               p: 2.5,
               borderRadius: '18px',
-              border: '1.5px solid #f0d0d8',
+              border: '1.5px solid #FED7AA',
               display: 'flex',
               flexDirection: 'column',
               gap: 1.5
@@ -394,12 +394,12 @@ const NewResgister: React.FC = () => {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 pb: 1.5,
-                borderBottom: '1px dashed #f0d0d8'
+                borderBottom: '1px dashed #FED7AA'
               }}>
                 <Typography sx={{ color: '#7A5060', fontSize: '0.82rem', fontWeight: 700 }}>
                   Vendor ID
                 </Typography>
-                <Typography sx={{ color: '#6D214F', fontWeight: 900, fontSize: '1.15rem', fontFamily: 'monospace' }}>
+                <Typography sx={{ color: '#FE8001', fontWeight: 900, fontSize: '1.15rem', fontFamily: 'monospace' }}>
                   {registrationData.memberId}
                 </Typography>
               </Box>
@@ -446,14 +446,14 @@ const NewResgister: React.FC = () => {
               sx={{
                 py: 1.3,
                 borderRadius: '14px',
-                background: 'linear-gradient(135deg, #6D214F 0%, #8f2f68 100%)',
+                background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
                 color: '#FFFFFF',
                 textTransform: 'none',
                 fontWeight: 800,
                 fontSize: '1rem',
                 boxShadow: '0 4px 14px rgba(109, 33, 79, 0.25)',
                 '&:hover': {
-                  background: 'linear-gradient(135deg, #5a1a41 0%, #6D214F 100%)',
+                  background: 'linear-gradient(135deg, #E06F00 0%, #FE8001 100%)',
                   transform: 'translateY(-1px)'
                 },
                 transition: 'all 0.2s'

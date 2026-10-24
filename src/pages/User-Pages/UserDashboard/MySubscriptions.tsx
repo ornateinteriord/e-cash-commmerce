@@ -16,8 +16,8 @@ const MySubscriptions: React.FC = () => {
 
   if (!user) {
     return (
-      <Box sx={{ bgcolor: '#FFF8F0', minHeight: '100vh', display: 'flex', justifyContent: 'center', pt: 10 }}>
-        <CircularProgress sx={{ color: '#6D214F' }} />
+      <Box sx={{ bgcolor: '#FFFFFF', minHeight: '100vh', display: 'flex', justifyContent: 'center', pt: 10 }}>
+        <CircularProgress sx={{ color: '#FE8001' }} />
       </Box>
     );
   }
@@ -25,7 +25,7 @@ const MySubscriptions: React.FC = () => {
   return (
     <Box sx={{ 
       p: { xs: 2, sm: 3 }, 
-      bgcolor: '#FFF8F0', 
+      bgcolor: '#FFFFFF', 
       minHeight: '100vh',
       maxWidth: '480px',
       margin: '0 auto',
@@ -37,8 +37,8 @@ const MySubscriptions: React.FC = () => {
           onClick={() => navigate(-1)}
           sx={{ 
             bgcolor: '#ffffff', 
-            border: '1.5px solid #f0d0d8',
-            color: '#6D214F',
+            border: '1.5px solid #FED7AA',
+            color: '#FE8001',
             p: 1,
             '&:hover': { bgcolor: '#fdf2f4' }
           }}
@@ -46,10 +46,10 @@ const MySubscriptions: React.FC = () => {
           <ArrowBackIcon fontSize="small" />
         </IconButton>
         <Box>
-          <Typography variant="h5" sx={{ fontWeight: 900, color: '#6D214F', letterSpacing: '-0.5px' }}>
+          <Typography variant="h5" sx={{ fontWeight: 900, color: '#FE8001', letterSpacing: '-0.5px' }}>
             My Investments
           </Typography>
-          <Typography variant="caption" sx={{ color: '#8c6b7d', fontWeight: 600 }}>
+          <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 600 }}>
             Active investments & daily incentives
           </Typography>
         </Box>
@@ -57,7 +57,7 @@ const MySubscriptions: React.FC = () => {
 
       {addOnsLoading ? (
         <Box sx={{ display: 'flex', justifyContent: 'center', py: 6 }}>
-          <CircularProgress sx={{ color: '#6D214F' }} />
+          <CircularProgress sx={{ color: '#FE8001' }} />
         </Box>
       ) : (
         <Grid container spacing={2}>
@@ -98,9 +98,9 @@ const MySubscriptions: React.FC = () => {
                   <Card sx={{
                     boxShadow: '0 4px 16px rgba(109,33,79,0.06)',
                     borderRadius: '24px',
-                    border: '1.5px solid #f0d0d8',
+                    border: '1.5px solid #FED7AA',
                     backgroundColor: '#ffffff',
-                    color: '#2d0f1e',
+                    color: '#1F333B',
                     transition: 'all 0.2s',
                     '&:hover': { transform: 'translateY(-2px)', borderColor: '#E5989B' }
                   }}>
@@ -108,12 +108,12 @@ const MySubscriptions: React.FC = () => {
                       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1.5 }}>
                         <Box>
                           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5 }}>
-                            {pkg.isFD ? <AccountBalanceIcon sx={{ fontSize: 16, color: '#6D214F' }} /> : <PaymentsIcon sx={{ fontSize: 16, color: '#6D214F' }} />}
-                            <Typography variant="caption" sx={{ fontSize: '0.72rem', fontWeight: 800, color: '#8c6b7d', textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                            {pkg.isFD ? <AccountBalanceIcon sx={{ fontSize: 16, color: '#FE8001' }} /> : <PaymentsIcon sx={{ fontSize: 16, color: '#FE8001' }} />}
+                            <Typography variant="caption" sx={{ fontSize: '0.72rem', fontWeight: 800, color: '#64748B', textTransform: 'uppercase', letterSpacing: 0.5 }}>
                               {pkg.isFD ? 'Fixed Deposit' : `Investment #${index + 1}`}
                             </Typography>
                           </Box>
-                          <Typography variant="h5" sx={{ fontWeight: 900, color: '#6D214F', lineHeight: 1.2 }}>
+                          <Typography variant="h5" sx={{ fontWeight: 900, color: '#FE8001', lineHeight: 1.2 }}>
                             ₹{pkgAmount.toLocaleString()}
                           </Typography>
                         </Box>
@@ -125,26 +125,26 @@ const MySubscriptions: React.FC = () => {
                             fontSize: '0.72rem', 
                             fontWeight: 800, 
                             borderRadius: '8px',
-                            backgroundColor: pkg.roi_status === 'Active' ? 'rgba(244, 201, 93, 0.3)' : '#fdf2f4',
-                            color: '#6D214F',
-                            border: '1px solid rgba(244, 201, 93, 0.6)'
+                            backgroundColor: pkg.roi_status === 'Active' ? 'rgba(254, 128, 1, 0.15)' : '#fdf2f4',
+                            color: '#FE8001',
+                            border: '1px solid rgba(254, 128, 1, 0.4)'
                           }}
                         />
                       </Box>
 
-                      <Divider sx={{ my: 1.5, borderColor: '#f0d0d8' }} />
+                      <Divider sx={{ my: 1.5, borderColor: '#FED7AA' }} />
                       <Box sx={{ mb: 1.5, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <Box>
-                          <Typography variant="caption" sx={{ fontSize: '0.75rem', color: '#8c6b7d', fontWeight: 700 }}>
+                          <Typography variant="caption" sx={{ fontSize: '0.75rem', color: '#64748B', fontWeight: 700 }}>
                             {pkg.isFD ? 'Interest Rate' : 'Daily Incentive'}
                           </Typography>
-                          <Typography variant="subtitle2" sx={{ fontWeight: 900, color: '#6D214F' }}>
+                          <Typography variant="subtitle2" sx={{ fontWeight: 900, color: '#FE8001' }}>
                             {pkg.isFD ? `${pkg.interest_rate || 0}% p.a.` : `1% (₹${dailyIncentiveAmount.toFixed(2)}/day)`}
                           </Typography>
                         </Box>
                         {!pkg.isFD && (
                           <Box sx={{ textAlign: 'right' }}>
-                            <Typography variant="caption" sx={{ fontSize: '0.75rem', color: '#8c6b7d', fontWeight: 700 }}>
+                            <Typography variant="caption" sx={{ fontSize: '0.75rem', color: '#64748B', fontWeight: 700 }}>
                               Earned So Far
                             </Typography>
                             <Typography variant="subtitle2" sx={{ fontWeight: 900, color: '#059669' }}>
@@ -155,10 +155,10 @@ const MySubscriptions: React.FC = () => {
                       </Box>
 
                       <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.8 }}>
-                        <Typography variant="caption" sx={{ fontSize: '0.72rem', color: '#8c6b7d', fontWeight: 700 }}>
+                        <Typography variant="caption" sx={{ fontSize: '0.72rem', color: '#64748B', fontWeight: 700 }}>
                           {pkg.isFD ? 'Maturity Progress' : `Daily Incentive: ${payoutCount} of ${totalDays} Days`}
                         </Typography>
-                        <Typography variant="caption" sx={{ fontSize: '0.72rem', color: '#6D214F', fontWeight: 800 }}>
+                        <Typography variant="caption" sx={{ fontSize: '0.72rem', color: '#FE8001', fontWeight: 800 }}>
                           {pkgProgress.toFixed(0)}%
                         </Typography>
                       </Box>
@@ -168,10 +168,10 @@ const MySubscriptions: React.FC = () => {
                         sx={{
                           height: 8,
                           borderRadius: 4,
-                          backgroundColor: '#FFF8F0',
-                          border: '1px solid #f0d0d8',
+                          backgroundColor: '#FFFFFF',
+                          border: '1px solid #FED7AA',
                           '& .MuiLinearProgress-bar': {
-                            background: 'linear-gradient(90deg, #E5989B, #6D214F)',
+                            background: 'linear-gradient(90deg, #E5989B, #FE8001)',
                             borderRadius: 4
                           }
                         }}
@@ -179,12 +179,12 @@ const MySubscriptions: React.FC = () => {
 
                       <Box sx={{ mt: 1.5, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                          <CalendarTodayIcon sx={{ color: '#8c6b7d', fontSize: 13 }} />
-                          <Typography variant="caption" sx={{ fontSize: '0.7rem', color: '#8c6b7d', fontWeight: 600 }}>
+                          <CalendarTodayIcon sx={{ color: '#64748B', fontSize: 13 }} />
+                          <Typography variant="caption" sx={{ fontSize: '0.7rem', color: '#64748B', fontWeight: 600 }}>
                             {new Date(pkg.roi_start_date || pkg.createdAt || Date.now()).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}
                           </Typography>
                         </Box>
-                        <Typography variant="caption" sx={{ fontSize: '0.7rem', color: '#8c6b7d', fontFamily: 'monospace', fontWeight: 600 }}>
+                        <Typography variant="caption" sx={{ fontSize: '0.7rem', color: '#64748B', fontFamily: 'monospace', fontWeight: 600 }}>
                           #{pkgId.toString().slice(-8)}
                         </Typography>
                       </Box>

@@ -88,7 +88,7 @@ const LoadFundPage: React.FC = () => {
     <Box
       sx={{
         pb: 8,
-        bgcolor: '#FFF8F0',
+        bgcolor: '#FFFFFF',
         minHeight: '100vh',
         px: { xs: 2, sm: 3 },
         pt: { xs: 2.5, sm: 3.5 },
@@ -102,8 +102,8 @@ const LoadFundPage: React.FC = () => {
           onClick={() => navigate(-1)}
           sx={{ 
             bgcolor: '#ffffff', 
-            border: '1.5px solid #f0d0d8',
-            color: '#6D214F',
+            border: '1.5px solid #FED7AA',
+            color: '#FE8001',
             p: 1,
             '&:hover': { bgcolor: '#fdf2f4' }
           }}
@@ -111,10 +111,10 @@ const LoadFundPage: React.FC = () => {
           <ArrowBackIcon fontSize="small" />
         </IconButton>
         <Box>
-          <Typography variant="h5" sx={{ fontWeight: 900, color: '#6D214F', letterSpacing: '-0.5px' }}>
+          <Typography variant="h5" sx={{ fontWeight: 900, color: '#FE8001', letterSpacing: '-0.5px' }}>
             Load Funds
           </Typography>
-          <Typography variant="caption" sx={{ color: '#8c6b7d', fontWeight: 600 }}>
+          <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 600 }}>
             Top up your wallet via instant UPI transfer
           </Typography>
         </Box>
@@ -122,7 +122,7 @@ const LoadFundPage: React.FC = () => {
 
       {isConfigLoading ? (
         <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
-          <CircularProgress sx={{ color: '#6D214F' }} />
+          <CircularProgress sx={{ color: '#FE8001' }} />
         </Box>
       ) : (
         <Paper
@@ -131,15 +131,15 @@ const LoadFundPage: React.FC = () => {
             p: { xs: 2.5, sm: 3 },
             bgcolor: '#ffffff',
             borderRadius: '24px',
-            border: '1.5px solid #f0d0d8',
+            border: '1.5px solid #FED7AA',
             boxShadow: '0 4px 20px rgba(109,33,79,0.06)',
           }}
         >
           <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
             {/* Balance Badge */}
-            <Box sx={{ p: 2, borderRadius: '16px', bgcolor: '#FFF8F0', border: '1px solid #f0d0d8', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Typography variant="caption" sx={{ color: '#8c6b7d', fontWeight: 700, textTransform: 'uppercase' }}>Current Top Up Balance</Typography>
-              <Typography variant="subtitle1" sx={{ color: '#6D214F', fontWeight: 900 }}>
+            <Box sx={{ p: 2, borderRadius: '16px', bgcolor: '#FFFFFF', border: '1px solid #FED7AA', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 700, textTransform: 'uppercase' }}>Current Top Up Balance</Typography>
+              <Typography variant="subtitle1" sx={{ color: '#FE8001', fontWeight: 900 }}>
                 ₹{Number(walletOverview?.topUpBalance || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </Typography>
             </Box>
@@ -152,7 +152,7 @@ const LoadFundPage: React.FC = () => {
                 alignItems: 'center',
                 textAlign: 'center',
                 p: { xs: 2, sm: 2.5 },
-                bgcolor: '#FFF8F0',
+                bgcolor: '#FFFFFF',
                 borderRadius: '20px',
                 border: '1.5px dashed #E5989B',
               }}
@@ -161,7 +161,7 @@ const LoadFundPage: React.FC = () => {
                 variant="subtitle2"
                 sx={{
                   fontWeight: 800,
-                  color: '#6D214F',
+                  color: '#FE8001',
                   textTransform: 'uppercase',
                   letterSpacing: '0.5px',
                   mb: 1.5,
@@ -213,18 +213,18 @@ const LoadFundPage: React.FC = () => {
               placeholder="e.g. 5000"
               slotProps={{
                 inputLabel: {
-                  sx: { color: '#8c6b7d', '&.Mui-focused': { color: '#6D214F' } }
+                  sx: { color: '#64748B', '&.Mui-focused': { color: '#FE8001' } }
                 }
               }}
               sx={{
                 '& .MuiOutlinedInput-root': {
-                  color: '#2d0f1e',
+                  color: '#1F333B',
                   fontWeight: 700,
-                  bgcolor: '#FFF8F0',
+                  bgcolor: '#FFFFFF',
                   borderRadius: '16px',
-                  '& fieldset': { borderColor: '#f0d0d8' },
+                  '& fieldset': { borderColor: '#FED7AA' },
                   '&:hover fieldset': { borderColor: '#E5989B' },
-                  '&.Mui-focused fieldset': { borderColor: '#6D214F', borderWidth: '2px' },
+                  '&.Mui-focused fieldset': { borderColor: '#FE8001', borderWidth: '2px' },
                 },
               }}
             />
@@ -239,28 +239,28 @@ const LoadFundPage: React.FC = () => {
               helperText="Must be a unique transaction reference number (UTR / Txn ID)"
               slotProps={{
                 inputLabel: {
-                  sx: { color: '#8c6b7d', '&.Mui-focused': { color: '#6D214F' } }
+                  sx: { color: '#64748B', '&.Mui-focused': { color: '#FE8001' } }
                 },
                 formHelperText: {
-                  sx: { color: '#8c6b7d', fontWeight: 600, fontSize: '0.72rem', mt: 0.5 }
+                  sx: { color: '#64748B', fontWeight: 600, fontSize: '0.72rem', mt: 0.5 }
                 }
               }}
               sx={{
                 '& .MuiOutlinedInput-root': {
-                  color: '#2d0f1e',
+                  color: '#1F333B',
                   fontWeight: 700,
-                  bgcolor: '#FFF8F0',
+                  bgcolor: '#FFFFFF',
                   borderRadius: '16px',
-                  '& fieldset': { borderColor: '#f0d0d8' },
+                  '& fieldset': { borderColor: '#FED7AA' },
                   '&:hover fieldset': { borderColor: '#E5989B' },
-                  '&.Mui-focused fieldset': { borderColor: '#6D214F', borderWidth: '2px' },
+                  '&.Mui-focused fieldset': { borderColor: '#FE8001', borderWidth: '2px' },
                 },
               }}
             />
 
             {/* Receipt Image upload */}
             <Box>
-              <Typography variant="caption" sx={{ color: '#6D214F', mb: 1, fontWeight: 800, display: 'block', textTransform: 'uppercase' }}>
+              <Typography variant="caption" sx={{ color: '#FE8001', mb: 1, fontWeight: 800, display: 'block', textTransform: 'uppercase' }}>
                 Upload Payment Screenshot
               </Typography>
 
@@ -273,7 +273,7 @@ const LoadFundPage: React.FC = () => {
                     borderRadius: '16px',
                     overflow: 'hidden',
                     border: '1.5px solid #E5989B',
-                    bgcolor: '#FFF8F0',
+                    bgcolor: '#FFFFFF',
                   }}
                 >
                   <Box
@@ -288,9 +288,9 @@ const LoadFundPage: React.FC = () => {
                       position: 'absolute',
                       top: 10,
                       right: 10,
-                      bgcolor: '#6D214F',
-                      color: '#FFF8F0',
-                      '&:hover': { bgcolor: '#4e1739' },
+                      bgcolor: '#FE8001',
+                      color: '#FFFFFF',
+                      '&:hover': { bgcolor: '#E06F00' },
                     }}
                   >
                     <DeleteIcon fontSize="small" />
@@ -300,19 +300,19 @@ const LoadFundPage: React.FC = () => {
                 <Button
                   component="label"
                   variant="outlined"
-                  startIcon={<CloudUploadIcon sx={{ color: '#6D214F' }} />}
+                  startIcon={<CloudUploadIcon sx={{ color: '#FE8001' }} />}
                   sx={{
                     width: '100%',
                     py: 3,
                     borderRadius: '16px',
                     border: '2px dashed #E5989B',
-                    color: '#6D214F',
+                    color: '#FE8001',
                     textTransform: 'none',
                     fontWeight: 700,
                     fontSize: '0.9rem',
-                    bgcolor: '#FFF8F0',
+                    bgcolor: '#FFFFFF',
                     '&:hover': {
-                      borderColor: '#6D214F',
+                      borderColor: '#FE8001',
                       bgcolor: '#fdf2f4',
                     },
                   }}
@@ -332,8 +332,8 @@ const LoadFundPage: React.FC = () => {
               type="submit"
               disabled={isSubmitting}
               sx={{
-                background: 'linear-gradient(135deg, #6D214F 0%, #8f2f68 100%)',
-                color: '#FFF8F0',
+                background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
+                color: '#FFFFFF',
                 textTransform: 'none',
                 fontWeight: 900,
                 fontSize: '1rem',
@@ -341,19 +341,19 @@ const LoadFundPage: React.FC = () => {
                 borderRadius: '16px',
                 boxShadow: '0 8px 24px rgba(109, 33, 79, 0.3)',
                 '&:hover': {
-                  background: 'linear-gradient(135deg, #4e1739 0%, #6D214F 100%)',
+                  background: 'linear-gradient(135deg, #E06F00 0%, #FE8001 100%)',
                   transform: 'translateY(-1px)'
                 },
                 '&.Mui-disabled': {
-                  bgcolor: '#f0d0d8',
-                  color: '#8c6b7d',
+                  bgcolor: '#FED7AA',
+                  color: '#64748B',
                 },
                 transition: 'all 0.2s'
               }}
             >
               {isSubmitting ? (
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <CircularProgress size={20} sx={{ color: '#FFF8F0' }} />
+                  <CircularProgress size={20} sx={{ color: '#FFFFFF' }} />
                   Submitting...
                 </Box>
               ) : (
@@ -374,18 +374,18 @@ const LoadFundPage: React.FC = () => {
           sx: {
             bgcolor: '#FFFFFF',
             borderRadius: '20px',
-            border: '1.5px solid #f0d0d8',
+            border: '1.5px solid #FED7AA',
             overflow: 'hidden',
           },
         }}
       >
-        <DialogTitle sx={{ m: 0, p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: '#6D214F' }}>
+        <DialogTitle sx={{ m: 0, p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: '#FE8001' }}>
           <Typography variant="h6" sx={{ fontWeight: 800 }}>Payment Screenshot</Typography>
-          <IconButton onClick={() => setSelectedScreenshot(null)} sx={{ color: '#8c6b7d', '&:hover': { color: '#6D214F' } }}>
+          <IconButton onClick={() => setSelectedScreenshot(null)} sx={{ color: '#64748B', '&:hover': { color: '#FE8001' } }}>
             <CloseIcon />
           </IconButton>
         </DialogTitle>
-        <DialogContent sx={{ p: 0, display: 'flex', justifyContent: 'center', bgcolor: '#FFF8F0', height: '60vh' }}>
+        <DialogContent sx={{ p: 0, display: 'flex', justifyContent: 'center', bgcolor: '#FFFFFF', height: '60vh' }}>
           {selectedScreenshot && (
             <Box
               component="img"

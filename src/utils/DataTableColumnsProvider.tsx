@@ -1600,39 +1600,39 @@ export const DASHBOARD_CUTSOM_STYLE = {
     style: {
       fontSize: "14px",
       fontWeight: 800,
-      backgroundColor: "#fdf2f4",
-      color: "#6D214F",
-      borderBottom: "2px solid #E5989B",
+      backgroundColor: "#F1F5F7",
+      color: "#1F333B",
+      borderBottom: "2px solid #FE8001",
     },
   },
   rows: {
     style: {
       ...TABLE_ROW_CUSTOM_STYLE,
       fontSize: "13px",
-      color: "#2d0f1e",
+      color: "#1F333B",
       '&:hover': {
-        backgroundColor: 'rgba(229, 152, 155, 0.08)',
+        backgroundColor: 'rgba(254, 128, 1, 0.06)',
       },
     },
     highlightOnHoverStyle: {
-      backgroundColor: 'rgba(229, 152, 155, 0.08)',
-      borderBottomColor: '#E5989B',
-      outline: '1px solid #E5989B',
+      backgroundColor: 'rgba(254, 128, 1, 0.06)',
+      borderBottomColor: '#FE8001',
+      outline: '1px solid #FE8001',
     },
   },
   pagination: {
     style: {
-      color: '#6D214F',
-      borderTop: '1px solid #f0d0d8',
+      color: '#1F333B',
+      borderTop: '1px solid #E2E8F0',
       backgroundColor: '#ffffff',
     },
     pageButtonsStyle: {
-      fill: '#6D214F',
+      fill: '#FE8001',
       '&:disabled': {
-        fill: '#d8b8c4',
+        fill: '#889EA6',
       },
       '&:hover:not(:disabled)': {
-        backgroundColor: '#fce8ec',
+        backgroundColor: 'rgba(254, 128, 1, 0.08)',
       },
     },
   },

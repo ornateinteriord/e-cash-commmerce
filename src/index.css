@@ -3,46 +3,48 @@
 @import "tailwindcss/utilities";
 
 /* ============================================
-   E-CASH MOBILE APP DESIGN SYSTEM
+   SHOPHY / E-COMMERCE DESIGN SYSTEM
    Color Palette:
-   #6D214F  - Deep Plum (Primary)
-   #E5989B  - Soft Rose (Accent)
-   #FFF8F0  - Warm Cream (Background)
-   #F4C95D  - Golden Yellow (Highlight)
+   #FE8001  - Vibrant Brand Orange (Primary Accent)
+   #1F333B  - Deep Slate Teal (Secondary / Text / Header)
+   #F8FAFC  - Clean Off-White (Background)
+   #FFFFFF  - Pure White (Cards & Paper)
    ============================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 :root {
   /* Brand Colors */
-  --color-primary:        #6D214F;
-  --color-accent:         #E5989B;
-  --color-bg:             #FFF8F0;
-  --color-highlight:      #F4C95D;
+  --color-primary:        #FE8001;
+  --color-secondary:      #1F333B;
+  --color-accent:         #FE8001;
+  --color-bg:             #F8FAFC;
+  --color-highlight:      #FE8001;
 
-  /* Derived */
-  --color-primary-dark:   #4e1739;
-  --color-primary-light:  #8f2f68;
-  --color-accent-light:   #f5bcbf;
-  --color-accent-dark:    #c97579;
-  --color-highlight-dark: #d4a83a;
+  /* Derived Shades */
+  --color-primary-dark:   #E06F00;
+  --color-primary-light:  #FFA033;
+  --color-secondary-light: #2B444E;
+  --color-secondary-dark:  #15242A;
+  --color-highlight-dark: #E06F00;
   --color-bg-card:        #ffffff;
-  --color-bg-surface:     #fef0e7;
+  --color-bg-surface:     #FFF5EB;
 
-  /* Text */
-  --color-text-primary:   #2d0f1e;
-  --color-text-secondary: #7a5060;
-  --color-text-muted:     #b08090;
+  /* Text Colors */
+  --color-text-primary:   #1F333B;
+  --color-text-secondary: #526E78;
+  --color-text-muted:     #889EA6;
 
-  /* Borders */
-  --color-border:         #f0d0d8;
-  --color-border-light:   #fce8ec;
+  /* Borders & Dividers */
+  --color-border:         #E2E8F0;
+  --color-border-light:   #F0F4F6;
 
-  /* Shadows */
-  --shadow-sm:  0 2px 8px rgba(109, 33, 79, 0.08);
-  --shadow-md:  0 4px 16px rgba(109, 33, 79, 0.12);
-  --shadow-lg:  0 8px 32px rgba(109, 33, 79, 0.18);
-  --shadow-xl:  0 16px 48px rgba(109, 33, 79, 0.22);
+  /* Premium Elevation Shadows */
+  --shadow-sm:  0 2px 8px rgba(31, 51, 59, 0.05);
+  --shadow-md:  0 4px 16px rgba(31, 51, 59, 0.08);
+  --shadow-lg:  0 8px 32px rgba(31, 51, 59, 0.12);
+  --shadow-xl:  0 16px 48px rgba(31, 51, 59, 0.16);
+  --shadow-orange: 0 4px 18px rgba(254, 128, 1, 0.35);
 
   /* Radii */
   --radius-sm:   8px;
@@ -51,46 +53,46 @@
   --radius-xl:   24px;
   --radius-full: 9999px;
 
-  /* Mobile App Constraints */
+  /* Mobile Constraints */
   --navbar-height:      60px;
   --bottom-nav-height:  70px;
 
   /* Tailwind / shadcn-ui CSS variable mappings */
-  --background:         30 100% 97%;
-  --foreground:         330 55% 14%;
+  --background:         210 20% 98%;
+  --foreground:         197 31% 18%;
   --card:               0 0% 100%;
-  --card-foreground:    330 55% 14%;
+  --card-foreground:    197 31% 18%;
   --popover:            0 0% 100%;
-  --popover-foreground: 330 55% 14%;
-  --primary:            323 52% 33%;
-  --primary-foreground: 30 100% 97%;
-  --secondary:          351 47% 74%;
-  --secondary-foreground: 330 55% 14%;
-  --muted:              30 60% 94%;
-  --muted-foreground:   330 25% 46%;
-  --accent:             43 87% 66%;
-  --accent-foreground:  330 55% 14%;
+  --popover-foreground: 197 31% 18%;
+  --primary:            30 100% 50%;
+  --primary-foreground: 0 0% 100%;
+  --secondary:          197 31% 18%;
+  --secondary-foreground: 0 0% 100%;
+  --muted:              210 20% 96%;
+  --muted-foreground:   197 15% 45%;
+  --accent:             30 100% 50%;
+  --accent-foreground:  0 0% 100%;
   --destructive:        0 84% 60%;
-  --destructive-foreground: 30 100% 97%;
-  --border:             340 50% 88%;
-  --input:              340 50% 88%;
-  --ring:               323 52% 33%;
-  --chart-1:            323 52% 33%;
-  --chart-2:            351 47% 74%;
-  --chart-3:            43 87% 66%;
-  --chart-4:            330 25% 46%;
-  --chart-5:            0 60% 55%;
+  --destructive-foreground: 0 0% 100%;
+  --border:             210 20% 90%;
+  --input:              210 20% 90%;
+  --ring:               30 100% 50%;
+  --chart-1:            30 100% 50%;
+  --chart-2:            197 31% 18%;
+  --chart-3:            35 100% 55%;
+  --chart-4:            197 20% 40%;
+  --chart-5:            150 60% 45%;
   --radius:             0.75rem;
 
-  /* Sidebar */
-  --sidebar-background:         323 52% 23%;
-  --sidebar-foreground:         30 100% 97%;
-  --sidebar-primary:            43 87% 66%;
-  --sidebar-primary-foreground: 330 55% 14%;
-  --sidebar-accent:             323 52% 28%;
-  --sidebar-accent-foreground:  30 100% 97%;
-  --sidebar-border:             323 52% 30%;
-  --sidebar-ring:               43 87% 66%;
+  /* Sidebar (Deep Slate Teal with Orange Accents) */
+  --sidebar-background:         197 31% 18%;
+  --sidebar-foreground:         0 0% 100%;
+  --sidebar-primary:            30 100% 50%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent:             197 28% 25%;
+  --sidebar-accent-foreground:  30 100% 50%;
+  --sidebar-border:             197 31% 22%;
+  --sidebar-ring:               30 100% 50%;
 }
 
 * {
@@ -116,10 +118,10 @@ body {
 }
 
 /* ===== PREMIUM SCROLLBAR ===== */
-::-webkit-scrollbar { width: 5px; height: 5px; }
-::-webkit-scrollbar-track { background: #fce8ec; }
-::-webkit-scrollbar-thumb { background: #E5989B; border-radius: 99px; }
-::-webkit-scrollbar-thumb:hover { background: #6D214F; }
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #F1F5F7; }
+::-webkit-scrollbar-thumb { background: #FFA033; border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: #FE8001; }
 
 /* ===== MUI GLOBAL OVERRIDES ===== */
 .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input,
@@ -131,11 +133,11 @@ body {
 
 .MuiButton-contained:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(109, 33, 79, 0.3) !important;
+  box-shadow: 0 6px 18px rgba(254, 128, 1, 0.4) !important;
 }
 
 .MuiCard-root:hover {
-  box-shadow: 0 10px 25px rgba(109, 33, 79, 0.1) !important;
+  box-shadow: 0 10px 25px rgba(31, 51, 59, 0.1) !important;
 }
 
 /* ===== SIDEBAR OVERLAY (desktop) ===== */
@@ -150,7 +152,7 @@ body.theme-rd,
 body.theme-fd,
 body.theme-pigmy,
 body.theme-mis {
-  background: linear-gradient(180deg, #fde8ec 0%, #FFF8F0 600px) !important;
+  background: linear-gradient(180deg, #FFF5EB 0%, #F8FAFC 600px) !important;
 }
 
 body[class*="theme-"] .content-wrapper {
@@ -180,26 +182,30 @@ body[class*="theme-"] .content-wrapper {
 }
 
 /* ===== STAT CARD VARIANTS ===== */
+.stat-card-orange,
 .stat-card-plum {
-  background: linear-gradient(135deg, #6D214F 0%, #8f2f68 100%);
-  color: white;
+  background: linear-gradient(135deg, #FE8001 0%, #FFA033 100%);
+  color: #ffffff;
   border-radius: var(--radius-lg);
   padding: 20px;
-  box-shadow: 0 6px 20px rgba(109, 33, 79, 0.25);
+  box-shadow: 0 6px 20px rgba(254, 128, 1, 0.3);
 }
+
+.stat-card-teal,
 .stat-card-rose {
-  background: linear-gradient(135deg, #E5989B 0%, #f5bcbf 100%);
-  color: #2d0f1e;
+  background: linear-gradient(135deg, #1F333B 0%, #2B444E 100%);
+  color: #ffffff;
   border-radius: var(--radius-lg);
   padding: 20px;
-  box-shadow: 0 6px 20px rgba(229, 152, 155, 0.25);
+  box-shadow: 0 6px 20px rgba(31, 51, 59, 0.25);
 }
+
 .stat-card-gold {
-  background: linear-gradient(135deg, #F4C95D 0%, #f8dc8a 100%);
-  color: #2d0f1e;
+  background: linear-gradient(135deg, #FF9900 0%, #FFB84D 100%);
+  color: #ffffff;
   border-radius: var(--radius-lg);
   padding: 20px;
-  box-shadow: 0 6px 20px rgba(244, 201, 93, 0.3);
+  box-shadow: 0 6px 20px rgba(255, 153, 0, 0.3);
 }
 
 /* ===== ANIMATIONS ===== */
@@ -215,7 +221,7 @@ body[class*="theme-"] .content-wrapper {
 .fade-in-up { animation: fadeInUp 0.4s ease both; }
 
 .skeleton {
-  background: linear-gradient(90deg, #fce8ec 25%, #ffd9e0 50%, #fce8ec 75%);
+  background: linear-gradient(90deg, #F0F4F6 25%, #E2E8F0 50%, #F0F4F6 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
   border-radius: var(--radius-md);

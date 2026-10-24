@@ -323,7 +323,7 @@ const EcashScanner: React.FC = () => {
           <Typography sx={{ fontWeight: 900, fontSize: '1.1rem', letterSpacing: '0.5px' }}>
             E-cash Scanner
           </Typography>
-          <Typography variant="caption" sx={{ color: '#00BAF2', fontWeight: 700 }}>
+          <Typography variant="caption" sx={{ color: '#FE8001', fontWeight: 700 }}>
             Scan & Pay Instantly
           </Typography>
         </Box>
@@ -333,10 +333,10 @@ const EcashScanner: React.FC = () => {
             <IconButton
               onClick={toggleTorch}
               sx={{
-                bgcolor: torchOn ? '#00BAF2' : 'rgba(255, 255, 255, 0.15)',
+                bgcolor: torchOn ? '#FE8001' : 'rgba(255, 255, 255, 0.15)',
                 color: torchOn ? '#FFFFFF' : '#FFFFFF',
                 backdropFilter: 'blur(8px)',
-                '&:hover': { bgcolor: torchOn ? '#0082CD' : 'rgba(255, 255, 255, 0.25)' },
+                '&:hover': { bgcolor: torchOn ? '#FF9933' : 'rgba(255, 255, 255, 0.25)' },
               }}
             >
               {torchOn ? <FlashOnIcon /> : <FlashOffIcon />}
@@ -421,12 +421,12 @@ const EcashScanner: React.FC = () => {
               onClick={() => fileInputRef.current?.click()}
               startIcon={<PhotoLibraryIcon />}
               sx={{
-                bgcolor: '#00BAF2',
+                bgcolor: '#FE8001',
                 color: '#FFFFFF',
                 borderRadius: '12px',
                 fontWeight: 800,
                 textTransform: 'none',
-                '&:hover': { bgcolor: '#0082CD' },
+                '&:hover': { bgcolor: '#FF9933' },
               }}
             >
               Upload QR from Gallery
@@ -451,10 +451,10 @@ const EcashScanner: React.FC = () => {
             }}
           >
             {/* 4 Corner Accents */}
-            <Box sx={{ position: 'absolute', top: 0, left: 0, width: 34, height: 34, borderTop: '4px solid #00BAF2', borderLeft: '4px solid #00BAF2', borderTopLeftRadius: '16px' }} />
-            <Box sx={{ position: 'absolute', top: 0, right: 0, width: 34, height: 34, borderTop: '4px solid #00BAF2', borderRight: '4px solid #00BAF2', borderTopRightRadius: '16px' }} />
-            <Box sx={{ position: 'absolute', bottom: 0, left: 0, width: 34, height: 34, borderBottom: '4px solid #00BAF2', borderLeft: '4px solid #00BAF2', borderBottomLeftRadius: '16px' }} />
-            <Box sx={{ position: 'absolute', bottom: 0, right: 0, width: 34, height: 34, borderBottom: '4px solid #00BAF2', borderRight: '4px solid #00BAF2', borderBottomRightRadius: '16px' }} />
+            <Box sx={{ position: 'absolute', top: 0, left: 0, width: 34, height: 34, borderTop: '4px solid #FE8001', borderLeft: '4px solid #FE8001', borderTopLeftRadius: '16px' }} />
+            <Box sx={{ position: 'absolute', top: 0, right: 0, width: 34, height: 34, borderTop: '4px solid #FE8001', borderRight: '4px solid #FE8001', borderTopRightRadius: '16px' }} />
+            <Box sx={{ position: 'absolute', bottom: 0, left: 0, width: 34, height: 34, borderBottom: '4px solid #FE8001', borderLeft: '4px solid #FE8001', borderBottomLeftRadius: '16px' }} />
+            <Box sx={{ position: 'absolute', bottom: 0, right: 0, width: 34, height: 34, borderBottom: '4px solid #FE8001', borderRight: '4px solid #FE8001', borderBottomRightRadius: '16px' }} />
 
             {/* Glowing Laser Scan Line Animation */}
             <motion.div
@@ -471,8 +471,8 @@ const EcashScanner: React.FC = () => {
                 left: '6%',
                 right: '6%',
                 height: '3px',
-                background: 'linear-gradient(90deg, transparent 0%, #00BAF2 50%, transparent 100%)',
-                boxShadow: '0 0 16px 3px #00BAF2',
+                background: 'linear-gradient(90deg, transparent 0%, #FE8001 50%, transparent 100%)',
+                boxShadow: '0 0 16px 3px #FE8001',
                 borderRadius: '50%',
               }}
             />
@@ -527,7 +527,7 @@ const EcashScanner: React.FC = () => {
               bgcolor: 'rgba(255, 255, 255, 0.08)',
               '&:hover': {
                 bgcolor: 'rgba(255, 255, 255, 0.16)',
-                borderColor: '#00BAF2',
+                borderColor: '#FE8001',
               },
             }}
           >
@@ -573,7 +573,7 @@ const EcashScanner: React.FC = () => {
             type="submit"
             disabled={lookupMutation.isPending}
             sx={{
-              bgcolor: '#00BAF2',
+              bgcolor: '#FE8001',
               color: '#FFFFFF',
               borderRadius: '10px',
               fontWeight: 800,
@@ -581,7 +581,7 @@ const EcashScanner: React.FC = () => {
               px: 2,
               py: 0.8,
               textTransform: 'none',
-              '&:hover': { bgcolor: '#0082CD' },
+              '&:hover': { bgcolor: '#FF9933' },
             }}
           >
             {lookupMutation.isPending ? <CircularProgress size={18} sx={{ color: '#FFFFFF' }} /> : 'Lookup'}
@@ -618,7 +618,7 @@ const EcashScanner: React.FC = () => {
                   gap: 2,
                   p: 2,
                   borderRadius: '18px',
-                  background: 'linear-gradient(135deg, #002970 0%, #0052cc 60%, #00BAF2 100%)',
+                  background: 'linear-gradient(135deg, #002970 0%, #E06F00 60%, #FE8001 100%)',
                   color: '#FFFFFF',
                   mb: 3,
                 }}
@@ -663,7 +663,7 @@ const EcashScanner: React.FC = () => {
                   sx={{
                     p: 1.8,
                     borderRadius: '16px',
-                    border: '2px solid #00BAF2',
+                    border: '2px solid #FE8001',
                     bgcolor: '#F0F9FF',
                     display: 'flex',
                     alignItems: 'center',
@@ -679,7 +679,7 @@ const EcashScanner: React.FC = () => {
                       Available for Transfer
                     </Typography>
                   </Box>
-                  <Typography sx={{ fontSize: '1.2rem', fontWeight: 900, color: '#00BAF2' }}>
+                  <Typography sx={{ fontSize: '1.2rem', fontWeight: 900, color: '#FE8001' }}>
                     ₹{Number(walletOverview?.balance || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </Typography>
                 </Box>
@@ -700,7 +700,7 @@ const EcashScanner: React.FC = () => {
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        <Typography sx={{ fontSize: '1.4rem', fontWeight: 900, color: '#00BAF2' }}>
+                        <Typography sx={{ fontSize: '1.4rem', fontWeight: 900, color: '#FE8001' }}>
                           ₹
                         </Typography>
                       </InputAdornment>
@@ -714,10 +714,10 @@ const EcashScanner: React.FC = () => {
                       borderWidth: '1.5px',
                     },
                     '&:hover .MuiOutlinedInput-notchedOutline': {
-                      borderColor: '#00BAF2',
+                      borderColor: '#FE8001',
                     },
                     '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                      borderColor: '#00BAF2',
+                      borderColor: '#FE8001',
                       borderWidth: '2px',
                       boxShadow: '0 0 0 4px rgba(0, 186, 242, 0.12)',
                     },
@@ -764,11 +764,11 @@ const EcashScanner: React.FC = () => {
                   fontWeight: 900,
                   fontSize: '1rem',
                   textTransform: 'none',
-                  background: 'linear-gradient(135deg, #00BAF2 0%, #0082CD 100%)',
+                  background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
                   color: '#FFFFFF',
                   boxShadow: '0 8px 20px rgba(0, 186, 242, 0.35)',
                   '&:hover': {
-                    background: 'linear-gradient(135deg, #0082CD 0%, #0052cc 100%)',
+                    background: 'linear-gradient(135deg, #FF9933 0%, #E06F00 100%)',
                     boxShadow: '0 10px 24px rgba(0, 186, 242, 0.45)',
                   },
                 }}
@@ -786,7 +786,7 @@ const EcashScanner: React.FC = () => {
         onClose={() => setQrModalOpen(false)}
         PaperProps={{
           sx: {
-            bgcolor: '#FFF8F0',
+            bgcolor: '#FFFFFF',
             borderRadius: '24px',
             p: 2.5,
             maxWidth: '360px',
@@ -818,8 +818,8 @@ const EcashScanner: React.FC = () => {
             sx={{
               mt: 1,
               borderRadius: '12px',
-              background: 'linear-gradient(135deg, #6D214F 0%, #8f2f68 100%)',
-              color: '#FFF8F0',
+              background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
+              color: '#FFFFFF',
               fontWeight: 800,
               textTransform: 'none'
             }}

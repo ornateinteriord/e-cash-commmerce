@@ -5,7 +5,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import { BrowserRouter as Router, Route, Routes, useLocation, Navigate } from 'react-router-dom';
 import "./App.css";
 import "./index.css";
-import { CircularProgress, Box } from '@mui/material';
+import { CircularProgress, Box, CssBaseline } from '@mui/material';
+import { ThemeProvider } from '@mui/material/styles';
+import { theme } from './theme';
 
 import Members, {
   ActiveMembers,
@@ -243,10 +245,10 @@ export const LoadingComponent = () => {
       top: 0,
       left: 0,
       zIndex: 9999,
-      backgroundColor: 'rgba(255, 248, 240, 0.6)',
+      backgroundColor: 'rgba(248, 250, 252, 0.7)',
       backdropFilter: 'blur(4px)'
     }}>
-      <CircularProgress sx={{ color: '#6D214F' }} />
+      <CircularProgress sx={{ color: '#FE8001' }} />
     </Box>
   );
 };
@@ -281,24 +283,27 @@ function App() {
   const queryClient = new QueryClient();
 
   return (
-    <UserProvider>
-      <QueryClientProvider client={queryClient}>
-        <ToastContainer
-          toastClassName="bg-white shadow-lg rounded-xl p-4"
-          className="text-sm"
-          style={{ width: 'auto', minWidth: '25rem' }} />
-        <Router>
-          <ScrollToTop />
-          <Suspense fallback={<LoadingComponent />}>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <UserProvider>
+        <QueryClientProvider client={queryClient}>
+          <ToastContainer
+            toastClassName="bg-white shadow-lg rounded-xl p-4"
+            className="text-sm"
+            style={{ width: 'auto', minWidth: '25rem' }} />
+          <Router>
+            <ScrollToTop />
+            <Suspense fallback={<LoadingComponent />}>
 
-            <RoutesProvider
-              isOpen={isOpen}
-              setIsOpen={setIsOpen}
-            />
-          </Suspense>
-        </Router>
-      </QueryClientProvider>
-    </UserProvider>
+              <RoutesProvider
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+              />
+            </Suspense>
+          </Router>
+        </QueryClientProvider>
+      </UserProvider>
+    </ThemeProvider>
   );
 }
 

@@ -149,7 +149,7 @@ const WalletTransfer = () => {
     <Box sx={{ 
       p: { xs: 2, sm: 3 }, 
       minHeight: '100vh', 
-      bgcolor: '#FFF8F0', 
+      bgcolor: '#FFFFFF', 
       maxWidth: '480px', 
       mx: 'auto',
       pb: 10 
@@ -165,8 +165,8 @@ const WalletTransfer = () => {
           }}
           sx={{ 
             bgcolor: '#ffffff', 
-            border: '1.5px solid #f0d0d8',
-            color: '#6D214F',
+            border: '1.5px solid #FED7AA',
+            color: '#FE8001',
             p: 1,
             '&:hover': { bgcolor: '#fdf2f4' }
           }}
@@ -174,10 +174,10 @@ const WalletTransfer = () => {
           <ArrowBackIcon fontSize="small" />
         </IconButton>
         <Box>
-          <Typography variant="h5" sx={{ color: '#6D214F', fontWeight: 900, letterSpacing: '-0.5px' }}>
+          <Typography variant="h5" sx={{ color: '#FE8001', fontWeight: 900, letterSpacing: '-0.5px' }}>
             Internal Transfer
           </Typography>
-          <Typography variant="caption" sx={{ color: '#8c6b7d', fontWeight: 600 }}>
+          <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 600 }}>
             Move funds between your internal wallets
           </Typography>
         </Box>
@@ -187,7 +187,7 @@ const WalletTransfer = () => {
         p: { xs: 2.5, sm: 3.5 }, 
         borderRadius: '24px', 
         bgcolor: '#ffffff', 
-        border: '1.5px solid #f0d0d8',
+        border: '1.5px solid #FED7AA',
         boxShadow: '0 8px 24px rgba(109, 33, 79, 0.06)' 
       }}>
 
@@ -195,7 +195,7 @@ const WalletTransfer = () => {
           <Fade in={step === 1}>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
               <Box>
-                <Typography variant="caption" sx={{ color: '#6D214F', mb: 0.8, fontWeight: 800, display: 'block', textTransform: 'uppercase' }}>
+                <Typography variant="caption" sx={{ color: '#FE8001', mb: 0.8, fontWeight: 800, display: 'block', textTransform: 'uppercase' }}>
                   From Account
                 </Typography>
                 <Select
@@ -203,24 +203,24 @@ const WalletTransfer = () => {
                   value={fromWallet}
                   onChange={(e) => setFromWallet(e.target.value)}
                   sx={{
-                    bgcolor: '#FFF8F0',
-                    color: '#2d0f1e',
+                    bgcolor: '#FFFFFF',
+                    color: '#1F333B',
                     borderRadius: '16px',
                     fontWeight: 700,
-                    '& .MuiOutlinedInput-notchedOutline': { borderColor: '#f0d0d8' },
+                    '& .MuiOutlinedInput-notchedOutline': { borderColor: '#FED7AA' },
                     '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#E5989B' },
-                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: '#6D214F' },
-                    '& .MuiSvgIcon-root': { color: '#6D214F' }
+                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: '#FE8001' },
+                    '& .MuiSvgIcon-root': { color: '#FE8001' }
                   }}
                 >
-                  <MenuItem value="Earnings" sx={{ bgcolor: '#FFF8F0', color: '#2d0f1e' }}>Payouts (₹{earningsBalance})</MenuItem>
-                  <MenuItem value="Top Up" sx={{ bgcolor: '#FFF8F0', color: '#2d0f1e' }}>Top Up Wallet (₹{topUpBalance})</MenuItem>
-                  <MenuItem value="Upgrade" sx={{ bgcolor: '#FFF8F0', color: '#2d0f1e' }}>Property Fund (₹{upgradeBalance})</MenuItem>
+                  <MenuItem value="Earnings" sx={{ bgcolor: '#FFFFFF', color: '#1F333B' }}>Payouts (₹{earningsBalance})</MenuItem>
+                  <MenuItem value="Top Up" sx={{ bgcolor: '#FFFFFF', color: '#1F333B' }}>Top Up Wallet (₹{topUpBalance})</MenuItem>
+                  <MenuItem value="Upgrade" sx={{ bgcolor: '#FFFFFF', color: '#1F333B' }}>Property Fund (₹{upgradeBalance})</MenuItem>
                 </Select>
               </Box>
 
               <Box>
-                <Typography variant="caption" sx={{ color: '#6D214F', mb: 0.8, fontWeight: 800, display: 'block', textTransform: 'uppercase' }}>
+                <Typography variant="caption" sx={{ color: '#FE8001', mb: 0.8, fontWeight: 800, display: 'block', textTransform: 'uppercase' }}>
                   To Account
                 </Typography>
                 <Select
@@ -229,30 +229,30 @@ const WalletTransfer = () => {
                   onChange={(e) => setToWallet(e.target.value)}
                   disabled={fromWallet !== 'Earnings'}
                   sx={{
-                    bgcolor: '#FFF8F0',
-                    color: '#2d0f1e',
+                    bgcolor: '#FFFFFF',
+                    color: '#1F333B',
                     borderRadius: '16px',
                     fontWeight: 700,
-                    '& .MuiOutlinedInput-notchedOutline': { borderColor: '#f0d0d8' },
-                    '& .MuiSelect-select.Mui-disabled': { color: '#8c6b7d', WebkitTextFillColor: '#8c6b7d' },
-                    '& .MuiSvgIcon-root': { color: '#6D214F' }
+                    '& .MuiOutlinedInput-notchedOutline': { borderColor: '#FED7AA' },
+                    '& .MuiSelect-select.Mui-disabled': { color: '#64748B', WebkitTextFillColor: '#64748B' },
+                    '& .MuiSvgIcon-root': { color: '#FE8001' }
                   }}
                 >
                   {fromWallet === 'Earnings' ? (
                     [
-                      <MenuItem key="1" value="Purchase Wallet" sx={{ bgcolor: '#FFF8F0', color: '#2d0f1e' }}>Top Up Wallet (₹{topUpBalance})</MenuItem>,
-                      <MenuItem key="2" value="Upgrade Wallet" sx={{ bgcolor: '#FFF8F0', color: '#2d0f1e' }}>Property Fund (₹{upgradeBalance})</MenuItem>
+                      <MenuItem key="1" value="Purchase Wallet" sx={{ bgcolor: '#FFFFFF', color: '#1F333B' }}>Top Up Wallet (₹{topUpBalance})</MenuItem>,
+                      <MenuItem key="2" value="Upgrade Wallet" sx={{ bgcolor: '#FFFFFF', color: '#1F333B' }}>Property Fund (₹{upgradeBalance})</MenuItem>
                     ]
                   ) : fromWallet === 'Top Up' ? (
-                    <MenuItem value="Upgrade Wallet" sx={{ bgcolor: '#FFF8F0', color: '#2d0f1e' }}>Property Fund (₹{upgradeBalance})</MenuItem>
+                    <MenuItem value="Upgrade Wallet" sx={{ bgcolor: '#FFFFFF', color: '#1F333B' }}>Property Fund (₹{upgradeBalance})</MenuItem>
                   ) : (
-                    <MenuItem value="Purchase Wallet" sx={{ bgcolor: '#FFF8F0', color: '#2d0f1e' }}>Top Up Wallet (₹{topUpBalance})</MenuItem>
+                    <MenuItem value="Purchase Wallet" sx={{ bgcolor: '#FFFFFF', color: '#1F333B' }}>Top Up Wallet (₹{topUpBalance})</MenuItem>
                   )}
                 </Select>
               </Box>
 
               <Box>
-                <Typography variant="caption" sx={{ color: '#6D214F', mb: 0.8, fontWeight: 800, display: 'block', textTransform: 'uppercase' }}>
+                <Typography variant="caption" sx={{ color: '#FE8001', mb: 0.8, fontWeight: 800, display: 'block', textTransform: 'uppercase' }}>
                   Amount (₹)
                 </Typography>
                 <TextField
@@ -263,18 +263,18 @@ const WalletTransfer = () => {
                   type="number"
                   sx={{
                     '& .MuiOutlinedInput-root': {
-                      bgcolor: '#FFF8F0',
-                      color: '#2d0f1e',
+                      bgcolor: '#FFFFFF',
+                      color: '#1F333B',
                       borderRadius: '16px',
                       fontWeight: 800,
                       fontSize: '1.2rem',
-                      '& fieldset': { borderColor: '#f0d0d8' },
+                      '& fieldset': { borderColor: '#FED7AA' },
                       '&:hover fieldset': { borderColor: '#E5989B' },
-                      '&.Mui-focused fieldset': { borderColor: '#6D214F', borderWidth: '2px' },
+                      '&.Mui-focused fieldset': { borderColor: '#FE8001', borderWidth: '2px' },
                     },
                   }}
                 />
-                <Typography variant="caption" sx={{ color: '#6D214F', mt: 1, display: 'block', fontWeight: 700 }}>
+                <Typography variant="caption" sx={{ color: '#FE8001', mt: 1, display: 'block', fontWeight: 700 }}>
                   Available in selected source: ₹{getAvailableBalance()}
                 </Typography>
               </Box>
@@ -287,20 +287,20 @@ const WalletTransfer = () => {
                   mt: 1,
                   py: 1.5,
                   borderRadius: '16px',
-                  background: 'linear-gradient(135deg, #6D214F 0%, #8f2f68 100%)',
-                  color: '#FFF8F0',
+                  background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
+                  color: '#FFFFFF',
                   textTransform: 'none',
                   fontWeight: 900,
                   fontSize: '1rem',
                   boxShadow: '0 8px 24px rgba(109, 33, 79, 0.3)',
                   '&:hover': {
-                    background: 'linear-gradient(135deg, #4e1739 0%, #6D214F 100%)',
+                    background: 'linear-gradient(135deg, #E06F00 0%, #FE8001 100%)',
                     transform: 'translateY(-1px)'
                   },
                   transition: 'all 0.2s'
                 }}
               >
-                {isSendingOTP ? <CircularProgress size={24} sx={{ color: '#FFF8F0' }} /> : 'Proceed to Transfer'}
+                {isSendingOTP ? <CircularProgress size={24} sx={{ color: '#FFFFFF' }} /> : 'Proceed to Transfer'}
               </Button>
             </Box>
           </Fade>
@@ -308,8 +308,8 @@ const WalletTransfer = () => {
           <Fade in={step === 2}>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
               <Box textAlign="center">
-                <Typography variant="h6" sx={{ color: '#6D214F', fontWeight: 900, mb: 0.5 }}>Security Verification</Typography>
-                <Typography variant="caption" sx={{ color: '#8c6b7d', fontWeight: 600 }}>
+                <Typography variant="h6" sx={{ color: '#FE8001', fontWeight: 900, mb: 0.5 }}>Security Verification</Typography>
+                <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 600 }}>
                   Enter the 6-digit verification code sent to your registered mobile.
                 </Typography>
               </Box>
@@ -325,15 +325,15 @@ const WalletTransfer = () => {
                     type: 'password',
                     sx: {
                       '& .MuiOutlinedInput-root': {
-                        bgcolor: '#FFF8F0',
-                        color: '#2d0f1e',
+                        bgcolor: '#FFFFFF',
+                        color: '#1F333B',
                         borderRadius: '14px',
                         fontSize: '1.2rem',
                         fontWeight: 'bold',
-                        '& fieldset': { borderColor: '#f0d0d8' },
+                        '& fieldset': { borderColor: '#FED7AA' },
                         '&:hover fieldset': { borderColor: '#E5989B' },
                         '&.Mui-focused fieldset': {
-                          borderColor: '#6D214F',
+                          borderColor: '#FE8001',
                           borderWidth: '2px'
                         },
                       },
@@ -354,22 +354,22 @@ const WalletTransfer = () => {
                 sx={{
                   py: 1.5,
                   borderRadius: '16px',
-                  background: 'linear-gradient(135deg, #6D214F 0%, #8f2f68 100%)',
-                  color: '#FFF8F0',
+                  background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
+                  color: '#FFFFFF',
                   textTransform: 'none',
                   fontWeight: 900,
                   fontSize: '1rem',
                   boxShadow: '0 8px 24px rgba(109, 33, 79, 0.3)',
                   '&:hover': {
-                    background: 'linear-gradient(135deg, #4e1739 0%, #6D214F 100%)',
+                    background: 'linear-gradient(135deg, #E06F00 0%, #FE8001 100%)',
                   },
                   '&.Mui-disabled': {
-                    background: '#f0d0d8',
-                    color: '#8c6b7d',
+                    background: '#FED7AA',
+                    color: '#64748B',
                   }
                 }}
               >
-                {isTransferring ? <CircularProgress size={24} sx={{ color: '#FFF8F0' }} /> : 'Confirm Transfer'}
+                {isTransferring ? <CircularProgress size={24} sx={{ color: '#FFFFFF' }} /> : 'Confirm Transfer'}
               </Button>
             </Box>
           </Fade>
@@ -383,15 +383,15 @@ const WalletTransfer = () => {
         PaperProps={{
           sx: {
             bgcolor: '#ffffff',
-            border: '1.5px solid #f0d0d8',
+            border: '1.5px solid #FED7AA',
             borderRadius: '24px',
             p: 1
           }
         }}
       >
-        <DialogTitle sx={{ textAlign: 'center', color: '#6D214F', fontWeight: 900 }}>Transfer Successful! 🎉</DialogTitle>
+        <DialogTitle sx={{ textAlign: 'center', color: '#FE8001', fontWeight: 900 }}>Transfer Successful! 🎉</DialogTitle>
         <DialogContent>
-          <Typography variant="body2" sx={{ color: '#2d0f1e', textAlign: 'center', mb: 2 }}>
+          <Typography variant="body2" sx={{ color: '#1F333B', textAlign: 'center', mb: 2 }}>
             Successfully transferred ₹{transferDetails?.amount} from {transferDetails?.fromWallet} to {transferDetails?.toWallet}.
           </Typography>
         </DialogContent>
@@ -399,8 +399,8 @@ const WalletTransfer = () => {
           <Button 
             onClick={() => setSuccessDialogOpen(false)} 
             sx={{
-              background: 'linear-gradient(135deg, #6D214F 0%, #8f2f68 100%)',
-              color: '#FFF8F0',
+              background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
+              color: '#FFFFFF',
               fontWeight: 800,
               borderRadius: '12px',
               px: 3,

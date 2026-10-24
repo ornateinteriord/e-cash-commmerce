@@ -70,10 +70,10 @@ const Sidebar = ({ isOpen, onClose, role }: { isOpen: boolean, onClose: () => vo
       transition={{ duration: 0.3, ease: "easeInOut" }}
       style={{
         zIndex: 100,
-        background: isNidhiRole ? '#3d1430' : undefined,
-        boxShadow: isOpen && isNidhiRole ? '4px 0 20px rgba(109, 33, 79, 0.4)' : 'none',
+        background: isNidhiRole ? '#1F333B' : undefined,
+        boxShadow: isOpen && isNidhiRole ? '4px 0 20px rgba(31, 51, 59, 0.4)' : 'none',
         overflow: 'hidden',
-        borderRight: isNidhiRole ? '1px solid rgba(229, 152, 155, 0.12)' : 'none'
+        borderRight: isNidhiRole ? '1px solid rgba(254, 128, 1, 0.2)' : 'none'
       }}
     >
       <Toolbar className="navbar-toolbar" />
@@ -99,23 +99,23 @@ const Sidebar = ({ isOpen, onClose, role }: { isOpen: boolean, onClose: () => vo
                 sx={isNidhiRole ? {
                   width: 44,
                   height: 44,
-                  background: 'linear-gradient(135deg, #E5989B 0%, #F4C95D 100%)',
-                  boxShadow: '0 4px 12px rgba(109, 33, 79, 0.3)',
-                  border: '2px solid rgba(244, 201, 93, 0.5)',
-                } : { width: 50, height: 50, bgcolor: '#6D214F', color: '#FFF8F0' }}
+                  background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
+                  boxShadow: '0 4px 12px rgba(254, 128, 1, 0.3)',
+                  border: '2px solid rgba(254, 128, 1, 0.5)',
+                } : { width: 50, height: 50, bgcolor: '#FE8001', color: '#FFFFFF' }}
               >
                 {!fethedUser?.profileImage && name?.charAt(0).toUpperCase()}
               </Avatar>
-              <div className="welcome-text" style={{ padding: '0 10px', color: isNidhiRole ? '#FFF8F0' : undefined }}>
+              <div className="welcome-text" style={{ padding: '0 10px', color: isNidhiRole ? '#FFFFFF' : undefined }}>
                 <Typography style={isNidhiRole ? {
                   fontWeight: 'bold',
-                  color: '#F4C95D',
+                  color: '#FE8001',
                   fontSize: '0.9rem',
                   textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)',
                   lineHeight: '1.2',
                 } : {}}>Welcome,</Typography>
                 <Typography style={isNidhiRole ? {
-                  color: 'rgba(255, 255, 255, 0.8)',
+                  color: 'rgba(255, 255, 255, 0.85)',
                   fontSize: '0.75rem',
                   fontWeight: '400',
                   marginTop: '0px',
@@ -146,7 +146,7 @@ const Sidebar = ({ isOpen, onClose, role }: { isOpen: boolean, onClose: () => vo
           }).map((item: SideBarMenuItemType) => {
             const isSelected = selectedItem === item.name;
             const backgroundColor = isSelected && isNidhiRole
-              ? 'rgba(244, 201, 93, 0.15)'
+              ? 'rgba(254, 128, 1, 0.15)'
               : 'transparent';
 
             return (
@@ -172,7 +172,7 @@ const Sidebar = ({ isOpen, onClose, role }: { isOpen: boolean, onClose: () => vo
                     borderRadius: '12px',
                     marginBottom: '4px',
                     border: isSelected
-                      ? '1px solid rgba(244, 201, 93, 0.4)'
+                      ? '1px solid rgba(254, 128, 1, 0.4)'
                       : '1px solid transparent',
                     transition: 'all 0.3s ease',
                     backdropFilter: isSelected ? 'blur(10px)' : 'none',
@@ -187,7 +187,7 @@ const Sidebar = ({ isOpen, onClose, role }: { isOpen: boolean, onClose: () => vo
                     display: 'flex',
                     alignItems: 'center',
                     gap: '12px',
-                    color: isSelected ? '#F4C95D' : 'rgba(255, 255, 255, 0.9)',
+                    color: isSelected ? '#FE8001' : 'rgba(255, 255, 255, 0.9)',
                     fontWeight: isSelected ? '700' : '500',
                     flex: 1,
                   } : {}}>
@@ -225,18 +225,18 @@ const Sidebar = ({ isOpen, onClose, role }: { isOpen: boolean, onClose: () => vo
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.3 }}
                     style={isNidhiRole ? {
-                      background: 'rgba(229, 152, 155, 0.07)',
+                      background: 'rgba(254, 128, 1, 0.05)',
                       borderRadius: '8px',
                       margin: '4px 0 4px 8px',
                       overflow: 'hidden',
-                      border: '1px solid rgba(229, 152, 155, 0.12)',
+                      border: '1px solid rgba(254, 128, 1, 0.15)',
                     } : {}}
                   >
                     <AnimatePresence>
                       {(expandedItem === item.name || closingItem === item.name) && item.subItems?.map(subItem => {
                         const isSubItemActive = location.pathname === subItem.path;
                         const subItemBackground = isSubItemActive && isNidhiRole
-                          ? 'linear-gradient(135deg, rgba(109, 33, 79, 0.4) 0%, rgba(244, 201, 93, 0.2) 100%)'
+                          ? 'linear-gradient(135deg, rgba(254, 128, 1, 0.25) 0%, rgba(31, 51, 59, 0.6) 100%)'
                           : 'transparent';
 
                         return (
@@ -258,7 +258,7 @@ const Sidebar = ({ isOpen, onClose, role }: { isOpen: boolean, onClose: () => vo
                                 alignItems: 'center',
                                 gap: '12px',
                                 padding: '10px 12px',
-                                color: isSubItemActive ? 'white' : 'rgba(255, 255, 255, 0.8)',
+                                color: isSubItemActive ? '#FE8001' : 'rgba(255, 255, 255, 0.8)',
                                 background: subItemBackground,
                                 borderRadius: '6px',
                                 margin: '2px 8px',
@@ -270,7 +270,7 @@ const Sidebar = ({ isOpen, onClose, role }: { isOpen: boolean, onClose: () => vo
                               <span
                                 className="sub-item-icon"
                                 style={isNidhiRole ? {
-                                  color: isSubItemActive ? 'white' : 'rgba(255, 255, 255, 0.7)',
+                                  color: isSubItemActive ? '#FE8001' : 'rgba(255, 255, 255, 0.7)',
                                   display: 'flex',
                                   alignItems: 'center',
                                   justifyContent: 'center',
@@ -284,6 +284,7 @@ const Sidebar = ({ isOpen, onClose, role }: { isOpen: boolean, onClose: () => vo
                                 style={isNidhiRole ? {
                                   fontWeight: isSubItemActive ? '600' : '500',
                                   fontSize: '0.875rem',
+                                  color: isSubItemActive ? '#FE8001' : 'inherit',
                                   flex: 1,
                                 } : {}}
                               >

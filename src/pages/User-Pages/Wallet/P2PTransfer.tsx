@@ -208,8 +208,8 @@ const P2PTransfer: React.FC = () => {
 
   if (isWalletLoading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh', bgcolor: '#FFF8F0' }}>
-        <CircularProgress sx={{ color: '#6D214F' }} />
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh', bgcolor: '#FFFFFF' }}>
+        <CircularProgress sx={{ color: '#FE8001' }} />
       </Box>
     );
   }
@@ -222,7 +222,7 @@ const P2PTransfer: React.FC = () => {
       mx: 'auto', 
       width: '100%', 
       minHeight: '100vh', 
-      bgcolor: '#FFF8F0',
+      bgcolor: '#FFFFFF',
       pb: 10 
     }}>
       {/* Header */}
@@ -238,8 +238,8 @@ const P2PTransfer: React.FC = () => {
           }}
           sx={{ 
             bgcolor: '#ffffff', 
-            border: '1.5px solid #f0d0d8',
-            color: '#6D214F',
+            border: '1.5px solid #FED7AA',
+            color: '#FE8001',
             p: 1,
             '&:hover': { bgcolor: '#fdf2f4' }
           }}
@@ -247,10 +247,10 @@ const P2PTransfer: React.FC = () => {
           <ArrowBackIcon fontSize="small" />
         </IconButton>
         <Box>
-          <Typography variant="h5" sx={{ fontWeight: 900, color: '#6D214F', letterSpacing: '-0.5px' }}>
+          <Typography variant="h5" sx={{ fontWeight: 900, color: '#FE8001', letterSpacing: '-0.5px' }}>
             P2P Transfer
           </Typography>
-          <Typography variant="caption" sx={{ color: '#8c6b7d', fontWeight: 600 }}>
+          <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 600 }}>
             Instant vendor-to-vendor wallet transfer
           </Typography>
         </Box>
@@ -262,7 +262,7 @@ const P2PTransfer: React.FC = () => {
           p: { xs: 2.5, sm: 3 },
           borderRadius: '24px',
           bgcolor: '#ffffff',
-          border: '1.5px solid #f0d0d8',
+          border: '1.5px solid #FED7AA',
           boxShadow: '0 8px 24px rgba(109, 33, 79, 0.06)',
         }}
       >
@@ -271,45 +271,45 @@ const P2PTransfer: React.FC = () => {
           <form onSubmit={handleStep1Submit}>
             <Stack spacing={2.5}>
               <Box>
-                <Typography variant="caption" sx={{ color: '#6D214F', mb: 0.8, fontWeight: 800, display: 'block', textTransform: 'uppercase' }}>
+                <Typography variant="caption" sx={{ color: '#FE8001', mb: 0.8, fontWeight: 800, display: 'block', textTransform: 'uppercase' }}>
                   Source Wallet
                 </Typography>
                 <Box
                   sx={{
                     p: 1.8,
                     borderRadius: '16px',
-                    border: '1.5px solid #f0d0d8',
-                    bgcolor: '#FFF8F0',
+                    border: '1.5px solid #FED7AA',
+                    bgcolor: '#FFFFFF',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
                   }}
                 >
                   <Box>
-                    <Typography sx={{ fontWeight: 800, color: '#6D214F', fontSize: '0.9rem' }}>
+                    <Typography sx={{ fontWeight: 800, color: '#FE8001', fontSize: '0.9rem' }}>
                       Credits Wallet
                     </Typography>
-                    <Typography variant="caption" sx={{ color: '#8c6b7d' }}>
+                    <Typography variant="caption" sx={{ color: '#64748B' }}>
                       Available for Transfer & Withdrawal
                     </Typography>
                   </Box>
-                  <Typography sx={{ fontWeight: 900, color: '#6D214F', fontSize: '1.1rem' }}>
+                  <Typography sx={{ fontWeight: 900, color: '#FE8001', fontSize: '1.1rem' }}>
                     ₹{Number(walletOverview?.balance || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </Typography>
                 </Box>
               </Box>
 
-              <Box sx={{ p: 2, borderRadius: '16px', bgcolor: '#FFF8F0', border: '1px solid #f0d0d8', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Typography variant="caption" sx={{ color: '#8c6b7d', fontWeight: 700, textTransform: 'uppercase' }}>
+              <Box sx={{ p: 2, borderRadius: '16px', bgcolor: '#FFFFFF', border: '1px solid #FED7AA', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 700, textTransform: 'uppercase' }}>
                   Available Balance
                 </Typography>
-                <Typography variant="h6" sx={{ color: '#6D214F', fontWeight: 900 }}>
+                <Typography variant="h6" sx={{ color: '#FE8001', fontWeight: 900 }}>
                   ₹{maxBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </Typography>
               </Box>
 
               <Box>
-                <Typography variant="caption" sx={{ color: '#6D214F', mb: 0.8, fontWeight: 800, display: 'block', textTransform: 'uppercase' }}>
+                <Typography variant="caption" sx={{ color: '#FE8001', mb: 0.8, fontWeight: 800, display: 'block', textTransform: 'uppercase' }}>
                   Enter Amount (₹)
                 </Typography>
                 <TextField
@@ -321,14 +321,14 @@ const P2PTransfer: React.FC = () => {
                   inputProps={{ step: 'any', min: '0.01', max: maxBalance }}
                   sx={{
                     '& .MuiOutlinedInput-root': {
-                      color: '#2d0f1e',
-                      bgcolor: '#FFF8F0',
+                      color: '#1F333B',
+                      bgcolor: '#FFFFFF',
                       borderRadius: '16px',
                       fontWeight: 800,
                       fontSize: '1.2rem',
-                      '& fieldset': { borderColor: '#f0d0d8' },
+                      '& fieldset': { borderColor: '#FED7AA' },
                       '&:hover fieldset': { borderColor: '#E5989B' },
-                      '&.Mui-focused fieldset': { borderColor: '#6D214F', borderWidth: '2px' },
+                      '&.Mui-focused fieldset': { borderColor: '#FE8001', borderWidth: '2px' },
                     },
                   }}
                 />
@@ -340,8 +340,8 @@ const P2PTransfer: React.FC = () => {
                 fullWidth
                 endIcon={<QrCodeScannerIcon />}
                 sx={{
-                  background: 'linear-gradient(135deg, #6D214F 0%, #8f2f68 100%)',
-                  color: '#FFF8F0',
+                  background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
+                  color: '#FFFFFF',
                   borderRadius: '16px',
                   py: 1.5,
                   fontWeight: 900,
@@ -349,7 +349,7 @@ const P2PTransfer: React.FC = () => {
                   fontSize: '1rem',
                   boxShadow: '0 8px 24px rgba(109, 33, 79, 0.3)',
                   '&:hover': {
-                    background: 'linear-gradient(135deg, #4e1739 0%, #6D214F 100%)',
+                    background: 'linear-gradient(135deg, #E06F00 0%, #FE8001 100%)',
                     transform: 'translateY(-1px)'
                   },
                   transition: 'all 0.2s'
@@ -378,10 +378,10 @@ const P2PTransfer: React.FC = () => {
                   fontWeight: 800,
                   fontSize: '0.85rem',
                   textTransform: 'none',
-                  bgcolor: scanMode === 'camera' ? '#6D214F' : 'transparent',
-                  color: scanMode === 'camera' ? '#FFF8F0' : '#6D214F',
-                  borderColor: '#6D214F',
-                  '&:hover': { bgcolor: scanMode === 'camera' ? '#4e1739' : '#fdf2f4', borderColor: '#6D214F' },
+                  bgcolor: scanMode === 'camera' ? '#FE8001' : 'transparent',
+                  color: scanMode === 'camera' ? '#FFFFFF' : '#FE8001',
+                  borderColor: '#FE8001',
+                  '&:hover': { bgcolor: scanMode === 'camera' ? '#E06F00' : '#fdf2f4', borderColor: '#FE8001' },
                 }}
               >
                 Scan QR Camera
@@ -398,10 +398,10 @@ const P2PTransfer: React.FC = () => {
                   fontWeight: 800,
                   fontSize: '0.85rem',
                   textTransform: 'none',
-                  bgcolor: scanMode === 'manual' ? '#6D214F' : 'transparent',
-                  color: scanMode === 'manual' ? '#FFF8F0' : '#6D214F',
-                  borderColor: '#6D214F',
-                  '&:hover': { bgcolor: scanMode === 'manual' ? '#4e1739' : '#fdf2f4', borderColor: '#6D214F' },
+                  bgcolor: scanMode === 'manual' ? '#FE8001' : 'transparent',
+                  color: scanMode === 'manual' ? '#FFFFFF' : '#FE8001',
+                  borderColor: '#FE8001',
+                  '&:hover': { bgcolor: scanMode === 'manual' ? '#E06F00' : '#fdf2f4', borderColor: '#FE8001' },
                 }}
               >
                 Enter ID / Upload
@@ -418,7 +418,7 @@ const P2PTransfer: React.FC = () => {
                     mx: 'auto',
                     borderRadius: '24px',
                     overflow: 'hidden',
-                    border: '2px solid #00BAF2',
+                    border: '2px solid #FE8001',
                     boxShadow: '0 0 25px rgba(0, 186, 242, 0.25)',
                     position: 'relative',
                     bgcolor: '#000',
@@ -445,26 +445,26 @@ const P2PTransfer: React.FC = () => {
                       left: '6%',
                       right: '6%',
                       height: '3px',
-                      background: 'linear-gradient(90deg, transparent 0%, #00BAF2 50%, transparent 100%)',
-                      boxShadow: '0 0 16px 3px #00BAF2',
+                      background: 'linear-gradient(90deg, transparent 0%, #FE8001 50%, transparent 100%)',
+                      boxShadow: '0 0 16px 3px #FE8001',
                       borderRadius: '50%',
                       zIndex: 2,
                     }}
                   />
 
                   {/* Corner Brackets */}
-                  <Box sx={{ position: 'absolute', top: 0, left: 0, width: 28, height: 28, borderTop: '4px solid #00BAF2', borderLeft: '4px solid #00BAF2', borderTopLeftRadius: '14px', zIndex: 2 }} />
-                  <Box sx={{ position: 'absolute', top: 0, right: 0, width: 28, height: 28, borderTop: '4px solid #00BAF2', borderRight: '4px solid #00BAF2', borderTopRightRadius: '14px', zIndex: 2 }} />
-                  <Box sx={{ position: 'absolute', bottom: 0, left: 0, width: 28, height: 28, borderBottom: '4px solid #00BAF2', borderLeft: '4px solid #00BAF2', borderBottomLeftRadius: '14px', zIndex: 2 }} />
-                  <Box sx={{ position: 'absolute', bottom: 0, right: 0, width: 28, height: 28, borderBottom: '4px solid #00BAF2', borderRight: '4px solid #00BAF2', borderBottomRightRadius: '14px', zIndex: 2 }} />
+                  <Box sx={{ position: 'absolute', top: 0, left: 0, width: 28, height: 28, borderTop: '4px solid #FE8001', borderLeft: '4px solid #FE8001', borderTopLeftRadius: '14px', zIndex: 2 }} />
+                  <Box sx={{ position: 'absolute', top: 0, right: 0, width: 28, height: 28, borderTop: '4px solid #FE8001', borderRight: '4px solid #FE8001', borderTopRightRadius: '14px', zIndex: 2 }} />
+                  <Box sx={{ position: 'absolute', bottom: 0, left: 0, width: 28, height: 28, borderBottom: '4px solid #FE8001', borderLeft: '4px solid #FE8001', borderBottomLeftRadius: '14px', zIndex: 2 }} />
+                  <Box sx={{ position: 'absolute', bottom: 0, right: 0, width: 28, height: 28, borderBottom: '4px solid #FE8001', borderRight: '4px solid #FE8001', borderBottomRightRadius: '14px', zIndex: 2 }} />
 
                   {lookupMutation.isPending && (
                     <Box sx={{ position: 'absolute', inset: 0, bgcolor: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 5 }}>
-                      <CircularProgress sx={{ color: '#00BAF2' }} />
+                      <CircularProgress sx={{ color: '#FE8001' }} />
                     </Box>
                   )}
                 </Box>
-                <Typography variant="caption" sx={{ color: '#8c6b7d', mt: 1.5, display: 'block', mb: 2, fontWeight: 600 }}>
+                <Typography variant="caption" sx={{ color: '#64748B', mt: 1.5, display: 'block', mb: 2, fontWeight: 600 }}>
                   Align Vendor QR Code inside the camera frame
                 </Typography>
                 <Button
@@ -473,14 +473,14 @@ const P2PTransfer: React.FC = () => {
                   onClick={() => fileInputRef.current?.click()}
                   sx={{
                     borderColor: '#E5989B',
-                    color: '#6D214F',
+                    color: '#FE8001',
                     borderRadius: '14px',
                     py: 1,
                     fontSize: '0.85rem',
                     px: 3,
                     fontWeight: 800,
                     textTransform: 'none',
-                    '&:hover': { borderColor: '#6D214F', bgcolor: '#fdf2f4' },
+                    '&:hover': { borderColor: '#FE8001', bgcolor: '#fdf2f4' },
                   }}
                 >
                   Upload QR Image from Files
@@ -498,13 +498,13 @@ const P2PTransfer: React.FC = () => {
                     onChange={(e) => setManualId(e.target.value)}
                     sx={{
                       '& .MuiOutlinedInput-root': {
-                        color: '#2d0f1e',
-                        bgcolor: '#FFF8F0',
+                        color: '#1F333B',
+                        bgcolor: '#FFFFFF',
                         borderRadius: '16px',
                         fontWeight: 700,
-                        '& fieldset': { borderColor: '#f0d0d8' },
+                        '& fieldset': { borderColor: '#FED7AA' },
                         '&:hover fieldset': { borderColor: '#E5989B' },
-                        '&.Mui-focused fieldset': { borderColor: '#6D214F', borderWidth: '2px' },
+                        '&.Mui-focused fieldset': { borderColor: '#FE8001', borderWidth: '2px' },
                       },
                     }}
                   />
@@ -514,22 +514,22 @@ const P2PTransfer: React.FC = () => {
                     variant="contained"
                     disabled={lookupMutation.isPending}
                     sx={{
-                      background: 'linear-gradient(135deg, #6D214F 0%, #8f2f68 100%)',
-                      color: '#FFF8F0',
+                      background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
+                      color: '#FFFFFF',
                       borderRadius: '16px',
                       py: 1.5,
                       fontWeight: 900,
                       textTransform: 'none',
                       fontSize: '0.95rem',
                       boxShadow: '0 6px 20px rgba(109, 33, 79, 0.25)',
-                      '&:hover': { background: 'linear-gradient(135deg, #4e1739 0%, #6D214F 100%)' }
+                      '&:hover': { background: 'linear-gradient(135deg, #E06F00 0%, #FE8001 100%)' }
                     }}
                   >
-                    {lookupMutation.isPending ? <CircularProgress size={24} sx={{ color: '#FFF8F0' }} /> : 'Lookup Vendor'}
+                    {lookupMutation.isPending ? <CircularProgress size={24} sx={{ color: '#FFFFFF' }} /> : 'Lookup Vendor'}
                   </Button>
 
-                  <Divider sx={{ borderColor: '#f0d0d8', my: 0.5 }}>
-                    <Typography variant="caption" sx={{ color: '#8c6b7d', fontWeight: 700 }}>OR</Typography>
+                  <Divider sx={{ borderColor: '#FED7AA', my: 0.5 }}>
+                    <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 700 }}>OR</Typography>
                   </Divider>
 
                   <Button
@@ -537,14 +537,14 @@ const P2PTransfer: React.FC = () => {
                     variant="outlined"
                     onClick={() => fileInputRef.current?.click()}
                     sx={{
-                      borderColor: '#f0d0d8',
-                      color: '#6D214F',
+                      borderColor: '#FED7AA',
+                      color: '#FE8001',
                       borderRadius: '16px',
                       py: 1.3,
                       fontSize: '0.85rem',
                       fontWeight: 800,
                       textTransform: 'none',
-                      '&:hover': { borderColor: '#6D214F', bgcolor: '#fdf2f4' },
+                      '&:hover': { borderColor: '#FE8001', bgcolor: '#fdf2f4' },
                     }}
                   >
                     Upload QR Image
@@ -562,53 +562,53 @@ const P2PTransfer: React.FC = () => {
               sx={{
                 p: 2.5,
                 borderRadius: '20px',
-                bgcolor: '#FFF8F0',
-                border: '1.5px solid #f0d0d8',
+                bgcolor: '#FFFFFF',
+                border: '1.5px solid #FED7AA',
                 mb: 3,
               }}
             >
               <Box sx={{ textAlign: 'center', mb: 2 }}>
-                <Avatar sx={{ width: 64, height: 64, bgcolor: '#6D214F', color: '#FFF8F0', mx: 'auto', mb: 1, fontWeight: 900, fontSize: '1.5rem', border: '2px solid #F4C95D' }}>
+                <Avatar sx={{ width: 64, height: 64, bgcolor: '#FE8001', color: '#FFFFFF', mx: 'auto', mb: 1, fontWeight: 900, fontSize: '1.5rem', border: '2px solid #F4C95D' }}>
                   {(recipient.name || recipient.username || 'U')[0].toUpperCase()}
                 </Avatar>
-                <Typography variant="h6" sx={{ color: '#2d0f1e', fontWeight: 900 }}>
+                <Typography variant="h6" sx={{ color: '#1F333B', fontWeight: 900 }}>
                   {recipient.name || recipient.username}
                 </Typography>
-                <Typography variant="caption" sx={{ color: '#6D214F', fontWeight: 800, display: 'block', mt: 0.2 }}>
+                <Typography variant="caption" sx={{ color: '#FE8001', fontWeight: 800, display: 'block', mt: 0.2 }}>
                   Vendor ID: {recipient.member_id}
                 </Typography>
               </Box>
 
-              <Divider sx={{ borderColor: '#f0d0d8', my: 2 }} />
+              <Divider sx={{ borderColor: '#FED7AA', my: 2 }} />
 
               <Stack spacing={1.5}>
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
-                  <Typography variant="caption" sx={{ color: '#8c6b7d', fontWeight: 700, textTransform: 'uppercase' }}>
+                  <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 700, textTransform: 'uppercase' }}>
                     Transfer Amount:
                   </Typography>
-                  <Typography variant="subtitle1" sx={{ color: '#6D214F', fontWeight: 900 }}>
+                  <Typography variant="subtitle1" sx={{ color: '#FE8001', fontWeight: 900 }}>
                     ₹{parseFloat(amount).toFixed(2)}
                   </Typography>
                 </Stack>
 
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
-                  <Typography variant="caption" sx={{ color: '#8c6b7d', fontWeight: 700, textTransform: 'uppercase' }}>
+                  <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 700, textTransform: 'uppercase' }}>
                     From Wallet:
                   </Typography>
-                  <Typography variant="body2" sx={{ color: '#2d0f1e', fontWeight: 800 }}>
+                  <Typography variant="body2" sx={{ color: '#1F333B', fontWeight: 800 }}>
                     Credits Wallet
                   </Typography>
                 </Stack>
 
-                <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ pt: 1, borderTop: '1px dashed #f0d0d8' }}>
-                  <Typography variant="caption" sx={{ color: '#8c6b7d', fontWeight: 700, textTransform: 'uppercase' }}>
+                <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ pt: 1, borderTop: '1px dashed #FED7AA' }}>
+                  <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 700, textTransform: 'uppercase' }}>
                     Recipient Gets:
                   </Typography>
                   <Box sx={{ textAlign: 'right' }}>
-                    <Typography variant="subtitle1" sx={{ color: '#6D214F', fontWeight: 900 }}>
+                    <Typography variant="subtitle1" sx={{ color: '#FE8001', fontWeight: 900 }}>
                       ₹{parseFloat(amount).toFixed(2)}
                     </Typography>
-                    <Typography variant="caption" sx={{ color: '#8c6b7d', fontWeight: 700, display: 'block', fontSize: '11px' }}>
+                    <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 700, display: 'block', fontSize: '11px' }}>
                       (Credits Wallet)
                     </Typography>
                   </Box>
@@ -623,8 +623,8 @@ const P2PTransfer: React.FC = () => {
               disabled={transferMutation.isPending}
               endIcon={transferMutation.isPending ? null : <CheckCircleOutlineIcon />}
               sx={{
-                background: 'linear-gradient(135deg, #6D214F 0%, #8f2f68 100%)',
-                color: '#FFF8F0',
+                background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
+                color: '#FFFFFF',
                 borderRadius: '16px',
                 py: 1.6,
                 fontWeight: 900,
@@ -632,13 +632,13 @@ const P2PTransfer: React.FC = () => {
                 fontSize: '1rem',
                 boxShadow: '0 8px 24px rgba(109, 33, 79, 0.3)',
                 '&:hover': {
-                  background: 'linear-gradient(135deg, #4e1739 0%, #6D214F 100%)',
+                  background: 'linear-gradient(135deg, #E06F00 0%, #FE8001 100%)',
                   transform: 'translateY(-1px)'
                 },
                 transition: 'all 0.2s'
               }}
             >
-              {transferMutation.isPending ? <CircularProgress size={24} sx={{ color: '#FFF8F0' }} /> : `Confirm & Send ₹${parseFloat(amount).toFixed(2)}`}
+              {transferMutation.isPending ? <CircularProgress size={24} sx={{ color: '#FFFFFF' }} /> : `Confirm & Send ₹${parseFloat(amount).toFixed(2)}`}
             </Button>
           </Box>
         )}

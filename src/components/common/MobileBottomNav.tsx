@@ -99,18 +99,18 @@ const MobileBottomNav: React.FC = () => {
               padding: '4px 0',
             },
             '& .Mui-selected': {
-              color: '#0082CD !important',
+              color: '#FF9933 !important',
               '& .MuiBottomNavigationAction-label': {
                 fontWeight: 800,
                 fontSize: '0.7rem',
                 mt: 0.3,
-                color: '#0082CD',
+                color: '#FF9933',
               },
               '& .MuiBottomNavigationAction-iconOnly': {
                 paddingTop: '14px',
               },
               '& .indicator': {
-                background: 'linear-gradient(135deg, #00BAF2 0%, #0082CD 100%)',
+                background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
                 color: '#FFFFFF',
                 borderRadius: '10px',
                 padding: '3px',

@@ -16,8 +16,8 @@ const UpgradeWallet = () => {
 
   if (isLoading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh', bgcolor: '#FFF8F0' }}>
-        <CircularProgress sx={{ color: "#6D214F" }} />
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh', bgcolor: '#FFFFFF' }}>
+        <CircularProgress sx={{ color: "#FE8001" }} />
       </Box>
     );
   }
@@ -29,7 +29,7 @@ const UpgradeWallet = () => {
   return (
     <Box sx={{
       pb: 10,
-      background: '#FFF8F0',
+      background: '#FFFFFF',
       minHeight: '100vh',
       px: { xs: 2, sm: 3 },
       pt: { xs: 2.5, sm: 3.5 },
@@ -42,8 +42,8 @@ const UpgradeWallet = () => {
           onClick={() => navigate(-1)}
           sx={{ 
             bgcolor: '#ffffff', 
-            border: '1.5px solid #f0d0d8',
-            color: '#6D214F',
+            border: '1.5px solid #FED7AA',
+            color: '#FE8001',
             p: 1,
             '&:hover': { bgcolor: '#fdf2f4' }
           }}
@@ -51,10 +51,10 @@ const UpgradeWallet = () => {
           <ArrowBackIcon fontSize="small" />
         </IconButton>
         <Box>
-          <Typography variant="h5" sx={{ fontWeight: 900, color: '#6D214F', letterSpacing: '-0.5px' }}>
+          <Typography variant="h5" sx={{ fontWeight: 900, color: '#FE8001', letterSpacing: '-0.5px' }}>
             Property Fund
           </Typography>
-          <Typography variant="caption" sx={{ color: '#8c6b7d', fontWeight: 600 }}>
+          <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 600 }}>
             Upgrade wallet balance & history
           </Typography>
         </Box>
@@ -65,21 +65,21 @@ const UpgradeWallet = () => {
         mb: 3,
         borderRadius: '24px',
         bgcolor: '#ffffff',
-        border: '1.5px solid #f0d0d8',
+        border: '1.5px solid #FED7AA',
         boxShadow: '0 8px 24px rgba(109, 33, 79, 0.06)',
       }}>
         <CardContent sx={{ p: 3 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <Box>
-              <Typography variant="caption" sx={{ color: '#8c6b7d', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+              <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                 Property Fund Balance
               </Typography>
-              <Typography variant="h4" sx={{ color: '#6D214F', mt: 0.5, fontWeight: 900, letterSpacing: '0.5px' }}>
+              <Typography variant="h4" sx={{ color: '#FE8001', mt: 0.5, fontWeight: 900, letterSpacing: '0.5px' }}>
                 ₹{Number(walletData?.upgradeWalletBalance || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </Typography>
             </Box>
-            <Box sx={{ p: 1.5, borderRadius: '16px', bgcolor: 'rgba(229, 152, 155, 0.25)', display: 'flex' }}>
-              <TrendingUpIcon sx={{ fontSize: 32, color: '#6D214F' }} />
+            <Box sx={{ p: 1.5, borderRadius: '16px', bgcolor: 'rgba(31, 51, 59,  )', display: 'flex' }}>
+              <TrendingUpIcon sx={{ fontSize: 32, color: '#FE8001' }} />
             </Box>
           </Box>
         </CardContent>
@@ -87,13 +87,13 @@ const UpgradeWallet = () => {
 
       {/* Transaction History */}
       <Box sx={{ mb: 2 }}>
-        <Typography variant="h6" sx={{ color: '#6D214F', fontWeight: 900, mb: 1.5, fontSize: '1rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+        <Typography variant="h6" sx={{ color: '#FE8001', fontWeight: 900, mb: 1.5, fontSize: '1rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
           Transaction History
         </Typography>
         <Card sx={{
           borderRadius: '20px',
           bgcolor: '#ffffff',
-          border: '1.5px solid #f0d0d8',
+          border: '1.5px solid #FED7AA',
           boxShadow: '0 4px 16px rgba(109, 33, 79, 0.06)',
           overflow: 'hidden'
         }}>
@@ -112,10 +112,10 @@ const UpgradeWallet = () => {
             />
           ) : (
             <Box sx={{ textAlign: "center", py: 5, px: 2 }}>
-              <Typography variant="subtitle1" sx={{ color: '#6D214F', fontWeight: 700 }}>
+              <Typography variant="subtitle1" sx={{ color: '#FE8001', fontWeight: 700 }}>
                 No transactions found
               </Typography>
-              <Typography variant="caption" sx={{ color: '#8c6b7d', mt: 0.5, display: 'block' }}>
+              <Typography variant="caption" sx={{ color: '#64748B', mt: 0.5, display: 'block' }}>
                 Your property fund activity will appear here
               </Typography>
             </Box>

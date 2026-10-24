@@ -68,7 +68,7 @@ const PaytmIconBadge: React.FC<{ children: React.ReactNode }> = ({ children }) =
       width: 32,
       height: 32,
       borderRadius: '9px',
-      background: 'linear-gradient(135deg, #00BAF2 0%, #0082CD 100%)',
+      background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -393,7 +393,7 @@ const MyQR: React.FC = () => {
   if (isLoading) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh', bgcolor: '#F1F5F9' }}>
-        <CircularProgress sx={{ color: '#00BAF2' }} />
+        <CircularProgress sx={{ color: '#FE8001' }} />
       </Box>
     );
   }
@@ -406,10 +406,10 @@ const MyQR: React.FC = () => {
       borderWidth: '1.5px',
     },
     '&:hover .MuiOutlinedInput-notchedOutline': {
-      borderColor: '#00BAF2',
+      borderColor: '#FE8001',
     },
     '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-      borderColor: '#00BAF2',
+      borderColor: '#FE8001',
       borderWidth: '2px',
       boxShadow: '0 0 0 4px rgba(0, 186, 242, 0.12)',
     },
@@ -490,11 +490,11 @@ const MyQR: React.FC = () => {
             textTransform: 'none',
             fontWeight: 800,
             fontSize: '0.88rem',
-            bgcolor: activeTab === 'scanner' ? '#00BAF2' : 'transparent',
+            bgcolor: activeTab === 'scanner' ? '#FE8001' : 'transparent',
             color: activeTab === 'scanner' ? '#FFFFFF' : '#475569',
             boxShadow: activeTab === 'scanner' ? '0 4px 12px rgba(0, 186, 242, 0.35)' : 'none',
             '&:hover': {
-              bgcolor: activeTab === 'scanner' ? '#0082CD' : 'rgba(255,255,255,0.4)',
+              bgcolor: activeTab === 'scanner' ? '#FF9933' : 'rgba(255,255,255,0.4)',
             },
             transition: 'all 0.2s',
           }}
@@ -513,11 +513,11 @@ const MyQR: React.FC = () => {
             textTransform: 'none',
             fontWeight: 800,
             fontSize: '0.88rem',
-            bgcolor: activeTab === 'my_qr' ? '#00BAF2' : 'transparent',
+            bgcolor: activeTab === 'my_qr' ? '#FE8001' : 'transparent',
             color: activeTab === 'my_qr' ? '#FFFFFF' : '#475569',
             boxShadow: activeTab === 'my_qr' ? '0 4px 12px rgba(0, 186, 242, 0.35)' : 'none',
             '&:hover': {
-              bgcolor: activeTab === 'my_qr' ? '#0082CD' : 'rgba(255,255,255,0.4)',
+              bgcolor: activeTab === 'my_qr' ? '#FF9933' : 'rgba(255,255,255,0.4)',
             },
             transition: 'all 0.2s',
           }}
@@ -554,7 +554,7 @@ const MyQR: React.FC = () => {
                     size="small"
                     onClick={toggleTorch}
                     sx={{
-                      bgcolor: torchOn ? '#00BAF2' : 'rgba(255,255,255,0.15)',
+                      bgcolor: torchOn ? '#FE8001' : 'rgba(255,255,255,0.15)',
                       color: '#FFFFFF',
                     }}
                   >
@@ -585,7 +585,7 @@ const MyQR: React.FC = () => {
                 borderRadius: '24px',
                 overflow: 'hidden',
                 bgcolor: '#000000',
-                border: '2px solid #00BAF2',
+                border: '2px solid #FE8001',
                 boxShadow: '0 0 25px rgba(0, 186, 242, 0.25)',
                 display: 'flex',
                 alignItems: 'center',
@@ -619,18 +619,18 @@ const MyQR: React.FC = () => {
                   left: '6%',
                   right: '6%',
                   height: '3px',
-                  background: 'linear-gradient(90deg, transparent 0%, #00BAF2 50%, transparent 100%)',
-                  boxShadow: '0 0 16px 3px #00BAF2',
+                  background: 'linear-gradient(90deg, transparent 0%, #FE8001 50%, transparent 100%)',
+                  boxShadow: '0 0 16px 3px #FE8001',
                   borderRadius: '50%',
                   zIndex: 2,
                 }}
               />
 
               {/* Corner Brackets */}
-              <Box sx={{ position: 'absolute', top: 0, left: 0, width: 28, height: 28, borderTop: '4px solid #00BAF2', borderLeft: '4px solid #00BAF2', borderTopLeftRadius: '14px', zIndex: 2 }} />
-              <Box sx={{ position: 'absolute', top: 0, right: 0, width: 28, height: 28, borderTop: '4px solid #00BAF2', borderRight: '4px solid #00BAF2', borderTopRightRadius: '14px', zIndex: 2 }} />
-              <Box sx={{ position: 'absolute', bottom: 0, left: 0, width: 28, height: 28, borderBottom: '4px solid #00BAF2', borderLeft: '4px solid #00BAF2', borderBottomLeftRadius: '14px', zIndex: 2 }} />
-              <Box sx={{ position: 'absolute', bottom: 0, right: 0, width: 28, height: 28, borderBottom: '4px solid #00BAF2', borderRight: '4px solid #00BAF2', borderBottomRightRadius: '14px', zIndex: 2 }} />
+              <Box sx={{ position: 'absolute', top: 0, left: 0, width: 28, height: 28, borderTop: '4px solid #FE8001', borderLeft: '4px solid #FE8001', borderTopLeftRadius: '14px', zIndex: 2 }} />
+              <Box sx={{ position: 'absolute', top: 0, right: 0, width: 28, height: 28, borderTop: '4px solid #FE8001', borderRight: '4px solid #FE8001', borderTopRightRadius: '14px', zIndex: 2 }} />
+              <Box sx={{ position: 'absolute', bottom: 0, left: 0, width: 28, height: 28, borderBottom: '4px solid #FE8001', borderLeft: '4px solid #FE8001', borderBottomLeftRadius: '14px', zIndex: 2 }} />
+              <Box sx={{ position: 'absolute', bottom: 0, right: 0, width: 28, height: 28, borderBottom: '4px solid #FE8001', borderRight: '4px solid #FE8001', borderBottomRightRadius: '14px', zIndex: 2 }} />
             </Box>
 
             {cameraError && (
@@ -657,7 +657,7 @@ const MyQR: React.FC = () => {
                   bgcolor: 'rgba(255, 255, 255, 0.08)',
                   '&:hover': {
                     bgcolor: 'rgba(255, 255, 255, 0.16)',
-                    borderColor: '#00BAF2',
+                    borderColor: '#FE8001',
                   },
                 }}
               >
@@ -700,7 +700,7 @@ const MyQR: React.FC = () => {
                   type="submit"
                   disabled={lookupMutation.isPending}
                   sx={{
-                    bgcolor: '#00BAF2',
+                    bgcolor: '#FE8001',
                     color: '#FFFFFF',
                     borderRadius: '10px',
                     fontWeight: 800,
@@ -708,7 +708,7 @@ const MyQR: React.FC = () => {
                     px: 2,
                     py: 0.8,
                     textTransform: 'none',
-                    '&:hover': { bgcolor: '#0082CD' },
+                    '&:hover': { bgcolor: '#FF9933' },
                   }}
                 >
                   {lookupMutation.isPending ? <CircularProgress size={18} sx={{ color: '#FFFFFF' }} /> : 'Search'}
@@ -898,7 +898,7 @@ const MyQR: React.FC = () => {
                       height: 150,
                       borderRadius: '14px',
                       overflow: 'hidden',
-                      border: '1.5px solid #00BAF2',
+                      border: '1.5px solid #FE8001',
                       bgcolor: '#F8FAFC',
                     }}
                   >
@@ -931,7 +931,7 @@ const MyQR: React.FC = () => {
                     variant="outlined"
                     fullWidth
                     onClick={() => depositFileInputRef.current?.click()}
-                    startIcon={<CloudUploadIcon sx={{ color: '#00BAF2' }} />}
+                    startIcon={<CloudUploadIcon sx={{ color: '#FE8001' }} />}
                     sx={{
                       border: '1.5px dashed #CBD5E1',
                       borderRadius: '14px',
@@ -941,7 +941,7 @@ const MyQR: React.FC = () => {
                       fontWeight: 800,
                       fontSize: '0.88rem',
                       textTransform: 'none',
-                      '&:hover': { borderColor: '#00BAF2', bgcolor: '#F0F9FF' },
+                      '&:hover': { borderColor: '#FE8001', bgcolor: '#F0F9FF' },
                     }}
                   >
                     Upload Payment Screenshot
@@ -958,7 +958,7 @@ const MyQR: React.FC = () => {
                   disabled={isDepositSubmitting}
                   sx={{
                     mt: 0.5,
-                    background: 'linear-gradient(135deg, #00BAF2 0%, #0082CD 100%)',
+                    background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
                     color: '#FFFFFF',
                     py: 1.4,
                     borderRadius: '14px',
@@ -967,7 +967,7 @@ const MyQR: React.FC = () => {
                     textTransform: 'none',
                     boxShadow: '0 8px 20px rgba(0, 186, 242, 0.35)',
                     '&:hover': {
-                      background: 'linear-gradient(135deg, #0082CD 0%, #0052cc 100%)',
+                      background: 'linear-gradient(135deg, #FF9933 0%, #E06F00 100%)',
                       boxShadow: '0 10px 24px rgba(0, 186, 242, 0.45)',
                     },
                     '&:disabled': {
@@ -1012,7 +1012,7 @@ const MyQR: React.FC = () => {
                   gap: 2,
                   p: 2,
                   borderRadius: '18px',
-                  background: 'linear-gradient(135deg, #002970 0%, #0052cc 60%, #00BAF2 100%)',
+                  background: 'linear-gradient(135deg, #002970 0%, #E06F00 60%, #FE8001 100%)',
                   color: '#FFFFFF',
                   mb: 3,
                 }}
@@ -1059,7 +1059,7 @@ const MyQR: React.FC = () => {
                     sx={{
                       p: 1.5,
                       borderRadius: '14px',
-                      border: `2px solid ${sourceWallet === 'Top Up Wallet' ? '#00BAF2' : '#E2E8F0'}`,
+                      border: `2px solid ${sourceWallet === 'Top Up Wallet' ? '#FE8001' : '#E2E8F0'}`,
                       bgcolor: sourceWallet === 'Top Up Wallet' ? '#F0F9FF' : '#F8FAFC',
                       cursor: 'pointer',
                       transition: 'all 0.2s',
@@ -1078,7 +1078,7 @@ const MyQR: React.FC = () => {
                     sx={{
                       p: 1.5,
                       borderRadius: '14px',
-                      border: `2px solid ${sourceWallet === 'Earning Wallet' ? '#00BAF2' : '#E2E8F0'}`,
+                      border: `2px solid ${sourceWallet === 'Earning Wallet' ? '#FE8001' : '#E2E8F0'}`,
                       bgcolor: sourceWallet === 'Earning Wallet' ? '#F0F9FF' : '#F8FAFC',
                       cursor: 'pointer',
                       transition: 'all 0.2s',
@@ -1109,7 +1109,7 @@ const MyQR: React.FC = () => {
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        <Typography sx={{ fontSize: '1.4rem', fontWeight: 900, color: '#00BAF2' }}>
+                        <Typography sx={{ fontSize: '1.4rem', fontWeight: 900, color: '#FE8001' }}>
                           ₹
                         </Typography>
                       </InputAdornment>
@@ -1123,10 +1123,10 @@ const MyQR: React.FC = () => {
                       borderWidth: '1.5px',
                     },
                     '&:hover .MuiOutlinedInput-notchedOutline': {
-                      borderColor: '#00BAF2',
+                      borderColor: '#FE8001',
                     },
                     '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                      borderColor: '#00BAF2',
+                      borderColor: '#FE8001',
                       borderWidth: '2px',
                       boxShadow: '0 0 0 4px rgba(0, 186, 242, 0.12)',
                     },
@@ -1170,11 +1170,11 @@ const MyQR: React.FC = () => {
                   fontWeight: 900,
                   fontSize: '1rem',
                   textTransform: 'none',
-                  background: 'linear-gradient(135deg, #00BAF2 0%, #0082CD 100%)',
+                  background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
                   color: '#FFFFFF',
                   boxShadow: '0 8px 20px rgba(0, 186, 242, 0.35)',
                   '&:hover': {
-                    background: 'linear-gradient(135deg, #0082CD 0%, #0052cc 100%)',
+                    background: 'linear-gradient(135deg, #FF9933 0%, #E06F00 100%)',
                     boxShadow: '0 10px 24px rgba(0, 186, 242, 0.45)',
                   },
                 }}

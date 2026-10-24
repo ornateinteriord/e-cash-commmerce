@@ -25,7 +25,7 @@ const PaytmIconBadge: React.FC<{ children: React.ReactNode }> = ({ children }) =
       width: 32,
       height: 32,
       borderRadius: '9px',
-      background: 'linear-gradient(135deg, #00BAF2 0%, #0082CD 100%)',
+      background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -86,7 +86,7 @@ const DocumentUpload: React.FC<DocumentUploadProps> = ({
         boxShadow: 'none',
         transition: 'all 0.25s ease',
         '&:hover': {
-          borderColor: '#00BAF2',
+          borderColor: '#FE8001',
           boxShadow: '0 4px 14px rgba(0, 186, 242, 0.12)'
         }
       }}
@@ -101,7 +101,7 @@ const DocumentUpload: React.FC<DocumentUploadProps> = ({
           </Box>
           {value && (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, bgcolor: '#E0F2FE', px: 1, py: 0.2, borderRadius: '20px' }}>
-              <CheckCircleIcon sx={{ fontSize: 13, color: '#0082CD' }} />
+              <CheckCircleIcon sx={{ fontSize: 13, color: '#FF9933' }} />
               <Typography sx={{ fontSize: '0.68rem', fontWeight: 800, color: '#0369A1' }}>Attached</Typography>
             </Box>
           )}
@@ -116,7 +116,7 @@ const DocumentUpload: React.FC<DocumentUploadProps> = ({
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.2 }}
             >
-              <Box sx={{ position: 'relative', width: '100%', height: 160, borderRadius: '12px', overflow: 'hidden', border: '1.5px solid #00BAF2' }}>
+              <Box sx={{ position: 'relative', width: '100%', height: 160, borderRadius: '12px', overflow: 'hidden', border: '1.5px solid #FE8001' }}>
                 <img
                   src={value}
                   alt={label}
@@ -168,7 +168,7 @@ const DocumentUpload: React.FC<DocumentUploadProps> = ({
                   boxSizing: 'border-box',
                   transition: 'all 0.2s ease',
                   '&:hover': {
-                    borderColor: '#00BAF2',
+                    borderColor: '#FE8001',
                     bgcolor: '#F0F9FF',
                   },
                 }}
@@ -182,8 +182,8 @@ const DocumentUpload: React.FC<DocumentUploadProps> = ({
                 />
                 {uploading ? (
                   <Box sx={{ py: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <CircularProgress size={30} sx={{ color: '#00BAF2', mb: 1 }} />
-                    <Typography sx={{ fontSize: '0.8rem', fontWeight: 700, color: '#0082CD' }}>Uploading document...</Typography>
+                    <CircularProgress size={30} sx={{ color: '#FE8001', mb: 1 }} />
+                    <Typography sx={{ fontSize: '0.8rem', fontWeight: 700, color: '#FF9933' }}>Uploading document...</Typography>
                   </Box>
                 ) : (
                   <>
@@ -192,7 +192,7 @@ const DocumentUpload: React.FC<DocumentUploadProps> = ({
                         width: 44,
                         height: 44,
                         borderRadius: '50%',
-                        background: 'linear-gradient(135deg, #00BAF2 0%, #0082CD 100%)',
+                        background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
                         color: '#FFFFFF',
                         display: 'flex',
                         alignItems: 'center',
@@ -341,10 +341,10 @@ const KYC: React.FC = () => {
       borderWidth: '1.5px',
     },
     '&:hover .MuiOutlinedInput-notchedOutline': {
-      borderColor: '#00BAF2',
+      borderColor: '#FE8001',
     },
     '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-      borderColor: '#00BAF2',
+      borderColor: '#FE8001',
       borderWidth: '2px',
       boxShadow: '0 0 0 4px rgba(0, 186, 242, 0.12)',
     },
@@ -419,7 +419,7 @@ const KYC: React.FC = () => {
               gap: 2,
               p: 2.2,
               borderRadius: '18px',
-              background: 'linear-gradient(135deg, #002970 0%, #0052cc 60%, #00BAF2 100%)',
+              background: 'linear-gradient(135deg, #002970 0%, #E06F00 60%, #FE8001 100%)',
               color: '#FFFFFF',
               boxShadow: '0 8px 24px rgba(0, 186, 242, 0.22)',
               mb: 3
@@ -606,7 +606,7 @@ const KYC: React.FC = () => {
                     disabled={submitKYC.isPending}
                     fullWidth
                     sx={{
-                      background: 'linear-gradient(135deg, #00BAF2 0%, #0082CD 100%)',
+                      background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
                       color: '#FFFFFF',
                       padding: '14px',
                       fontWeight: 900,
@@ -615,7 +615,7 @@ const KYC: React.FC = () => {
                       textTransform: 'none',
                       boxShadow: '0 8px 20px rgba(0, 186, 242, 0.35)',
                       '&:hover': {
-                        background: 'linear-gradient(135deg, #0082CD 0%, #0052cc 100%)',
+                        background: 'linear-gradient(135deg, #FF9933 0%, #E06F00 100%)',
                         boxShadow: '0 10px 24px rgba(0, 186, 242, 0.45)',
                       },
                       '&:disabled': {

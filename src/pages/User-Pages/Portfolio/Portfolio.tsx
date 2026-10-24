@@ -21,7 +21,7 @@ const Portfolio = () => {
   return (
     <Box sx={{
       pb: 10,
-      background: '#FFF8F0',
+      background: '#FFFFFF',
       minHeight: '100vh',
       px: { xs: 2, sm: 3 },
       pt: { xs: 3, sm: 4 },
@@ -30,10 +30,10 @@ const Portfolio = () => {
     }}>
       {/* Header */}
       <Box sx={{ mb: 3 }}>
-        <Typography variant="h5" sx={{ color: '#6D214F', fontWeight: 900, letterSpacing: '-0.5px' }}>
+        <Typography variant="h5" sx={{ color: '#FE8001', fontWeight: 900, letterSpacing: '-0.5px' }}>
           My Portfolio
         </Typography>
-        <Typography variant="caption" sx={{ color: '#8c6b7d', fontWeight: 600 }}>
+        <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 600 }}>
           Manage your assets, funds & brokerage earnings
         </Typography>
       </Box>
@@ -45,22 +45,22 @@ const Portfolio = () => {
           onClick={() => navigate('/user/fixed-deposit-wallet')} 
           sx={{ 
             display: 'flex', flexDirection: 'column', p: 2.5, borderRadius: '20px', 
-            bgcolor: '#ffffff', border: '1.5px solid #f0d0d8', boxShadow: '0 4px 16px rgba(109,33,79,0.06)',
+            bgcolor: '#ffffff', border: '1.5px solid #FED7AA', boxShadow: '0 4px 16px rgba(109,33,79,0.06)',
             transition: 'all 0.2s', '&:hover': { transform: 'translateY(-2px)', borderColor: '#E5989B', boxShadow: '0 8px 24px rgba(109,33,79,0.12)' }, 
             cursor: 'pointer' 
           }}
         >
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', mb: 1.5 }}>
-            <Box sx={{ p: 1.2, borderRadius: '14px', bgcolor: 'rgba(244, 201, 93, 0.2)', display: 'flex', height: 'fit-content' }}>
-              <AccountBalanceWalletIcon sx={{ fontSize: 26, color: '#6D214F' }} />
+            <Box sx={{ p: 1.2, borderRadius: '14px', bgcolor: 'rgba(254, 128, 1,  )', display: 'flex', height: 'fit-content' }}>
+              <AccountBalanceWalletIcon sx={{ fontSize: 26, color: '#FE8001' }} />
             </Box>
-            <Typography sx={{ color: '#6D214F', fontWeight: 900, fontSize: '1.4rem', letterSpacing: '0.5px', m: 0 }}>
+            <Typography sx={{ color: '#FE8001', fontWeight: 900, fontSize: '1.4rem', letterSpacing: '0.5px', m: 0 }}>
               ₹{Number(walletOverview?.fixedDepositBalance || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </Typography>
           </Box>
           <Box sx={{ width: '100%' }}>
-            <Typography sx={{ color: '#2d0f1e', fontWeight: 800, fontSize: '1.05rem', mb: 0.3 }}>Fixed Deposit</Typography>
-            <Typography variant="caption" sx={{ color: '#8c6b7d', display: 'block', lineHeight: 1.3, fontSize: '12px' }}>
+            <Typography sx={{ color: '#1F333B', fontWeight: 800, fontSize: '1.05rem', mb: 0.3 }}>Fixed Deposit</Typography>
+            <Typography variant="caption" sx={{ color: '#64748B', display: 'block', lineHeight: 1.3, fontSize: '12px' }}>
               Your money securely saved for long-term growth—simple and always accessible.
             </Typography>
           </Box>
@@ -71,22 +71,22 @@ const Portfolio = () => {
           onClick={() => navigate('/user/upgrade-wallet')} 
           sx={{ 
             display: 'flex', flexDirection: 'column', p: 2.5, borderRadius: '20px', 
-            bgcolor: '#ffffff', border: '1.5px solid #f0d0d8', boxShadow: '0 4px 16px rgba(109,33,79,0.06)',
+            bgcolor: '#ffffff', border: '1.5px solid #FED7AA', boxShadow: '0 4px 16px rgba(109,33,79,0.06)',
             transition: 'all 0.2s', '&:hover': { transform: 'translateY(-2px)', borderColor: '#E5989B', boxShadow: '0 8px 24px rgba(109,33,79,0.12)' }, 
             cursor: 'pointer' 
           }}
         >
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', mb: 1.5 }}>
-            <Box sx={{ p: 1.2, borderRadius: '14px', bgcolor: 'rgba(229, 152, 155, 0.25)', display: 'flex', height: 'fit-content' }}>
-              <TrendingUpIcon sx={{ fontSize: 26, color: '#6D214F' }} />
+            <Box sx={{ p: 1.2, borderRadius: '14px', bgcolor: 'rgba(31, 51, 59,  )', display: 'flex', height: 'fit-content' }}>
+              <TrendingUpIcon sx={{ fontSize: 26, color: '#FE8001' }} />
             </Box>
-            <Typography sx={{ color: '#6D214F', fontWeight: 900, fontSize: '1.4rem', letterSpacing: '0.5px', m: 0 }}>
+            <Typography sx={{ color: '#FE8001', fontWeight: 900, fontSize: '1.4rem', letterSpacing: '0.5px', m: 0 }}>
               ₹{Number(walletOverview?.upgradeWalletBalance || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </Typography>
           </Box>
           <Box sx={{ width: '100%' }}>
-            <Typography sx={{ color: '#2d0f1e', fontWeight: 800, fontSize: '1.05rem', mb: 0.3 }}>Property Fund</Typography>
-            <Typography variant="caption" sx={{ color: '#8c6b7d', display: 'block', lineHeight: 1.3, fontSize: '12px' }}>
+            <Typography sx={{ color: '#1F333B', fontWeight: 800, fontSize: '1.05rem', mb: 0.3 }}>Property Fund</Typography>
+            <Typography variant="caption" sx={{ color: '#64748B', display: 'block', lineHeight: 1.3, fontSize: '12px' }}>
               Take your wallet to the next level with more power, flexibility, and rewards.
             </Typography>
           </Box>
@@ -97,22 +97,22 @@ const Portfolio = () => {
           onClick={() => navigate('/user/wallet')} 
           sx={{ 
             display: 'flex', flexDirection: 'column', p: 2.5, borderRadius: '20px', 
-            bgcolor: '#ffffff', border: '1.5px solid #f0d0d8', boxShadow: '0 4px 16px rgba(109,33,79,0.06)',
+            bgcolor: '#ffffff', border: '1.5px solid #FED7AA', boxShadow: '0 4px 16px rgba(109,33,79,0.06)',
             transition: 'all 0.2s', '&:hover': { transform: 'translateY(-2px)', borderColor: '#E5989B', boxShadow: '0 8px 24px rgba(109,33,79,0.12)' }, 
             cursor: 'pointer' 
           }}
         >
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', mb: 1.5 }}>
-            <Box sx={{ p: 1.2, borderRadius: '14px', bgcolor: 'rgba(109, 33, 79, 0.12)', display: 'flex', height: 'fit-content' }}>
-              <AccountBalanceWalletIcon sx={{ fontSize: 26, color: '#6D214F' }} />
+            <Box sx={{ p: 1.2, borderRadius: '14px', bgcolor: 'rgba(254, 128, 1,  )', display: 'flex', height: 'fit-content' }}>
+              <AccountBalanceWalletIcon sx={{ fontSize: 26, color: '#FE8001' }} />
             </Box>
-            <Typography sx={{ color: '#6D214F', fontWeight: 900, fontSize: '1.4rem', letterSpacing: '0.5px', m: 0 }}>
+            <Typography sx={{ color: '#FE8001', fontWeight: 900, fontSize: '1.4rem', letterSpacing: '0.5px', m: 0 }}>
               ₹{Number(walletOverview?.balance || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </Typography>
           </Box>
           <Box sx={{ width: '100%' }}>
-            <Typography sx={{ color: '#2d0f1e', fontWeight: 800, fontSize: '1.05rem', mb: 0.3 }}>Payouts</Typography>
-            <Typography variant="caption" sx={{ color: '#8c6b7d', display: 'block', lineHeight: 1.3, fontSize: '12px' }}>
+            <Typography sx={{ color: '#1F333B', fontWeight: 800, fontSize: '1.05rem', mb: 0.3 }}>Payouts</Typography>
+            <Typography variant="caption" sx={{ color: '#64748B', display: 'block', lineHeight: 1.3, fontSize: '12px' }}>
               Watch your funds grow and withdraw them securely anytime.
             </Typography>
             <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
@@ -123,8 +123,8 @@ const Portfolio = () => {
                   navigate('/user/wallet?type=withdrawal');
                 }}
                 sx={{
-                  background: 'linear-gradient(135deg, #6D214F 0%, #8f2f68 100%)',
-                  color: '#FFF8F0',
+                  background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
+                  color: '#FFFFFF',
                   borderRadius: '12px',
                   px: 3,
                   py: 0.7,
@@ -133,7 +133,7 @@ const Portfolio = () => {
                   fontSize: '0.85rem',
                   boxShadow: '0 4px 12px rgba(109, 33, 79, 0.25)',
                   '&:hover': {
-                    background: 'linear-gradient(135deg, #4e1739 0%, #6D214F 100%)',
+                    background: 'linear-gradient(135deg, #E06F00 0%, #FE8001 100%)',
                     transform: 'translateY(-1px)'
                   },
                   transition: 'all 0.2s'
@@ -150,22 +150,22 @@ const Portfolio = () => {
           onClick={() => navigate('/user/purchase-wallet')} 
           sx={{ 
             display: 'flex', flexDirection: 'column', p: 2.5, borderRadius: '20px', 
-            bgcolor: '#ffffff', border: '1.5px solid #f0d0d8', boxShadow: '0 4px 16px rgba(109,33,79,0.06)',
+            bgcolor: '#ffffff', border: '1.5px solid #FED7AA', boxShadow: '0 4px 16px rgba(109,33,79,0.06)',
             transition: 'all 0.2s', '&:hover': { transform: 'translateY(-2px)', borderColor: '#E5989B', boxShadow: '0 8px 24px rgba(109,33,79,0.12)' }, 
             cursor: 'pointer' 
           }}
         >
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', mb: 1.5 }}>
-            <Box sx={{ p: 1.2, borderRadius: '14px', bgcolor: 'rgba(244, 201, 93, 0.25)', display: 'flex', height: 'fit-content' }}>
-              <InventoryIcon sx={{ fontSize: 26, color: '#6D214F' }} />
+            <Box sx={{ p: 1.2, borderRadius: '14px', bgcolor: 'rgba(254, 128, 1,  )', display: 'flex', height: 'fit-content' }}>
+              <InventoryIcon sx={{ fontSize: 26, color: '#FE8001' }} />
             </Box>
-            <Typography sx={{ color: '#6D214F', fontWeight: 900, fontSize: '1.4rem', letterSpacing: '0.5px', m: 0 }}>
+            <Typography sx={{ color: '#FE8001', fontWeight: 900, fontSize: '1.4rem', letterSpacing: '0.5px', m: 0 }}>
               ₹{Number((walletOverview as any)?.purchaseBalance || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </Typography>
           </Box>
           <Box sx={{ width: '100%' }}>
-            <Typography sx={{ color: '#2d0f1e', fontWeight: 800, fontSize: '1.05rem', mb: 0.3 }}>Purchase Wallet</Typography>
-            <Typography variant="caption" sx={{ color: '#8c6b7d', display: 'block', lineHeight: 1.3, fontSize: '12px' }}>
+            <Typography sx={{ color: '#1F333B', fontWeight: 800, fontSize: '1.05rem', mb: 0.3 }}>Purchase Wallet</Typography>
+            <Typography variant="caption" sx={{ color: '#64748B', display: 'block', lineHeight: 1.3, fontSize: '12px' }}>
               Manage your purchases and track your active product investments.
             </Typography>
           </Box>
@@ -174,7 +174,7 @@ const Portfolio = () => {
 
       {/* Team Performance */}
       <Box sx={{ mb: 4 }}>
-        <Typography sx={{ color: '#2d0f1e', fontWeight: 900, mb: 1.8, fontSize: { xs: '1.15rem', sm: '1.25rem' }, letterSpacing: '-0.3px' }}>
+        <Typography sx={{ color: '#1F333B', fontWeight: 900, mb: 1.8, fontSize: { xs: '1.15rem', sm: '1.25rem' }, letterSpacing: '-0.3px' }}>
           Team Performance
         </Typography>
         
@@ -317,7 +317,7 @@ const Portfolio = () => {
 
       {/* Earnings Summary - Horizontal Scrollable Cards */}
       <Box sx={{ mb: 4 }}>
-        <Typography sx={{ color: '#2d0f1e', fontWeight: 900, mb: 1.8, fontSize: { xs: '1.15rem', sm: '1.25rem' }, letterSpacing: '-0.3px' }}>
+        <Typography sx={{ color: '#1F333B', fontWeight: 900, mb: 1.8, fontSize: { xs: '1.15rem', sm: '1.25rem' }, letterSpacing: '-0.3px' }}>
           Earnings Summary
         </Typography>
 

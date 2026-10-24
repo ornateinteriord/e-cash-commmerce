@@ -2,10 +2,11 @@
   width: 250px;
   height: 100%;
   background-color: #FFFFFF;
-  /* Light Background */
-  color: #1E293B;
+  color: #1F333B;
   position: fixed;
   transition: transform 0.3s ease-in-out;
+  border-right: 1px solid #E2E8F0;
+  box-shadow: 2px 0 12px rgba(31, 51, 59, 0.04);
 }
 
 .sidebar.open {
@@ -32,6 +33,7 @@
   align-items: center;
   gap: 15px;
   padding: 15px;
+  border-bottom: 1px solid #E2E8F0;
 }
 
 .sub-items {
@@ -39,27 +41,27 @@
   margin-top: 5px;
   overflow: hidden;
   background-color: #F8FAFC;
-  /* Light Sub-items */
 }
 
 .sub-items a {
-  color: #475569;
+  color: #526E78;
   text-decoration: none;
-  padding: 5px 10px;
-  border-radius: 3px;
+  padding: 6px 12px;
+  border-radius: 6px;
   display: flex;
   align-items: center;
-  transition: color 0.3s ease;
+  transition: all 0.2s ease;
 
   &:hover {
-    color: #0284C7;
-    background-color: rgba(2, 132, 199, 0.1);
+    color: #FE8001;
+    background-color: rgba(254, 128, 1, 0.08);
   }
 
   &.selected {
-    color: #0284C7;
+    color: #FE8001;
     font-weight: 700;
-    border-left: 3px solid #0284C7;
+    border-left: 3px solid #FE8001;
+    background-color: rgba(254, 128, 1, 0.1);
   }
 }
 
@@ -77,27 +79,30 @@
   display: flex;
   align-items: center;
   padding: 10px 15px;
-  border-radius: 5px;
+  border-radius: 8px;
+  margin: 2px 8px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: 16px;
+  transition: all 0.25s ease;
+  font-size: 15px;
+  font-weight: 500;
+  color: #1F333B;
 }
 
 .menu-item:hover {
-  background-color: rgba(2, 132, 199, 0.12);
-  color: #0284C7;
+  background-color: rgba(254, 128, 1, 0.08);
+  color: #FE8001;
 }
 
 .menu-item.selected {
-  background: rgba(2, 132, 199, 0.18);
-  color: #0284C7;
-  border-left: 4px solid #0284C7;
+  background: rgba(254, 128, 1, 0.12);
+  color: #FE8001;
+  border-left: 4px solid #FE8001;
   border-radius: 0 8px 8px 0;
   font-weight: 700;
 }
 
 .menu-item svg {
-  margin-right: 10px;
+  margin-right: 12px;
   font-size: 20px;
   color: inherit;
 }
@@ -113,5 +118,7 @@
     height: 20px;
     min-width: 20px;
     border-radius: 10px;
+    background-color: #FE8001;
+    color: #FFFFFF;
   }
 }

@@ -17,19 +17,19 @@ import { LoadingComponent } from '../../App';
 import { useLoginMutation } from '../../api/Auth';
 import ForgotPasswordForm from "./components/ForgotPasswordForm";
 
-// Light input field style for cream background
+// Brand input field style
 const lightFieldSx = {
   "& .MuiOutlinedInput-root": {
-    color: "#2d0f1e",
+    color: "#1F333B",
     bgcolor: "#ffffff",
     borderRadius: "14px",
     fontSize: "0.95rem",
-    "& fieldset": { borderColor: "#f0d0d8", borderWidth: "1.5px" },
-    "&:hover fieldset": { borderColor: "#E5989B" },
-    "&.Mui-focused fieldset": { borderColor: "#6D214F", borderWidth: "2px" },
+    "& fieldset": { borderColor: "#E2E8F0", borderWidth: "1.5px" },
+    "&:hover fieldset": { borderColor: "#FFA033" },
+    "&.Mui-focused fieldset": { borderColor: "#FE8001", borderWidth: "2px" },
   },
-  "& .MuiInputLabel-root": { color: "#b08090", fontWeight: 500 },
-  "& .MuiInputLabel-root.Mui-focused": { color: "#6D214F" },
+  "& .MuiInputLabel-root": { color: "#889EA6", fontWeight: 500 },
+  "& .MuiInputLabel-root.Mui-focused": { color: "#FE8001" },
 };
 
 const Login = () => {
@@ -106,7 +106,7 @@ const Login = () => {
       minHeight: "100vh",
       display: "flex",
       flexDirection: "column",
-      bgcolor: "#FFF8F0",
+      bgcolor: "#FFFFFF",
       position: "relative",
       overflow: "hidden",
     }}>
@@ -114,7 +114,7 @@ const Login = () => {
       {/* ── HERO TOP PANEL ─────────────────────────── */}
       <Box sx={{
         position: "relative",
-        background: "linear-gradient(145deg, #3d1030 0%, #6D214F 60%, #8f2f68 100%)",
+        background: "linear-gradient(145deg, #1F333B 0%, #FE8001 60%, #FF9933 100%)",
         pt: { xs: 4.5, sm: 6 },
         pb: { xs: 7, sm: 8 },
         px: 3,
@@ -150,7 +150,7 @@ const Login = () => {
             boxShadow: "0 6px 22px rgba(244, 201, 93, 0.4)",
             transform: "rotate(-3deg)",
           }}>
-            <Typography sx={{ fontSize: "1.9rem", fontWeight: 950, color: "#6D214F", transform: "rotate(3deg)" }}>
+            <Typography sx={{ fontSize: "1.9rem", fontWeight: 950, color: "#FE8001", transform: "rotate(3deg)" }}>
               E
             </Typography>
           </Box>
@@ -159,7 +159,7 @@ const Login = () => {
             fontWeight: 950,
             fontSize: { xs: "2.1rem", sm: "2.5rem" },
             letterSpacing: "3.5px",
-            color: "#FFF8F0",
+            color: "#FFFFFF",
             lineHeight: 1,
             textShadow: "0 2px 10px rgba(45,15,30,0.3)",
           }}>
@@ -183,7 +183,7 @@ const Login = () => {
             {/* Main foreground wave curve */}
             <path
               d="M0,65 C280,120 540,30 840,85 C1100,130 1320,40 1440,70 L1440,120 L0,120 Z"
-              fill="#FFF8F0"
+              fill="#FFFFFF"
             />
           </svg>
         </Box>
@@ -198,7 +198,7 @@ const Login = () => {
         px: { xs: 2, sm: 3 },
         pt: 2,
         pb: 5,
-        bgcolor: "#FFF8F0",
+        bgcolor: "#F8FAFC",
       }}>
         <Box sx={{ width: "100%", maxWidth: 400 }}>
 
@@ -207,8 +207,8 @@ const Login = () => {
               bgcolor: "#fff",
               borderRadius: "24px",
               p: 3,
-              boxShadow: "0 4px 24px rgba(109,33,79,0.1)",
-              border: "1px solid #fce8ec"
+              boxShadow: "0 4px 24px rgba(31,51,59,0.08)",
+              border: "1px solid #E2E8F0"
             }}>
               <ForgotPasswordForm onBackToLogin={() => setIsResetMode(false)} />
             </Box>
@@ -219,12 +219,12 @@ const Login = () => {
                 <Typography sx={{
                   fontWeight: 900,
                   fontSize: { xs: "1.45rem", sm: "1.65rem" },
-                  color: "#6D214F",
+                  color: "#1F333B",
                   lineHeight: 1.2,
                 }}>
                   {isAdminMode ? "Administration Portal 🛡️" : "Welcome Back 👋"}
                 </Typography>
-                <Typography sx={{ color: "#8c6b7d", fontSize: "0.85rem", mt: 0.6, fontWeight: 500 }}>
+                <Typography sx={{ color: "#526E78", fontSize: "0.85rem", mt: 0.6, fontWeight: 500 }}>
                   {isAdminMode
                     ? "Sign in with administrator credentials"
                     : "Sign in with your mobile number & password"}
@@ -254,7 +254,7 @@ const Login = () => {
                     startAdornment: (
                       <InputAdornment position="start">
                         {isAdminMode
-                          ? <PersonOutline sx={{ color: formData.username ? "#6D214F" : "#b08090", fontSize: "1.2rem" }} />
+                          ? <PersonOutline sx={{ color: formData.username ? "#FE8001" : "#b08090", fontSize: "1.2rem" }} />
                           : <PhoneAndroid sx={{ color: formData.username.length === 10 ? "#38a169" : "#b08090", fontSize: "1.2rem" }} />
                         }
                       </InputAdornment>
@@ -287,7 +287,7 @@ const Login = () => {
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        <LockOutlined sx={{ color: formData.password ? "#6D214F" : "#b08090", fontSize: "1.2rem" }} />
+                        <LockOutlined sx={{ color: formData.password ? "#FE8001" : "#b08090", fontSize: "1.2rem" }} />
                       </InputAdornment>
                     ),
                     endAdornment: (
@@ -296,7 +296,7 @@ const Login = () => {
                           onClick={() => setShowPassword(s => !s)}
                           onMouseDown={e => e.preventDefault()}
                           edge="end" size="small"
-                          sx={{ color: "#b08090", mr: 0.5, "&:hover": { color: "#6D214F", bgcolor: "rgba(109,33,79,0.06)" } }}
+                          sx={{ color: "#b08090", mr: 0.5, "&:hover": { color: "#FE8001", bgcolor: "rgba(109,33,79,0.06)" } }}
                         >
                           {showPassword ? <VisibilityOff fontSize="small" /> : <Visibility fontSize="small" />}
                         </IconButton>
@@ -307,6 +307,7 @@ const Login = () => {
                 />
 
                 {/* Remember me + Forgot */}
+                {/* Remember me + Forgot */}
                 <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <FormControlLabel
                     control={
@@ -314,11 +315,11 @@ const Login = () => {
                         checked={rememberMe}
                         onChange={e => setRememberMe(e.target.checked)}
                         size="small"
-                        sx={{ color: "#E5989B", "&.Mui-checked": { color: "#6D214F" }, p: 0.5 }}
+                        sx={{ color: "#E2E8F0", "&.Mui-checked": { color: "#FE8001" }, p: 0.5 }}
                       />
                     }
                     label={
-                      <Typography sx={{ fontSize: "0.82rem", color: "#7a5060", fontWeight: 500 }}>
+                      <Typography sx={{ fontSize: "0.82rem", color: "#526E78", fontWeight: 500 }}>
                         Remember me
                       </Typography>
                     }
@@ -328,10 +329,10 @@ const Login = () => {
                     onClick={() => setIsResetMode(true)}
                     underline="none"
                     sx={{
-                      fontSize: "0.82rem", color: "#6D214F", fontWeight: 700,
-                      borderBottom: "1.5px dashed rgba(109,33,79,0.3)",
+                      fontSize: "0.82rem", color: "#FE8001", fontWeight: 700,
+                      borderBottom: "1.5px dashed rgba(254,128,1,0.3)",
                       pb: "1px",
-                      "&:hover": { color: "#8f2f68", borderBottomColor: "#6D214F" }
+                      "&:hover": { color: "#E06F00", borderBottomColor: "#FE8001" }
                     }}
                   >
                     Forgot password?
@@ -347,23 +348,29 @@ const Login = () => {
                     mt: 0.5,
                     py: 1.65,
                     background: isAdminMode 
-                      ? "linear-gradient(135deg, #4e1739 0%, #6D214F 100%)"
-                      : "linear-gradient(135deg, #6D214F 0%, #8f2f68 100%)",
-                    color: "#FFF8F0",
+                      ? "linear-gradient(135deg, #1F333B 0%, #2B444E 100%)"
+                      : "linear-gradient(135deg, #FE8001 0%, #FFA033 100%)",
+                    color: "#FFFFFF",
                     fontWeight: 900,
                     fontSize: "1rem",
                     letterSpacing: "0.4px",
                     borderRadius: "14px",
                     textTransform: "none",
-                    boxShadow: "0 6px 22px rgba(109, 33, 79, 0.35)",
+                    boxShadow: isAdminMode
+                      ? "0 6px 22px rgba(31, 51, 59, 0.3)"
+                      : "0 6px 22px rgba(254, 128, 1, 0.35)",
                     transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
                     "&:hover": {
-                      background: "linear-gradient(135deg, #4e1739 0%, #6D214F 100%)",
+                      background: isAdminMode
+                        ? "linear-gradient(135deg, #15242A 0%, #1F333B 100%)"
+                        : "linear-gradient(135deg, #E06F00 0%, #FE8001 100%)",
                       transform: "translateY(-2px)",
-                      boxShadow: "0 12px 30px rgba(109, 33, 79, 0.45)",
+                      boxShadow: isAdminMode
+                        ? "0 12px 30px rgba(31, 51, 59, 0.4)"
+                        : "0 12px 30px rgba(254, 128, 1, 0.45)",
                     },
                     "&:active": { transform: "translateY(0)" },
-                    "&:disabled": { background: "#e8c8d8", color: "#a88098", boxShadow: "none" },
+                    "&:disabled": { background: "#E2E8F0", color: "#889EA6", boxShadow: "none" },
                   }}
                 >
                   {isPending ? "Signing In…" : (isAdminMode ? "Sign In as Administrator" : "Sign In")}
@@ -381,7 +388,7 @@ const Login = () => {
                         display: "inline-flex",
                         alignItems: "center",
                         gap: 0.8,
-                        color: "#6D214F",
+                        color: "#1F333B",
                         fontWeight: 700,
                         fontSize: "0.88rem",
                         cursor: "pointer",
@@ -389,12 +396,12 @@ const Login = () => {
                         background: "none",
                         p: 0.5,
                         "&:hover": {
-                          color: "#8f2f68",
+                          color: "#FE8001",
                           textDecoration: "underline",
                         }
                       }}
                     >
-                      <AdminPanelSettings sx={{ fontSize: "1.1rem", color: "#6D214F" }} />
+                      <AdminPanelSettings sx={{ fontSize: "1.1rem", color: "#FE8001" }} />
                       Login as Administration
                     </MuiLink>
                   </Box>
@@ -409,7 +416,7 @@ const Login = () => {
                         display: "inline-flex",
                         alignItems: "center",
                         gap: 0.8,
-                        color: "#6D214F",
+                        color: "#1F333B",
                         fontWeight: 700,
                         fontSize: "0.88rem",
                         cursor: "pointer",
@@ -417,12 +424,12 @@ const Login = () => {
                         background: "none",
                         p: 0.5,
                         "&:hover": {
-                          color: "#8f2f68",
+                          color: "#FE8001",
                           textDecoration: "underline",
                         }
                       }}
                     >
-                      <ArrowBack sx={{ fontSize: "1rem", color: "#6D214F" }} />
+                      <ArrowBack sx={{ fontSize: "1rem", color: "#FE8001" }} />
                       Back to Member Login
                     </MuiLink>
                   </Box>
@@ -432,9 +439,9 @@ const Login = () => {
                 {!isAdminMode && (
                   <>
                     <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, my: 0.5 }}>
-                      <Box sx={{ flex: 1, height: "1.5px", background: "linear-gradient(to right, transparent, #f0d0d8)" }} />
-                      <Typography sx={{ fontSize: "0.78rem", color: "#b08090", fontWeight: 600, px: 0.5 }}>OR</Typography>
-                      <Box sx={{ flex: 1, height: "1.5px", background: "linear-gradient(to left, transparent, #f0d0d8)" }} />
+                      <Box sx={{ flex: 1, height: "1.5px", background: "linear-gradient(to right, transparent, #E2E8F0)" }} />
+                      <Typography sx={{ fontSize: "0.78rem", color: "#889EA6", fontWeight: 600, px: 0.5 }}>OR</Typography>
+                      <Box sx={{ flex: 1, height: "1.5px", background: "linear-gradient(to left, transparent, #E2E8F0)" }} />
                     </Box>
 
                     <Button
@@ -442,20 +449,21 @@ const Login = () => {
                       fullWidth variant="outlined"
                       sx={{
                         py: 1.4,
-                        color: "#6D214F",
-                        borderColor: "#E5989B",
+                        color: "#1F333B",
+                        borderColor: "#E2E8F0",
                         borderWidth: "1.5px",
                         fontWeight: 800,
                         fontSize: "0.92rem",
                         borderRadius: "14px",
                         textTransform: "none",
-                        bgcolor: "transparent",
+                        bgcolor: "#FFFFFF",
                         transition: "all 0.3s ease",
                         "&:hover": {
-                          borderColor: "#6D214F",
+                          borderColor: "#FE8001",
                           borderWidth: "1.5px",
-                          bgcolor: "rgba(109, 33, 79, 0.04)",
-                          boxShadow: "0 4px 14px rgba(109,33,79,0.1)",
+                          bgcolor: "rgba(254, 128, 1, 0.05)",
+                          color: "#FE8001",
+                          boxShadow: "0 4px 14px rgba(254,128,1,0.12)",
                         }
                       }}
                     >
@@ -470,14 +478,14 @@ const Login = () => {
                     component="button" type="button"
                     onClick={() => setOpenMsgDialog(true)}
                     underline="hover"
-                    sx={{ fontSize: "0.8rem", color: "#b08090", fontWeight: 500, "&:hover": { color: "#6D214F" } }}
+                    sx={{ fontSize: "0.8rem", color: "#889EA6", fontWeight: 500, "&:hover": { color: "#FE8001" } }}
                   >
                     💬 Message Us
                   </MuiLink>
                   <MuiLink
                     href="mailto:support@ecash.com"
                     underline="hover"
-                    sx={{ fontSize: "0.8rem", color: "#b08090", fontWeight: 500, "&:hover": { color: "#6D214F" } }}
+                    sx={{ fontSize: "0.8rem", color: "#889EA6", fontWeight: 500, "&:hover": { color: "#FE8001" } }}
                   >
                     ✉️ Mail To Us
                   </MuiLink>
@@ -498,17 +506,17 @@ const Login = () => {
         maxWidth="sm" fullWidth
         PaperProps={{
           sx: {
-            bgcolor: "#FFF8F0",
+            bgcolor: "#FFFFFF",
             borderRadius: "20px",
             mx: { xs: 2, sm: "auto" },
-            border: "1px solid #fce8ec",
-            boxShadow: "0 20px 48px rgba(109,33,79,0.15)",
+            border: "1px solid #E2E8F0",
+            boxShadow: "0 20px 48px rgba(31,51,59,0.12)",
           }
         }}
       >
-        <DialogTitle sx={{ borderBottom: "1px solid #fce8ec", display: "flex", justifyContent: "space-between", alignItems: "center", pb: 1.5 }}>
-          <Typography variant="h6" fontWeight={800} color="#6D214F">Message Support</Typography>
-          <IconButton onClick={() => setOpenMsgDialog(false)} sx={{ color: "#b08090" }}>
+        <DialogTitle sx={{ borderBottom: "1px solid #E2E8F0", display: "flex", justifyContent: "space-between", alignItems: "center", pb: 1.5 }}>
+          <Typography variant="h6" fontWeight={800} color="#1F333B">Message Support</Typography>
+          <IconButton onClick={() => setOpenMsgDialog(false)} sx={{ color: "#889EA6" }}>
             <CloseIcon />
           </IconButton>
         </DialogTitle>
@@ -528,20 +536,20 @@ const Login = () => {
             sx={lightFieldSx} />
         </DialogContent>
 
-        <DialogActions sx={{ p: 2, borderTop: "1px solid #fce8ec", gap: 1 }}>
+        <DialogActions sx={{ p: 2, borderTop: "1px solid #E2E8F0", gap: 1 }}>
           <Button onClick={() => setOpenMsgDialog(false)}
-            sx={{ color: "#b08090", fontWeight: 600, textTransform: "none", borderRadius: "10px" }}>
+            sx={{ color: "#889EA6", fontWeight: 600, textTransform: "none", borderRadius: "10px" }}>
             Cancel
           </Button>
           <Button
             onClick={handleSendGuestMessage}
             variant="contained" disabled={isSendingMsg}
             sx={{
-              background: "linear-gradient(135deg, #6D214F 0%, #8f2f68 100%)",
-              color: "#FFF8F0", fontWeight: 700, borderRadius: "10px",
+              background: "linear-gradient(135deg, #FE8001 0%, #FFA033 100%)",
+              color: "#FFFFFF", fontWeight: 700, borderRadius: "10px",
               textTransform: "none",
-              boxShadow: "0 4px 12px rgba(109,33,79,0.3)",
-              "&:hover": { background: "linear-gradient(135deg, #4e1739 0%, #6D214F 100%)" }
+              boxShadow: "0 4px 12px rgba(254,128,1,0.3)",
+              "&:hover": { background: "linear-gradient(135deg, #E06F00 0%, #FE8001 100%)" }
             }}
           >
             {isSendingMsg ? "Sending…" : "Send Message"}

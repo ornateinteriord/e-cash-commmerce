@@ -41,8 +41,8 @@ const carouselSlides = [
     badge: 'PAYTM WALLET',
     actionText: 'Add Fund',
     route: '/user/load-fund',
-    bg: 'linear-gradient(135deg, #002244 0%, #004b99 55%, #0099ff 100%)',
-    accent: '#00e5ff',
+    bg: 'linear-gradient(135deg, #15242A 0%, #1F333B 55%, #FE8001 100%)',
+    accent: '#FE8001',
   },
   {
     id: 2,
@@ -51,8 +51,8 @@ const carouselSlides = [
     badge: 'CASHBACK',
     actionText: 'Invite',
     route: '/user/team/new-register',
-    bg: 'linear-gradient(135deg, #001e3d 0%, #003366 55%, #0077cc 100%)',
-    accent: '#ffea79',
+    bg: 'linear-gradient(135deg, #1F333B 0%, #2A4550 55%, #FE8001 100%)',
+    accent: '#FFA733',
   },
   {
     id: 3,
@@ -61,8 +61,8 @@ const carouselSlides = [
     badge: '0% FEES',
     actionText: 'Transfer',
     route: '/user/p2p-transfer',
-    bg: 'linear-gradient(135deg, #002952 0%, #005299 55%, #00b4d8 100%)',
-    accent: '#a7f3d0',
+    bg: 'linear-gradient(135deg, #15242A 0%, #1F333B 55%, #35535F 100%)',
+    accent: '#FE8001',
   },
 ];
 
@@ -296,17 +296,17 @@ const UserDashboard = () => {
   ];
 
   const quickAccessServices = [
-    { label: "Transfer", icon: <SyncAltIcon />, route: "/user/transfer", color: "#6D214F" },
-    { label: "Scan & Pay", icon: <QrCode2Icon />, route: "/user/my-qr", color: "#6D214F" },
-    { label: "P2P Transfer", icon: <SendIcon />, route: "/user/p2p-transfer", color: "#6D214F" },
-    { label: "Invest Amount", icon: <InventoryIcon />, route: "/user/new-subscription", color: "#6D214F" },
-    { label: "My Investments", icon: <ReceiptLongIcon />, route: "/user/my-subscriptions", color: "#6D214F" },
+    { label: "Transfer", icon: <SyncAltIcon />, route: "/user/transfer", color: "#FE8001" },
+    { label: "Scan & Pay", icon: <QrCode2Icon />, route: "/user/my-qr", color: "#FE8001" },
+    { label: "P2P Transfer", icon: <SendIcon />, route: "/user/p2p-transfer", color: "#FE8001" },
+    { label: "Invest Amount", icon: <InventoryIcon />, route: "/user/new-subscription", color: "#FE8001" },
+    { label: "My Investments", icon: <ReceiptLongIcon />, route: "/user/my-subscriptions", color: "#FE8001" },
   ];
 
   return (
     <Box sx={{
       pb: 8,
-      bgcolor: '#FFF8F0',
+      bgcolor: '#FFFFFF',
       minHeight: '100vh',
       px: { xs: 2, sm: 3, md: 5, lg: 8 },
       pt: { xs: 2, md: 3 },
@@ -316,7 +316,7 @@ const UserDashboard = () => {
       {isVerifyingPayment && (
         <Box sx={{ position: 'fixed', inset: 0, bgcolor: 'rgba(45,15,30,0.7)', zIndex: 9999, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
           <CircularProgress size={60} sx={{ color: '#F4C95D', mb: 2 }} />
-          <Typography variant="h6" sx={{ color: '#FFF8F0', fontWeight: 700 }}>Verifying payment...</Typography>
+          <Typography variant="h6" sx={{ color: '#FFFFFF', fontWeight: 700 }}>Verifying payment...</Typography>
         </Box>
       )}
 
@@ -336,8 +336,8 @@ const UserDashboard = () => {
             sx={{
               width: 44,
               height: 44,
-              bgcolor: '#6D214F',
-              color: '#FFF8F0',
+              bgcolor: '#FE8001',
+              color: '#FFFFFF',
               fontWeight: 800,
               fontSize: '1rem',
               cursor: 'pointer',
@@ -351,7 +351,7 @@ const UserDashboard = () => {
             <Typography sx={{ fontSize: '0.72rem', color: '#7a5060', fontWeight: 600 }}>
               Welcome back 👋
             </Typography>
-            <Typography sx={{ fontSize: '1rem', fontWeight: 900, color: '#2d0f1e', lineHeight: 1.2 }}>
+            <Typography sx={{ fontSize: '1rem', fontWeight: 900, color: '#1F333B', lineHeight: 1.2 }}>
               {memberDetails?.Name || 'Member'}
             </Typography>
           </Box>
@@ -362,11 +362,11 @@ const UserDashboard = () => {
             onClick={() => navigate('/user/my-qr')}
             sx={{
               bgcolor: '#ffffff',
-              color: '#6D214F',
-              border: '1px solid #f0d0d8',
+              color: '#FE8001',
+              border: '1px solid #FED7AA',
               borderRadius: '12px',
               p: 1,
-              '&:hover': { bgcolor: '#FFF8F0' }
+              '&:hover': { bgcolor: '#FFFFFF' }
             }}
           >
             <QrCodeScannerIcon sx={{ fontSize: 22 }} />
@@ -376,7 +376,7 @@ const UserDashboard = () => {
             sx={{
               bgcolor: '#ffffff',
               color: '#c97579',
-              border: '1px solid #f0d0d8',
+              border: '1px solid #FED7AA',
               borderRadius: '12px',
               p: 1,
               '&:hover': { bgcolor: '#ffeef0' }
@@ -398,15 +398,15 @@ const UserDashboard = () => {
         height: '210px',
         mb: 3.5,
         borderRadius: '24px',
-        background: 'linear-gradient(135deg, #3d1030 0%, #6D214F 60%, #8f2f68 100%)',
-        boxShadow: '0 16px 36px rgba(109, 33, 79, 0.35)',
+        background: 'linear-gradient(135deg, #15242A 0%, #1F333B 60%, #2A4550 100%)',
+        boxShadow: '0 16px 36px rgba(31, 51, 59, 0.45)',
         overflow: 'hidden',
-        color: '#FFF8F0',
+        color: '#FFFFFF',
         p: 2.8,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        border: '1px solid rgba(244, 201, 93, 0.3)',
+        border: '1px solid rgba(254, 128, 1, 0.35)',
         '&::before': {
           content: '""',
           position: 'absolute',
@@ -415,7 +415,7 @@ const UserDashboard = () => {
           width: 180,
           height: 180,
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(244, 201, 93, 0.2) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(254, 128, 1, 0.25) 0%, transparent 70%)',
         },
         '&::after': {
           content: '""',
@@ -425,7 +425,7 @@ const UserDashboard = () => {
           width: 140,
           height: 140,
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(229, 152, 155, 0.2) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(42, 69, 80, 0.4) 0%, transparent 70%)',
         }
       }}>
         {/* Card Header: Chip & ECASH Logo */}
@@ -435,21 +435,21 @@ const UserDashboard = () => {
               width: 32,
               height: 24,
               borderRadius: '6px',
-              background: 'linear-gradient(135deg, #F4C95D 0%, #e6be4e 100%)',
-              border: '1px solid #d4a83a',
+              background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
+              border: '1px solid #E06F00',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 2px 6px rgba(244,201,93,0.3)'
+              boxShadow: '0 2px 6px rgba(254, 128, 1, 0.4)'
             }}>
-              <Box sx={{ width: 14, height: 10, border: '1px solid rgba(45,15,30,0.3)', borderRadius: '2px' }} />
+              <Box sx={{ width: 14, height: 10, border: '1px solid rgba(31, 51, 59, 0.3)', borderRadius: '2px' }} />
             </Box>
             <Typography
               sx={{
                 fontWeight: 900,
                 fontSize: '1.25rem',
                 letterSpacing: '2px',
-                color: '#F4C95D',
+                color: '#FE8001',
                 textShadow: '0 2px 8px rgba(0,0,0,0.4)',
                 userSelect: 'none'
               }}
@@ -468,14 +468,14 @@ const UserDashboard = () => {
           px: 0.5 
         }}>
           <Box>
-            <Typography sx={{ color: '#E5989B', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 700 }}>
+            <Typography sx={{ color: '#FFA733', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 700 }}>
               Login ID
             </Typography>
             <Typography sx={{ 
               fontFamily: 'monospace', 
               fontSize: { xs: '1.05rem', sm: '1.2rem' }, 
               fontWeight: 800, 
-              color: '#FFF8F0',
+              color: '#FFFFFF',
               letterSpacing: '1px',
               textShadow: '0 2px 6px rgba(0,0,0,0.4)'
             }}>
@@ -484,14 +484,14 @@ const UserDashboard = () => {
           </Box>
 
           <Box sx={{ textAlign: 'right' }}>
-            <Typography sx={{ color: '#E5989B', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 700 }}>
+            <Typography sx={{ color: '#FFA733', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 700 }}>
               User ID
             </Typography>
             <Typography sx={{ 
               fontFamily: 'monospace', 
               fontSize: { xs: '1.05rem', sm: '1.2rem' }, 
               fontWeight: 800, 
-              color: '#F4C95D',
+              color: '#FE8001',
               letterSpacing: '1px',
               textShadow: '0 2px 6px rgba(0,0,0,0.4)'
             }}>
@@ -503,7 +503,7 @@ const UserDashboard = () => {
         {/* Bottom Section: Name & Level */}
         <Box sx={{ zIndex: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
           <Box>
-            <Typography sx={{ color: '#E5989B', fontSize: '0.62rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 600 }}>
+            <Typography sx={{ color: '#FFA733', fontSize: '0.62rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 600 }}>
               Name
             </Typography>
             <Typography sx={{ 
@@ -511,7 +511,7 @@ const UserDashboard = () => {
               fontWeight: 800, 
               textTransform: 'uppercase', 
               letterSpacing: '1.5px', 
-              color: '#FFF8F0',
+              color: '#FFFFFF',
               textShadow: '0 2px 6px rgba(0,0,0,0.4)'
             }}>
               {memberDetails?.Name || memberDetails?.name || 'Member'}
@@ -519,15 +519,15 @@ const UserDashboard = () => {
           </Box>
 
           <Box sx={{
-            bgcolor: 'rgba(244, 201, 93, 0.15)',
-            border: '1px solid rgba(244, 201, 93, 0.35)',
+            bgcolor: 'rgba(254, 128, 1, 0.15)',
+            border: '1px solid rgba(254, 128, 1, 0.4)',
             borderRadius: '6px',
             px: 1.1,
             py: 0.3,
             backdropFilter: 'blur(4px)'
           }}>
             <Typography sx={{
-              color: '#F4C95D',
+              color: '#FE8001',
               fontSize: '0.72rem',
               fontWeight: 800,
               letterSpacing: '1px'
@@ -540,7 +540,7 @@ const UserDashboard = () => {
 
       {/* Profile Settings (Quick Access Grid) immediately after Card */}
       <Box sx={{ mb: 4, width: '100%' }}>
-        <Typography sx={{ color: '#6D214F', fontWeight: 900, mb: 2, textAlign: 'left', px: 0.5, letterSpacing: '1px', textTransform: 'uppercase', fontSize: '1rem' }}>
+        <Typography sx={{ color: '#1F333B', fontWeight: 900, mb: 2, textAlign: 'left', px: 0.5, letterSpacing: '1px', textTransform: 'uppercase', fontSize: '1rem' }}>
           Profile Settings
         </Typography>
         <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: { xs: 1.5, sm: 2.5 } }}>
@@ -558,22 +558,22 @@ const UserDashboard = () => {
                 width: { xs: 54, sm: 62 },
                 height: { xs: 54, sm: 62 },
                 borderRadius: '18px',
-                background: 'linear-gradient(135deg, #00BAF2 0%, #0082CD 100%)',
+                background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
                 color: '#FFFFFF',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                boxShadow: '0 4px 14px rgba(0, 186, 242, 0.35)',
+                boxShadow: '0 4px 14px rgba(254, 128, 1, 0.3)',
                 '&:hover': { 
-                  background: 'linear-gradient(135deg, #0082CD 0%, #0052cc 100%)',
-                  boxShadow: '0 6px 18px rgba(0, 186, 242, 0.5)',
+                  background: 'linear-gradient(135deg, #E06F00 0%, #FE8001 100%)',
+                  boxShadow: '0 6px 18px rgba(254, 128, 1, 0.45)',
                   transform: 'scale(1.05)'
                 },
                 transition: 'all 0.2s ease'
               }}>
                 {React.cloneElement(item.icon, { sx: { fontSize: { xs: 26, sm: 30 }, color: '#FFFFFF' } })}
               </Box>
-              <Typography variant="caption" sx={{ fontWeight: 700, fontSize: { xs: '0.72rem', sm: '0.8rem' }, textAlign: 'center', color: '#2d0f1e' }}>
+              <Typography variant="caption" sx={{ fontWeight: 700, fontSize: { xs: '0.72rem', sm: '0.8rem' }, textAlign: 'center', color: '#1F333B' }}>
                 {item.label}
               </Typography>
             </Box>
@@ -592,7 +592,7 @@ const UserDashboard = () => {
           px: 0.5
         }}>
           <Typography sx={{
-            color: '#6D214F',
+            color: '#FE8001',
             fontWeight: 900,
             fontSize: '1rem',
             letterSpacing: '1px',
@@ -638,14 +638,14 @@ const UserDashboard = () => {
                 width: { xs: 54, sm: 62 },
                 height: { xs: 54, sm: 62 },
                 borderRadius: '18px',
-                background: 'linear-gradient(135deg, #00BAF2 0%, #0082CD 100%)',
+                background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
                 color: '#FFFFFF',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 boxShadow: '0 4px 14px rgba(0, 186, 242, 0.35)',
                 '&:hover': {
-                  background: 'linear-gradient(135deg, #0082CD 0%, #0052cc 100%)',
+                  background: 'linear-gradient(135deg, #FF9933 0%, #E06F00 100%)',
                   boxShadow: '0 6px 18px rgba(0, 186, 242, 0.5)',
                   transform: 'scale(1.05)'
                 },
@@ -657,7 +657,7 @@ const UserDashboard = () => {
                 fontWeight: 700,
                 fontSize: { xs: '0.72rem', sm: '0.8rem' },
                 textAlign: 'center',
-                color: '#2d0f1e',
+                color: '#1F333B',
                 lineHeight: 1.2,
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
@@ -684,7 +684,7 @@ const UserDashboard = () => {
           }
         }}
       >
-        <DialogTitle sx={{ fontWeight: 800, color: '#2d0f1e' }}>
+        <DialogTitle sx={{ fontWeight: 800, color: '#1F333B' }}>
           Confirm Logout
         </DialogTitle>
         <DialogContent>
@@ -703,12 +703,12 @@ const UserDashboard = () => {
             onClick={handleLogout}
             variant="contained"
             sx={{
-              bgcolor: '#6D214F',
-              color: '#FFF8F0',
+              bgcolor: '#FE8001',
+              color: '#FFFFFF',
               fontWeight: 800,
               borderRadius: '12px',
               textTransform: 'none',
-              '&:hover': { bgcolor: '#4e1739' }
+              '&:hover': { bgcolor: '#E06F00' }
             }}
           >
             Logout
@@ -724,7 +724,7 @@ const UserDashboard = () => {
         p: { xs: 2.2, sm: 3.2, md: 3.8 },
         mb: 4,
         borderRadius: { xs: '24px', sm: '28px' },
-        bgcolor: '#FFF8F0',
+        bgcolor: '#FFFFFF',
         border: '1.5px solid #fce8ec',
         boxShadow: '0 10px 30px rgba(109, 33, 79, 0.06)',
         width: '100%'
@@ -748,7 +748,7 @@ const UserDashboard = () => {
               minWidth: 0,
               gap: { xs: 1.2, sm: 1.6, md: 2 },
               bgcolor: '#ffffff',
-              border: '1.5px solid #f0d0d8',
+              border: '1.5px solid #FED7AA',
               borderRadius: { xs: '20px', sm: '24px' },
               p: { xs: 2.2, sm: 3.2, md: 3.8 },
               minHeight: { xs: '170px', sm: '200px', md: '220px' },
@@ -769,17 +769,17 @@ const UserDashboard = () => {
               <Box sx={{
                 p: { xs: 0.5, sm: 1.1 },
                 borderRadius: '12px',
-                bgcolor: 'rgba(244, 201, 93, 0.25)',
+                bgcolor: 'rgba(254, 128, 1,  )',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 border: '1px solid rgba(244, 201, 93, 0.6)',
                 flexShrink: 0
               }}>
-                <PaymentsIcon sx={{ fontSize: { xs: 22, sm: 26, md: 30 }, color: '#6D214F' }} />
+                <PaymentsIcon sx={{ fontSize: { xs: 22, sm: 26, md: 30 }, color: '#FE8001' }} />
               </Box>
               <Typography sx={{
-                color: '#6D214F',
+                color: '#FE8001',
                 fontWeight: 900,
                 fontSize: { xs: '1.05rem', sm: '1.2rem', md: '1.35rem' },
                 lineHeight: 1.2,
@@ -795,7 +795,7 @@ const UserDashboard = () => {
             {/* Rupee Balance (Main Wallet: for Add Credit, Withdrawal, New Subscription) */}
             <Box sx={{ display: 'flex', alignItems: 'baseline', gap: { xs: 0.5, sm: 0.8 }, my: { xs: 0.5, sm: 0.8 } }}>
               <Typography sx={{
-                color: '#6D214F',
+                color: '#FE8001',
                 fontWeight: 800,
                 fontSize: { xs: '1.45rem', sm: '1.85rem', md: '2.2rem' },
                 lineHeight: 1.1,
@@ -837,8 +837,8 @@ const UserDashboard = () => {
               sx={{
                 flex: 1,
                 minHeight: { xs: '46px', sm: '54px', md: '60px' },
-                background: 'linear-gradient(135deg, #6D214F 0%, #8f2f68 100%)',
-                color: '#FFF8F0',
+                background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
+                color: '#FFFFFF',
                 borderRadius: { xs: '12px', sm: '16px' },
                 px: { xs: 1.5, sm: 2.2 },
                 py: { xs: 1, sm: 1.3 },
@@ -848,7 +848,7 @@ const UserDashboard = () => {
                 justifyContent: 'center',
                 boxShadow: '0 4px 14px rgba(109, 33, 79, 0.24)',
                 '&:hover': {
-                  background: 'linear-gradient(135deg, #4e1739 0%, #6D214F 100%)',
+                  background: 'linear-gradient(135deg, #E06F00 0%, #FE8001 100%)',
                   boxShadow: '0 8px 20px rgba(109, 33, 79, 0.35)',
                   transform: 'translateY(-2px)'
                 },
@@ -867,8 +867,8 @@ const UserDashboard = () => {
               sx={{
                 flex: 1,
                 minHeight: { xs: '46px', sm: '54px', md: '60px' },
-                background: 'linear-gradient(135deg, #6D214F 0%, #8f2f68 100%)',
-                color: '#FFF8F0',
+                background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
+                color: '#FFFFFF',
                 borderRadius: { xs: '12px', sm: '16px' },
                 px: { xs: 1.5, sm: 2.2 },
                 py: { xs: 1, sm: 1.3 },
@@ -878,7 +878,7 @@ const UserDashboard = () => {
                 justifyContent: 'center',
                 boxShadow: '0 4px 14px rgba(109, 33, 79, 0.24)',
                 '&:hover': {
-                  background: 'linear-gradient(135deg, #4e1739 0%, #6D214F 100%)',
+                  background: 'linear-gradient(135deg, #E06F00 0%, #FE8001 100%)',
                   boxShadow: '0 8px 20px rgba(109, 33, 79, 0.35)',
                   transform: 'translateY(-2px)'
                 },
@@ -897,8 +897,8 @@ const UserDashboard = () => {
               sx={{
                 flex: 1,
                 minHeight: { xs: '46px', sm: '54px', md: '60px' },
-                background: 'linear-gradient(135deg, #6D214F 0%, #8f2f68 100%)',
-                color: '#FFF8F0',
+                background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
+                color: '#FFFFFF',
                 borderRadius: { xs: '12px', sm: '16px' },
                 px: { xs: 1.5, sm: 2.2 },
                 py: { xs: 1, sm: 1.3 },
@@ -908,7 +908,7 @@ const UserDashboard = () => {
                 justifyContent: 'center',
                 boxShadow: '0 4px 14px rgba(109, 33, 79, 0.24)',
                 '&:hover': {
-                  background: 'linear-gradient(135deg, #4e1739 0%, #6D214F 100%)',
+                  background: 'linear-gradient(135deg, #E06F00 0%, #FE8001 100%)',
                   boxShadow: '0 8px 20px rgba(109, 33, 79, 0.35)',
                   transform: 'translateY(-2px)'
                 },
@@ -1028,7 +1028,7 @@ const UserDashboard = () => {
 
       {/* Team Performance */}
       <Box sx={{ mb: 3.5 }}>
-        <Typography sx={{ color: '#2d0f1e', fontWeight: 900, mb: 1.4, fontSize: { xs: '1rem', sm: '1.15rem' }, letterSpacing: '-0.3px' }}>
+        <Typography sx={{ color: '#1F333B', fontWeight: 900, mb: 1.4, fontSize: { xs: '1rem', sm: '1.15rem' }, letterSpacing: '-0.3px' }}>
           Team Performance
         </Typography>
         
@@ -1171,7 +1171,7 @@ const UserDashboard = () => {
 
       {/* Earnings Summary - Compact 3 in Row Cards */}
       <Box sx={{ mb: 4 }}>
-        <Typography sx={{ color: '#2d0f1e', fontWeight: 900, mb: 1.4, fontSize: { xs: '1rem', sm: '1.15rem' }, letterSpacing: '-0.3px' }}>
+        <Typography sx={{ color: '#1F333B', fontWeight: 900, mb: 1.4, fontSize: { xs: '1rem', sm: '1.15rem' }, letterSpacing: '-0.3px' }}>
           Earnings Summary
         </Typography>
 
@@ -1500,7 +1500,7 @@ const UserDashboard = () => {
         <>
           <Box sx={{ mb: 4 }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1.4 }}>
-              <Typography sx={{ color: '#2d0f1e', fontWeight: 900, fontSize: { xs: '1rem', sm: '1.15rem' }, letterSpacing: '-0.3px' }}>
+              <Typography sx={{ color: '#1F333B', fontWeight: 900, fontSize: { xs: '1rem', sm: '1.15rem' }, letterSpacing: '-0.3px' }}>
                 Re-Invest
               </Typography>
             </Box>
@@ -1529,7 +1529,7 @@ const UserDashboard = () => {
                   width: { xs: 46, sm: 52 },
                   height: { xs: 46, sm: 52 },
                   borderRadius: '16px',
-                  background: 'linear-gradient(135deg, #00BAF2 0%, #0082CD 100%)',
+                  background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
                   color: '#FFFFFF',
                   display: 'flex',
                   alignItems: 'center',
@@ -1556,7 +1556,7 @@ const UserDashboard = () => {
                 onClick={() => setReTopupDialogOpen(true)}
                 startIcon={<AutorenewIcon sx={{ fontSize: 18 }} />}
                 sx={{
-                  background: 'linear-gradient(135deg, #00BAF2 0%, #0082CD 100%)',
+                  background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
                   color: '#FFFFFF',
                   fontWeight: 800,
                   fontSize: { xs: '0.8rem', sm: '0.88rem' },
@@ -1568,7 +1568,7 @@ const UserDashboard = () => {
                   whiteSpace: 'nowrap',
                   flexShrink: 0,
                   '&:hover': {
-                    background: 'linear-gradient(135deg, #0082CD 0%, #0052cc 100%)',
+                    background: 'linear-gradient(135deg, #FF9933 0%, #E06F00 100%)',
                     boxShadow: '0 5px 14px rgba(0, 186, 242, 0.45)'
                   }
                 }}

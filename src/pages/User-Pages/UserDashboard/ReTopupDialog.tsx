@@ -192,8 +192,8 @@ export const ReTopupDialog: React.FC<ReTopupDialogProps> = ({ open, onClose }) =
           {/* Top Bar: Icon + Title + Close Button */}
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.2 }}>
-              <AccountBalanceWalletIcon sx={{ fontSize: 26, color: '#6D214F' }} />
-              <Typography variant="body2" sx={{ color: '#2d0f1e', fontWeight: 800, fontSize: '1.05rem', letterSpacing: '-0.3px' }}>
+              <AccountBalanceWalletIcon sx={{ fontSize: 26, color: '#FE8001' }} />
+              <Typography variant="body2" sx={{ color: '#1F333B', fontWeight: 800, fontSize: '1.05rem', letterSpacing: '-0.3px' }}>
                 Re-Invest
               </Typography>
             </Box>
@@ -201,9 +201,9 @@ export const ReTopupDialog: React.FC<ReTopupDialogProps> = ({ open, onClose }) =
               size="small"
               onClick={onClose}
               sx={{
-                color: '#8c6b7d',
-                bgcolor: '#FFF8F0',
-                border: '1px solid #f0d0d8',
+                color: '#64748B',
+                bgcolor: '#FFFFFF',
+                border: '1px solid #FED7AA',
                 '&:hover': { bgcolor: '#ffeef0' }
               }}
             >
@@ -239,8 +239,8 @@ export const ReTopupDialog: React.FC<ReTopupDialogProps> = ({ open, onClose }) =
               p: 1.4,
               px: 1.6,
               borderRadius: '14px',
-              bgcolor: '#FFF8F0',
-              border: '1px solid #f0d0d8',
+              bgcolor: '#FFFFFF',
+              border: '1px solid #FED7AA',
               display: 'flex',
               flexDirection: 'column',
               gap: 1
@@ -251,7 +251,7 @@ export const ReTopupDialog: React.FC<ReTopupDialogProps> = ({ open, onClose }) =
                 <Typography sx={{ fontSize: '0.78rem', color: '#7a5060', fontWeight: 700 }}>
                   Earlier Investment:
                 </Typography>
-                <Typography sx={{ fontSize: '0.88rem', color: '#6D214F', fontWeight: 900 }}>
+                <Typography sx={{ fontSize: '0.88rem', color: '#FE8001', fontWeight: 900 }}>
                   ₹{lastInvestedAmount.toLocaleString()}
                 </Typography>
               </Box>
@@ -287,28 +287,28 @@ export const ReTopupDialog: React.FC<ReTopupDialogProps> = ({ open, onClose }) =
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <PaymentsIcon sx={{ color: '#6D214F', fontSize: 20 }} />
+                    <PaymentsIcon sx={{ color: '#FE8001', fontSize: 20 }} />
                   </InputAdornment>
                 )
               }}
               sx={{
                 '& .MuiOutlinedInput-root': {
                   borderRadius: '14px',
-                  bgcolor: '#FFF8F0',
-                  '& fieldset': { borderColor: validationError ? '#ef4444' : '#f0d0d8', borderWidth: '1.5px' },
+                  bgcolor: '#FFFFFF',
+                  '& fieldset': { borderColor: validationError ? '#ef4444' : '#FED7AA', borderWidth: '1.5px' },
                   '&:hover fieldset': { borderColor: validationError ? '#dc2626' : '#E5989B' },
-                  '&.Mui-focused fieldset': { borderColor: validationError ? '#dc2626' : '#6D214F', borderWidth: '2px' }
+                  '&.Mui-focused fieldset': { borderColor: validationError ? '#dc2626' : '#FE8001', borderWidth: '2px' }
                 },
                 '& .MuiInputLabel-root': {
                   color: validationError ? '#ef4444' : '#7a5060',
                   fontWeight: 600
                 },
                 '& .MuiInputLabel-root.Mui-focused': {
-                  color: validationError ? '#dc2626' : '#6D214F'
+                  color: validationError ? '#dc2626' : '#FE8001'
                 },
                 '& input': {
                   MozAppearance: 'textfield',
-                  color: '#2d0f1e',
+                  color: '#1F333B',
                   fontWeight: 700,
                   fontSize: '1.05rem'
                 },
@@ -343,7 +343,7 @@ export const ReTopupDialog: React.FC<ReTopupDialogProps> = ({ open, onClose }) =
             {/* Credit Balance Display */}
             <Box sx={{ mt: 1.8, mb: 2 }}>
               <Typography sx={{ color: '#7a5060', fontSize: '0.82rem', fontWeight: 600 }}>
-                Credit Balance: <span style={{ color: '#2d0f1e', fontWeight: 800 }}>₹{creditBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                Credit Balance: <span style={{ color: '#1F333B', fontWeight: 800 }}>₹{creditBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
               </Typography>
             </Box>
 
@@ -360,12 +360,12 @@ export const ReTopupDialog: React.FC<ReTopupDialogProps> = ({ open, onClose }) =
                 fontSize: '0.98rem',
                 textTransform: 'none',
                 background: isValid
-                  ? 'linear-gradient(135deg, #6D214F 0%, #8f2f68 100%)'
-                  : '#f0d0d8',
-                color: isValid ? '#FFF8F0' : '#8c6b7d',
+                  ? 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)'
+                  : '#FED7AA',
+                color: isValid ? '#FFFFFF' : '#64748B',
                 boxShadow: isValid ? '0 4px 14px rgba(109, 33, 79, 0.24)' : 'none',
                 '&:hover': {
-                  background: isValid ? 'linear-gradient(135deg, #4e1739 0%, #6D214F 100%)' : '#f0d0d8',
+                  background: isValid ? 'linear-gradient(135deg, #E06F00 0%, #FE8001 100%)' : '#FED7AA',
                   boxShadow: isValid ? '0 8px 20px rgba(109, 33, 79, 0.35)' : 'none',
                   transform: isValid ? 'translateY(-1px)' : 'none'
                 },
@@ -374,7 +374,7 @@ export const ReTopupDialog: React.FC<ReTopupDialogProps> = ({ open, onClose }) =
             >
               {isPending ? (
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <CircularProgress size={20} sx={{ color: '#FFF8F0' }} />
+                  <CircularProgress size={20} sx={{ color: '#FFFFFF' }} />
                   <span>Processing...</span>
                 </Box>
               ) : (
@@ -387,8 +387,8 @@ export const ReTopupDialog: React.FC<ReTopupDialogProps> = ({ open, onClose }) =
           <Box
             sx={{
               mt: 2.5,
-              bgcolor: '#FFF8F0',
-              border: '1.5px solid #f0d0d8',
+              bgcolor: '#FFFFFF',
+              border: '1.5px solid #FED7AA',
               borderRadius: '20px',
               p: { xs: 2, sm: 2.5 },
               boxShadow: '0 4px 16px rgba(109, 33, 79, 0.04)'
@@ -399,17 +399,17 @@ export const ReTopupDialog: React.FC<ReTopupDialogProps> = ({ open, onClose }) =
               <Box sx={{
                 p: 0.8,
                 borderRadius: '12px',
-                bgcolor: 'rgba(244, 201, 93, 0.25)',
+                bgcolor: 'rgba(254, 128, 1,  )',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 border: '1px solid rgba(244, 201, 93, 0.6)',
                 flexShrink: 0
               }}>
-                <PaymentsIcon sx={{ fontSize: 22, color: '#6D214F' }} />
+                <PaymentsIcon sx={{ fontSize: 22, color: '#FE8001' }} />
               </Box>
               <Typography sx={{
-                color: '#6D214F',
+                color: '#FE8001',
                 fontWeight: 900,
                 fontSize: '1.1rem',
                 letterSpacing: '0.5px'
@@ -421,7 +421,7 @@ export const ReTopupDialog: React.FC<ReTopupDialogProps> = ({ open, onClose }) =
             {/* Rupee Balance */}
             <Box sx={{ my: 1 }}>
               <Typography sx={{
-                color: '#6D214F',
+                color: '#FE8001',
                 fontWeight: 800,
                 fontSize: { xs: '1.5rem', sm: '1.85rem' },
                 lineHeight: 1.1,
@@ -444,8 +444,8 @@ export const ReTopupDialog: React.FC<ReTopupDialogProps> = ({ open, onClose }) =
                   sx={{
                     flex: 1,
                     py: 1.1,
-                    background: 'linear-gradient(135deg, #6D214F 0%, #8f2f68 100%)',
-                    color: '#FFF8F0',
+                    background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
+                    color: '#FFFFFF',
                     borderRadius: '12px',
                     fontWeight: 800,
                     fontSize: '0.88rem',
@@ -453,7 +453,7 @@ export const ReTopupDialog: React.FC<ReTopupDialogProps> = ({ open, onClose }) =
                     justifyContent: 'center',
                     boxShadow: '0 3px 10px rgba(109, 33, 79, 0.24)',
                     '&:hover': {
-                      background: 'linear-gradient(135deg, #4e1739 0%, #6D214F 100%)',
+                      background: 'linear-gradient(135deg, #E06F00 0%, #FE8001 100%)',
                       transform: 'translateY(-1px)'
                     },
                     transition: 'all 0.2s ease'
@@ -471,8 +471,8 @@ export const ReTopupDialog: React.FC<ReTopupDialogProps> = ({ open, onClose }) =
                   sx={{
                     flex: 1,
                     py: 1.1,
-                    background: 'linear-gradient(135deg, #6D214F 0%, #8f2f68 100%)',
-                    color: '#FFF8F0',
+                    background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
+                    color: '#FFFFFF',
                     borderRadius: '12px',
                     fontWeight: 800,
                     fontSize: '0.88rem',
@@ -480,7 +480,7 @@ export const ReTopupDialog: React.FC<ReTopupDialogProps> = ({ open, onClose }) =
                     justifyContent: 'center',
                     boxShadow: '0 3px 10px rgba(109, 33, 79, 0.24)',
                     '&:hover': {
-                      background: 'linear-gradient(135deg, #4e1739 0%, #6D214F 100%)',
+                      background: 'linear-gradient(135deg, #E06F00 0%, #FE8001 100%)',
                       transform: 'translateY(-1px)'
                     },
                     transition: 'all 0.2s ease'
@@ -498,8 +498,8 @@ export const ReTopupDialog: React.FC<ReTopupDialogProps> = ({ open, onClose }) =
                 fullWidth
                 sx={{
                   py: 1.1,
-                  background: 'linear-gradient(135deg, #6D214F 0%, #8f2f68 100%)',
-                  color: '#FFF8F0',
+                  background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
+                  color: '#FFFFFF',
                   borderRadius: '12px',
                   fontWeight: 800,
                   fontSize: '0.88rem',
@@ -507,7 +507,7 @@ export const ReTopupDialog: React.FC<ReTopupDialogProps> = ({ open, onClose }) =
                   justifyContent: 'center',
                   boxShadow: '0 3px 10px rgba(109, 33, 79, 0.24)',
                   '&:hover': {
-                    background: 'linear-gradient(135deg, #4e1739 0%, #6D214F 100%)',
+                    background: 'linear-gradient(135deg, #E06F00 0%, #FE8001 100%)',
                     transform: 'translateY(-1px)'
                   },
                   transition: 'all 0.2s ease'
@@ -553,12 +553,12 @@ export const ReTopupDialog: React.FC<ReTopupDialogProps> = ({ open, onClose }) =
           >
             <CheckCircleOutlineIcon sx={{ fontSize: 38 }} />
           </Box>
-          <Typography variant="h6" sx={{ color: '#2d0f1e', fontWeight: 900, mb: 1 }}>
+          <Typography variant="h6" sx={{ color: '#1F333B', fontWeight: 900, mb: 1 }}>
             Investment Successful!
           </Typography>
           <Typography variant="body2" sx={{ color: '#7a5060', mb: 2.5, lineHeight: 1.6 }}>
             You have successfully invested{' '}
-            <strong style={{ color: '#6D214F' }}>₹{confirmedAmount?.toLocaleString()}</strong> from your Credits Wallet. Daily Incentive will be credited daily.
+            <strong style={{ color: '#FE8001' }}>₹{confirmedAmount?.toLocaleString()}</strong> from your Credits Wallet. Daily Incentive will be credited daily.
           </Typography>
           <Button
             variant="contained"
@@ -568,8 +568,8 @@ export const ReTopupDialog: React.FC<ReTopupDialogProps> = ({ open, onClose }) =
               py: 1.2,
               borderRadius: '12px',
               fontWeight: 800,
-              background: 'linear-gradient(135deg, #6D214F 0%, #8f2f68 100%)',
-              color: '#FFF8F0',
+              background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
+              color: '#FFFFFF',
               textTransform: 'none'
             }}
           >

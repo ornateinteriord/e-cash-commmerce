@@ -263,7 +263,7 @@ const SingleLevelIncomeAdmin = () => {
                   py: 0.6,
                 },
                 '& .Mui-selected': {
-                  backgroundColor: '#6D214F !important',
+                  backgroundColor: '#FE8001 !important',
                   color: '#ffffff !important',
                 },
               }}

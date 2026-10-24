@@ -316,7 +316,7 @@ const DashboardQRDialog: React.FC<DashboardQRDialogProps> = ({ open, onClose, me
                   }}
                   sx={{
                     mt: 3,
-                    background: 'linear-gradient(135deg, #00BAF2 0%, #0082CD 100%)',
+                    background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
                     color: '#FFFFFF',
                     borderRadius: '999px',
                     px: 4, py: 1.2,
@@ -325,7 +325,7 @@ const DashboardQRDialog: React.FC<DashboardQRDialogProps> = ({ open, onClose, me
                     letterSpacing: '0.5px',
                     boxShadow: '0 4px 15px rgba(0, 186, 242, 0.35)',
                     '&:hover': {
-                      background: 'linear-gradient(135deg, #0082CD 0%, #0052cc 100%)',
+                      background: 'linear-gradient(135deg, #FF9933 0%, #E06F00 100%)',
                       boxShadow: '0 6px 20px rgba(0, 186, 242, 0.5)',
                       transform: 'translateY(-1px)'
                     }

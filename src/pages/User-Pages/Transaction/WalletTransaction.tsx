@@ -158,14 +158,14 @@ const WalletTransaction: React.FC = () => {
     },
     headRow: {
       style: {
-        backgroundColor: '#FFF8F0',
-        borderBottom: '2px solid #f0d0d8',
+        backgroundColor: '#FFFFFF',
+        borderBottom: '2px solid #FED7AA',
         minHeight: '48px',
       },
     },
     headCells: {
       style: {
-        color: '#6D214F',
+        color: '#FE8001',
         fontWeight: 800,
         fontSize: '0.85rem',
         textTransform: 'uppercase' as const,
@@ -178,7 +178,7 @@ const WalletTransaction: React.FC = () => {
       style: {
         fontSize: '0.9rem',
         fontWeight: 500,
-        color: '#2d0f1e',
+        color: '#1F333B',
         minHeight: '56px',
         '&:hover': {
           backgroundColor: '#FFFDF9 !important',
@@ -190,12 +190,12 @@ const WalletTransaction: React.FC = () => {
     pagination: {
       style: {
         backgroundColor: '#ffffff',
-        borderTop: '1px solid #f0d0d8',
-        color: '#6D214F',
+        borderTop: '1px solid #FED7AA',
+        color: '#FE8001',
         fontWeight: 700,
       },
       pageButtonsStyle: {
-        fill: '#6D214F',
+        fill: '#FE8001',
         '&:disabled': {
           fill: '#CBD5E1',
         },
@@ -370,7 +370,7 @@ const WalletTransaction: React.FC = () => {
   return (
     <Box sx={{
       minHeight: '100vh',
-      bgcolor: '#FFF8F0',
+      bgcolor: '#FFFFFF',
       px: { xs: 1.8, sm: 3, md: 5 },
       py: { xs: 2, sm: 3.5 },
       maxWidth: '1280px',
@@ -391,8 +391,8 @@ const WalletTransaction: React.FC = () => {
             onClick={() => navigate('/user/dashboard')}
             sx={{
               bgcolor: '#ffffff',
-              border: '1.5px solid #f0d0d8',
-              color: '#6D214F',
+              border: '1.5px solid #FED7AA',
+              color: '#FE8001',
               p: 1,
               borderRadius: '14px',
               boxShadow: '0 2px 8px rgba(109, 33, 79, 0.05)',
@@ -430,7 +430,7 @@ const WalletTransaction: React.FC = () => {
           startIcon={<DownloadIcon sx={{ fontSize: 18 }} />}
           onClick={handleExport}
           sx={{
-            background: 'linear-gradient(135deg, #00BAF2 0%, #0082CD 100%)',
+            background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
             color: '#FFFFFF',
             fontWeight: 800,
             fontSize: '0.85rem',
@@ -440,7 +440,7 @@ const WalletTransaction: React.FC = () => {
             textTransform: 'none',
             boxShadow: '0 4px 14px rgba(0, 186, 242, 0.35)',
             '&:hover': {
-              background: 'linear-gradient(135deg, #0082CD 0%, #0052cc 100%)',
+              background: 'linear-gradient(135deg, #FF9933 0%, #E06F00 100%)',
               boxShadow: '0 6px 18px rgba(0, 186, 242, 0.45)'
             }
           }}
@@ -526,7 +526,7 @@ const WalletTransaction: React.FC = () => {
             width: { xs: 42, sm: 48 },
             height: { xs: 42, sm: 48 },
             borderRadius: '14px',
-            background: 'linear-gradient(135deg, #00BAF2 0%, #0082CD 100%)',
+            background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -568,7 +568,7 @@ const WalletTransaction: React.FC = () => {
           p: { xs: 1.5, sm: 2 },
           borderRadius: '20px',
           bgcolor: '#ffffff',
-          border: '1.5px solid #f0d0d8',
+          border: '1.5px solid #FED7AA',
           boxShadow: '0 4px 16px rgba(109, 33, 79, 0.05)',
           mb: 2.5,
           display: 'flex',
@@ -589,23 +589,23 @@ const WalletTransaction: React.FC = () => {
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <SearchIcon sx={{ color: '#6D214F', fontSize: 20 }} />
+                <SearchIcon sx={{ color: '#FE8001', fontSize: 20 }} />
               </InputAdornment>
             ),
           }}
           sx={{
             maxWidth: { xs: '100%', sm: '380px' },
-            bgcolor: '#FFF8F0',
+            bgcolor: '#FFFFFF',
             borderRadius: '14px',
             '& .MuiOutlinedInput-notchedOutline': {
-              borderColor: '#f0d0d8',
+              borderColor: '#FED7AA',
               borderRadius: '14px',
             },
             '&:hover .MuiOutlinedInput-notchedOutline': {
-              borderColor: '#00BAF2',
+              borderColor: '#FE8001',
             },
             '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-              borderColor: '#00BAF2',
+              borderColor: '#FE8001',
             },
             '& .MuiInputBase-input': {
               fontSize: '0.88rem',
@@ -631,10 +631,10 @@ const WalletTransaction: React.FC = () => {
               fontWeight: 800,
               fontSize: '0.8rem',
               cursor: 'pointer',
-              bgcolor: filterMode === 'all' ? '#6D214F' : '#FFF8F0',
-              color: filterMode === 'all' ? '#FFF8F0' : '#6D214F',
-              border: '1px solid #f0d0d8',
-              '&:hover': { bgcolor: filterMode === 'all' ? '#5a1a41' : '#fce8ec' }
+              bgcolor: filterMode === 'all' ? '#FE8001' : '#FFFFFF',
+              color: filterMode === 'all' ? '#FFFFFF' : '#FE8001',
+              border: '1px solid #FED7AA',
+              '&:hover': { bgcolor: filterMode === 'all' ? '#E06F00' : '#fce8ec' }
             }}
           />
           <Chip
@@ -676,7 +676,7 @@ const WalletTransaction: React.FC = () => {
           py: 12,
           gap: 2
         }}>
-          <CircularProgress size={44} sx={{ color: '#00BAF2' }} />
+          <CircularProgress size={44} sx={{ color: '#FE8001' }} />
           <Typography sx={{ color: '#7A5060', fontWeight: 700, fontSize: '0.95rem' }}>
             Loading wallet transactions...
           </Typography>
@@ -689,7 +689,7 @@ const WalletTransaction: React.FC = () => {
             textAlign: 'center',
             bgcolor: '#ffffff',
             borderRadius: '24px',
-            border: '1.5px solid #f0d0d8',
+            border: '1.5px solid #FED7AA',
             boxShadow: '0 4px 16px rgba(109, 33, 79, 0.04)'
           }}
         >
@@ -697,14 +697,14 @@ const WalletTransaction: React.FC = () => {
             width: 64,
             height: 64,
             borderRadius: '50%',
-            bgcolor: '#FFF8F0',
-            color: '#6D214F',
+            bgcolor: '#FFFFFF',
+            color: '#FE8001',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             mx: 'auto',
             mb: 2,
-            border: '1px solid #f0d0d8'
+            border: '1px solid #FED7AA'
           }}>
             <AccountBalanceWalletIcon sx={{ fontSize: 32 }} />
           </Box>
@@ -727,8 +727,8 @@ const WalletTransaction: React.FC = () => {
               sx={{
                 mt: 2,
                 borderRadius: '12px',
-                borderColor: '#6D214F',
-                color: '#6D214F',
+                borderColor: '#FE8001',
+                color: '#FE8001',
                 fontWeight: 700,
                 textTransform: 'none'
               }}
@@ -757,7 +757,7 @@ const WalletTransaction: React.FC = () => {
                   p: 2,
                   bgcolor: '#ffffff',
                   borderRadius: '20px',
-                  border: '1.5px solid #f0d0d8',
+                  border: '1.5px solid #FED7AA',
                   boxShadow: '0 4px 14px rgba(109, 33, 79, 0.04)',
                   display: 'flex',
                   flexDirection: 'column',
@@ -840,7 +840,7 @@ const WalletTransaction: React.FC = () => {
                 {/* Bottom Row: Balance & Status Pill */}
                 <Box sx={{
                   pt: 1,
-                  borderTop: '1px dashed #f0d0d8',
+                  borderTop: '1px dashed #FED7AA',
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center'
@@ -873,7 +873,7 @@ const WalletTransaction: React.FC = () => {
           elevation={0}
           sx={{
             borderRadius: '24px',
-            border: '1.5px solid #f0d0d8',
+            border: '1.5px solid #FED7AA',
             boxShadow: '0 8px 24px rgba(109, 33, 79, 0.05)',
             overflow: 'hidden'
           }}

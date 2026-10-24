@@ -203,7 +203,7 @@ const Wallet = () => {
         margin: isMobile ? "0.5rem" : "1.5rem",
         bgcolor: '#ffffff',
         borderRadius: "24px",
-        border: "1px solid #f0d0d8",
+        border: "1px solid #FED7AA",
         boxShadow: "0 8px 30px rgba(109,33,79,0.06)",
         mt: 1,
       }}
@@ -214,8 +214,8 @@ const Wallet = () => {
         <div>
           <Box sx={{
             marginBottom: "1.5rem",
-            background: "linear-gradient(135deg, #6D214F 0%, #8f2f68 100%)",
-            color: '#FFF8F0',
+            background: "linear-gradient(135deg, #FE8001 0%, #FF9933 100%)",
+            color: '#FFFFFF',
             padding: "14px 18px",
             borderRadius: "16px",
             fontWeight: "bold",
@@ -231,7 +231,7 @@ const Wallet = () => {
                 else setSearchParams({});
               }} 
               size="small" 
-              sx={{ color: '#FFF8F0' }}
+              sx={{ color: '#FFFFFF' }}
             >
               <ArrowBackIcon fontSize="small" />
             </IconButton>
@@ -252,25 +252,25 @@ const Wallet = () => {
               <Box sx={{
                 p: 2,
                 borderRadius: "16px",
-                bgcolor: "#FFF8F0",
-                border: "1.5px solid #f0d0d8",
+                bgcolor: "#FFFFFF",
+                border: "1.5px solid #FED7AA",
                 display: "flex",
                 flexDirection: "column",
                 gap: 1
               }}>
                 <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <Typography variant="caption" sx={{ color: "#7a5060", fontWeight: 700 }}>Total Investment</Typography>
-                  <Typography variant="body2" sx={{ fontWeight: 800, color: "#6D214F" }}>₹{totalInvested.toFixed(2)}</Typography>
+                  <Typography variant="body2" sx={{ fontWeight: 800, color: "#FE8001" }}>₹{totalInvested.toFixed(2)}</Typography>
                 </Box>
                 <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <Typography variant="caption" sx={{ color: "#7a5060", fontWeight: 700 }}>Max Withdrawal Limit (2x)</Typography>
-                  <Typography variant="body2" sx={{ fontWeight: 800, color: "#6D214F" }}>₹{maxWithdrawalLimit.toFixed(2)}</Typography>
+                  <Typography variant="body2" sx={{ fontWeight: 800, color: "#FE8001" }}>₹{maxWithdrawalLimit.toFixed(2)}</Typography>
                 </Box>
                 <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <Typography variant="caption" sx={{ color: "#7a5060", fontWeight: 700 }}>Already Withdrawn</Typography>
                   <Typography variant="body2" sx={{ fontWeight: 800, color: totalWithdrawn > 0 ? "#d32f2f" : "#7a5060" }}>₹{totalWithdrawn.toFixed(2)}</Typography>
                 </Box>
-                <Divider sx={{ my: 0.5, borderColor: "#f0d0d8" }} />
+                <Divider sx={{ my: 0.5, borderColor: "#FED7AA" }} />
                 <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <Typography variant="caption" sx={{ color: "#059669", fontWeight: 800 }}>Remaining Withdrawable Limit</Typography>
                   <Typography variant="subtitle2" sx={{ fontWeight: 900, color: "#059669" }}>₹{remainingWithdrawalLimit.toFixed(2)}</Typography>
@@ -286,13 +286,13 @@ const Wallet = () => {
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     borderRadius: "14px",
-                    bgcolor: "#FFF8F0",
-                    "& fieldset": { borderColor: "#f0d0d8", borderWidth: "1.5px" },
+                    bgcolor: "#FFFFFF",
+                    "& fieldset": { borderColor: "#FED7AA", borderWidth: "1.5px" },
                     "&:hover fieldset": { borderColor: "#E5989B" },
-                    "&.Mui-focused fieldset": { borderColor: "#6D214F", borderWidth: "2px" },
+                    "&.Mui-focused fieldset": { borderColor: "#FE8001", borderWidth: "2px" },
                   },
                   "& .MuiInputLabel-root": { color: "#7a5060", fontWeight: 600 },
-                  "& .MuiInputLabel-root.Mui-focused": { color: "#6D214F" },
+                  "& .MuiInputLabel-root.Mui-focused": { color: "#FE8001" },
                 }}
               />
 
@@ -318,13 +318,13 @@ const Wallet = () => {
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     borderRadius: "14px",
-                    bgcolor: "#FFF8F0",
-                    "& fieldset": { borderColor: "#f0d0d8", borderWidth: "1.5px" },
+                    bgcolor: "#FFFFFF",
+                    "& fieldset": { borderColor: "#FED7AA", borderWidth: "1.5px" },
                     "&:hover fieldset": { borderColor: "#E5989B" },
-                    "&.Mui-focused fieldset": { borderColor: "#6D214F", borderWidth: "2px" },
+                    "&.Mui-focused fieldset": { borderColor: "#FE8001", borderWidth: "2px" },
                   },
                   "& .MuiInputLabel-root": { color: "#7a5060", fontWeight: 600 },
-                  "& .MuiInputLabel-root.Mui-focused": { color: "#6D214F" },
+                  "& .MuiInputLabel-root.Mui-focused": { color: "#FE8001" },
                 }}
               />
 
@@ -353,13 +353,13 @@ const Wallet = () => {
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     borderRadius: "14px",
-                    bgcolor: "#FFF8F0",
-                    "& fieldset": { borderColor: "#f0d0d8", borderWidth: "1.5px" },
+                    bgcolor: "#FFFFFF",
+                    "& fieldset": { borderColor: "#FED7AA", borderWidth: "1.5px" },
                     "&:hover fieldset": { borderColor: "#E5989B" },
-                    "&.Mui-focused fieldset": { borderColor: "#6D214F", borderWidth: "2px" },
+                    "&.Mui-focused fieldset": { borderColor: "#FE8001", borderWidth: "2px" },
                   },
                   "& .MuiInputLabel-root": { color: "#7a5060", fontWeight: 600 },
-                  "& .MuiInputLabel-root.Mui-focused": { color: "#6D214F" },
+                  "& .MuiInputLabel-root.Mui-focused": { color: "#FE8001" },
                 }}
               />
 
@@ -434,10 +434,10 @@ const Wallet = () => {
                   }
                   onClick={handleSendOTP}
                   sx={{
-                    background: (isWithdrawalAllowed && !hasWithdrawnToday) ? "linear-gradient(135deg, #6D214F 0%, #8f2f68 100%)" : "#F4C95D",
-                    color: (isWithdrawalAllowed && !hasWithdrawnToday) ? "#FFF8F0" : "#2d0f1e",
+                    background: (isWithdrawalAllowed && !hasWithdrawnToday) ? "linear-gradient(135deg, #FE8001 0%, #FF9933 100%)" : "#F4C95D",
+                    color: (isWithdrawalAllowed && !hasWithdrawnToday) ? "#FFFFFF" : "#1F333B",
                     "&:hover": {
-                      background: (isWithdrawalAllowed && !hasWithdrawnToday) ? "linear-gradient(135deg, #4e1739 0%, #6D214F 100%)" : "#e6be4e"
+                      background: (isWithdrawalAllowed && !hasWithdrawnToday) ? "linear-gradient(135deg, #E06F00 0%, #FE8001 100%)" : "#e6be4e"
                     },
                     borderRadius: "14px",
                     height: "50px",
@@ -447,7 +447,7 @@ const Wallet = () => {
                     boxShadow: "0 4px 14px rgba(109,33,79,0.25)"
                   }}
                 >
-                  {withdrawMutation.isPending ? <CircularProgress size={24} sx={{ color: '#FFF8F0' }} /> :
+                  {withdrawMutation.isPending ? <CircularProgress size={24} sx={{ color: '#FFFFFF' }} /> :
                   !isWithdrawalAllowed ? "Disabled" :
                   hasWithdrawnToday ? "Already Withdrawn Today" : "Submit Withdrawal"}
                 </Button>
@@ -458,7 +458,7 @@ const Wallet = () => {
               <Fade in={step === 2}>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, pt: 2 }}>
                   <Box textAlign="center">
-                    <Typography variant="h6" sx={{ color: '#6D214F', mb: 1, fontWeight: 800 }}>Security Verification</Typography>
+                    <Typography variant="h6" sx={{ color: '#FE8001', mb: 1, fontWeight: 800 }}>Security Verification</Typography>
                     <Typography variant="body2" sx={{ color: '#7a5060' }}>
                       Enter the 6-digit OTP sent to your registered email address.
                     </Typography>
@@ -476,20 +476,20 @@ const Wallet = () => {
                           maxWidth: '45px',
                           '& .MuiOutlinedInput-root': {
                             borderRadius: '12px',
-                            bgcolor: '#FFF8F0',
+                            bgcolor: '#FFFFFF',
                             fontSize: '1.2rem',
                             fontWeight: 'bold',
-                            '& fieldset': { borderColor: '#f0d0d8' },
+                            '& fieldset': { borderColor: '#FED7AA' },
                             '&:hover fieldset': { borderColor: '#E5989B' },
                             '&.Mui-focused fieldset': {
-                              borderColor: '#6D214F',
+                              borderColor: '#FE8001',
                               borderWidth: '2px'
                             },
                           },
                           '& .MuiOutlinedInput-input': {
                             textAlign: 'center',
                             px: 0,
-                            color: '#2d0f1e'
+                            color: '#1F333B'
                           }
                         }
                       }}
@@ -502,20 +502,20 @@ const Wallet = () => {
                       onClick={handleWithdraw}
                       disabled={withdrawMutation.isPending || otp.length !== 6}
                       sx={{
-                        background: "linear-gradient(135deg, #6D214F 0%, #8f2f68 100%)",
-                        color: "#FFF8F0",
+                        background: "linear-gradient(135deg, #FE8001 0%, #FF9933 100%)",
+                        color: "#FFFFFF",
                         fontWeight: 800,
                         borderRadius: "12px",
                         minWidth: "160px",
                         py: 1.3,
                         textTransform: "none",
                         "&:hover": {
-                          background: "linear-gradient(135deg, #4e1739 0%, #6D214F 100%)"
+                          background: "linear-gradient(135deg, #E06F00 0%, #FE8001 100%)"
                         },
-                        "&:disabled": { backgroundColor: "#f0d0d8", color: "#a88098" },
+                        "&:disabled": { backgroundColor: "#FED7AA", color: "#a88098" },
                       }}
                     >
-                      {withdrawMutation.isPending ? <CircularProgress size={24} sx={{ color: '#FFF8F0' }} /> : 'Confirm Withdrawal'}
+                      {withdrawMutation.isPending ? <CircularProgress size={24} sx={{ color: '#FFFFFF' }} /> : 'Confirm Withdrawal'}
                     </Button>
                   </Box>
                 </Box>
@@ -528,15 +528,15 @@ const Wallet = () => {
         {/* Transaction History */}
         {!isWithdrawalView && (
         <>
-        <div style={{ marginBottom: "1.2rem", color: "#2d0f1e", fontWeight: 800, fontSize: "1.25rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div style={{ marginBottom: "1.2rem", color: "#1F333B", fontWeight: 800, fontSize: "1.25rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <span>Transaction History</span>
           <Button 
             variant="contained" 
             onClick={() => setSearchParams({ type: 'withdrawal' })}
             sx={{
-              background: "linear-gradient(135deg, #6D214F 0%, #8f2f68 100%)",
-              color: "#FFF8F0",
-              "&:hover": { background: "linear-gradient(135deg, #4e1739 0%, #6D214F 100%)" },
+              background: "linear-gradient(135deg, #FE8001 0%, #FF9933 100%)",
+              color: "#FFFFFF",
+              "&:hover": { background: "linear-gradient(135deg, #E06F00 0%, #FE8001 100%)" },
               borderRadius: "12px",
               fontWeight: 800,
               textTransform: "none",
