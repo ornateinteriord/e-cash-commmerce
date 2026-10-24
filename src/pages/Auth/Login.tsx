@@ -204,7 +204,7 @@ const Login = () => {
                     color: "#FFFFFF",
                     lineHeight: 1
                   }}>
-                    E SHOPY
+                    SHOPY
                   </Typography>
                 </Box>
 
