@@ -100,7 +100,7 @@ export const ReTopupDialog: React.FC<ReTopupDialogProps> = ({ open, onClose }) =
         ? `Amount must be greater than previous investment of ₹${lastInvestedAmount.toLocaleString()}.`
         : 'Minimum invest amount is ₹100.';
     } else if (amountNum > creditBalance) {
-      validationError = `Insufficient Credit Balance! You have ₹${creditBalance.toLocaleString()} but need ₹${amountNum.toLocaleString()}.`;
+      validationError = `Insufficient Wallet Balance! You have ₹${creditBalance.toLocaleString()} but need ₹${amountNum.toLocaleString()}.`;
     }
   }
 
@@ -128,7 +128,7 @@ export const ReTopupDialog: React.FC<ReTopupDialogProps> = ({ open, onClose }) =
     }
 
     if (amountNum > creditBalance) {
-      toast.error(`Insufficient Credit Balance! You have ₹${creditBalance.toLocaleString()} but need ₹${amountNum.toLocaleString()}`);
+      toast.error(`Insufficient Wallet Balance! You have ₹${creditBalance.toLocaleString()} but need ₹${amountNum.toLocaleString()}`);
       return;
     }
 
@@ -340,10 +340,10 @@ export const ReTopupDialog: React.FC<ReTopupDialogProps> = ({ open, onClose }) =
               </Alert>
             )}
 
-            {/* Credit Balance Display */}
+            {/* Wallet Balance Display */}
             <Box sx={{ mt: 1.8, mb: 2 }}>
               <Typography sx={{ color: '#7a5060', fontSize: '0.82rem', fontWeight: 600 }}>
-                Credit Balance: <span style={{ color: '#1F333B', fontWeight: 800 }}>₹{creditBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                Wallet Balance: <span style={{ color: '#1F333B', fontWeight: 800 }}>₹{creditBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
               </Typography>
             </Box>
 
@@ -414,7 +414,7 @@ export const ReTopupDialog: React.FC<ReTopupDialogProps> = ({ open, onClose }) =
                 fontSize: '1.1rem',
                 letterSpacing: '0.5px'
               }}>
-                Credits
+                Wallet
               </Typography>
             </Box>
 
@@ -558,7 +558,7 @@ export const ReTopupDialog: React.FC<ReTopupDialogProps> = ({ open, onClose }) =
           </Typography>
           <Typography variant="body2" sx={{ color: '#7a5060', mb: 2.5, lineHeight: 1.6 }}>
             You have successfully invested{' '}
-            <strong style={{ color: '#FE8001' }}>₹{confirmedAmount?.toLocaleString()}</strong> from your Credits Wallet. Daily Incentive will be credited daily.
+            <strong style={{ color: '#FE8001' }}>₹{confirmedAmount?.toLocaleString()}</strong> from your Wallet.
           </Typography>
           <Button
             variant="contained"

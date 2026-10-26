@@ -2,14 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Typography, Box, CircularProgress, Paper, Button, IconButton, Avatar, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
 
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import SettingsIcon from '@mui/icons-material/Settings';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import LockIcon from '@mui/icons-material/Lock';
 import PaymentsIcon from '@mui/icons-material/Payments';
-import SyncAltIcon from '@mui/icons-material/SyncAlt';
-import QrCode2Icon from '@mui/icons-material/QrCode2';
-import SendIcon from '@mui/icons-material/Send';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import ShareIcon from '@mui/icons-material/Share';
@@ -28,8 +25,6 @@ import TokenService from '../../../api/token/tokenService';
 import { useVerifyPayment, parsePaymentRedirectParams, useGetTransactionDetails, useGetWalletOverview, useGetMemberDetails, useGetDailyPayout } from '../../../api/Memeber';
 
 import ProductsContainer from './ProductsContainer';
-import ReTopupDialog from './ReTopupDialog';
-import AutorenewIcon from '@mui/icons-material/Autorenew';
 
 
 const UserDashboard = () => {
@@ -37,7 +32,6 @@ const UserDashboard = () => {
   const navigate = useNavigate();
   const [paymentProcessed, setPaymentProcessed] = useState(false);
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
-  const [reTopupDialogOpen, setReTopupDialogOpen] = useState(false);
   const memberId = TokenService.getMemberId();
   const { data: walletOverview } = useGetWalletOverview(memberId);
   const { data: memberDetails, refetch: refetchMemberDetails } = useGetMemberDetails(memberId);
@@ -45,6 +39,7 @@ const UserDashboard = () => {
   const { refetch: refetchTransactions } = useGetTransactionDetails("all");
   useGetDailyPayout(memberId);
 
+  /*
   // Backend provides whether user has an initial investment (canReTopup / hasInvestment)
   const hasInvestment = Boolean(
     walletOverview?.hasInvestment ??
@@ -81,6 +76,7 @@ const UserDashboard = () => {
 
   // Re-invest container & button is only displayed once earnings become at least double of investment amount
   const canShowReinvest = hasInvestment && totalInvested > 0 && totalEarnings >= (2 * totalInvested);
+  */
 
   const handleCopyReferralLink = () => {
     const code = memberDetails?.Member_id || memberDetails?.member_id || memberId;
@@ -136,25 +132,20 @@ const UserDashboard = () => {
     {
       title: "PROFILE & SECURITY",
       items: [
-        { label: "Profile", icon: <AccountCircleIcon />, route: "/user/account/profile", color: '#2563EB' },
-        { label: "KYC Verify", icon: <VerifiedUserIcon />, route: "/user/account/kyc", color: "#0D9488" },
-        { label: "Security", icon: <LockIcon />, route: "/user/account/change-password", color: "#EA580C" },
-      ]
-    },
-    {
-      title: "TEAM & NETWORK",
-      items: [
-        { label: "New Member", icon: <PersonAddAltIcon />, route: "/user/team/new-register", color: "#8B5CF6" },
+        { label: "Settings", icon: <SettingsIcon />, route: "/user/account/profile", color: '#2563EB' },
+        { label: "KYC", icon: <VerifiedUserIcon />, route: "/user/account/kyc", color: "#0D9488" },
+        { label: "Privacy", icon: <LockIcon />, route: "/user/account/change-password", color: "#EA580C" },
       ]
     }
   ];
 
   const quickAccessServices = [
-    { label: "Transfer", icon: <SyncAltIcon />, route: "/user/transfer", color: "#FE8001" },
-    { label: "Scan & Pay", icon: <QrCode2Icon />, route: "/user/my-qr", color: "#FE8001" },
-    { label: "P2P Transfer", icon: <SendIcon />, route: "/user/p2p-transfer", color: "#FE8001" },
-    { label: "Invest Amount", icon: <InventoryIcon />, route: "/user/new-subscription", color: "#FE8001" },
-    { label: "My Investments", icon: <ReceiptLongIcon />, route: "/user/my-subscriptions", color: "#FE8001" },
+    // { label: "Transfer", icon: <SyncAltIcon />, route: "/user/transfer", color: "#FE8001" },
+    // { label: "Scan & Pay", icon: <QrCode2Icon />, route: "/user/my-qr", color: "#FE8001" },
+    // { label: "P2P Transfer", icon: <SendIcon />, route: "/user/p2p-transfer", color: "#FE8001" },
+    { label: "New Vendor", icon: <PersonAddAltIcon />, route: "/user/team/new-register", color: "#8B5CF6" },
+    { label: "Purchase Amount", icon: <InventoryIcon />, route: "/user/new-subscription", color: "#FE8001" },
+    { label: "Vendor Sale Value", icon: <ReceiptLongIcon />, route: "/user/my-subscriptions", color: "#FE8001" },
   ];
 
   return (
@@ -342,11 +333,8 @@ const UserDashboard = () => {
       <ProductsContainer />
 
       {/* Profile Settings (Quick Access Grid) immediately after Card */}
-      <Box sx={{ mb: 4, width: '100%' }}>
-        <Typography sx={{ color: '#1F333B', fontWeight: 900, mb: 2, textAlign: 'left', px: 0.5, letterSpacing: '1px', textTransform: 'uppercase', fontSize: '1rem' }}>
-          Profile Settings
-        </Typography>
-        <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: { xs: 1.5, sm: 2.5 } }}>
+      <Box sx={{ mb: 3.5, width: '100%' }}>
+        <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: { xs: 1.5, sm: 2.5 } }}>
           {quickAccessGroups.flatMap(group => group.items).map((item: any, i: number) => (
             <Box
               key={i}
@@ -386,54 +374,15 @@ const UserDashboard = () => {
 
       {/* Quick Access (Out of container) below Profile Settings */}
       <Box sx={{ mb: 4, width: '100%' }}>
-        {/* Header with Title & View All */}
-        <Box sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          mb: 2,
-          px: 0.5
-        }}>
-          <Typography sx={{
-            color: '#FE8001',
-            fontWeight: 900,
-            fontSize: '1rem',
-            letterSpacing: '1px',
-            textTransform: 'uppercase'
-          }}>
-            Quick Access
-          </Typography>
-        </Box>
-
-        {/* Quick Access Horizontal Scrollable Icons */}
-        <Box sx={{
-          display: 'flex',
-          overflowX: 'auto',
-          gap: { xs: 1.5, sm: 2.5 },
-          py: 0.5,
-          px: 0.5,
-          scrollSnapType: 'x mandatory',
-          WebkitOverflowScrolling: 'touch',
-          '&::-webkit-scrollbar': { display: 'none' },
-          scrollbarWidth: 'none',
-          msOverflowStyle: 'none'
-        }}>
+        {/* Quick Access 3-Column Grid */}
+        <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: { xs: 1.5, sm: 2.5 } }}>
           {quickAccessServices.map((item, i) => (
             <Box
               key={i}
               onClick={() => navigate(item.route)}
               sx={{
-                flex: { xs: '0 0 calc(25% - 12px)', sm: '0 0 calc(25% - 18px)' },
-                minWidth: { xs: '70px', sm: '78px' },
-                scrollSnapAlign: 'start',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                gap: 1,
-                cursor: 'pointer',
-                p: 0.5,
-                borderRadius: '16px',
-                transition: 'all 0.2s',
+                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1,
+                cursor: 'pointer', p: 1, borderRadius: '16px', transition: 'all 0.2s',
                 '&:hover': { transform: 'translateY(-2px)' }
               }}
             >
@@ -446,33 +395,24 @@ const UserDashboard = () => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                boxShadow: '0 4px 14px rgba(0, 186, 242, 0.35)',
-                '&:hover': {
-                  background: 'linear-gradient(135deg, #FF9933 0%, #E06F00 100%)',
-                  boxShadow: '0 6px 18px rgba(0, 186, 242, 0.5)',
+                boxShadow: '0 4px 14px rgba(254, 128, 1, 0.3)',
+                '&:hover': { 
+                  background: 'linear-gradient(135deg, #E06F00 0%, #FE8001 100%)',
+                  boxShadow: '0 6px 18px rgba(254, 128, 1, 0.45)',
                   transform: 'scale(1.05)'
                 },
                 transition: 'all 0.2s ease'
               }}>
                 {React.cloneElement(item.icon, { sx: { fontSize: { xs: 26, sm: 30 }, color: '#FFFFFF' } })}
               </Box>
-              <Typography sx={{
-                fontWeight: 700,
-                fontSize: { xs: '0.72rem', sm: '0.8rem' },
-                textAlign: 'center',
-                color: '#1F333B',
-                lineHeight: 1.2,
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                width: '100%'
-              }}>
+              <Typography variant="caption" sx={{ fontWeight: 700, fontSize: { xs: '0.72rem', sm: '0.8rem' }, textAlign: 'center', color: '#1F333B' }}>
                 {item.label}
               </Typography>
             </Box>
           ))}
         </Box>
       </Box>
+
 
       {/* Logout Confirmation Dialog */}
       <Dialog
@@ -589,7 +529,7 @@ const UserDashboard = () => {
                 textOverflow: 'ellipsis',
                 letterSpacing: '0.8px'
               }}>
-                Credits
+                Wallet
               </Typography>
             </Box>
 
@@ -827,145 +767,120 @@ const UserDashboard = () => {
         </Paper>
       </Box>
 
-      {/* Team Performance */}
-      <Box sx={{ mb: 3.5 }}>
-        <Typography sx={{ color: '#1F333B', fontWeight: 900, mb: 1.4, fontSize: { xs: '1rem', sm: '1.15rem' }, letterSpacing: '-0.3px' }}>
-          Team Performance
-        </Typography>
-        
-        {/* Compact Brokerage Performance Cards */}
-        <Box sx={{
-          display: 'flex',
-          overflowX: 'auto',
-          gap: { xs: 1, sm: 1.5 },
-          pb: 1,
-          pt: 0.2,
-          scrollSnapType: 'x mandatory',
-          WebkitOverflowScrolling: 'touch',
-          '&::-webkit-scrollbar': { display: 'none' },
-          scrollbarWidth: 'none',
-          msOverflowStyle: 'none'
-        }}>
-          {/* 1. My Member Card */}
-          <Box
-            onClick={() => navigate('/user/team')}
-            sx={{
-              flex: { xs: '0 0 calc(33.33% - 7px)', sm: '0 0 calc(33.33% - 10px)', md: '0 0 160px' },
-              minWidth: { xs: '115px', sm: '135px' },
-              scrollSnapAlign: 'start',
-              borderRadius: { xs: '20px', sm: '22px' },
-              background: 'linear-gradient(180deg, #EFF6FF 0%, #DBEAFE 100%)',
-              border: '1px solid #BFDBFE',
-              p: { xs: 1.4, sm: 1.8 },
-              cursor: 'pointer',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              minHeight: { xs: '165px', sm: '185px' },
-              boxShadow: '0 4px 14px rgba(59, 130, 246, 0.08)',
-              transition: 'all 0.2s ease',
-              '&:hover': { transform: 'translateY(-2px)', boxShadow: '0 8px 18px rgba(59, 130, 246, 0.14)' }
-            }}
-          >
-            <Box>
-              <Typography sx={{ color: '#1e3a8a', fontWeight: 900, fontSize: { xs: '0.85rem', sm: '0.95rem' }, lineHeight: 1.2, mb: 0.2 }}>
-                My Member
-              </Typography>
-              <Typography sx={{ color: '#64748b', fontSize: '9.5px', fontWeight: 600, display: { xs: 'none', sm: 'block' } }}>
-                Total network
-              </Typography>
-            </Box>
-
-            <Box sx={{ mt: 'auto', pt: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <Box sx={{
-                width: { xs: 52, sm: 62 },
-                height: { xs: 52, sm: 62 },
-                borderRadius: '18px',
-                bgcolor: 'rgba(255,255,255,0.7)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                mb: 1,
-                boxShadow: '0 4px 12px rgba(30, 58, 138, 0.06)'
-              }}>
-                <GroupsIcon sx={{ fontSize: { xs: 32, sm: 40 }, color: '#2563eb' }} />
-              </Box>
-              <Box sx={{
-                bgcolor: '#ffffff',
-                border: '1px solid #bfdbfe',
-                borderRadius: '10px',
-                py: 0.4,
-                px: 1,
-                width: '100%',
-                textAlign: 'center',
-                boxShadow: '0 2px 6px rgba(37, 99, 235, 0.08)'
-              }}>
-                <Typography sx={{ fontWeight: 900, color: '#1e3a8a', fontSize: { xs: '0.95rem', sm: '1.15rem' }, lineHeight: 1 }}>
-                  {Math.max(memberDetails?.registration_stats?.total || 0, memberDetails?.total_team || 0)}
-                </Typography>
-              </Box>
-            </Box>
+      {/* Team & Referral Stats (Compact) */}
+      <Box sx={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(2, 1fr)',
+        gap: { xs: 1.5, sm: 2 },
+        mb: 3.5
+      }}>
+        {/* 1. My Team Card */}
+        <Box
+          onClick={() => navigate('/user/team')}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: 1.5,
+            p: { xs: 1.4, sm: 1.8 },
+            borderRadius: '16px',
+            background: 'linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%)',
+            border: '1px solid #BFDBFE',
+            cursor: 'pointer',
+            boxShadow: '0 4px 12px rgba(59, 130, 246, 0.08)',
+            transition: 'all 0.2s ease',
+            '&:hover': {
+              transform: 'translateY(-2px)',
+              boxShadow: '0 8px 20px rgba(59, 130, 246, 0.16)'
+            }
+          }}
+        >
+          <Box sx={{ minWidth: 0, flex: 1 }}>
+            <Typography sx={{
+              color: '#1e3a8a',
+              fontWeight: 800,
+              fontSize: { xs: '0.82rem', sm: '0.92rem' },
+              lineHeight: 1.2,
+              mb: 0.4
+            }}>
+              My Team
+            </Typography>
+            <Typography sx={{
+              fontWeight: 900,
+              color: '#1e3a8a',
+              fontSize: { xs: '1.25rem', sm: '1.45rem' },
+              lineHeight: 1
+            }}>
+              {Math.max(memberDetails?.registration_stats?.total || 0, memberDetails?.total_team || 0)}
+            </Typography>
           </Box>
+          <Box sx={{
+            width: { xs: 40, sm: 46 },
+            height: { xs: 40, sm: 46 },
+            borderRadius: '12px',
+            bgcolor: 'rgba(255, 255, 255, 0.9)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
+            boxShadow: '0 2px 8px rgba(30, 58, 138, 0.1)'
+          }}>
+            <GroupsIcon sx={{ fontSize: { xs: 24, sm: 28 }, color: '#2563eb' }} />
+          </Box>
+        </Box>
 
-          {/* 2. My Direct Card */}
-          <Box 
-            onClick={() => navigate('/user/team/direct')}
-            sx={{
-              flex: { xs: '0 0 calc(33.33% - 7px)', sm: '0 0 calc(33.33% - 10px)', md: '0 0 160px' },
-              minWidth: { xs: '115px', sm: '135px' },
-              scrollSnapAlign: 'start',
-              borderRadius: { xs: '20px', sm: '22px' },
-              background: 'linear-gradient(180deg, #FFF7ED 0%, #FFEDD5 100%)',
-              border: '1px solid #FED7AA',
-              p: { xs: 1.4, sm: 1.8 },
-              cursor: 'pointer',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              minHeight: { xs: '165px', sm: '185px' },
-              boxShadow: '0 4px 14px rgba(234, 88, 12, 0.08)',
-              transition: 'all 0.2s ease',
-              '&:hover': { transform: 'translateY(-2px)', boxShadow: '0 8px 18px rgba(234, 88, 12, 0.14)' }
-            }}
-          >
-            <Box>
-              <Typography sx={{ color: '#7c2d12', fontWeight: 900, fontSize: { xs: '0.85rem', sm: '0.95rem' }, lineHeight: 1.2, mb: 0.2 }}>
-                My Direct
-              </Typography>
-              <Typography sx={{ color: '#64748b', fontSize: '9.5px', fontWeight: 600, display: { xs: 'none', sm: 'block' } }}>
-                Sponsored
-              </Typography>
-            </Box>
-
-            <Box sx={{ mt: 'auto', pt: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <Box sx={{
-                width: { xs: 52, sm: 62 },
-                height: { xs: 52, sm: 62 },
-                borderRadius: '18px',
-                bgcolor: 'rgba(255,255,255,0.7)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                mb: 1,
-                boxShadow: '0 4px 12px rgba(124, 45, 18, 0.06)'
-              }}>
-                <PersonAddAltIcon sx={{ fontSize: { xs: 32, sm: 40 }, color: '#ea580c' }} />
-              </Box>
-              <Box sx={{
-                bgcolor: '#ffffff',
-                border: '1px solid #fed7aa',
-                borderRadius: '10px',
-                py: 0.4,
-                px: 1,
-                width: '100%',
-                textAlign: 'center',
-                boxShadow: '0 2px 6px rgba(234, 88, 12, 0.08)'
-              }}>
-                <Typography sx={{ fontWeight: 900, color: '#7c2d12', fontSize: { xs: '0.95rem', sm: '1.15rem' }, lineHeight: 1 }}>
-                  {Math.max(memberDetails?.registration_stats?.direct || 0, memberDetails?.direct_referrals?.length || 0)}
-                </Typography>
-              </Box>
-            </Box>
+        {/* 2. My Referral Card */}
+        <Box 
+          onClick={() => navigate('/user/team/direct')}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: 1.5,
+            p: { xs: 1.4, sm: 1.8 },
+            borderRadius: '16px',
+            background: 'linear-gradient(135deg, #FFF7ED 0%, #FFEDD5 100%)',
+            border: '1px solid #FED7AA',
+            cursor: 'pointer',
+            boxShadow: '0 4px 12px rgba(234, 88, 12, 0.08)',
+            transition: 'all 0.2s ease',
+            '&:hover': {
+              transform: 'translateY(-2px)',
+              boxShadow: '0 8px 20px rgba(234, 88, 12, 0.16)'
+            }
+          }}
+        >
+          <Box sx={{ minWidth: 0, flex: 1 }}>
+            <Typography sx={{
+              color: '#7c2d12',
+              fontWeight: 800,
+              fontSize: { xs: '0.82rem', sm: '0.92rem' },
+              lineHeight: 1.2,
+              mb: 0.4
+            }}>
+              My Referral
+            </Typography>
+            <Typography sx={{
+              fontWeight: 900,
+              color: '#7c2d12',
+              fontSize: { xs: '1.25rem', sm: '1.45rem' },
+              lineHeight: 1
+            }}>
+              {Math.max(memberDetails?.registration_stats?.direct || 0, memberDetails?.direct_referrals?.length || 0)}
+            </Typography>
+          </Box>
+          <Box sx={{
+            width: { xs: 40, sm: 46 },
+            height: { xs: 40, sm: 46 },
+            borderRadius: '12px',
+            bgcolor: 'rgba(255, 255, 255, 0.9)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
+            boxShadow: '0 2px 8px rgba(124, 45, 18, 0.1)'
+          }}>
+            <PersonAddAltIcon sx={{ fontSize: { xs: 24, sm: 28 }, color: '#ea580c' }} />
           </Box>
         </Box>
       </Box>
@@ -1296,8 +1211,8 @@ const UserDashboard = () => {
         </Box>
       </Box>
 
-      {/* Re-Invest Section (Only displayed once earnings become double of investment amount) */}
-      {canShowReinvest && (
+      {/* Re-Invest / Re-Topup Section - Commented out */}
+      {/* {canShowReinvest && (
         <>
           <Box sx={{ mb: 4 }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1.4 }}>
@@ -1306,7 +1221,6 @@ const UserDashboard = () => {
               </Typography>
             </Box>
 
-            {/* Single Re-Invest Container with Re-Invest Button Inside */}
             <Box
               sx={{
                 borderRadius: { xs: '20px', sm: '22px' },
@@ -1324,7 +1238,6 @@ const UserDashboard = () => {
                 }
               }}
             >
-              {/* Left Side: Icon & Info */}
               <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1.5, sm: 2 } }}>
                 <Box sx={{
                   width: { xs: 46, sm: 52 },
@@ -1345,12 +1258,11 @@ const UserDashboard = () => {
                     Re-Invest
                   </Typography>
                   <Typography sx={{ color: '#64748B', fontWeight: 600, fontSize: { xs: '0.75rem', sm: '0.82rem' }, mt: 0.3 }}>
-                    Credit Balance: <strong style={{ color: '#0284c7' }}>₹{Number(walletOverview?.balance || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
+                    Wallet Balance: <strong style={{ color: '#0284c7' }}>₹{Number(walletOverview?.balance || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
                   </Typography>
                 </Box>
               </Box>
 
-              {/* Right Side: Re-Invest Button Inside Container */}
               <Button
                 size="small"
                 variant="contained"
@@ -1379,10 +1291,9 @@ const UserDashboard = () => {
             </Box>
           </Box>
 
-          {/* Re-Topup Dialog */}
           <ReTopupDialog open={reTopupDialogOpen} onClose={() => setReTopupDialogOpen(false)} />
         </>
-      )}
+      )} */}
     </Box>
   );
 };

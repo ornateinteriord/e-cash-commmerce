@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
-import moment from 'moment';
-import { Box, Card, CardContent, Typography, Grid, CircularProgress, Divider, Chip, LinearProgress, IconButton } from '@mui/material';
+import { Box, Card, CardContent, Typography, Grid, CircularProgress, Divider, Chip, IconButton } from '@mui/material';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
@@ -47,10 +46,10 @@ const MySubscriptions: React.FC = () => {
         </IconButton>
         <Box>
           <Typography variant="h5" sx={{ fontWeight: 900, color: '#FE8001', letterSpacing: '-0.5px' }}>
-            My Investments
+            Vendor Sale Value
           </Typography>
           <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 600 }}>
-            Active investments & daily incentives
+            Active packages & sale values
           </Typography>
         </Box>
       </Box>
@@ -82,16 +81,13 @@ const MySubscriptions: React.FC = () => {
 
             const allPackages = primaryInAddOns ? [...finalAddOns] : [primaryPkg, ...addOns];
 
-            return allPackages.map((pkg: any, index: number) => {
-              const pkgAmount = pkg.amount || pkg.requested_amount || 0;
+            return allPackages.map((pkg: any) => {
+              const pkgAmount = Number(pkg.amount || pkg.requested_amount || 0);
               const pkgId = pkg.package_id || pkg.request_id || 'N/A';
-              const totalDays = pkg.isFD 
-                ? (moment(pkg.date_of_maturity).diff(moment(pkg.roi_start_date), 'days') || 1)
-                : (pkg.roi_payout_target || 200);
-              const payoutCount = pkg.roi_payout_count || 0;
-              const pkgProgress = Math.min((payoutCount / totalDays) * 100, 100);
+              const payoutCount = Number(pkg.roi_payout_count || 0);
               const dailyIncentiveAmount = pkgAmount * 0.01;
-              const earnedSoFar = (payoutCount * dailyIncentiveAmount).toFixed(2);
+              const earnings = Number(pkg.earned_amount ?? (payoutCount * dailyIncentiveAmount)) || 0;
+              const totalSaleValue = pkgAmount + earnings;
 
               return (
                 <Grid item xs={12} key={pkgId}>
@@ -110,7 +106,7 @@ const MySubscriptions: React.FC = () => {
                           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5 }}>
                             {pkg.isFD ? <AccountBalanceIcon sx={{ fontSize: 16, color: '#FE8001' }} /> : <PaymentsIcon sx={{ fontSize: 16, color: '#FE8001' }} />}
                             <Typography variant="caption" sx={{ fontSize: '0.72rem', fontWeight: 800, color: '#64748B', textTransform: 'uppercase', letterSpacing: 0.5 }}>
-                              {pkg.isFD ? 'Fixed Deposit' : `Investment #${index + 1}`}
+                              {pkg.isFD ? 'Fixed Deposit' : 'Purchase Amount'}
                             </Typography>
                           </Box>
                           <Typography variant="h5" sx={{ fontWeight: 900, color: '#FE8001', lineHeight: 1.2 }}>
@@ -136,46 +132,18 @@ const MySubscriptions: React.FC = () => {
                       <Box sx={{ mb: 1.5, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <Box>
                           <Typography variant="caption" sx={{ fontSize: '0.75rem', color: '#64748B', fontWeight: 700 }}>
-                            {pkg.isFD ? 'Interest Rate' : 'Daily Incentive'}
+                            Sale Value
                           </Typography>
-                          <Typography variant="subtitle2" sx={{ fontWeight: 900, color: '#FE8001' }}>
-                            {pkg.isFD ? `${pkg.interest_rate || 0}% p.a.` : `1% (₹${dailyIncentiveAmount.toFixed(2)}/day)`}
+                          <Typography variant="subtitle2" sx={{ fontWeight: 900, color: '#059669', fontSize: '1.15rem' }}>
+                            ₹{totalSaleValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                           </Typography>
+                          {earnings > 0 && (
+                            <Typography variant="caption" sx={{ fontSize: '0.68rem', color: '#64748B', fontWeight: 600, display: 'block' }}>
+                              ₹{pkgAmount.toLocaleString()} purchase + ₹{earnings.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} earnings
+                            </Typography>
+                          )}
                         </Box>
-                        {!pkg.isFD && (
-                          <Box sx={{ textAlign: 'right' }}>
-                            <Typography variant="caption" sx={{ fontSize: '0.75rem', color: '#64748B', fontWeight: 700 }}>
-                              Earned So Far
-                            </Typography>
-                            <Typography variant="subtitle2" sx={{ fontWeight: 900, color: '#059669' }}>
-                              ₹{earnedSoFar}
-                            </Typography>
-                          </Box>
-                        )}
                       </Box>
-
-                      <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.8 }}>
-                        <Typography variant="caption" sx={{ fontSize: '0.72rem', color: '#64748B', fontWeight: 700 }}>
-                          {pkg.isFD ? 'Maturity Progress' : `Daily Incentive: ${payoutCount} of ${totalDays} Days`}
-                        </Typography>
-                        <Typography variant="caption" sx={{ fontSize: '0.72rem', color: '#FE8001', fontWeight: 800 }}>
-                          {pkgProgress.toFixed(0)}%
-                        </Typography>
-                      </Box>
-                      <LinearProgress
-                        variant="determinate"
-                        value={pkgProgress}
-                        sx={{
-                          height: 8,
-                          borderRadius: 4,
-                          backgroundColor: '#FFFFFF',
-                          border: '1px solid #FED7AA',
-                          '& .MuiLinearProgress-bar': {
-                            background: 'linear-gradient(90deg, #E5989B, #FE8001)',
-                            borderRadius: 4
-                          }
-                        }}
-                      />
 
                       <Box sx={{ mt: 1.5, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>

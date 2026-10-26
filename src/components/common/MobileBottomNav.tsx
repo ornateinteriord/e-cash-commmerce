@@ -3,12 +3,10 @@ import { BottomNavigation, BottomNavigationAction, Paper, Box } from '@mui/mater
 import HomeIcon from '@mui/icons-material/Home';
 import PersonIcon from '@mui/icons-material/Person';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
-import AutorenewIcon from '@mui/icons-material/Autorenew';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import { useGetMemberDetails, useGetWalletOverview } from '../../api/Memeber';
 import TokenService from '../../api/token/tokenService';
-import { ReTopupDialog } from '../../pages/User-Pages/UserDashboard/ReTopupDialog';
 
 const MobileBottomNav: React.FC = () => {
   const navigate = useNavigate();
@@ -132,16 +130,16 @@ const MobileBottomNav: React.FC = () => {
           />
           <BottomNavigationAction
             value="/user/transactions?type=credits"
-            label="Credits"
+            label="Wallet"
             icon={<Box className={!reTopupOpen && value === "/user/transactions?type=credits" ? "indicator" : ""}>{<AccountBalanceWalletIcon sx={{ fontSize: 22 }} />}</Box>}
           />
-          {canShowReinvest && (
+          {/* {canShowReinvest && (
             <BottomNavigationAction
               value="re-topup"
               label="Re-Invest"
               icon={<Box className={reTopupOpen || value === "re-topup" ? "indicator" : ""}>{<AutorenewIcon sx={{ fontSize: 22 }} />}</Box>}
             />
-          )}
+          )} */}
           <BottomNavigationAction
             value="/user/account/profile"
             label="Profile"
@@ -150,10 +148,10 @@ const MobileBottomNav: React.FC = () => {
         </BottomNavigation>
       </Paper>
 
-      {/* Re-Invest Dialog accessible from mobile bottom nav only once earnings become double of investment */}
-      {canShowReinvest && (
+      {/* Re-Invest Dialog - Commented out */}
+      {/* {canShowReinvest && (
         <ReTopupDialog open={reTopupOpen} onClose={() => setReTopupOpen(false)} />
-      )}
+      )} */}
 
       {/* Spacer to prevent content from being hidden behind nav — Skip on Chat page */}
       {!location.pathname.includes('/user/chat') && <Box sx={{ height: 68 }} />}

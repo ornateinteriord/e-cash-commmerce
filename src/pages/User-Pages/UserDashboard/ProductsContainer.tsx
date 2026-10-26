@@ -45,12 +45,11 @@ const PACKAGES: PackagePlan[] = [
     color: '#EA580C',
     lightBg: '#FFF7ED',
     borderHover: '#FED7AA',
-    description: 'The Smart Saver Plan helps you explore enhanced features and expand your trading potential',
+    description: 'Start selling online with essential product listings and selected category access',
     features: [
-      'Up to 2x Response Rate',
-      '160 Days Ad Validity',
-      '50 Buyer Notifications',
-      'Verified Property Tag'
+      '10 Product Listing',
+      'Selected Category',
+      'Verified Vendor Badge'
     ]
   },
   {
@@ -61,12 +60,11 @@ const PACKAGES: PackagePlan[] = [
     color: '#0284C7',
     lightBg: '#F0F9FF',
     borderHover: '#BAE6FD',
-    description: 'Explore the Wealth Builder Plan designed for advanced financial management and growth opportunities',
+    description: 'Scale your online store with more product listings and enhanced buyer visibility',
     features: [
-      'Up to 5x Response Rate',
-      '180 Days Ad Validity',
-      '100 Buyer Notifications',
-      '250 Email Promotions'
+      '25 Product Listing',
+      'Selected Category',
+      'Priority Buyer Inquiries'
     ]
   },
   {
@@ -77,12 +75,11 @@ const PACKAGES: PackagePlan[] = [
     color: '#059669',
     lightBg: '#ECFDF5',
     borderHover: '#A7F3D0',
-    description: 'Take your forex journey further with the Future Secure Deposit and higher returns',
+    description: 'Grow your vendor business with higher product capacity and priority search placement',
     features: [
-      'Up to 7x Response Rate',
-      '250 Days Ad Validity',
-      '100 Buyer Notifications',
-      '1500 Email Promotions'
+      '60 Product Listing',
+      'Selected Category',
+      'Featured Search Ranking'
     ]
   },
   {
@@ -93,28 +90,26 @@ const PACKAGES: PackagePlan[] = [
     color: '#7C3AED',
     lightBg: '#F5F3FF',
     borderHover: '#DDD6FE',
-    description: 'A premium package built to support smarter trading decisions and long-term capital growth',
+    description: 'Multi-category vendor package with high-volume listings and homepage brand spotlight',
     features: [
-      'Up to 10x Response Rate',
-      '300 Days Ad Validity',
-      '150 Buyer Notifications',
-      '2000 Email Promotions'
+      '150 Product Listing',
+      'Any Category',
+      'Homepage Brand Spotlight'
     ]
   },
   {
     id: 5,
     amount: 500000,
-    title: 'Golden Growth Investment Plan',
+    title: 'Golden Growth Plan',
     tag: 'Golden Growth',
     color: '#D97706',
     lightBg: '#FFFBEB',
     borderHover: '#FDE68A',
-    description: 'Experience a higher level of financial flexibility with the Golden Growth Investment Plan',
+    description: 'Top-tier enterprise vendor plan with maximum product listings across any category and dedicated support',
     features: [
-      'Premium Response Rate',
-      '365 Days Ad Validity',
-      'Unlimited Notifications',
-      'Dedicated Support'
+      '500 Product Listing',
+      'Any Category',
+      'Top Brand Promotion & Dedicated Support'
     ]
   }
 ];
@@ -135,6 +130,22 @@ const ProductsContainer: React.FC = () => {
 
   // Credit balance available
   const creditBalance = Number(walletOverview?.balance ?? walletOverview?.availableForWithdrawal ?? 0);
+
+  // Most recent vendor package amount
+  const getMostRecentPackageAmount = (): number => {
+    if (Array.isArray(memberAddons) && memberAddons.length > 0) {
+      const sorted = [...memberAddons].sort((a: any, b: any) => {
+        const dateA = new Date(a.createdAt || a.roi_start_date || a.date || 0).getTime();
+        const dateB = new Date(b.createdAt || b.roi_start_date || b.date || 0).getTime();
+        return dateB - dateA;
+      });
+      const topAmount = Number(sorted[0]?.amount || sorted[0]?.requested_amount || 0);
+      if (topAmount > 0) return topAmount;
+    }
+    return Number(walletOverview?.primaryPackage ?? user?.package_value ?? 0);
+  };
+
+  const recentPackageAmount = getMostRecentPackageAmount();
 
   const isPurchased = (pkgAmount: number): boolean => {
     if (Number(walletOverview?.primaryPackage) === pkgAmount) return true;
@@ -163,7 +174,7 @@ const ProductsContainer: React.FC = () => {
     }
 
     if (creditBalance < confirmPkg.amount) {
-      toast.error(`Insufficient Credit Balance! You have ₹${creditBalance.toLocaleString('en-IN')} but need ₹${confirmPkg.amount.toLocaleString('en-IN')}`);
+      toast.error(`Insufficient Wallet Balance! You have ₹${creditBalance.toLocaleString('en-IN')} but need ₹${confirmPkg.amount.toLocaleString('en-IN')}`);
       return;
     }
 
@@ -180,7 +191,7 @@ const ProductsContainer: React.FC = () => {
           queryClient.invalidateQueries({ queryKey: ['member-addons'] });
         },
         onError: (err: any) => {
-          toast.error(err?.response?.data?.message || err?.message || 'Investment failed');
+          toast.error(err?.response?.data?.message || err?.message || 'Purchase failed');
         }
       }
     );
@@ -213,7 +224,7 @@ const ProductsContainer: React.FC = () => {
           </Box>
           <Box>
             <Typography variant="h6" sx={{ color: '#1F333B', fontWeight: 900, fontSize: { xs: '1.1rem', sm: '1.25rem' }, lineHeight: 1.2 }}>
-              Investment Packages
+              Vendor Package
             </Typography>
             <Typography variant="caption" sx={{ color: '#7A5060', fontWeight: 600 }}>
               Choose a package plan to activate your earnings
@@ -233,10 +244,10 @@ const ProductsContainer: React.FC = () => {
           boxShadow: '0 2px 8px rgba(254, 128, 1, 0.08)'
         }}>
           <Typography variant="caption" sx={{ color: '#7A5060', fontWeight: 700 }}>
-            Credit Balance:
+            Vendor Pkg:
           </Typography>
           <Typography variant="body2" sx={{ color: '#FE8001', fontWeight: 900 }}>
-            ₹{creditBalance.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            ₹{recentPackageAmount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </Typography>
         </Box>
       </Box>
@@ -447,7 +458,7 @@ const ProductsContainer: React.FC = () => {
                         }
                       }}
                     >
-                      Invest Now
+                      Purchase Amount
                     </Button>
                   )}
                 </Box>
@@ -457,7 +468,7 @@ const ProductsContainer: React.FC = () => {
         })}
       </Box>
 
-      {/* Confirm Investment Dialog */}
+      {/* Confirm Purchase Dialog */}
       <Dialog
         open={!!confirmPkg}
         onClose={() => !isPending && setConfirmPkg(null)}
@@ -491,13 +502,13 @@ const ProductsContainer: React.FC = () => {
             <StarsIcon sx={{ fontSize: 32, color: '#FE8001' }} />
           </Box>
           <Typography variant="h6" sx={{ color: '#1F333B', fontWeight: 900 }}>
-            Confirm Investment
+            Confirm Purchase
           </Typography>
         </DialogTitle>
 
         <DialogContent sx={{ pb: 1, textAlign: 'center' }}>
           <Typography variant="body2" sx={{ color: '#7A5060', mb: 2 }}>
-            Are you sure you want to invest in this package plan?
+            Are you sure you want to purchase this package plan?
           </Typography>
 
           <Box sx={{ bgcolor: '#FFFDF9', p: 2.5, borderRadius: '16px', border: '1.5px solid #FED7AA', mb: 2 }}>
@@ -514,7 +525,7 @@ const ProductsContainer: React.FC = () => {
 
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', px: 1, mb: 2 }}>
             <Typography variant="caption" sx={{ color: '#7A5060', fontWeight: 700 }}>
-              Available Credit Balance:
+              Available Wallet Balance:
             </Typography>
             <Typography variant="body2" sx={{ color: '#1F333B', fontWeight: 900 }}>
               ₹{creditBalance.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -523,11 +534,11 @@ const ProductsContainer: React.FC = () => {
 
           {confirmPkg && creditBalance < confirmPkg.amount ? (
             <Alert severity="error" sx={{ borderRadius: '12px', fontSize: '0.8rem', fontWeight: 600 }}>
-              Insufficient Credit Balance! You need ₹{confirmPkg.amount.toLocaleString('en-IN')} but only have ₹{creditBalance.toLocaleString('en-IN')}.
+              Insufficient Wallet Balance! You need ₹{confirmPkg.amount.toLocaleString('en-IN')} but only have ₹{creditBalance.toLocaleString('en-IN')}.
             </Alert>
           ) : (
             <Alert severity="info" sx={{ borderRadius: '12px', fontSize: '0.8rem', fontWeight: 600 }}>
-              ₹{confirmPkg?.amount.toLocaleString('en-IN')} will be deducted from your Credit Balance.
+              ₹{confirmPkg?.amount.toLocaleString('en-IN')} will be deducted from your Wallet Balance.
             </Alert>
           )}
         </DialogContent>
@@ -576,7 +587,7 @@ const ProductsContainer: React.FC = () => {
               }
             }}
           >
-            {isPending ? <CircularProgress size={20} sx={{ color: '#FFFFFF' }} /> : 'Confirm & Invest'}
+            {isPending ? <CircularProgress size={20} sx={{ color: '#FFFFFF' }} /> : 'Confirm & Purchase'}
           </Button>
         </DialogActions>
       </Dialog>
@@ -600,11 +611,11 @@ const ProductsContainer: React.FC = () => {
         fullWidth
       >
         <DialogTitle sx={{ textAlign: 'center', pt: 3.5, color: '#FE8001', fontWeight: 900 }}>
-          Investment Successful! 🎉
+          Purchase Successful! 🎉
         </DialogTitle>
         <DialogContent sx={{ pb: 1, textAlign: 'center' }}>
           <Typography variant="body2" sx={{ color: '#7A5060', mb: 2 }}>
-            Your investment request has been processed successfully.
+            Your purchase request has been processed successfully.
           </Typography>
           <Box sx={{ bgcolor: '#FFFDF9', p: 2.5, borderRadius: '16px', border: '1.5px solid #FED7AA' }}>
             <Typography variant="caption" sx={{ color: '#7A5060', display: 'block', fontWeight: 600 }}>
