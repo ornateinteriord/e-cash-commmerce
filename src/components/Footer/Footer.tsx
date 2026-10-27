@@ -23,18 +23,21 @@ const Footer = () => {
                             {/* Column 1: Logo & Text */}
                             <Grid item xs={12} md={4}>
                                 <Box sx={{ mb: 2 }}>
-                                    <Typography
-                                        variant="h4"
+                                    <Box
+                                        component="img"
+                                        src="/e-shopy.jpeg"
+                                        alt="E-shopy Logo"
                                         sx={{
-                                            fontWeight: 950,
-                                            fontSize: { xs: '1.8rem', md: '2.2rem' },
-                                            letterSpacing: '1.5px',
-                                            color: '#38bdf8',
-                                            textShadow: '0 2px 10px rgba(56, 189, 248, 0.3)'
+                                            height: { xs: 44, md: 52 },
+                                            bgcolor: '#FFFFFF',
+                                            px: 1.5,
+                                            py: 0.6,
+                                            borderRadius: '12px',
+                                            objectFit: 'contain',
+                                            display: 'inline-block',
+                                            boxShadow: '0 4px 14px rgba(0, 0, 0, 0.25)'
                                         }}
-                                    >
-                                        E shopy
-                                    </Typography>
+                                    />
                                 </Box>
                                 <Typography variant="body1" sx={{ color: "#94a3b8", lineHeight: 1.7, pr: { md: 4 } }}>
                                     Highlights the impact of technology on the banking industry,

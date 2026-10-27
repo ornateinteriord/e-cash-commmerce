@@ -45,9 +45,18 @@ const About = () => {
                         />
                     </Grid>
                     <Grid item xs={12} md={6}>
-                        <Typography variant="h4" sx={{ fontWeight: 800, mb: 3, color: '#0f172a' }}>
-                            E SHOPY
-                        </Typography>
+                        <Box sx={{ mb: 3 }}>
+                            <Box
+                                component="img"
+                                src="/e-shopy.jpeg"
+                                alt="E-shopy Logo"
+                                sx={{
+                                    height: 48,
+                                    objectFit: 'contain',
+                                    display: 'block'
+                                }}
+                            />
+                        </Box>
                         <Typography variant="body1" paragraph sx={{ lineHeight: 1.8, color: '#475569' }}>
                             <strong>As on: 2024-07-03</strong><br/>
                             E SHOPY (CIN: U65100DL2022NPL407403) is a Private company incorporated on 25 Dec 2022. It is classified as Non-government company and is registered at Registrar of Companies, Delhi.

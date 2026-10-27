@@ -49,19 +49,16 @@ const PublicNavbar = () => {
         <Container maxWidth="xl">
           <Toolbar sx={{ justifyContent: "space-between", py: 1, px: { xs: 0, sm: 2 } }}>
             <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={() => navigate('/')}>
-              <Typography
-                variant="h5"
+              <Box
+                component="img"
+                src="/e-shopy.jpeg"
+                alt="E-shopy Logo"
                 sx={{
-                  fontWeight: 950,
-                  fontSize: { xs: '1.5rem', md: '1.9rem' },
-                  letterSpacing: '1px',
-                  color: '#0284C7',
-                  textShadow: '0 2px 4px rgba(2, 132, 199, 0.1)',
-                  userSelect: 'none'
+                  height: { xs: 36, md: 44 },
+                  objectFit: 'contain',
+                  display: 'block'
                 }}
-              >
-                E shopy
-              </Typography>
+              />
             </Box>
 
             {/* Desktop Links */}
@@ -162,18 +159,16 @@ const PublicNavbar = () => {
       >
         <Box sx={{ display: "flex", justifyContent: "space-between", p: 2, borderBottom: "1px solid rgba(0,0,0,0.05)" }}>
           <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={() => { navigate('/'); handleDrawerToggle(); }}>
-            <Typography
-              variant="h6"
+            <Box
+              component="img"
+              src="/e-shopy.jpeg"
+              alt="E-shopy Logo"
               sx={{
-                fontWeight: 950,
-                fontSize: '1.5rem',
-                letterSpacing: '1px',
-                color: '#0284C7',
-                userSelect: 'none'
+                height: 36,
+                objectFit: 'contain',
+                display: 'block'
               }}
-            >
-              E shopy
-            </Typography>
+            />
           </Box>
           <IconButton onClick={handleDrawerToggle} sx={{ color: "#475569" }}><CloseIcon /></IconButton>
         </Box>

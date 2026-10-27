@@ -220,6 +220,7 @@ const UserP2PTransfer = lazy(() => import("./pages/User-Pages/Wallet/P2PTransfer
 const UserTopUpWallet = lazy(() => import("./pages/User-Pages/Wallet/TopUpWallet"));
 const UserFixedDepositWallet = lazy(() => import("./pages/User-Pages/Wallet/FixedDepositWallet"));
 const UserPurchaseWallet = lazy(() => import("./pages/User-Pages/Wallet/PurchaseWallet"));
+const UserVendorWallet = lazy(() => import("./pages/User-Pages/Wallet/VendorWallet"));
 const UserSupportChat = lazy(() => import("./pages/User-Pages/SupportChat/SupportChat"));
 const UserChat = lazy(() => import("./pages/User-Pages/Chat/Chat"));
 const UserOverdraft = lazy(() => import("./pages/User-Pages/Overdraft/Overdraft"));
@@ -626,6 +627,7 @@ const RoutesProvider = ({
               <Route path="/user/top-up-wallet" element={<UserTopUpWallet />} />
               <Route path="/user/fixed-deposit-wallet" element={<UserFixedDepositWallet />} />
               <Route path="/user/purchase-wallet" element={<UserPurchaseWallet />} />
+              <Route path="/user/vendor-wallet" element={<UserVendorWallet />} />
               <Route path="/user/support-chat" element={<UserSupportChat />} />
               <Route path="/user/chat" element={<UserChat />} />
               <Route path="/user/overdraft" element={<UserOverdraft />} />

@@ -462,9 +462,17 @@ const MyQR: React.FC = () => {
           <ArrowBackIcon fontSize="small" />
         </IconButton>
         <Box>
-          <Typography variant="h5" sx={{ fontWeight: 900, color: '#0F172A', letterSpacing: '-0.5px' }}>
-            E shopy Scanner & QR
-          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.2 }}>
+            <Box
+              component="img"
+              src="/e-shopy.jpeg"
+              alt="E-shopy"
+              sx={{ height: 26, objectFit: 'contain' }}
+            />
+            <Typography variant="h6" sx={{ fontWeight: 900, color: '#0F172A', letterSpacing: '-0.5px' }}>
+              Scanner & QR
+            </Typography>
+          </Box>
           <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 600 }}>
             Scan & Pay, Receive Money, or Deposit via UTR
           </Typography>

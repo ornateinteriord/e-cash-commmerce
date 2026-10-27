@@ -54,7 +54,7 @@ const P2PTransfer: React.FC = () => {
       return;
     }
     if (numAmount > maxBalance) {
-      toast.error('Insufficient balance in your Credits Wallet');
+      toast.error('Insufficient balance in your Wallet');
       return;
     }
     setStep(2);
@@ -287,7 +287,7 @@ const P2PTransfer: React.FC = () => {
                 >
                   <Box>
                     <Typography sx={{ fontWeight: 800, color: '#FE8001', fontSize: '0.9rem' }}>
-                      Credits Wallet
+                      Wallet
                     </Typography>
                     <Typography variant="caption" sx={{ color: '#64748B' }}>
                       Available for Transfer & Withdrawal
@@ -596,7 +596,7 @@ const P2PTransfer: React.FC = () => {
                     From Wallet:
                   </Typography>
                   <Typography variant="body2" sx={{ color: '#1F333B', fontWeight: 800 }}>
-                    Credits Wallet
+                    Wallet
                   </Typography>
                 </Stack>
 
@@ -609,7 +609,7 @@ const P2PTransfer: React.FC = () => {
                       ₹{parseFloat(amount).toFixed(2)}
                     </Typography>
                     <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 700, display: 'block', fontSize: '11px' }}>
-                      (Credits Wallet)
+                      (Wallet)
                     </Typography>
                   </Box>
                 </Stack>

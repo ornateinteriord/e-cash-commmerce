@@ -53,17 +53,16 @@ const PackageDetail = () => {
           boxShadow: `0 0 30px ${pkgInfo.color}20`,
           border: `1px solid ${pkgInfo.color}40`
         }}>
-          <Typography
+          <Box
+            component="img"
+            src="/e-shopy.jpeg"
+            alt="E-shopy Logo"
             sx={{
-              fontWeight: 950,
-              fontSize: '1.8rem',
-              letterSpacing: '1px',
-              color: pkgInfo.color,
-              userSelect: 'none'
+              height: 48,
+              objectFit: 'contain',
+              display: 'block'
             }}
-          >
-            E shopy
-          </Typography>
+          />
         </Box>
         
         <Box sx={{ 

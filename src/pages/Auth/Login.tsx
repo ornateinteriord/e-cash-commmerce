@@ -179,34 +179,21 @@ const Login = () => {
                 mb: 2.8,
                 textAlign: "center"
               }}>
-                <Box sx={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: 1.2,
-                  mb: 0.8
-                }}>
-                  <Box sx={{
-                    width: 38, height: 38,
-                    borderRadius: "11px",
-                    background: "linear-gradient(135deg, #FE8001 0%, #FFA033 100%)",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    boxShadow: "0 4px 14px rgba(254, 128, 1, 0.4)",
-                  }}>
-                    <Typography sx={{ fontSize: "1.28rem", fontWeight: 950, color: "#FFFFFF", lineHeight: 1 }}>
-                      E
-                    </Typography>
-                  </Box>
-                  <Typography sx={{
-                    fontWeight: 950,
-                    fontSize: { xs: "1.45rem", sm: "1.6rem" },
-                    letterSpacing: "1.8px",
-                    color: "#FFFFFF",
-                    lineHeight: 1
-                  }}>
-                    SHOPY
-                  </Typography>
-                </Box>
+                <Box
+                  component="img"
+                  src="/e-shopy.jpeg"
+                  alt="E-shopy Logo"
+                  sx={{
+                    height: { xs: 46, sm: 54 },
+                    bgcolor: '#FFFFFF',
+                    px: 2,
+                    py: 0.6,
+                    borderRadius: '14px',
+                    objectFit: 'contain',
+                    mb: 1.5,
+                    boxShadow: '0 4px 18px rgba(0, 0, 0, 0.3)'
+                  }}
+                />
 
                 <Typography sx={{
                   color: "#94A3B8",

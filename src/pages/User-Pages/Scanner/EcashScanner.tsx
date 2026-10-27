@@ -323,12 +323,22 @@ const EcashScanner: React.FC = () => {
           <ArrowBackIcon />
         </IconButton>
 
-        <Box sx={{ textAlign: 'center' }}>
-          <Typography sx={{ fontWeight: 900, fontSize: '1.1rem', letterSpacing: '0.5px' }}>
-            E shopy Scanner
-          </Typography>
-          <Typography variant="caption" sx={{ color: '#FE8001', fontWeight: 700 }}>
-            Scan & Pay Instantly
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <Box
+            component="img"
+            src="/e-shopy.jpeg"
+            alt="E-shopy"
+            sx={{
+              height: 28,
+              bgcolor: '#FFFFFF',
+              px: 1,
+              py: 0.3,
+              borderRadius: '8px',
+              objectFit: 'contain'
+            }}
+          />
+          <Typography variant="caption" sx={{ color: '#FE8001', fontWeight: 700, mt: 0.3 }}>
+            Scanner
           </Typography>
         </Box>
 
@@ -677,7 +687,7 @@ const EcashScanner: React.FC = () => {
                 >
                   <Box>
                     <Typography sx={{ fontSize: '0.78rem', fontWeight: 800, color: '#002970', textTransform: 'uppercase' }}>
-                      Credits Wallet
+                      Wallet
                     </Typography>
                     <Typography sx={{ fontSize: '0.72rem', color: '#64748B', fontWeight: 600 }}>
                       Available for Transfer

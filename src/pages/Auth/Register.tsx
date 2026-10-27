@@ -313,19 +313,21 @@ const Register = () => {
             maxWidth: { xs: '100%', lg: '420px' }, width: '100%'
           }}
         >
-          <Typography
-            variant="h2"
+          <Box
+            component="img"
+            src="/e-shopy.jpeg"
+            alt="E-shopy Logo"
             sx={{
-              fontWeight: 950,
-              fontSize: { xs: '2.5rem', lg: '3.5rem' },
-              letterSpacing: '2px',
-              color: '#FE8001',
-              mb: '1rem',
-              textShadow: '0 2px 12px rgba(109, 33, 79, 0.2)'
+              height: { xs: 52, lg: 68 },
+              bgcolor: '#FFFFFF',
+              px: 2,
+              py: 0.8,
+              borderRadius: '16px',
+              objectFit: 'contain',
+              mb: 2,
+              boxShadow: '0 6px 20px rgba(0, 0, 0, 0.12)'
             }}
-          >
-            E SHOPY
-          </Typography>
+          />
           <Typography
             variant={isMobile ? "h5" : "h3"}
             sx={{ color: '#E5989B', fontWeight: 900, mb: 1.5, lineHeight: 1.2 }}

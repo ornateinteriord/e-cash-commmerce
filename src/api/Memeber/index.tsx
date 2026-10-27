@@ -624,6 +624,46 @@ export const useWalletWithdraw = (memberId: any) => {
   });
 };
 
+export const useGetVendorWalletOverview = (memberId: any) => {
+  return useQuery({
+    queryKey: ["vendorWalletOverview", memberId],
+    queryFn: async () => {
+      const response = await get(`/user/vendor-wallet/overview/${memberId}`);
+      if (response.success) {
+        return response.data;
+      } else {
+        throw new Error(response.message || "Failed to fetch vendor wallet overview");
+      }
+    },
+    enabled: !!memberId,
+  });
+};
+
+export const useVendorWalletWithdraw = (memberId: any) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: { memberId: string; amount: string }) => {
+      return await post(`/user/vendor-wallet/withdraw/${memberId}`, data);
+    },
+    onSuccess: (response) => {
+      if (response.success) {
+        toast.success(response.message || "Vendor withdrawal requested successfully!");
+        queryClient.invalidateQueries({ queryKey: ["vendorWalletOverview"] });
+        queryClient.invalidateQueries({ queryKey: ["walletOverview"] });
+        queryClient.invalidateQueries({ queryKey: ["memberDetails"] });
+        return response.data;
+      } else {
+        throw new Error(response.message || "Vendor withdrawal failed");
+      }
+    },
+    onError: (error: any) => {
+      const errorMessage = error.response?.data?.message || "Failed to process vendor withdrawal";
+      toast.error(errorMessage);
+    },
+  });
+};
+
 export const useGetMultiLevelSponsorship = () => {
   return useQuery({
     queryKey: ["multiLevelSponsors"],

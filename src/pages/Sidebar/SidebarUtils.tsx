@@ -3,6 +3,7 @@ import { DashboardIcon, AccountCircleIcon, CheckCircleIcon, GroupIcon, Monetizat
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import QrCode2Icon from "@mui/icons-material/QrCode2";
 import SendIcon from "@mui/icons-material/Send";
+import StorefrontIcon from "@mui/icons-material/Storefront";
 import { LucideIcons, MuiIcons } from '../Icons';
 
 export const UserSideBarMenuItems: SideBarMenuItemType[] = [
@@ -107,6 +108,12 @@ export const UserSideBarMenuItems: SideBarMenuItemType[] = [
     name: "Brokerage Earnings",
     icon: <CreditCardIcon />,
     path: "/user/wallet",
+    isExpandable: false,
+  },
+  {
+    name: "Vendor Wallet",
+    icon: <StorefrontIcon />,
+    path: "/user/vendor-wallet",
     isExpandable: false,
   },
   {

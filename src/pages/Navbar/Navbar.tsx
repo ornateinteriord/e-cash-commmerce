@@ -118,6 +118,20 @@ const Navbar = ({ shouldHide, onToggleSidebar }: NavbarProps) => {
                 <ChevronDown size={16} color="#64748B" />
               </Box>
 
+              {/* Center Brand Logo for User */}
+              <Box
+                component="img"
+                src="/e-shopy.jpeg"
+                alt="E-shopy Logo"
+                onClick={() => navigate('/user/dashboard')}
+                sx={{
+                  height: { xs: 30, sm: 36, md: 40 },
+                  cursor: 'pointer',
+                  objectFit: 'contain',
+                  display: 'block'
+                }}
+              />
+
               {/* Right Side: Scanner, Support Chat & Logout Buttons */}
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 {/* 1. QR Scanner Icon */}
@@ -196,22 +210,18 @@ const Navbar = ({ shouldHide, onToggleSidebar }: NavbarProps) => {
                     <MenuIcon size={24} />
                   </IconButton>
                 )}
-                <Typography
-                  variant="h4"
-                  onClick={() => navigate("/")}
+                <Box
+                  component="img"
+                  src="/e-shopy.jpeg"
+                  alt="E-shopy Logo"
+                  onClick={() => navigate(isLoggedIn ? (userRole === "USER" ? "/user/dashboard" : "/admin/dashboard") : "/")}
                   sx={{
-                    fontWeight: 950,
-                    fontSize: { xs: '1.4rem', md: '1.85rem' },
+                    height: { xs: 34, md: 42 },
                     cursor: "pointer",
-                    letterSpacing: '0.5px',
-                    color: '#1F333B',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 0.5
+                    objectFit: "contain",
+                    display: 'block'
                   }}
-                >
-                  <Box component="span" sx={{ color: '#FE8001' }}>E</Box> shopy
-                </Typography>
+                />
               </Box>
 
               <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1, md: 2 } }}>

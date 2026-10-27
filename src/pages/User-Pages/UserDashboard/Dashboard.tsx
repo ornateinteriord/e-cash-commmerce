@@ -19,6 +19,7 @@ import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
 import ShowChartIcon from '@mui/icons-material/ShowChart';
+import StorefrontIcon from '@mui/icons-material/Storefront';
 import { toast } from 'react-toastify';
 
 import TokenService from '../../../api/token/tokenService';
@@ -326,7 +327,25 @@ const UserDashboard = () => {
           </Box>
         </Box>
 
-
+        {/* Official E-shopy Brand Logo in Welcome Bar */}
+        <Box sx={{
+          display: { xs: 'none', sm: 'flex' },
+          alignItems: 'center',
+          bgcolor: '#FFFFFF',
+          px: 2,
+          py: 0.8,
+          borderRadius: '16px',
+          boxShadow: '0 4px 16px rgba(0, 0, 0, 0.25)',
+          zIndex: 1,
+          alignSelf: { xs: 'flex-start', sm: 'center' }
+        }}>
+          <Box
+            component="img"
+            src="/e-shopy.jpeg"
+            alt="E-shopy"
+            sx={{ height: { sm: 36, md: 42 }, objectFit: 'contain' }}
+          />
+        </Box>
       </Box>
 
       {/* ── PACKAGE CONTAINER DIRECTLY BELOW NAME & ID ─────────── */}
@@ -657,6 +676,131 @@ const UserDashboard = () => {
               }}
             >
               Activation
+            </Button>
+          </Box>
+        </Box>
+      </Paper>
+
+      {/* ── VENDOR WALLET CARD (ONLY WITHDRAWAL OPTION) ── */}
+      <Paper elevation={0} sx={{
+        p: { xs: 2.2, sm: 3.2, md: 3.8 },
+        mb: 4,
+        borderRadius: { xs: '24px', sm: '28px' },
+        bgcolor: '#FFFFFF',
+        border: '1.5px solid #FED7AA',
+        boxShadow: '0 10px 30px rgba(254, 128, 1, 0.08)',
+        width: '100%',
+        position: 'relative',
+        overflow: 'hidden'
+      }}>
+        <Box sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'stretch',
+          justifyContent: 'space-between',
+          gap: { xs: 2, sm: 3, md: 4 },
+          width: '100%'
+        }}>
+          {/* Left Side: Vendor Wallet Info & Balance */}
+          <Box
+            onClick={() => navigate('/user/vendor-wallet')}
+            sx={{
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              minWidth: 0,
+              gap: { xs: 1.2, sm: 1.6, md: 2 },
+              bgcolor: '#FFFDF9',
+              border: '1.5px solid #FED7AA',
+              borderRadius: { xs: '20px', sm: '24px' },
+              p: { xs: 2.2, sm: 3.2, md: 3.8 },
+              minHeight: { xs: '170px', sm: '200px', md: '220px' },
+              boxShadow: '0 6px 20px rgba(254, 128, 1, 0.04)',
+              transition: 'all 0.2s ease',
+              position: 'relative',
+              overflow: 'hidden',
+              cursor: 'pointer',
+              '&:hover': {
+                transform: 'translateY(-2px)',
+                boxShadow: '0 10px 26px rgba(254, 128, 1, 0.12)',
+                borderColor: '#FE8001'
+              }
+            }}
+          >
+            {/* Icon + Title */}
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1.2, sm: 1.6 } }}>
+              <Box sx={{
+                p: { xs: 0.5, sm: 1.1 },
+                borderRadius: '12px',
+                bgcolor: 'rgba(254, 128, 1, 0.12)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                border: '1px solid rgba(254, 128, 1, 0.4)',
+                flexShrink: 0
+              }}>
+                <StorefrontIcon sx={{ fontSize: { xs: 22, sm: 26, md: 30 }, color: '#FE8001' }} />
+              </Box>
+              <Typography sx={{
+                color: '#FE8001',
+                fontWeight: 900,
+                fontSize: { xs: '1.05rem', sm: '1.2rem', md: '1.35rem' },
+                lineHeight: 1.2,
+                letterSpacing: '0.8px'
+              }}>
+                Vendor Wallet
+              </Typography>
+            </Box>
+
+            {/* Vendor Balance */}
+            <Box sx={{ display: 'flex', alignItems: 'baseline', gap: { xs: 0.5, sm: 0.8 }, my: { xs: 0.5, sm: 0.8 } }}>
+              <Typography sx={{
+                color: '#1F333B',
+                fontWeight: 900,
+                fontSize: { xs: '1.45rem', sm: '1.85rem', md: '2.2rem' },
+                lineHeight: 1.1,
+                letterSpacing: '-0.5px'
+              }}>
+                ₹{Number(walletOverview?.vendorWalletBalance ?? memberDetails?.vendor_wallet ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </Typography>
+            </Box>
+          </Box>
+
+          {/* Right Side: ONLY WITHDRAW BUTTON */}
+          <Box sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            width: { xs: '135px', sm: '175px', md: '210px' },
+            flexShrink: 0
+          }}>
+            <Button
+              variant="contained"
+              onClick={() => navigate('/user/vendor-wallet')}
+              startIcon={<PaymentsIcon sx={{ fontSize: { xs: '20px !important', sm: '23px !important' } }} />}
+              fullWidth
+              sx={{
+                minHeight: { xs: '54px', sm: '64px', md: '72px' },
+                background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
+                color: '#FFFFFF',
+                borderRadius: { xs: '14px', sm: '18px' },
+                px: { xs: 1.5, sm: 2.2 },
+                py: { xs: 1.2, sm: 1.6 },
+                fontWeight: 900,
+                fontSize: { xs: '0.95rem', sm: '1.05rem', md: '1.15rem' },
+                textTransform: 'none',
+                justifyContent: 'center',
+                boxShadow: '0 6px 18px rgba(254, 128, 1, 0.35)',
+                '&:hover': {
+                  background: 'linear-gradient(135deg, #E06F00 0%, #FE8001 100%)',
+                  boxShadow: '0 8px 24px rgba(254, 128, 1, 0.45)',
+                  transform: 'translateY(-2px)'
+                },
+                transition: 'all 0.2s ease'
+              }}
+            >
+              Withdraw
             </Button>
           </Box>
         </Box>

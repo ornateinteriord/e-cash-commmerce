@@ -547,33 +547,34 @@ const Wallet = () => {
             Withdraw
           </Button>
         </div>
-          {walletData?.transactions && walletData.transactions.length > 0 ? (
-              <DataTable
-                columns={getWalletColumns()}
-                data={walletData.transactions}
-                pagination
-                customStyles={DASHBOARD_CUTSOM_STYLE}
-                paginationPerPage={isMobile ? 10 : 25}
-                paginationRowsPerPageOptions={
-                  isMobile ? [10, 20, 50] : [25, 50, 100]
-                }
-                highlightOnHover
-                responsive
-              />
-            ) : (
-              <Box sx={{ textAlign: "center", py: 4 }}>
-                <Typography variant="h6" color="textSecondary">
-                  No transactions found
-                </Typography>
-                <Typography
-                  variant="body2"
-                  color="textSecondary"
-                  sx={{ mt: 1 }}
-                >
-                  Your transaction history will appear here
-                </Typography>
-              </Box>
-            )}
+          <Box sx={{ width: '100%', overflowX: 'auto' }}>
+            <DataTable
+              columns={getWalletColumns()}
+              data={walletData?.transactions || []}
+              pagination
+              customStyles={DASHBOARD_CUTSOM_STYLE}
+              paginationPerPage={isMobile ? 10 : 25}
+              paginationRowsPerPageOptions={
+                isMobile ? [10, 20, 50] : [25, 50, 100]
+              }
+              highlightOnHover
+              responsive
+              noDataComponent={
+                <Box sx={{ textAlign: "center", py: 4, width: "100%" }}>
+                  <Typography variant="h6" color="textSecondary" sx={{ fontSize: '0.95rem', fontWeight: 600 }}>
+                    No transactions found
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    sx={{ mt: 0.5, fontSize: '0.85rem' }}
+                  >
+                    Your transaction history will appear here
+                  </Typography>
+                </Box>
+              }
+            />
+          </Box>
         </>
         )}
       </CardContent>
