@@ -19,38 +19,38 @@ import { LoadingComponent } from '../../App';
 import { useLoginMutation } from '../../api/Auth';
 import ForgotPasswordForm from "./components/ForgotPasswordForm";
 
-// Modern Segmented Pod Input Field Style for #172B30 Form Background (Spacious & Premium)
+// Modern Clean Input Field Style for White Card Background
 const premiumFieldSx = {
   "& .MuiOutlinedInput-root": {
-    color: "#FFFFFF",
-    bgcolor: "rgba(255, 255, 255, 0.06)",
-    borderRadius: "16px",
+    color: "#0F172A",
+    bgcolor: "#F8FAFC",
+    borderRadius: "14px",
     fontSize: "0.98rem",
     fontWeight: 600,
     transition: "all 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
-    "& fieldset": { borderColor: "rgba(255, 255, 255, 0.16)", borderWidth: "1.5px" },
+    "& fieldset": { borderColor: "#E2E8F0", borderWidth: "1.5px" },
     "&:hover": {
-      bgcolor: "rgba(255, 255, 255, 0.09)",
-      "& fieldset": { borderColor: "#FFA033" },
+      bgcolor: "#F1F5F9",
+      "& fieldset": { borderColor: "#CBD5E1" },
     },
     "&.Mui-focused": {
-      bgcolor: "rgba(255, 255, 255, 0.1)",
-      boxShadow: "0 4px 20px rgba(254, 128, 1, 0.25)",
+      bgcolor: "#FFFFFF",
+      boxShadow: "0 0 0 4px rgba(254, 128, 1, 0.12)",
       "& fieldset": { borderColor: "#FE8001", borderWidth: "1.8px" },
     },
     "& input": {
-      py: "15.5px",
+      py: "14.5px",
       pl: "8px",
-      color: "#FFFFFF",
+      color: "#0F172A",
       letterSpacing: "0.4px",
       "&::placeholder": {
-        color: "rgba(255, 255, 255, 0.45)",
+        color: "#94A3B8",
         opacity: 1
       }
     }
   },
-  "& .MuiInputLabel-root": { color: "#94A3B8", fontWeight: 500, fontSize: "0.92rem" },
-  "& .MuiInputLabel-root.Mui-focused": { color: "#FFA033", fontWeight: 700 },
+  "& .MuiInputLabel-root": { color: "#64748B", fontWeight: 500, fontSize: "0.92rem" },
+  "& .MuiInputLabel-root.Mui-focused": { color: "#FE8001", fontWeight: 700 },
 };
 
 const Login = () => {
@@ -158,11 +158,11 @@ const Login = () => {
 
         {/* ── LOGIN CARD ── */}
         <Box sx={{
-          bgcolor: "#172B30",
-          borderRadius: { xs: "18px", sm: "22px" },
-          p: { xs: 2.75, sm: 3.5 },
-          boxShadow: "0 18px 48px rgba(23, 43, 48, 0.35), 0 6px 18px rgba(0, 0, 0, 0.2)",
-          border: "1.5px solid rgba(255, 255, 255, 0.12)",
+          bgcolor: "#FFFFFF",
+          borderRadius: { xs: "20px", sm: "24px" },
+          p: { xs: 2.8, sm: 3.8 },
+          boxShadow: "0 20px 48px rgba(15, 23, 42, 0.08), 0 4px 16px rgba(15, 23, 42, 0.04)",
+          border: "1.5px solid #E2E8F0",
           width: "100%",
           position: "relative",
         }}>
@@ -184,19 +184,14 @@ const Login = () => {
                   src="/e-shopy.jpeg"
                   alt="E-shopy Logo"
                   sx={{
-                    height: { xs: 46, sm: 54 },
-                    bgcolor: '#FFFFFF',
-                    px: 2,
-                    py: 0.6,
-                    borderRadius: '14px',
+                    height: { xs: 48, sm: 56 },
                     objectFit: 'contain',
-                    mb: 1.5,
-                    boxShadow: '0 4px 18px rgba(0, 0, 0, 0.3)'
+                    mb: 1.5
                   }}
                 />
 
                 <Typography sx={{
-                  color: "#94A3B8",
+                  color: "#64748B",
                   fontSize: "0.82rem",
                   fontWeight: 500,
                   letterSpacing: "0.2px"
@@ -208,12 +203,12 @@ const Login = () => {
 
                 {isAdminMode && (
                   <Chip
-                    icon={<AdminPanelSettings sx={{ fontSize: "13px !important", color: "#FFA033" }} />}
+                    icon={<AdminPanelSettings sx={{ fontSize: "13px !important", color: "#E06F00" }} />}
                     label="Administrator Portal"
                     size="small"
                     sx={{
-                      bgcolor: "rgba(254, 128, 1, 0.15)",
-                      color: "#FFA033",
+                      bgcolor: "rgba(254, 128, 1, 0.1)",
+                      color: "#E06F00",
                       border: "1px solid rgba(254, 128, 1, 0.3)",
                       fontWeight: 700,
                       fontSize: "0.72rem",
@@ -246,28 +241,28 @@ const Login = () => {
                         {isAdminMode ? (
                           <Box sx={{
                             width: 36, height: 36, borderRadius: "10px",
-                            bgcolor: formData.username ? "rgba(254, 128, 1, 0.2)" : "rgba(255, 255, 255, 0.08)",
+                            bgcolor: formData.username ? "rgba(254, 128, 1, 0.12)" : "#F1F5F9",
                             display: "flex", alignItems: "center", justifyContent: "center",
                             mr: 1.2,
                             transition: "all 0.2s ease"
                           }}>
-                            <PersonOutline sx={{ color: formData.username ? "#FFA033" : "#94A3B8", fontSize: "1.25rem" }} />
+                            <PersonOutline sx={{ color: formData.username ? "#FE8001" : "#64748B", fontSize: "1.25rem" }} />
                           </Box>
                         ) : (
                           <Box sx={{ display: "flex", alignItems: "center", gap: 0.8, mr: 1.2 }}>
                             <Box sx={{
                               width: 36, height: 36, borderRadius: "10px",
-                              bgcolor: formData.username ? "rgba(254, 128, 1, 0.2)" : "rgba(255, 255, 255, 0.08)",
+                              bgcolor: formData.username ? "rgba(254, 128, 1, 0.12)" : "#F1F5F9",
                               display: "flex", alignItems: "center", justifyContent: "center",
                               transition: "all 0.2s ease"
                             }}>
                               <PhoneAndroid sx={{
-                                color: formData.username ? "#FFA033" : "#94A3B8",
+                                color: formData.username ? "#FE8001" : "#64748B",
                                 fontSize: "1.2rem"
                               }} />
                             </Box>
-                            <Typography sx={{ color: "#FFFFFF", fontWeight: 800, fontSize: "0.92rem", letterSpacing: "0.5px" }}>+91</Typography>
-                            <Box sx={{ width: "1.5px", height: "20px", bgcolor: "rgba(255, 255, 255, 0.2)", ml: 0.3 }} />
+                            <Typography sx={{ color: "#0F172A", fontWeight: 800, fontSize: "0.92rem", letterSpacing: "0.5px" }}>+91</Typography>
+                            <Box sx={{ width: "1.5px", height: "20px", bgcolor: "#CBD5E1", ml: 0.3 }} />
                           </Box>
                         )}
                       </InputAdornment>
@@ -293,12 +288,12 @@ const Login = () => {
                       <InputAdornment position="start">
                         <Box sx={{
                           width: 36, height: 36, borderRadius: "10px",
-                          bgcolor: formData.password ? "rgba(254, 128, 1, 0.2)" : "rgba(255, 255, 255, 0.08)",
+                          bgcolor: formData.password ? "rgba(254, 128, 1, 0.12)" : "#F1F5F9",
                           display: "flex", alignItems: "center", justifyContent: "center",
                           mr: 1.2,
                           transition: "all 0.2s ease"
                         }}>
-                          <LockOutlined sx={{ color: formData.password ? "#FFA033" : "#94A3B8", fontSize: "1.25rem" }} />
+                          <LockOutlined sx={{ color: formData.password ? "#FE8001" : "#64748B", fontSize: "1.25rem" }} />
                         </Box>
                       </InputAdornment>
                     ),
@@ -309,11 +304,11 @@ const Login = () => {
                           onMouseDown={e => e.preventDefault()}
                           edge="end" size="small"
                           sx={{
-                            color: "#94A3B8",
+                            color: "#64748B",
                             mr: 0.4,
                             p: 0.8,
                             borderRadius: "10px",
-                            "&:hover": { color: "#FFA033", bgcolor: "rgba(255, 255, 255, 0.08)" }
+                            "&:hover": { color: "#FE8001", bgcolor: "rgba(254, 128, 1, 0.08)" }
                           }}
                         >
                           {showPassword ? <VisibilityOff sx={{ fontSize: "1.2rem" }} /> : <Visibility sx={{ fontSize: "1.2rem" }} />}
@@ -332,11 +327,11 @@ const Login = () => {
                         checked={rememberMe}
                         onChange={e => setRememberMe(e.target.checked)}
                         size="small"
-                        sx={{ color: "rgba(255, 255, 255, 0.4)", "&.Mui-checked": { color: "#FE8001" }, p: 0.3 }}
+                        sx={{ color: "#CBD5E1", "&.Mui-checked": { color: "#FE8001" }, p: 0.3 }}
                       />
                     }
                     label={
-                      <Typography sx={{ fontSize: "0.78rem", color: "#E2E8F0", fontWeight: 600 }}>
+                      <Typography sx={{ fontSize: "0.78rem", color: "#475569", fontWeight: 600 }}>
                         Remember me
                       </Typography>
                     }
@@ -346,9 +341,9 @@ const Login = () => {
                     onClick={() => setIsResetMode(true)}
                     underline="none"
                     sx={{
-                      fontSize: "0.78rem", color: "#FFA033", fontWeight: 700,
+                      fontSize: "0.78rem", color: "#FE8001", fontWeight: 700,
                       transition: "color 0.2s ease",
-                      "&:hover": { color: "#FFB866", textDecoration: "underline" }
+                      "&:hover": { color: "#E06F00", textDecoration: "underline" }
                     }}
                   >
                     Forgot password?
@@ -364,7 +359,7 @@ const Login = () => {
                     mt: 0.3,
                     py: 1.25,
                     background: isAdminMode
-                      ? "linear-gradient(135deg, #15242A 0%, #1F333B 100%)"
+                      ? "linear-gradient(135deg, #0F172A 0%, #1E293B 100%)"
                       : "linear-gradient(135deg, #FE8001 0%, #FFA033 100%)",
                     color: "#FFFFFF",
                     fontWeight: 800,
@@ -373,17 +368,17 @@ const Login = () => {
                     borderRadius: "14px",
                     textTransform: "none",
                     boxShadow: isAdminMode
-                      ? "0 8px 20px rgba(21, 36, 42, 0.35)"
-                      : "0 8px 20px rgba(254, 128, 1, 0.35)",
+                      ? "0 8px 20px rgba(15, 23, 42, 0.25)"
+                      : "0 8px 20px rgba(254, 128, 1, 0.3)",
                     transition: "all 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
                     "&:hover": {
                       background: isAdminMode
-                        ? "linear-gradient(135deg, #0B1317 0%, #15242A 100%)"
+                        ? "linear-gradient(135deg, #020617 0%, #0F172A 100%)"
                         : "linear-gradient(135deg, #E06F00 0%, #FE8001 100%)",
                       transform: "translateY(-1.5px)",
                       boxShadow: isAdminMode
-                        ? "0 10px 24px rgba(21, 36, 42, 0.45)"
-                        : "0 10px 24px rgba(254, 128, 1, 0.45)",
+                        ? "0 10px 24px rgba(15, 23, 42, 0.35)"
+                        : "0 10px 24px rgba(254, 128, 1, 0.4)",
                       "& .MuiButton-endIcon": {
                         transform: "translateX(3px)"
                       }
@@ -407,18 +402,18 @@ const Login = () => {
                         display: "inline-flex",
                         alignItems: "center",
                         gap: 0.7,
-                        color: "#E2E8F0",
+                        color: "#475569",
                         fontWeight: 700,
                         fontSize: "0.82rem",
                         cursor: "pointer",
                         border: "none",
                         background: "none",
-                        p: 0.4,
+                        p: 0.6,
                         borderRadius: "8px",
                         transition: "all 0.2s ease",
                         "&:hover": {
-                          color: "#FFA033",
-                          bgcolor: "rgba(255, 255, 255, 0.08)"
+                          color: "#FE8001",
+                          bgcolor: "rgba(254, 128, 1, 0.08)"
                         }
                       }}
                     >
@@ -437,18 +432,18 @@ const Login = () => {
                         display: "inline-flex",
                         alignItems: "center",
                         gap: 0.7,
-                        color: "#E2E8F0",
+                        color: "#475569",
                         fontWeight: 700,
                         fontSize: "0.82rem",
                         cursor: "pointer",
                         border: "none",
                         background: "none",
-                        p: 0.4,
+                        p: 0.6,
                         borderRadius: "8px",
                         transition: "all 0.2s ease",
                         "&:hover": {
-                          color: "#FFA033",
-                          bgcolor: "rgba(255, 255, 255, 0.08)"
+                          color: "#FE8001",
+                          bgcolor: "rgba(254, 128, 1, 0.08)"
                         }
                       }}
                     >
@@ -462,31 +457,31 @@ const Login = () => {
                 {!isAdminMode && (
                   <>
                     <Box sx={{ display: "flex", alignItems: "center", gap: 1.2, my: 0.2 }}>
-                      <Box sx={{ flex: 1, height: "1px", bgcolor: "rgba(255, 255, 255, 0.14)" }} />
-                      <Typography sx={{ fontSize: "0.74rem", color: "rgba(255, 255, 255, 0.5)", fontWeight: 700, px: 0.5 }}>OR</Typography>
-                      <Box sx={{ flex: 1, height: "1px", bgcolor: "rgba(255, 255, 255, 0.14)" }} />
+                      <Box sx={{ flex: 1, height: "1px", bgcolor: "#E2E8F0" }} />
+                      <Typography sx={{ fontSize: "0.74rem", color: "#94A3B8", fontWeight: 700, px: 0.5 }}>OR</Typography>
+                      <Box sx={{ flex: 1, height: "1px", bgcolor: "#E2E8F0" }} />
                     </Box>
 
                     <Button
                       component={Link} to="/register"
                       fullWidth variant="outlined"
                       sx={{
-                        py: 1.05,
-                        color: "#FFFFFF",
-                        borderColor: "rgba(255, 255, 255, 0.24)",
+                        py: 1.15,
+                        color: "#FE8001",
+                        borderColor: "#FED7AA",
                         borderWidth: "1.5px",
                         fontWeight: 800,
                         fontSize: "0.88rem",
                         borderRadius: "14px",
                         textTransform: "none",
-                        bgcolor: "rgba(255, 255, 255, 0.04)",
+                        bgcolor: "#FFF7ED",
                         transition: "all 0.25s ease",
                         "&:hover": {
                           borderColor: "#FE8001",
                           borderWidth: "1.5px",
                           bgcolor: "rgba(254, 128, 1, 0.12)",
-                          color: "#FE8001",
-                          boxShadow: "0 4px 12px rgba(254,128,1,0.2)",
+                          color: "#E06F00",
+                          boxShadow: "0 4px 14px rgba(254, 128, 1, 0.15)",
                           transform: "translateY(-1px)"
                         }
                       }}
@@ -497,7 +492,7 @@ const Login = () => {
                 )}
 
                 {/* Support and Security Footer */}
-                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", pt: 0.8, borderTop: "1px solid rgba(255, 255, 255, 0.1)", mt: 0.2 }}>
+                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", pt: 1, borderTop: "1px solid #F1F5F9", mt: 0.5 }}>
                   <Box sx={{ display: "flex", gap: 1.8 }}>
                     <MuiLink
                       component="button" type="button"
@@ -505,8 +500,8 @@ const Login = () => {
                       underline="none"
                       sx={{
                         display: "flex", alignItems: "center", gap: 0.5,
-                        fontSize: "0.76rem", color: "#94A3B8", fontWeight: 600,
-                        "&:hover": { color: "#FFA033" }
+                        fontSize: "0.76rem", color: "#64748B", fontWeight: 600,
+                        "&:hover": { color: "#FE8001" }
                       }}
                     >
                       <ChatBubbleOutline sx={{ fontSize: "0.9rem" }} />
@@ -517,8 +512,8 @@ const Login = () => {
                       underline="none"
                       sx={{
                         display: "flex", alignItems: "center", gap: 0.5,
-                        fontSize: "0.76rem", color: "#94A3B8", fontWeight: 600,
-                        "&:hover": { color: "#FFA033" }
+                        fontSize: "0.76rem", color: "#64748B", fontWeight: 600,
+                        "&:hover": { color: "#FE8001" }
                       }}
                     >
                       <EmailOutlined sx={{ fontSize: "0.9rem" }} />
@@ -527,13 +522,13 @@ const Login = () => {
                   </Box>
 
                   <Chip
-                    icon={<Security sx={{ fontSize: "13px !important", color: "#34D399" }} />}
+                    icon={<Security sx={{ fontSize: "13px !important", color: "#059669" }} />}
                     label="SSL 256-Bit"
                     size="small"
                     sx={{
-                      bgcolor: "rgba(16, 185, 129, 0.15)",
-                      color: "#34D399",
-                      border: "1px solid rgba(16, 185, 129, 0.3)",
+                      bgcolor: "#ECFDF5",
+                      color: "#059669",
+                      border: "1px solid #A7F3D0",
                       fontWeight: 700,
                       fontSize: "0.64rem",
                       height: "20px"

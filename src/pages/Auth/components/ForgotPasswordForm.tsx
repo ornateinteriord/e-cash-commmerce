@@ -143,12 +143,12 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({ onBackToLogin }
         startIcon={<ArrowBackIcon />}
         onClick={onBackToLogin}
         sx={{
-          color: "#E2E8F0",
+          color: "#475569",
           mb: 2,
           textTransform: "none",
-          fontWeight: 600,
+          fontWeight: 700,
           background: "transparent",
-          "&:hover": { color: "#FFA033", backgroundColor: "rgba(255, 255, 255, 0.08)" }
+          "&:hover": { color: "#FE8001", backgroundColor: "rgba(254, 128, 1, 0.08)" }
         }}
       >
         Back to Login
@@ -158,7 +158,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({ onBackToLogin }
         component="h1"
         variant="h5"
         sx={{
-          color: "#FFFFFF",
+          color: "#0F172A",
           fontWeight: 800,
           textAlign: "center",
           mb: 1,
@@ -169,7 +169,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({ onBackToLogin }
       </Typography>
       <Typography
         variant="body2"
-        sx={{ color: "#94A3B8", textAlign: "center", mb: 3, fontWeight: 500 }}
+        sx={{ color: "#64748B", textAlign: "center", mb: 3, fontWeight: 500 }}
       >
         {step === 1 && "Enter your registered mobile number"}
         {step === 2 && "Enter the 6-digit OTP sent to your mobile"}
@@ -196,26 +196,26 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({ onBackToLogin }
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <PhoneIphoneIcon sx={{ color: "#94A3B8" }} />
+                  <PhoneIphoneIcon sx={{ color: "#64748B" }} />
                 </InputAdornment>
               ),
             }}
             sx={{
               "& .MuiOutlinedInput-root": {
-                color: "#FFFFFF",
-                bgcolor: "rgba(255, 255, 255, 0.06)",
+                color: "#0F172A",
+                bgcolor: "#F8FAFC",
                 borderRadius: "14px",
-                "& fieldset": { borderColor: "rgba(255, 255, 255, 0.15)", borderWidth: "1.5px" },
-                "&:hover fieldset": { borderColor: "#FFA033" },
+                "& fieldset": { borderColor: "#E2E8F0", borderWidth: "1.5px" },
+                "&:hover fieldset": { borderColor: "#CBD5E1" },
                 "&.Mui-focused fieldset": { borderColor: "#FE8001", borderWidth: "2px" },
-                "&.Mui-disabled fieldset": { borderColor: "rgba(255, 255, 255, 0.08)" },
+                "&.Mui-disabled fieldset": { borderColor: "#F1F5F9" },
               },
               "& .MuiOutlinedInput-input.Mui-disabled": {
                 color: "#94A3B8",
                 WebkitTextFillColor: "#94A3B8",
               },
-              "& .MuiInputLabel-root": { color: "#94A3B8" },
-              "& .MuiInputLabel-root.Mui-focused": { color: "#FFA033" },
+              "& .MuiInputLabel-root": { color: "#64748B" },
+              "& .MuiInputLabel-root.Mui-focused": { color: "#FE8001" },
             }}
           />
         )}
@@ -234,14 +234,14 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({ onBackToLogin }
                 sx: {
                   "& .MuiOutlinedInput-root": {
                     height: "50px",
-                    color: "#FFFFFF",
-                    bgcolor: "rgba(255, 255, 255, 0.08)",
+                    color: "#0F172A",
+                    bgcolor: "#F8FAFC",
                     borderRadius: "12px",
-                    "& fieldset": { borderColor: "rgba(255, 255, 255, 0.2)", borderWidth: "1.5px" },
-                    "&:hover fieldset": { borderColor: "#FFA033" },
+                    "& fieldset": { borderColor: "#E2E8F0", borderWidth: "1.5px" },
+                    "&:hover fieldset": { borderColor: "#CBD5E1" },
                     "&.Mui-focused fieldset": { borderColor: "#FE8001", borderWidth: "2px" },
                   },
-                  "& input": { color: "#FFFFFF" }
+                  "& input": { color: "#0F172A" }
                 },
               }}
             />
@@ -264,21 +264,21 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({ onBackToLogin }
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <LockIcon sx={{ color: "#94A3B8" }} />
+                    <LockIcon sx={{ color: "#64748B" }} />
                   </InputAdornment>
                 ),
               }}
               sx={{
                 "& .MuiOutlinedInput-root": {
-                  color: "#FFFFFF",
-                  bgcolor: "rgba(255, 255, 255, 0.06)",
+                  color: "#0F172A",
+                  bgcolor: "#F8FAFC",
                   borderRadius: "14px",
-                  "& fieldset": { borderColor: "rgba(255, 255, 255, 0.15)", borderWidth: "1.5px" },
-                  "&:hover fieldset": { borderColor: "#FFA033" },
+                  "& fieldset": { borderColor: "#E2E8F0", borderWidth: "1.5px" },
+                  "&:hover fieldset": { borderColor: "#CBD5E1" },
                   "&.Mui-focused fieldset": { borderColor: "#FE8001", borderWidth: "2px" },
                 },
-                "& .MuiInputLabel-root": { color: "#94A3B8" },
-                "& .MuiInputLabel-root.Mui-focused": { color: "#FFA033" },
+                "& .MuiInputLabel-root": { color: "#64748B" },
+                "& .MuiInputLabel-root.Mui-focused": { color: "#FE8001" },
               }}
             />
 
@@ -298,21 +298,21 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({ onBackToLogin }
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <LockIcon sx={{ color: "#94A3B8" }} />
+                    <LockIcon sx={{ color: "#64748B" }} />
                   </InputAdornment>
                 ),
               }}
               sx={{
                 "& .MuiOutlinedInput-root": {
-                  color: "#FFFFFF",
-                  bgcolor: "rgba(255, 255, 255, 0.06)",
+                  color: "#0F172A",
+                  bgcolor: "#F8FAFC",
                   borderRadius: "14px",
-                  "& fieldset": { borderColor: "rgba(255, 255, 255, 0.15)", borderWidth: "1.5px" },
-                  "&:hover fieldset": { borderColor: "#FFA033" },
+                  "& fieldset": { borderColor: "#E2E8F0", borderWidth: "1.5px" },
+                  "&:hover fieldset": { borderColor: "#CBD5E1" },
                   "&.Mui-focused fieldset": { borderColor: "#FE8001", borderWidth: "2px" },
                 },
-                "& .MuiInputLabel-root": { color: "#94A3B8" },
-                "& .MuiInputLabel-root.Mui-focused": { color: "#FFA033" },
+                "& .MuiInputLabel-root": { color: "#64748B" },
+                "& .MuiInputLabel-root.Mui-focused": { color: "#FE8001" },
               }}
             />
           </>
