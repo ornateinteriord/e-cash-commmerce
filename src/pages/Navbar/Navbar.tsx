@@ -93,7 +93,7 @@ const Navbar = ({ shouldHide, onToggleSidebar }: NavbarProps) => {
                 }}
               >
                 <Avatar
-                  src="/favicon.ico"
+                  src={(memberDetails as any)?.profile_image || (memberDetails as any)?.photo || (memberDetails as any)?.avatar || undefined}
                   sx={{
                     width: { xs: 38, md: 42 },
                     height: { xs: 38, md: 42 },
@@ -104,12 +104,11 @@ const Navbar = ({ shouldHide, onToggleSidebar }: NavbarProps) => {
                     boxShadow: '0 3px 10px rgba(254, 128, 1, 0.35)',
                     border: '2px solid rgba(255, 255, 255, 0.9)',
                     '& .MuiAvatar-img': {
-                      objectFit: 'contain',
-                      p: 0.4
+                      objectFit: 'cover'
                     }
                   }}
                 >
-                  {memberDetails?.Name?.charAt(0).toUpperCase() || 'U'}
+                  {(memberDetails?.Name || 'V').trim().charAt(0).toUpperCase()}
                 </Avatar>
 
                 <Box sx={{ display: { xs: 'none', sm: 'block' } }}>

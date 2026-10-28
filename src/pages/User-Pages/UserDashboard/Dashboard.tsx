@@ -202,7 +202,7 @@ const UserDashboard = () => {
         {/* User Identity: Avatar, Welcome, Name, Member ID & User ID badge */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1.8, sm: 2.5 }, zIndex: 1 }}>
           <Avatar
-            src="/favicon.ico"
+            src={(memberDetails as any)?.profile_image || (memberDetails as any)?.photo || (memberDetails as any)?.avatar || undefined}
             onClick={() => navigate('/user/account/profile')}
             sx={{
               width: { xs: 54, sm: 62 },
@@ -210,19 +210,18 @@ const UserDashboard = () => {
               background: 'linear-gradient(135deg, #FE8001 0%, #FFA033 100%)',
               color: '#FFFFFF',
               fontWeight: 900,
-              fontSize: { xs: '1.25rem', sm: '1.45rem' },
+              fontSize: { xs: '1.45rem', sm: '1.7rem' },
               cursor: 'pointer',
               boxShadow: '0 8px 22px rgba(254, 128, 1, 0.45)',
               border: '2.5px solid rgba(255, 255, 255, 0.25)',
               transition: 'transform 0.25s ease',
               '&:hover': { transform: 'scale(1.05)' },
               '& .MuiAvatar-img': {
-                objectFit: 'contain',
-                p: 0.6
+                objectFit: 'cover'
               }
             }}
           >
-            {(memberDetails?.Name || 'U').charAt(0).toUpperCase()}
+            {(memberDetails?.Name || 'V').trim().charAt(0).toUpperCase()}
           </Avatar>
 
           <Box>
