@@ -1253,7 +1253,7 @@ const UserDashboard = () => {
             }}
           >
             <Box>
-              <Typography sx={{ color: '#881337', fontWeight: 900, fontSize: { xs: '0.85rem', sm: '0.95rem' }, lineHeight: 1.2, mb: 0.2 }}>
+              <Typography sx={{ color: '#850d31ff', fontWeight: 900, fontSize: { xs: '0.85rem', sm: '0.95rem' }, lineHeight: 1.2, mb: 0.2 }}>
                 Daily Incentive
               </Typography>
               <Typography sx={{ color: '#475569', fontSize: '9.5px', fontWeight: 600, display: { xs: 'none', sm: 'block' } }}>
