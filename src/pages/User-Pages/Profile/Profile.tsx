@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Box, Typography, TextField, Button, Avatar, Card, CardContent, IconButton, InputAdornment } from '@mui/material';
-import PersonIcon from '@mui/icons-material/Person';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import BadgeOutlinedIcon from '@mui/icons-material/BadgeOutlined';
 import CakeOutlinedIcon from '@mui/icons-material/CakeOutlined';
@@ -147,85 +146,142 @@ const Profile: React.FC = () => {
               {/* Top Identity Hero Card */}
               <Box sx={{ 
                 display: 'flex', 
-                alignItems: 'center',
-                 background: 'linear-gradient(135deg, #15242A 0%, #1F333B 65%, #2B444E 100%)',
-                p: 2.5,
+                flexDirection: { xs: 'column', sm: 'row' },
+                justifyContent: 'space-between',
+                alignItems: { xs: 'stretch', sm: 'flex-end' },
+                background: 'linear-gradient(135deg, #15242A 0%, #1F333B 65%, #2B444E 100%)',
+                p: { xs: 2.2, sm: 2.8 },
                 borderRadius: '20px',
-                border: '1px solid rgba(255, 255, 255, 0.15)',
+                border: '1px solid rgba(254, 128, 1, 0.3)',
                 mb: 3.5,
-                boxShadow: '0 10px 25px rgba(37, 99, 235, 0.25)',
-                gap: 2.5,
+                boxShadow: '0 12px 32px rgba(21, 36, 42, 0.35)',
+                gap: 2,
                 position: 'relative',
                 overflow: 'hidden'
               }}>
-                <motion.div
-                  initial={{ scale: 0.85 }}
-                  animate={{ scale: 1 }}
-                  transition={{ duration: 0.3, delay: 0.1 }}
-                >
-                  <Avatar sx={{ 
-                    width: 68, 
-                    height: 68, 
-                    border: '3px solid #38BDF8', 
-                    bgcolor: '#FFFFFF',
-                    boxShadow: '0 6px 16px rgba(0,0,0,0.2)',
-                    color: '#1E3A8A',
-                    fontSize: '1.8rem',
-                    fontWeight: 900
+                {/* Decorative golden ambient glow */}
+                <Box sx={{
+                  position: 'absolute', top: -45, right: -45,
+                  width: 150, height: 150, borderRadius: '50%',
+                  background: 'radial-gradient(circle, rgba(254, 128, 1, 0.22) 0%, transparent 70%)',
+                  pointerEvents: 'none',
+                }} />
+                <Box sx={{
+                  position: 'absolute', bottom: -35, left: -35,
+                  width: 110, height: 110, borderRadius: '50%',
+                  background: 'radial-gradient(circle, rgba(255, 160, 51, 0.12) 0%, transparent 70%)',
+                  pointerEvents: 'none',
+                }} />
+
+                {/* Left Side: Avatar, Name & Stacked ID Badges */}
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1.8, sm: 2.2 }, zIndex: 1 }}>
+                  <motion.div
+                    initial={{ scale: 0.85 }}
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 0.3, delay: 0.1 }}
+                  >
+                    <Avatar 
+                      src={(activeUser as any)?.profile_image || (activeUser as any)?.photo || (activeUser as any)?.avatar || undefined}
+                      sx={{ 
+                        width: { xs: 58, sm: 64 }, 
+                        height: { xs: 58, sm: 64 }, 
+                        background: 'linear-gradient(135deg, #FE8001 0%, #FFA033 100%)',
+                        boxShadow: '0 8px 22px rgba(254, 128, 1, 0.45)',
+                        border: '2.5px solid rgba(255, 255, 255, 0.25)',
+                        color: '#FFFFFF',
+                        fontSize: { xs: '1.45rem', sm: '1.7rem' },
+                        fontWeight: 900
+                      }}
+                    >
+                      {(formData.Name || activeUser?.Name || 'V').trim().charAt(0).toUpperCase()}
+                    </Avatar>
+                  </motion.div>
+                  
+                  <Box sx={{ color: '#FFFFFF' }}>
+                    <Typography variant="h6" sx={{ fontWeight: 800, color: '#FFFFFF', lineHeight: 1.2, mb: 0.8, fontSize: { xs: '1.1rem', sm: '1.25rem' } }}>
+                      {formData.Name || activeUser?.Name || 'Member Profile'}
+                    </Typography>
+
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.7 }}>
+                      {/* Member / Login ID */}
+                      <Box sx={{ 
+                        display: 'inline-flex', 
+                        alignItems: 'center',
+                        bgcolor: 'rgba(255, 255, 255, 0.08)',
+                        border: '1px solid rgba(254, 128, 1, 0.35)',
+                        borderRadius: '999px',
+                        px: 1.3,
+                        py: 0.35,
+                        width: 'fit-content'
+                      }}>
+                        <Typography sx={{ color: '#94A3B8', fontSize: '0.72rem', fontWeight: 600, mr: 0.6 }}>
+                          LOGIN ID:
+                        </Typography>
+                        <Typography sx={{ 
+                          color: '#FE8001', 
+                          fontFamily: 'monospace', 
+                          fontWeight: 800, 
+                          fontSize: { xs: '0.8rem', sm: '0.85rem' }, 
+                          letterSpacing: '0.5px' 
+                        }}>
+                          {activeUser?.Member_id || (activeUser as any)?.member_id || activeUser?.mobileno || currentMemberId || 'N/A'}
+                        </Typography>
+                      </Box>
+
+                      {/* Vendor ID */}
+                      <Box sx={{ 
+                        display: 'inline-flex', 
+                        alignItems: 'center',
+                        bgcolor: 'rgba(255, 255, 255, 0.05)',
+                        border: '1px solid rgba(255, 255, 255, 0.15)',
+                        borderRadius: '999px',
+                        px: 1.3,
+                        py: 0.35,
+                        width: 'fit-content'
+                      }}>
+                        <Typography sx={{ color: '#94A3B8', fontSize: '0.7rem', fontWeight: 600, mr: 0.6 }}>
+                          VENDOR ID:
+                        </Typography>
+                        <Typography sx={{ 
+                          color: '#F8FAFC', 
+                          fontFamily: 'monospace', 
+                          fontWeight: 700, 
+                          fontSize: { xs: '0.78rem', sm: '0.82rem' } 
+                        }}>
+                          {activeUser?.member_code || (activeUser as any)?.user_id || (activeUser as any)?.reference_id || '0101'}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </Box>
+                </Box>
+
+                {/* Right / Bottom-Right Side: Level Badge (matching User Dashboard) */}
+                <Box sx={{ 
+                  display: 'flex', 
+                  alignItems: 'flex-end',
+                  justifyContent: 'flex-end',
+                  alignSelf: { xs: 'flex-end', sm: 'flex-end' },
+                  zIndex: 1,
+                  mt: { xs: 1, sm: 0 }
+                }}>
+                  <Box sx={{ 
+                    display: 'inline-flex', 
+                    alignItems: 'center',
+                    bgcolor: 'rgba(254, 128, 1, 0.16)',
+                    border: '1.5px solid rgba(254, 128, 1, 0.45)',
+                    px: { xs: 1.3, sm: 1.6 },
+                    py: { xs: 0.45, sm: 0.55 },
+                    borderRadius: '10px',
+                    boxShadow: '0 2px 10px rgba(254, 128, 1, 0.2)'
                   }}>
-                    {formData.Name ? formData.Name.charAt(0).toUpperCase() : <PersonIcon sx={{ fontSize: 40 }} />}
-                  </Avatar>
-                </motion.div>
-                
-                <Box sx={{ color: '#FFFFFF', zIndex: 1 }}>
-                  <Typography variant="h6" sx={{ fontWeight: 900, color: '#FFFFFF', lineHeight: 1.2, mb: 0.8 }}>
-                    {formData.Name || 'Member Profile'}
-                  </Typography>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
-                    <Box sx={{ 
-                      display: 'inline-flex', 
-                      alignItems: 'center',
-                      bgcolor: 'rgba(255, 255, 255, 0.15)',
-                      border: '1px solid rgba(255, 255, 255, 0.25)',
-                      borderRadius: '8px',
-                      px: 1.2,
-                      py: 0.3,
-                      backdropFilter: 'blur(4px)'
+                    <Typography sx={{ 
+                      color: '#FFA033', 
+                      fontSize: { xs: '0.74rem', sm: '0.8rem' }, 
+                      fontWeight: 800, 
+                      letterSpacing: '0.6px' 
                     }}>
-                      <Typography variant="caption" sx={{ color: '#FCD34D', fontWeight: 800, letterSpacing: '0.8px' }}>
-                        LOGIN ID: {activeUser?.Member_id || (activeUser as any)?.member_id || activeUser?.mobileno || currentMemberId || 'N/A'}
-                      </Typography>
-                    </Box>
-
-                    <Box sx={{ 
-                      display: 'inline-flex', 
-                      alignItems: 'center',
-                      bgcolor: 'rgba(255, 255, 255, 0.12)',
-                      border: '1px solid rgba(255, 255, 255, 0.2)',
-                      borderRadius: '8px',
-                      px: 1.2,
-                      py: 0.3,
-                      backdropFilter: 'blur(4px)'
-                    }}>
-                      <Typography variant="caption" sx={{ color: '#93C5FD', fontWeight: 800, letterSpacing: '0.8px' }}>
-                        USER ID: {activeUser?.member_code || (activeUser as any)?.user_id || (activeUser as any)?.reference_id || '0101'}
-                      </Typography>
-                    </Box>
-
-                    <Box sx={{ 
-                      display: 'inline-flex', 
-                      alignItems: 'center',
-                      bgcolor: 'rgba(52, 211, 153, 0.2)',
-                      border: '1px solid rgba(52, 211, 153, 0.4)',
-                      borderRadius: '8px',
-                      px: 1.2,
-                      py: 0.3,
-                      backdropFilter: 'blur(4px)'
-                    }}>
-                      <Typography variant="caption" sx={{ color: '#6EE7B7', fontWeight: 800, letterSpacing: '0.8px' }}>
-                        LEVEL: {activeUser?.level ?? 0}
-                      </Typography>
-                    </Box>
+                      LEVEL {activeUser?.level ?? 0}
+                    </Typography>
                   </Box>
                 </Box>
               </Box>
