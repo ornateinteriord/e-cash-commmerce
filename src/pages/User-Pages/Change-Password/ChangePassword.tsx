@@ -6,7 +6,6 @@ import KeyIcon from '@mui/icons-material/Key';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import SecurityIcon from '@mui/icons-material/Security';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -134,7 +133,7 @@ const ChangePassword: React.FC = () => {
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.4rem' }}>
               
               {/* Top Security Banner */}
-              <Box sx={{
+              {/* <Box sx={{
                 display: 'flex',
                 alignItems: 'center',
                 gap: 2,
@@ -165,7 +164,7 @@ const ChangePassword: React.FC = () => {
                     Use a strong, unique password to secure wallet & earnings
                   </Typography>
                 </Box>
-              </Box>
+              </Box> */}
 
               {/* Field 1: Current Password */}
               <Box>
@@ -287,7 +286,7 @@ const ChangePassword: React.FC = () => {
                   fullWidth
                   disabled={updateMember.isPending}
                   sx={{
-                    background: 'linear-gradient(135deg, #4338CA 0%, #3730A3 100%)',
+                    background: 'linear-gradient(135deg, #FF952A 0%, #FF952A 100%)',
                     color: '#FFFFFF',
                     py: 1.5,
                     fontWeight: 900,
@@ -296,7 +295,7 @@ const ChangePassword: React.FC = () => {
                     borderRadius: '14px',
                     boxShadow: '0 8px 20px rgba(67, 56, 202, 0.3)',
                     '&:hover': {
-                      background: 'linear-gradient(135deg, #3730A3 0%, #312E81 100%)',
+                      background: 'linear-gradient(135deg, #FF952A 0%, #FF952A 100%)',
                       boxShadow: '0 10px 24px rgba(67, 56, 202, 0.4)',
                     },
                     '&:disabled': {

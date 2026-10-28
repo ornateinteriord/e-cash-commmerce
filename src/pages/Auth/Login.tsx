@@ -392,7 +392,7 @@ const Login = () => {
                     "&:disabled": { background: "#E2E8F0", color: "#94A3B8", boxShadow: "none" },
                   }}
                 >
-                  {isPending ? "Signing In…" : (isAdminMode ? "Sign In as Administrator" : "Sign In to Dashboard")}
+                  {isPending ? "Signing In…" : (isAdminMode ? "Sign In as Administrator" : "Vendor Dashboard")}
                 </Button>
 
                 {/* ── Login as Administration / Back to Member Toggle Link (Below Button) ── */}
@@ -423,7 +423,7 @@ const Login = () => {
                       }}
                     >
                       <AdminPanelSettings sx={{ fontSize: "1.05rem", color: "#FE8001" }} />
-                      Login as Administration
+                      Login as Vendor Administration
                     </MuiLink>
                   </Box>
                 ) : (

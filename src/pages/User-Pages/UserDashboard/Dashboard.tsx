@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { Typography, Box, CircularProgress, Paper, Button, IconButton, Avatar, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
+import { Typography, Box, CircularProgress, Paper, Button, IconButton, Avatar, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Chip } from '@mui/material';
 
 import SettingsIcon from '@mui/icons-material/Settings';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
@@ -36,6 +36,7 @@ const UserDashboard = () => {
   const memberId = TokenService.getMemberId();
   const { data: walletOverview } = useGetWalletOverview(memberId);
   const { data: memberDetails, refetch: refetchMemberDetails } = useGetMemberDetails(memberId);
+  const referralCode = memberDetails?.Member_id || memberDetails?.member_id || memberId || '';
   const { mutate: verifyPayment, isPending: isVerifyingPayment } = useVerifyPayment();
   const { refetch: refetchTransactions } = useGetTransactionDetails("all");
   useGetDailyPayout(memberId);
@@ -201,6 +202,7 @@ const UserDashboard = () => {
         {/* User Identity: Avatar, Welcome, Name, Member ID & User ID badge */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1.8, sm: 2.5 }, zIndex: 1 }}>
           <Avatar
+            src="/favicon.ico"
             onClick={() => navigate('/user/account/profile')}
             sx={{
               width: { xs: 54, sm: 62 },
@@ -213,14 +215,18 @@ const UserDashboard = () => {
               boxShadow: '0 8px 22px rgba(254, 128, 1, 0.45)',
               border: '2.5px solid rgba(255, 255, 255, 0.25)',
               transition: 'transform 0.25s ease',
-              '&:hover': { transform: 'scale(1.05)' }
+              '&:hover': { transform: 'scale(1.05)' },
+              '& .MuiAvatar-img': {
+                objectFit: 'contain',
+                p: 0.6
+              }
             }}
           >
             {(memberDetails?.Name || 'U').charAt(0).toUpperCase()}
           </Avatar>
 
           <Box>
-            <Typography sx={{
+            {/* <Typography sx={{
               fontSize: { xs: '0.8rem', sm: '0.88rem' },
               color: '#FFA033',
               fontWeight: 700,
@@ -231,30 +237,30 @@ const UserDashboard = () => {
               textTransform: 'uppercase',
             }}>
               Welcome back 👋
-            </Typography>
+            </Typography> */}
             <Typography sx={{
-              fontSize: { xs: '1.25rem', sm: '1.5rem' },
-              fontWeight: 900,
+              fontSize: { xs: '1.1rem', sm: '1rem' },
+              fontWeight: 700,
               color: '#FFFFFF',
               lineHeight: 1.2,
-              letterSpacing: '0.3px',
+              letterSpacing: '0.5px',
               mt: 0.3
             }}>
               {memberDetails?.Name || 'Member'}
             </Typography>
 
-            {/* Clickable ID Badges Row */}
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.2, mt: 0.8, flexWrap: 'wrap' }}>
+            {/* Clickable ID Badges (Stacked: Login ID, Vendor ID below) */}
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.7, mt: 0.9 }}>
               {/* Member / Login ID */}
               <Box
                 onClick={() => {
                   const id = memberDetails?.Member_id || memberDetails?.member_id || memberId;
                   if (id) {
                     navigator.clipboard.writeText(id);
-                    toast.success(`Copied ID: ${id}`);
+                    toast.success(`Copied Login ID: ${id}`);
                   }
                 }}
-                title="Click to copy ID"
+                title="Click to copy Login ID"
                 sx={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -265,6 +271,7 @@ const UserDashboard = () => {
                   py: 0.35,
                   borderRadius: '999px',
                   cursor: 'pointer',
+                  width: 'fit-content',
                   transition: 'all 0.2s ease',
                   '&:hover': {
                     bgcolor: 'rgba(254, 128, 1, 0.18)',
@@ -274,7 +281,7 @@ const UserDashboard = () => {
                 }}
               >
                 <Typography sx={{ color: '#94A3B8', fontSize: '0.72rem', fontWeight: 600 }}>
-                  ID:
+                  LOGIN ID:
                 </Typography>
                 <Typography sx={{
                   color: '#FE8001',
@@ -288,63 +295,85 @@ const UserDashboard = () => {
                 <ContentCopyIcon sx={{ fontSize: '0.85rem', color: '#FFA033', opacity: 0.85 }} />
               </Box>
 
-              {/* User Code badge if different */}
-              {(memberDetails?.member_code || memberDetails?.user_id) && (
-                <Box sx={{
+              {/* Vendor ID Badge (below Login ID) */}
+              <Box
+                onClick={() => {
+                  const vendorId = memberDetails?.member_code || memberDetails?.user_id || (memberDetails as any)?.reference_id || 'N/A';
+                  if (vendorId !== 'N/A') {
+                    navigator.clipboard.writeText(vendorId);
+                    toast.success(`Copied Vendor ID: ${vendorId}`);
+                  }
+                }}
+                title="Click to copy Vendor ID"
+                sx={{
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: 0.5,
+                  gap: 0.7,
                   bgcolor: 'rgba(255, 255, 255, 0.05)',
                   border: '1px solid rgba(255, 255, 255, 0.15)',
-                  px: 1.2,
+                  px: 1.3,
                   py: 0.35,
-                  borderRadius: '999px'
-                }}>
-                  <Typography sx={{ color: '#94A3B8', fontSize: '0.7rem', fontWeight: 600 }}>
-                    CODE:
-                  </Typography>
-                  <Typography sx={{ color: '#F8FAFC', fontFamily: 'monospace', fontWeight: 700, fontSize: '0.78rem' }}>
-                    {memberDetails?.member_code || memberDetails?.user_id}
-                  </Typography>
-                </Box>
-              )}
-
-              {/* Level Badge */}
-              <Box sx={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                bgcolor: 'rgba(254, 128, 1, 0.15)',
-                border: '1px solid rgba(254, 128, 1, 0.4)',
-                px: 1.1,
-                py: 0.3,
-                borderRadius: '8px'
-              }}>
-                <Typography sx={{ color: '#FFA033', fontSize: '0.7rem', fontWeight: 800, letterSpacing: '0.5px' }}>
-                  LEVEL {memberDetails?.level ?? 0}
+                  borderRadius: '999px',
+                  cursor: 'pointer',
+                  width: 'fit-content',
+                  transition: 'all 0.2s ease',
+                  '&:hover': {
+                    bgcolor: 'rgba(255, 255, 255, 0.1)',
+                    borderColor: 'rgba(255, 255, 255, 0.3)',
+                    transform: 'translateY(-1px)'
+                  }
+                }}
+              >
+                <Typography sx={{ color: '#94A3B8', fontSize: '0.7rem', fontWeight: 600 }}>
+                  VENDOR ID:
                 </Typography>
+                <Typography sx={{ color: '#F8FAFC', fontFamily: 'monospace', fontWeight: 700, fontSize: { xs: '0.78rem', sm: '0.82rem' } }}>
+                  {memberDetails?.member_code || memberDetails?.user_id || (memberDetails as any)?.reference_id || 'N/A'}
+                </Typography>
+                <ContentCopyIcon sx={{ fontSize: '0.8rem', color: '#94A3B8', opacity: 0.8 }} />
               </Box>
             </Box>
           </Box>
         </Box>
 
-        {/* Official E-shopy Brand Logo in Welcome Bar */}
+        {/* Right Side: Level Badge & Official E-shopy Brand Logo */}
         <Box sx={{
-          display: { xs: 'none', sm: 'flex' },
-          alignItems: 'center',
-          bgcolor: '#FFFFFF',
-          px: 2,
-          py: 0.8,
-          borderRadius: '16px',
-          boxShadow: '0 4px 16px rgba(0, 0, 0, 0.25)',
+          display: 'flex',
+          flexDirection: { xs: 'row', sm: 'column' },
+          alignItems: { xs: 'center', sm: 'flex-end' },
+          justifyContent: { xs: 'space-between', sm: 'center' },
+          gap: 1.5,
           zIndex: 1,
-          alignSelf: { xs: 'flex-start', sm: 'center' }
+          alignSelf: { xs: 'flex-end', sm: 'center' }
         }}>
-          <Box
-            component="img"
-            src="/e-shopy.jpeg"
-            alt="E-shopy"
-            sx={{ height: { sm: 36, md: 42 }, objectFit: 'contain' }}
-          />
+          {/* Level Badge (repositioned to right side) */}
+          <Box sx={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            bgcolor: 'rgba(254, 128, 1, 0.16)',
+            border: '1.5px solid rgba(254, 128, 1, 0.45)',
+            px: { xs: 1.3, sm: 1.6 },
+            py: { xs: 0.45, sm: 0.55 },
+            borderRadius: '10px',
+            boxShadow: '0 2px 10px rgba(254, 128, 1, 0.2)'
+          }}>
+            <Typography sx={{ color: '#FFA033', fontSize: { xs: '0.74rem', sm: '0.8rem' }, fontWeight: 800, letterSpacing: '0.6px' }}>
+              LEVEL {memberDetails?.level ?? 0}
+            </Typography>
+          </Box>
+
+          {/* Official E-shopy Brand Logo in Welcome Bar (Dark background version) */}
+          <Box sx={{
+            display: { xs: 'none', sm: 'flex' },
+            alignItems: 'center',
+          }}>
+            <Box
+              component="img"
+              src="/e-shopy-D.jpeg"
+              alt="E-shopy"
+              sx={{ height: { sm: 36, md: 42 }, objectFit: 'contain' }}
+            />
+          </Box>
         </Box>
       </Box>
 
@@ -479,16 +508,22 @@ const UserDashboard = () => {
       </Dialog>
 
 
-      {/* Credits Card */}
+      {/* ── UNIFIED WALLETS CONTAINER (LIGHT GREEN BG) ── */}
       <Paper elevation={0} sx={{
-        p: { xs: 2.2, sm: 3.2, md: 3.8 },
+        p: { xs: 2.2, sm: 2.8, md: 3.2 },
         mb: 4,
         borderRadius: { xs: '24px', sm: '28px' },
-        bgcolor: '#FFFFFF',
-        border: '1.5px solid #fce8ec',
-        boxShadow: '0 10px 30px rgba(109, 33, 79, 0.06)',
-        width: '100%'
+        background: 'linear-gradient(180deg, #F0FDF4 0%, #E8F8F0 100%)',
+        border: '1.5px solid #BBF7D0',
+        boxShadow: '0 10px 30px rgba(16, 185, 129, 0.08)',
+        width: '100%',
+        position: 'relative',
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: { xs: 2.2, sm: 2.8 }
       }}>
+        {/* 1. Main Wallet Section */}
         <Box sx={{
           display: 'flex',
           flexDirection: 'row',
@@ -507,20 +542,20 @@ const UserDashboard = () => {
               justifyContent: 'space-between',
               minWidth: 0,
               gap: { xs: 1.2, sm: 1.6, md: 2 },
-              bgcolor: '#ffffff',
-              border: '1.5px solid #FED7AA',
+              bgcolor: '#FFFFFF',
+              border: '1.5px solid #D1FAE5',
               borderRadius: { xs: '20px', sm: '24px' },
               p: { xs: 2.2, sm: 3.2, md: 3.8 },
               minHeight: { xs: '170px', sm: '200px', md: '220px' },
-              boxShadow: '0 6px 20px rgba(109, 33, 79, 0.05)',
+              boxShadow: '0 4px 16px rgba(16, 185, 129, 0.05)',
               transition: 'all 0.2s ease',
               position: 'relative',
               overflow: 'hidden',
               cursor: 'pointer',
               '&:hover': {
                 transform: 'translateY(-2px)',
-                boxShadow: '0 10px 26px rgba(109, 33, 79, 0.12)',
-                borderColor: '#e5a5b5'
+                boxShadow: '0 8px 24px rgba(16, 185, 129, 0.12)',
+                borderColor: '#10B981'
               }
             }}
           >
@@ -533,7 +568,7 @@ const UserDashboard = () => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                border: '1px solid rgba(244, 201, 93, 0.6)',
+                border: '1px solid rgba(254, 128, 1, 0.4)',
                 flexShrink: 0
               }}>
                 <PaymentsIcon sx={{ fontSize: { xs: 22, sm: 26, md: 30 }, color: '#FE8001' }} />
@@ -566,7 +601,7 @@ const UserDashboard = () => {
             </Box>
 
             <Typography sx={{
-              color: '#5e3848',
+              color: '#475569',
               lineHeight: 1.5,
               fontSize: { xs: '0.88rem', sm: '0.96rem', md: '1.05rem' },
               fontWeight: 500,
@@ -588,17 +623,18 @@ const UserDashboard = () => {
             flexShrink: 0,
             justifyContent: 'space-between'
           }}>
-            {/* 1. Add */}
+            {/* 1. Add (Light Mint/Green) */}
             <Button
               variant="contained"
               onClick={() => navigate('/user/load-fund')}
-              startIcon={<AddIcon sx={{ fontSize: { xs: '20px !important', sm: '23px !important' } }} />}
+              startIcon={<AddIcon sx={{ fontSize: { xs: '20px !important', sm: '23px !important' }, color: '#15803D' }} />}
               fullWidth
               sx={{
                 flex: 1,
                 minHeight: { xs: '46px', sm: '54px', md: '60px' },
-                background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
-                color: '#FFFFFF',
+                background: 'linear-gradient(135deg, #DCFCE7 0%, #BBF7D0 100%)',
+                color: '#15803D',
+                border: '1.5px solid #86EFAC',
                 borderRadius: { xs: '12px', sm: '16px' },
                 px: { xs: 1.5, sm: 2.2 },
                 py: { xs: 1, sm: 1.3 },
@@ -606,10 +642,10 @@ const UserDashboard = () => {
                 fontSize: { xs: '0.9rem', sm: '1rem', md: '1.05rem' },
                 textTransform: 'none',
                 justifyContent: 'center',
-                boxShadow: '0 4px 14px rgba(109, 33, 79, 0.24)',
+                boxShadow: '0 4px 12px rgba(34, 197, 94, 0.15)',
                 '&:hover': {
-                  background: 'linear-gradient(135deg, #E06F00 0%, #FE8001 100%)',
-                  boxShadow: '0 8px 20px rgba(109, 33, 79, 0.35)',
+                  background: 'linear-gradient(135deg, #BBF7D0 0%, #86EFAC 100%)',
+                  boxShadow: '0 6px 16px rgba(34, 197, 94, 0.25)',
                   transform: 'translateY(-2px)'
                 },
                 transition: 'all 0.2s ease'
@@ -618,17 +654,18 @@ const UserDashboard = () => {
               Add
             </Button>
 
-            {/* 2. Withdraw */}
+            {/* 2. Withdraw (Light Sky Blue) */}
             <Button
               variant="contained"
               onClick={() => navigate('/user/wallet?type=withdrawal')}
-              startIcon={<PaymentsIcon sx={{ fontSize: { xs: '20px !important', sm: '23px !important' } }} />}
+              startIcon={<PaymentsIcon sx={{ fontSize: { xs: '20px !important', sm: '23px !important' }, color: '#0369A1' }} />}
               fullWidth
               sx={{
                 flex: 1,
                 minHeight: { xs: '46px', sm: '54px', md: '60px' },
-                background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
-                color: '#FFFFFF',
+                background: 'linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 100%)',
+                color: '#0369A1',
+                border: '1.5px solid #7DD3FC',
                 borderRadius: { xs: '12px', sm: '16px' },
                 px: { xs: 1.5, sm: 2.2 },
                 py: { xs: 1, sm: 1.3 },
@@ -636,10 +673,10 @@ const UserDashboard = () => {
                 fontSize: { xs: '0.9rem', sm: '1rem', md: '1.05rem' },
                 textTransform: 'none',
                 justifyContent: 'center',
-                boxShadow: '0 4px 14px rgba(109, 33, 79, 0.24)',
+                boxShadow: '0 4px 12px rgba(14, 165, 233, 0.15)',
                 '&:hover': {
-                  background: 'linear-gradient(135deg, #E06F00 0%, #FE8001 100%)',
-                  boxShadow: '0 8px 20px rgba(109, 33, 79, 0.35)',
+                  background: 'linear-gradient(135deg, #BAE6FD 0%, #7DD3FC 100%)',
+                  boxShadow: '0 6px 16px rgba(14, 165, 233, 0.25)',
                   transform: 'translateY(-2px)'
                 },
                 transition: 'all 0.2s ease'
@@ -648,17 +685,18 @@ const UserDashboard = () => {
               Withdraw
             </Button>
 
-            {/* 3. Activation */}
+            {/* 3. Activation (Light Warm Amber) */}
             <Button
               variant="contained"
               onClick={() => navigate('/user/new-subscription')}
-              startIcon={<BoltIcon sx={{ fontSize: { xs: '20px !important', sm: '23px !important' } }} />}
+              startIcon={<BoltIcon sx={{ fontSize: { xs: '20px !important', sm: '23px !important' }, color: '#B45309' }} />}
               fullWidth
               sx={{
                 flex: 1,
                 minHeight: { xs: '46px', sm: '54px', md: '60px' },
-                background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
-                color: '#FFFFFF',
+                background: 'linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%)',
+                color: '#B45309',
+                border: '1.5px solid #FCD34D',
                 borderRadius: { xs: '12px', sm: '16px' },
                 px: { xs: 1.5, sm: 2.2 },
                 py: { xs: 1, sm: 1.3 },
@@ -666,10 +704,10 @@ const UserDashboard = () => {
                 fontSize: { xs: '0.88rem', sm: '0.98rem', md: '1.02rem' },
                 textTransform: 'none',
                 justifyContent: 'center',
-                boxShadow: '0 4px 14px rgba(109, 33, 79, 0.24)',
+                boxShadow: '0 4px 12px rgba(245, 158, 11, 0.15)',
                 '&:hover': {
-                  background: 'linear-gradient(135deg, #E06F00 0%, #FE8001 100%)',
-                  boxShadow: '0 8px 20px rgba(109, 33, 79, 0.35)',
+                  background: 'linear-gradient(135deg, #FDE68A 0%, #FBBF24 100%)',
+                  boxShadow: '0 6px 16px rgba(245, 158, 11, 0.25)',
                   transform: 'translateY(-2px)'
                 },
                 transition: 'all 0.2s ease'
@@ -679,20 +717,15 @@ const UserDashboard = () => {
             </Button>
           </Box>
         </Box>
-      </Paper>
 
-      {/* ── VENDOR WALLET CARD (ONLY WITHDRAWAL OPTION) ── */}
-      <Paper elevation={0} sx={{
-        p: { xs: 2.2, sm: 3.2, md: 3.8 },
-        mb: 4,
-        borderRadius: { xs: '24px', sm: '28px' },
-        bgcolor: '#FFFFFF',
-        border: '1.5px solid #FED7AA',
-        boxShadow: '0 10px 30px rgba(254, 128, 1, 0.08)',
-        width: '100%',
-        position: 'relative',
-        overflow: 'hidden'
-      }}>
+        {/* Elegant subtle separator line */}
+        <Box sx={{
+          width: '100%',
+          height: '1px',
+          background: 'linear-gradient(90deg, rgba(16, 185, 129, 0.05) 0%, rgba(16, 185, 129, 0.25) 50%, rgba(16, 185, 129, 0.05) 100%)'
+        }} />
+
+        {/* 2. Vendor Sale Value Section */}
         <Box sx={{
           display: 'flex',
           flexDirection: 'row',
@@ -711,20 +744,20 @@ const UserDashboard = () => {
               justifyContent: 'space-between',
               minWidth: 0,
               gap: { xs: 1.2, sm: 1.6, md: 2 },
-              bgcolor: '#FFFDF9',
-              border: '1.5px solid #FED7AA',
+              bgcolor: '#FFFFFF',
+              border: '1.5px solid #D1FAE5',
               borderRadius: { xs: '20px', sm: '24px' },
               p: { xs: 2.2, sm: 3.2, md: 3.8 },
               minHeight: { xs: '170px', sm: '200px', md: '220px' },
-              boxShadow: '0 6px 20px rgba(254, 128, 1, 0.04)',
+              boxShadow: '0 4px 16px rgba(16, 185, 129, 0.05)',
               transition: 'all 0.2s ease',
               position: 'relative',
               overflow: 'hidden',
               cursor: 'pointer',
               '&:hover': {
                 transform: 'translateY(-2px)',
-                boxShadow: '0 10px 26px rgba(254, 128, 1, 0.12)',
-                borderColor: '#FE8001'
+                boxShadow: '0 8px 24px rgba(16, 185, 129, 0.12)',
+                borderColor: '#10B981'
               }
             }}
           >
@@ -749,7 +782,7 @@ const UserDashboard = () => {
                 lineHeight: 1.2,
                 letterSpacing: '0.8px'
               }}>
-                Vendor Wallet
+                Vendor Sale Value
               </Typography>
             </Box>
 
@@ -767,7 +800,7 @@ const UserDashboard = () => {
             </Box>
           </Box>
 
-          {/* Right Side: ONLY WITHDRAW BUTTON */}
+          {/* Right Side: ONLY WITHDRAW BUTTON (Light Violet / Purple) */}
           <Box sx={{
             display: 'flex',
             flexDirection: 'column',
@@ -778,12 +811,13 @@ const UserDashboard = () => {
             <Button
               variant="contained"
               onClick={() => navigate('/user/vendor-wallet')}
-              startIcon={<PaymentsIcon sx={{ fontSize: { xs: '20px !important', sm: '23px !important' } }} />}
+              startIcon={<PaymentsIcon sx={{ fontSize: { xs: '20px !important', sm: '23px !important' }, color: '#6D28D9' }} />}
               fullWidth
               sx={{
                 minHeight: { xs: '54px', sm: '64px', md: '72px' },
-                background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
-                color: '#FFFFFF',
+                background: 'linear-gradient(135deg, #EDE9FE 0%, #DDD6FE 100%)',
+                color: '#6D28D9',
+                border: '1.5px solid #C4B5FD',
                 borderRadius: { xs: '14px', sm: '18px' },
                 px: { xs: 1.5, sm: 2.2 },
                 py: { xs: 1.2, sm: 1.6 },
@@ -791,10 +825,10 @@ const UserDashboard = () => {
                 fontSize: { xs: '0.95rem', sm: '1.05rem', md: '1.15rem' },
                 textTransform: 'none',
                 justifyContent: 'center',
-                boxShadow: '0 6px 18px rgba(254, 128, 1, 0.35)',
+                boxShadow: '0 4px 14px rgba(109, 40, 217, 0.15)',
                 '&:hover': {
-                  background: 'linear-gradient(135deg, #E06F00 0%, #FE8001 100%)',
-                  boxShadow: '0 8px 24px rgba(254, 128, 1, 0.45)',
+                  background: 'linear-gradient(135deg, #DDD6FE 0%, #C4B5FD 100%)',
+                  boxShadow: '0 6px 20px rgba(109, 40, 217, 0.25)',
                   transform: 'translateY(-2px)'
                 },
                 transition: 'all 0.2s ease'
@@ -806,7 +840,7 @@ const UserDashboard = () => {
         </Box>
       </Paper>
 
-      {/* Simple & Sleek Refer & Earn Bar */}
+      {/* Modern Redesigned Refer & Earn Bar (Royal Indigo-Violet Gradient) */}
       <Box sx={{ mt: 2.5, mb: 3.5 }}>
         <Paper
           elevation={0}
@@ -815,77 +849,106 @@ const UserDashboard = () => {
             alignItems: 'center',
             justifyContent: 'space-between',
             gap: 1.5,
-            p: { xs: '12px 16px', sm: '14px 20px' },
-            borderRadius: '16px',
-            background: 'linear-gradient(135deg, #0F766E 0%, #0D9488 60%, #14B8A6 100%)',
-            boxShadow: '0 8px 20px rgba(13, 148, 136, 0.22)',
-            border: '1px solid rgba(255, 255, 255, 0.25)',
+            p: { xs: '14px 18px', sm: '16px 24px' },
+            borderRadius: '20px',
+            background: 'linear-gradient(135deg, #4338CA 0%, #6366F1 50%, #8B5CF6 100%)',
+            boxShadow: '0 10px 28px rgba(99, 102, 241, 0.28)',
+            border: '1px solid rgba(255, 255, 255, 0.22)',
             color: '#FFFFFF',
+            position: 'relative',
+            overflow: 'hidden'
           }}
         >
+          {/* Subtle background ambient lights */}
+          <Box sx={{
+            position: 'absolute', top: -30, right: -30,
+            width: 100, height: 100, borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(255, 255, 255, 0.25) 0%, transparent 70%)',
+            pointerEvents: 'none'
+          }} />
+
           {/* Left: Icon + Title & Code */}
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, minWidth: 0 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, minWidth: 0, zIndex: 1 }}>
             <Box
               sx={{
-                width: { xs: 38, sm: 42 },
-                height: { xs: 38, sm: 42 },
-                borderRadius: '12px',
+                width: { xs: 40, sm: 46 },
+                height: { xs: 40, sm: 46 },
+                borderRadius: '14px',
                 bgcolor: 'rgba(255, 255, 255, 0.2)',
-                backdropFilter: 'blur(4px)',
+                backdropFilter: 'blur(8px)',
+                border: '1px solid rgba(255, 255, 255, 0.3)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 flexShrink: 0,
                 color: '#FFFFFF',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
               }}
             >
-              <CardGiftcardIcon sx={{ fontSize: { xs: 22, sm: 24 } }} />
+              <CardGiftcardIcon sx={{ fontSize: { xs: 24, sm: 26 } }} />
             </Box>
             <Box sx={{ minWidth: 0 }}>
-              <Typography
-                sx={{
-                  fontWeight: 800,
-                  fontSize: { xs: '0.95rem', sm: '1.05rem' },
-                  color: '#FFFFFF',
-                  lineHeight: 1.2,
-                }}
-              >
-                Refer & Earn
-              </Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
+                <Typography
+                  sx={{
+                    fontWeight: 900,
+                    fontSize: { xs: '0.98rem', sm: '1.1rem' },
+                    color: '#FFFFFF',
+                    lineHeight: 1.2,
+                  }}
+                >
+                  Refer & Earn
+                </Typography>
+                {referralCode && (
+                  <Chip
+                    label={`Code: ${referralCode}`}
+                    size="small"
+                    sx={{
+                      bgcolor: 'rgba(255, 255, 255, 0.2)',
+                      color: '#FFFFFF',
+                      fontWeight: 800,
+                      fontSize: '0.68rem',
+                      height: '20px',
+                      border: '1px solid rgba(255, 255, 255, 0.35)'
+                    }}
+                  />
+                )}
+              </Box>
               <Typography
                 noWrap
                 sx={{
-                  fontSize: { xs: '0.75rem', sm: '0.82rem' },
-                  color: '#CCFBF1',
-                  fontWeight: 500,
-                  mt: 0.2,
+                  fontSize: { xs: '0.74rem', sm: '0.82rem' },
+                  color: '#E0E7FF',
+                  fontWeight: 600,
+                  mt: 0.3,
                 }}
               >
-                Invite friends and earn rewards
+                Share your referral link with friends and earn rewards
               </Typography>
             </Box>
           </Box>
 
           {/* Right: Copy & Share Buttons */}
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexShrink: 0 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexShrink: 0, zIndex: 1 }}>
             <Button
               onClick={handleCopyReferralLink}
               startIcon={<ContentCopyIcon sx={{ fontSize: '16px !important' }} />}
               sx={{
                 bgcolor: '#FFFFFF',
-                color: '#0F766E',
-                borderRadius: '10px',
-                fontWeight: 800,
-                fontSize: { xs: '0.78rem', sm: '0.84rem' },
+                color: '#4338CA',
+                borderRadius: '12px',
+                fontWeight: 850,
+                fontSize: { xs: '0.8rem', sm: '0.88rem' },
                 textTransform: 'none',
-                px: { xs: 1.4, sm: 1.8 },
-                py: 0.7,
-                boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
+                px: { xs: 1.5, sm: 2 },
+                py: 0.8,
+                boxShadow: '0 4px 14px rgba(0,0,0,0.18)',
                 '&:hover': {
-                  bgcolor: '#F0FDFA',
+                  bgcolor: '#F5F3FF',
                   transform: 'translateY(-1px)',
+                  boxShadow: '0 6px 18px rgba(0,0,0,0.22)'
                 },
-                transition: 'all 0.15s ease',
+                transition: 'all 0.2s ease',
               }}
             >
               Copy Link
@@ -896,16 +959,18 @@ const UserDashboard = () => {
               sx={{
                 bgcolor: 'rgba(255, 255, 255, 0.2)',
                 color: '#FFFFFF',
-                borderRadius: '10px',
-                width: 36,
-                height: 36,
-                border: '1px solid rgba(255, 255, 255, 0.3)',
+                borderRadius: '12px',
+                width: 40,
+                height: 40,
+                border: '1px solid rgba(255, 255, 255, 0.35)',
                 '&:hover': {
-                  bgcolor: 'rgba(255, 255, 255, 0.3)',
+                  bgcolor: 'rgba(255, 255, 255, 0.32)',
+                  transform: 'scale(1.05)'
                 },
+                transition: 'all 0.2s ease'
               }}
             >
-              <ShareIcon sx={{ fontSize: 18 }} />
+              <ShareIcon sx={{ fontSize: 19 }} />
             </IconButton>
           </Box>
         </Paper>

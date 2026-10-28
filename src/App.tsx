@@ -159,6 +159,7 @@ const UserDashboard = lazy(
 // );
 const LoadFundPage = lazy(() => import("./pages/User-Pages/UserDashboard/LoadFundPage"));
 const NewSubscription = lazy(() => import("./pages/User-Pages/UserDashboard/NewSubscription"));
+const UserPackagesPage = lazy(() => import("./pages/User-Pages/UserDashboard/UserPackagesPage"));
 const MySubscriptions = lazy(() => import("./pages/User-Pages/UserDashboard/MySubscriptions"));
 const UserAddOnPackages = lazy(() => import("./pages/User-Pages/Packages/UserAddOnPackages"));
 const UserPackageHistory = lazy(
@@ -551,6 +552,7 @@ const RoutesProvider = ({
               {/* <Route path="/user/portfolio" element={<UserPortfolio />} /> */}
               <Route path="/user/load-fund" element={<LoadFundPage />} />
               <Route path="/user/new-subscription" element={<NewSubscription />} />
+              <Route path="/user/packages" element={<UserPackagesPage />} />
               <Route path="/user/my-subscriptions" element={<MySubscriptions />} />
               {/* user account routes */}
               <Route path="/user/account/profile" element={<UserProfile />} />

@@ -9,7 +9,6 @@ import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import BadgeIcon from '@mui/icons-material/Badge';
-import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import QrCodeIcon from '@mui/icons-material/QrCode';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -413,7 +412,7 @@ const KYC: React.FC = () => {
           <CardContent sx={{ p: { xs: 2.5, sm: 3.5 } }}>
             
             {/* Top Verification Status Banner */}
-            <Box sx={{
+            {/* <Box sx={{
               display: 'flex',
               alignItems: 'center',
               gap: 2,
@@ -445,7 +444,7 @@ const KYC: React.FC = () => {
                   Required for payout settlements and account security
                 </Typography>
               </Box>
-            </Box>
+            </Box> */}
 
             <Box sx={{ mb: 3 }}>
               <Typography variant="subtitle2" sx={{ color: '#0F172A', fontWeight: 900, mb: 2, textTransform: 'uppercase', letterSpacing: '0.5px' }}>

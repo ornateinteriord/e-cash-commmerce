@@ -10,11 +10,11 @@ import { get } from '../../../api/Api';
 
 const NewSubscription: React.FC = () => {
   const { user } = useContext(UserContext);
-  const { data: walletOverview } = useGetWalletOverview(user?.Member_id || '');
+  const { data: walletOverview } = useGetWalletOverview(user?.Vendor_id || '');
   const { mutate: buyPackage, isPending: isSubmitting } = useBuyPackageDirectlyMutation();
 
   const [formData, setFormData] = useState({
-    targetMemberId: "",
+    targetVendorId: "",
     package: "",
   });
 
@@ -24,16 +24,16 @@ const NewSubscription: React.FC = () => {
   const [successDialogOpen, setSuccessDialogOpen] = useState(false);
   const [purchasedPkgDetails, setPurchasedPkgDetails] = useState<any>(null);
 
-  // Removed auto-fill of targetMemberId to allow entering anyone's user ID
+  // Removed auto-fill of targetVendorId to allow entering anyone's user ID
 
   useEffect(() => {
-    if (!formData.targetMemberId) {
+    if (!formData.targetVendorId) {
       setTargetName("");
       setIsTargetActive(false);
       return;
     }
     
-    if (formData.targetMemberId === user?.Member_id) {
+    if (formData.targetVendorId === user?.Vendor_id) {
       setTargetName(user?.Name || "");
       setIsTargetActive(false);
       return;
@@ -42,7 +42,7 @@ const NewSubscription: React.FC = () => {
     const fetchName = async () => {
       setIsSearching(true);
       try {
-        const res = await get(`/auth/get-sponsor/${formData.targetMemberId}`);
+        const res = await get(`/auth/get-sponsor/${formData.targetVendorId}`);
         if (res && res.success) {
           setTargetName(res.name || "Name not available");
           if (res.status === 'active' || res.status === 'Active') {
@@ -52,11 +52,11 @@ const NewSubscription: React.FC = () => {
             setIsTargetActive(false);
           }
         } else {
-          setTargetName("Member Not Found");
+          setTargetName("Vendor Not Found");
           setIsTargetActive(false);
         }
       } catch (e) {
-        setTargetName("Member Not Found");
+        setTargetName("Vendor Not Found");
         setIsTargetActive(false);
       } finally {
         setIsSearching(false);
@@ -65,7 +65,7 @@ const NewSubscription: React.FC = () => {
 
     const timeoutId = setTimeout(fetchName, 500);
     return () => clearTimeout(timeoutId);
-  }, [formData.targetMemberId, user?.Member_id, user?.Name]);
+  }, [formData.targetVendorId, user?.Vendor_id, user?.Name]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -77,44 +77,44 @@ const NewSubscription: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user?.Member_id || !formData.package) {
-      toast.error("Please enter invest amount");
+    if (!user?.Vendor_id || !formData.package) {
+      toast.error("Please enter Purchase amount");
       return;
     }
 
     const packageAmt = Number(formData.package);
     if (isNaN(packageAmt) || packageAmt < 100) {
-      toast.error("Minimum invest amount is ₹100");
+      toast.error("Minimum purchase amount is ₹100");
       return;
     }
 
     const availableBalance = Number(walletOverview?.balance ?? walletOverview?.availableForWithdrawal ?? 0);
     if (packageAmt > availableBalance) {
-      toast.error(`Insufficient Credit Balance! You have ₹${availableBalance.toLocaleString()} but need ₹${packageAmt.toLocaleString()}`);
+      toast.error(`Insufficient Wallet Balance! You have ₹${availableBalance.toLocaleString()} but need ₹${packageAmt.toLocaleString()}`);
       return;
     }
 
-    if (targetName === "Member Not Found" || isTargetActive || isSearching) {
-      toast.error("Please provide a valid pending Member ID");
+    if (targetName === "Vendor Not Found" || isTargetActive || isSearching) {
+      toast.error("Please provide a valid pending Vendor ID");
       return;
     }
     
     buyPackage({
-      member_id: user.Member_id,
-      target_member_id: formData.targetMemberId || user.Member_id,
+      member_id: user?.Member_id || "",
+      target_member_id: formData.targetVendorId || user?.Member_id || "",
       requested_amount: packageAmt,
     }, {
       onSuccess: () => {
         let packageName = `₹${packageAmt.toLocaleString()} Investment`;
         
         setPurchasedPkgDetails({
-          targetMemberId: formData.targetMemberId || user.Member_id,
+          targetVendorId: formData.targetVendorId || user?.Member_id,
           targetName: targetName,
           amount: formData.package,
           packageName: packageName
         });
         setSuccessDialogOpen(true);
-        setFormData(prev => ({ ...prev, package: "", targetMemberId: "" }));
+        setFormData(prev => ({ ...prev, package: "", targetVendorId: "" }));
         setTargetName("");
       }
     });
@@ -151,29 +151,29 @@ const NewSubscription: React.FC = () => {
     <Box sx={{ p: { xs: 2, md: 4 }, display: 'flex', justifyContent: 'center', bgcolor: '#F8FAFC', minHeight: '100vh' }}>
       <Card sx={{ maxWidth: 600, width: '100%', bgcolor: '#F8FAFC', border: '1px solid #E2E8F0', boxShadow: "0 15px 35px rgba(0,0,0,0.2)", borderRadius: '28px', color: '#0F172A', alignSelf: 'flex-start' }}>
         <CardHeader 
-          title="INVEST AMOUNT" 
+          title="PURCHASE AMOUNT" 
           sx={{ bgcolor: '#F8FAFC', color: '#0F172A', py: 2.5, textAlign: 'center', borderBottom: '1px solid rgba(255,255,255,0.08)' }}
           titleTypographyProps={{ variant: 'subtitle1', fontWeight: 900, letterSpacing: '1px' }}
         />
-        <CardContent sx={{ p: 4 }}>
+        <CardContent sx={{ p: 2 }}>
           <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
             
             <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: { xs: 'flex-start', sm: 'center' }, gap: 1 }}>
-              <Typography sx={{ width: '150px', color: '#475569', fontSize: '0.9rem', fontWeight: 600 }}>Member ID <span style={{color: '#ef4444'}}>*</span></Typography>
+              <Typography sx={{ width: '150px', color: '#475569', fontSize: '0.9rem', fontWeight: 600 }}>Vendor ID <span style={{color: '#ef4444'}}>*</span></Typography>
               <TextField
-                name="targetMemberId"
-                value={formData.targetMemberId}
+                name="targetVendorId"
+                value={formData.targetVendorId}
                 onChange={handleInputChange}
                 fullWidth
                 size="small"
-                placeholder="Enter member ID"
+                placeholder="Enter vendor ID"
                 sx={inputStyles}
                 required
               />
             </Box>
 
             <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: { xs: 'flex-start', sm: 'center' }, gap: 1 }}>
-              <Typography sx={{ width: '150px', color: '#475569', fontSize: '0.9rem', fontWeight: 600 }}>Member Name</Typography>
+              <Typography sx={{ width: '150px', color: '#475569', fontSize: '0.9rem', fontWeight: 600 }}>Vendor Name</Typography>
               <TextField
                 value={targetName}
                 fullWidth
@@ -184,17 +184,17 @@ const NewSubscription: React.FC = () => {
                 }}
                 sx={{ 
                   ...inputStyles, 
-                  bgcolor: targetName === 'Member Not Found' ? 'rgba(239, 68, 68, 0.1)' : '#F8FAFC',
+                  bgcolor: targetName === 'Vendor Not Found' ? 'rgba(239, 68, 68, 0.1)' : '#F8FAFC',
                   '& .MuiInputBase-input.Mui-disabled': {
-                    color: targetName === 'Member Not Found' ? '#ef4444' : '#121010ff',
-                    WebkitTextFillColor: targetName === 'Member Not Found' ? '#ef4444' : '#0f0e0eff',
+                    color: targetName === 'Vendor Not Found' ? '#ef4444' : '#121010ff',
+                    WebkitTextFillColor: targetName === 'Vendor Not Found' ? '#ef4444' : '#0f0e0eff',
                   }
                 }}
               />
             </Box>
 
             <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: { xs: 'flex-start', sm: 'center' }, gap: 1 }}>
-              <Typography sx={{ width: '150px', color: '#475569', fontSize: '0.9rem', fontWeight: 600 }}>Credit Balance</Typography>
+              <Typography sx={{ width: '150px', color: '#475569', fontSize: '0.9rem', fontWeight: 600 }}>Wallet Balance</Typography>
               <TextField
                 value={`₹${Number(walletOverview?.balance ?? walletOverview?.availableForWithdrawal ?? 0).toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}`}
                 fullWidth
@@ -205,7 +205,7 @@ const NewSubscription: React.FC = () => {
             </Box>
 
             <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: { xs: 'flex-start', sm: 'center' }, gap: 1 }}>
-              <Typography sx={{ width: '150px', color: '#475569', fontSize: '0.9rem', fontWeight: 600 }}>Invest Amount (₹) <span style={{color: '#ef4444'}}>*</span></Typography>
+              <Typography sx={{ width: '150px', color: '#475569', fontSize: '0.9rem', fontWeight: 600 }}>Purchase Amount (₹) <span style={{color: '#ef4444'}}>*</span></Typography>
               <TextField
                 name="package"
                 type="text"
@@ -256,7 +256,7 @@ const NewSubscription: React.FC = () => {
               <Button
                 type="submit"
                 variant="contained"
-                disabled={isSubmitting || targetName === "Member Not Found" || isTargetActive || targetName === "" || isSearching}
+                disabled={isSubmitting || targetName === "Vendor Not Found" || isTargetActive || targetName === "" || isSearching}
                 sx={{
                   bgcolor: '#0284C7',
                   color: '#FFFFFF',
@@ -277,7 +277,7 @@ const NewSubscription: React.FC = () => {
                   }
                 }}
               >
-                {isSubmitting ? "Processing..." : "Invest Amount"}
+                {isSubmitting ? "Processing..." : "Purchase Amount"}
               </Button>
             </Box>
           </form>
@@ -324,7 +324,7 @@ const NewSubscription: React.FC = () => {
             Investment Successful!
           </Typography>
           <Typography variant="body2" sx={{ color: '#7A5060', fontWeight: 600, mt: 0.5, fontSize: '0.85rem' }}>
-            Investment has been successfully activated for the member.
+            Investment has been successfully activated for the vendor.
           </Typography>
         </DialogTitle>
 
@@ -354,17 +354,17 @@ const NewSubscription: React.FC = () => {
               </Typography>
             </Box>
 
-            {/* Member ID */}
+            {/* Vendor ID */}
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Typography sx={{ color: '#7A5060', fontSize: '0.82rem', fontWeight: 600 }}>Member ID</Typography>
+              <Typography sx={{ color: '#7A5060', fontSize: '0.82rem', fontWeight: 600 }}>Vendor ID</Typography>
               <Typography sx={{ color: '#FE8001', fontWeight: 800, fontSize: '0.9rem', fontFamily: 'monospace' }}>
-                {purchasedPkgDetails?.targetMemberId || '-'}
+                {purchasedPkgDetails?.targetVendorId || '-'}
               </Typography>
             </Box>
 
-            {/* Member Name */}
+            {/* Vendor Name */}
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Typography sx={{ color: '#7A5060', fontSize: '0.82rem', fontWeight: 600 }}>Member Name</Typography>
+              <Typography sx={{ color: '#7A5060', fontSize: '0.82rem', fontWeight: 600 }}>Vendor Name</Typography>
               <Typography sx={{ color: '#2D0F1E', fontWeight: 700, fontSize: '0.88rem' }}>
                 {purchasedPkgDetails?.targetName || '-'}
               </Typography>

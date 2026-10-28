@@ -1,5 +1,5 @@
 import { ChevronDown, LogOutIcon, Menu as MenuIcon, Settings, User, Headphones, MessageCircle } from 'lucide-react';
-import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
+// import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import "./navbar.scss";
 import { AppBar, Avatar, Box, Divider, Menu, MenuItem, Toolbar, Typography, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -93,6 +93,7 @@ const Navbar = ({ shouldHide, onToggleSidebar }: NavbarProps) => {
                 }}
               >
                 <Avatar
+                  src="/favicon.ico"
                   sx={{
                     width: { xs: 38, md: 42 },
                     height: { xs: 38, md: 42 },
@@ -101,7 +102,11 @@ const Navbar = ({ shouldHide, onToggleSidebar }: NavbarProps) => {
                     fontWeight: 900,
                     fontSize: { xs: '1rem', md: '1.15rem' },
                     boxShadow: '0 3px 10px rgba(254, 128, 1, 0.35)',
-                    border: '2px solid rgba(255, 255, 255, 0.9)'
+                    border: '2px solid rgba(255, 255, 255, 0.9)',
+                    '& .MuiAvatar-img': {
+                      objectFit: 'contain',
+                      p: 0.4
+                    }
                   }}
                 >
                   {memberDetails?.Name?.charAt(0).toUpperCase() || 'U'}
@@ -134,8 +139,8 @@ const Navbar = ({ shouldHide, onToggleSidebar }: NavbarProps) => {
 
               {/* Right Side: Scanner, Support Chat & Logout Buttons */}
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                {/* 1. QR Scanner Icon */}
-                <IconButton
+                {/* 1. QR Scanner Icon - Commented out */}
+                {/* <IconButton
                   onClick={() => navigate('/user/my-qr')}
                   title="Scan & Pay / QR Scanner"
                   sx={{
@@ -153,7 +158,7 @@ const Navbar = ({ shouldHide, onToggleSidebar }: NavbarProps) => {
                   }}
                 >
                   <QrCodeScannerIcon sx={{ fontSize: 22 }} />
-                </IconButton>
+                </IconButton> */}
 
                 {/* 2. Support Chat Icon */}
                 <IconButton

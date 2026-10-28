@@ -25,17 +25,12 @@ const Footer = () => {
                                 <Box sx={{ mb: 2 }}>
                                     <Box
                                         component="img"
-                                        src="/e-shopy.jpeg"
+                                        src="/e-shopy-D.jpeg"
                                         alt="E-shopy Logo"
                                         sx={{
                                             height: { xs: 44, md: 52 },
-                                            bgcolor: '#FFFFFF',
-                                            px: 1.5,
-                                            py: 0.6,
-                                            borderRadius: '12px',
                                             objectFit: 'contain',
                                             display: 'inline-block',
-                                            boxShadow: '0 4px 14px rgba(0, 0, 0, 0.25)'
                                         }}
                                     />
                                 </Box>

@@ -326,14 +326,10 @@ const EcashScanner: React.FC = () => {
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <Box
             component="img"
-            src="/e-shopy.jpeg"
+            src="/e-shopy-D.jpeg"
             alt="E-shopy"
             sx={{
               height: 28,
-              bgcolor: '#FFFFFF',
-              px: 1,
-              py: 0.3,
-              borderRadius: '8px',
               objectFit: 'contain'
             }}
           />

@@ -148,7 +148,7 @@ const Profile: React.FC = () => {
               <Box sx={{ 
                 display: 'flex', 
                 alignItems: 'center',
-                background: 'linear-gradient(135deg, #0F172A 0%, #1E3A8A 50%, #2563EB 100%)',
+                 background: 'linear-gradient(135deg, #15242A 0%, #1F333B 65%, #2B444E 100%)',
                 p: 2.5,
                 borderRadius: '20px',
                 border: '1px solid rgba(255, 255, 255, 0.15)',
@@ -335,7 +335,7 @@ const Profile: React.FC = () => {
                   disabled={updateMember.isPending}
                   startIcon={<SaveIcon />}
                   sx={{
-                    background: 'linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)',
+                    background: 'linear-gradient(135deg, #FF952A 0%, #FF952A 100%)',
                     color: '#FFFFFF',
                     py: 1.5,
                     fontSize: '1rem',
@@ -344,7 +344,7 @@ const Profile: React.FC = () => {
                     borderRadius: '14px',
                     boxShadow: '0 8px 20px rgba(37, 99, 235, 0.3)',
                     "&:hover": { 
-                      background: 'linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%)',
+                      background: 'linear-gradient(135deg, #FF952A 0%, #FF952A 100%)',
                       boxShadow: '0 10px 24px rgba(37, 99, 235, 0.4)',
                     },
                     "&:disabled": { 

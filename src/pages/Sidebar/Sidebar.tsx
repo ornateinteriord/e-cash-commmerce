@@ -106,7 +106,7 @@ const Sidebar = ({ isOpen, onClose, role }: { isOpen: boolean, onClose: () => vo
             >
               <Box
                 component="img"
-                src="/e-shopy.jpeg"
+                src={isNidhiRole ? "/e-shopy-D.jpeg" : "/e-shopy.jpeg"}
                 alt="E-shopy Logo"
                 onClick={() => {
                   navigate(role === "USER" ? '/user/dashboard' : '/admin/dashboard');
@@ -114,13 +114,15 @@ const Sidebar = ({ isOpen, onClose, role }: { isOpen: boolean, onClose: () => vo
                 }}
                 sx={{
                   height: 38,
-                  bgcolor: '#FFFFFF',
-                  px: 1.5,
-                  py: 0.5,
-                  borderRadius: '10px',
                   objectFit: 'contain',
                   cursor: 'pointer',
-                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)'
+                  ...(!isNidhiRole && {
+                    bgcolor: '#FFFFFF',
+                    px: 1.5,
+                    py: 0.5,
+                    borderRadius: '10px',
+                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)'
+                  })
                 }}
               />
             </Box>
