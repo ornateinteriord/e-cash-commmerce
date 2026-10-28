@@ -186,7 +186,8 @@ const Login = () => {
                   sx={{
                     height: { xs: 48, sm: 56 },
                     objectFit: 'contain',
-                    mb: 1.5
+                    mb: 1.5,
+                    mixBlendMode: 'multiply'
                   }}
                 />
 

@@ -44,75 +44,75 @@ export const PACKAGES: PackagePlan[] = [
   {
     id: 1,
     amount: 25000,
-    title: 'Smart Saver Plan',
-    tag: 'Smart Saver',
+    title: 'Starter Store',
+    tag: 'Starter',
     color: '#EA580C',
     lightBg: '#FFF7ED',
     borderHover: '#FED7AA',
-    description: 'Start selling online with essential product listings and selected category access',
+    description: 'Essential product catalog listings to launch your vendor store on E-shopy',
     features: [
-      '10 Product Listing',
-      'Selected Category',
+      '10 Product Listings',
+      'Selected Category Access',
       'Verified Vendor Badge'
     ]
   },
   {
     id: 2,
     amount: 50000,
-    title: 'Wealth Builder Plan',
-    tag: 'Wealth Builder',
+    title: 'Prime Merchant',
+    tag: 'Prime',
     color: '#0284C7',
     lightBg: '#F0F9FF',
     borderHover: '#BAE6FD',
-    description: 'Scale your online store with more product listings and enhanced buyer visibility',
+    description: 'Scale your store with higher product capacity and buyer inquiry priority',
     features: [
-      '25 Product Listing',
-      'Selected Category',
+      '25 Product Listings',
+      'Selected Category Access',
       'Priority Buyer Inquiries'
     ]
   },
   {
     id: 3,
     amount: 100000,
-    title: 'Future Secure Deposit',
-    tag: 'Future Secure',
+    title: 'Power Seller Hub',
+    tag: 'Power Seller',
     color: '#059669',
     lightBg: '#ECFDF5',
     borderHover: '#A7F3D0',
-    description: 'Grow your vendor business with higher product capacity and priority search placement',
+    description: 'Accelerate your sales with high-volume listings and featured search rankings',
     features: [
-      '60 Product Listing',
-      'Selected Category',
+      '60 Product Listings',
+      'Multi-Category Access',
       'Featured Search Ranking'
     ]
   },
   {
     id: 4,
     amount: 200000,
-    title: 'Prosper Plus Plan',
-    tag: 'Prosper Plus',
+    title: 'Super Store Partner',
+    tag: 'Super Store',
     color: '#7C3AED',
     lightBg: '#F5F3FF',
     borderHover: '#DDD6FE',
-    description: 'Multi-category vendor package with high-volume listings and homepage brand spotlight',
+    description: 'Comprehensive vendor package with all categories unlocked and brand storefront spotlight',
     features: [
-      '150 Product Listing',
-      'Any Category',
+      '150 Product Listings',
+      'All Categories Unlocked',
       'Homepage Brand Spotlight'
     ]
   },
   {
     id: 5,
     amount: 500000,
-    title: 'Golden Growth Plan',
-    tag: 'Golden Growth',
+    title: 'Mega Flagship Store',
+    tag: 'Mega Flagship',
     color: '#D97706',
     lightBg: '#FFFBEB',
     borderHover: '#FDE68A',
-    description: 'Top-tier enterprise vendor plan with maximum product listings across any category and dedicated support',
+    description: 'Premier vendor tier with maximum 500 product catalog listings, omni-channel promotion, and dedicated vendor support',
     features: [
-      '500 Product Listing',
-      'Any Category',
+      '500 Product Listings',
+      'All Categories Unlocked',
       'Top Brand Promotion & Dedicated Support'
     ]
   }

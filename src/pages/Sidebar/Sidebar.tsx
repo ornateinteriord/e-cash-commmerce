@@ -104,27 +104,49 @@ const Sidebar = ({ isOpen, onClose, role }: { isOpen: boolean, onClose: () => vo
                 borderBottom: isNidhiRole ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid #FED7AA'
               }}
             >
-              <Box
-                component="img"
-                src={isNidhiRole ? "/e-shopy-D.jpeg" : "/e-shopy.jpeg"}
-                alt="E-shopy Logo"
-                onClick={() => {
-                  navigate(role === "USER" ? '/user/dashboard' : '/admin/dashboard');
-                  if (window.innerWidth <= 768) onClose();
-                }}
-                sx={{
-                  height: 38,
-                  objectFit: 'contain',
-                  cursor: 'pointer',
-                  ...(!isNidhiRole && {
-                    bgcolor: '#FFFFFF',
-                    px: 1.5,
-                    py: 0.5,
-                    borderRadius: '10px',
-                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)'
-                  })
-                }}
-              />
+              {isNidhiRole ? (
+                <Box sx={{
+                  bgcolor: '#FFFFFF',
+                  px: 1.5,
+                  py: 0.5,
+                  borderRadius: '10px',
+                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)'
+                }}>
+                  <Box
+                    component="img"
+                    src="/e-shopy.jpeg"
+                    alt="E-shopy Logo"
+                    onClick={() => {
+                      navigate('/admin/dashboard');
+                      if (window.innerWidth <= 768) onClose();
+                    }}
+                    sx={{
+                      height: 32,
+                      objectFit: 'contain',
+                      cursor: 'pointer',
+                      display: 'block',
+                      mixBlendMode: 'multiply'
+                    }}
+                  />
+                </Box>
+              ) : (
+                <Box
+                  component="img"
+                  src="/e-shopy.jpeg"
+                  alt="E-shopy Logo"
+                  onClick={() => {
+                    navigate(role === "USER" ? '/user/dashboard' : '/admin/dashboard');
+                    if (window.innerWidth <= 768) onClose();
+                  }}
+                  sx={{
+                    height: 38,
+                    objectFit: 'contain',
+                    cursor: 'pointer',
+                    display: 'block',
+                    mixBlendMode: 'multiply'
+                  }}
+                />
+              )}
             </Box>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>

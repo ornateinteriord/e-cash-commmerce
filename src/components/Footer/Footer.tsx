@@ -23,16 +23,27 @@ const Footer = () => {
                             {/* Column 1: Logo & Text */}
                             <Grid item xs={12} md={4}>
                                 <Box sx={{ mb: 2 }}>
-                                    <Box
-                                        component="img"
-                                        src="/e-shopy-D.jpeg"
-                                        alt="E-shopy Logo"
-                                        sx={{
-                                            height: { xs: 44, md: 52 },
-                                            objectFit: 'contain',
-                                            display: 'inline-block',
-                                        }}
-                                    />
+                                    <Box sx={{
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        bgcolor: '#FFFFFF',
+                                        px: 2,
+                                        py: 0.8,
+                                        borderRadius: '12px',
+                                        boxShadow: '0 4px 14px rgba(0, 0, 0, 0.25)'
+                                    }}>
+                                        <Box
+                                            component="img"
+                                            src="/e-shopy.jpeg"
+                                            alt="E-shopy Logo"
+                                            sx={{
+                                                height: { xs: 34, md: 40 },
+                                                objectFit: 'contain',
+                                                display: 'block',
+                                                mixBlendMode: 'multiply'
+                                            }}
+                                        />
+                                    </Box>
                                 </Box>
                                 <Typography variant="body1" sx={{ color: "#94a3b8", lineHeight: 1.7, pr: { md: 4 } }}>
                                     Highlights the impact of technology on the banking industry,

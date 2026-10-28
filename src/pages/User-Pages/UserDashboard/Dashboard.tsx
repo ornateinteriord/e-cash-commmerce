@@ -361,16 +361,21 @@ const UserDashboard = () => {
             </Typography>
           </Box>
 
-          {/* Official E-shopy Brand Logo in Welcome Bar (Dark background version) */}
+          {/* Official E-shopy Brand Logo in Welcome Bar with matching white container */}
           <Box sx={{
             display: { xs: 'none', sm: 'flex' },
             alignItems: 'center',
+            bgcolor: '#FFFFFF',
+            px: 1.6,
+            py: 0.6,
+            borderRadius: '12px',
+            boxShadow: '0 4px 14px rgba(0, 0, 0, 0.25)'
           }}>
             <Box
               component="img"
-              src="/e-shopy-D.jpeg"
+              src="/e-shopy.jpeg"
               alt="E-shopy"
-              sx={{ height: { sm: 36, md: 42 }, objectFit: 'contain' }}
+              sx={{ height: { sm: 26, md: 30 }, objectFit: 'contain', display: 'block', mixBlendMode: 'multiply' }}
             />
           </Box>
         </Box>

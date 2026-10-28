@@ -9,12 +9,12 @@ import AccountTreeIcon from '@mui/icons-material/AccountTree';
 // import LanguageIcon from '@mui/icons-material/Language';
 
 const PACKAGES: Record<string, { title: string, color: string, description?: string }> = {
-  '10000': { title: 'Secure Growth Plan', color: '#1de9b6', description: 'Begin your journey with the Secure Growth Plan and unlock new growth opportunities' },
-  '25000': { title: 'Smart Saver Plan', color: '#CD7F32', description: 'The Smart Saver Plan helps you explore enhanced features and expand your trading potential' },
-  '50000': { title: 'Wealth Builder Plan', color: '#C0C0C0', description: 'Explore the Wealth Builder Plan designed for advanced financial management and growth opportunities' },
-  '100000': { title: 'Future Secure Deposit', color: '#0284C7', description: 'Take your forex journey further with the Future Secure Deposit' },
-  '200000': { title: 'Prosper Plus Plan', color: '#E5E4E2', description: 'A premium package built to support smarter trading decisions and long-term growth' },
-  '500000': { title: 'Golden Growth Investment Plan', color: '#b9f2ff', description: 'Experience a higher level of financial flexibility with the Golden Growth Investment Plan' }
+  '10000': { title: 'Mini Store', color: '#1de9b6', description: 'Begin your selling journey with essential product listings and digital store tools' },
+  '25000': { title: 'Starter Store', color: '#EA580C', description: 'Essential product catalog listings to launch your vendor store on E-shopy' },
+  '50000': { title: 'Prime Merchant', color: '#0284C7', description: 'Scale your store with higher product capacity and buyer inquiry priority' },
+  '100000': { title: 'Power Seller Hub', color: '#059669', description: 'Accelerate your sales with high-volume listings and featured search rankings' },
+  '200000': { title: 'Super Store Partner', color: '#7C3AED', description: 'Comprehensive vendor package with all categories unlocked and brand storefront spotlight' },
+  '500000': { title: 'Mega Flagship Store', color: '#D97706', description: 'Premier vendor tier with maximum 500 product catalog listings and dedicated vendor management' }
 };
 
 const PackageDetail = () => {

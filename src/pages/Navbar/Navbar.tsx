@@ -132,7 +132,8 @@ const Navbar = ({ shouldHide, onToggleSidebar }: NavbarProps) => {
                   height: { xs: 30, sm: 36, md: 40 },
                   cursor: 'pointer',
                   objectFit: 'contain',
-                  display: 'block'
+                  display: 'block',
+                  mixBlendMode: 'multiply'
                 }}
               />
 
@@ -223,7 +224,8 @@ const Navbar = ({ shouldHide, onToggleSidebar }: NavbarProps) => {
                     height: { xs: 34, md: 42 },
                     cursor: "pointer",
                     objectFit: "contain",
-                    display: 'block'
+                    display: 'block',
+                    mixBlendMode: 'multiply'
                   }}
                 />
               </Box>
