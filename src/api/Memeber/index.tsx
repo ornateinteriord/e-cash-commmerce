@@ -664,6 +664,46 @@ export const useVendorWalletWithdraw = (memberId: any) => {
   });
 };
 
+export const useGetProductLevelWalletOverview = (memberId: any) => {
+  return useQuery({
+    queryKey: ["productLevelWalletOverview", memberId],
+    queryFn: async () => {
+      const response = await get(`/user/product-level-wallet/overview/${memberId}`);
+      if (response.success) {
+        return response.data;
+      } else {
+        throw new Error(response.message || "Failed to fetch product level wallet overview");
+      }
+    },
+    enabled: !!memberId,
+  });
+};
+
+export const useProductLevelWalletWithdraw = (memberId: any) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: { memberId: string; amount: string }) => {
+      return await post(`/user/product-level-wallet/withdraw/${memberId}`, data);
+    },
+    onSuccess: (response) => {
+      if (response.success) {
+        toast.success(response.message || "Product Level withdrawal requested successfully!");
+        queryClient.invalidateQueries({ queryKey: ["productLevelWalletOverview"] });
+        queryClient.invalidateQueries({ queryKey: ["walletOverview"] });
+        queryClient.invalidateQueries({ queryKey: ["memberDetails"] });
+        return response.data;
+      } else {
+        throw new Error(response.message || "Product Level withdrawal failed");
+      }
+    },
+    onError: (error: any) => {
+      const errorMessage = error.response?.data?.message || "Failed to process product level withdrawal";
+      toast.error(errorMessage);
+    },
+  });
+};
+
 export const useGetMultiLevelSponsorship = () => {
   return useQuery({
     queryKey: ["multiLevelSponsors"],

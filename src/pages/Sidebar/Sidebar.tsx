@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { UserSideBarMenuItems, AdminSideBarMenuItems, Admin01SideBarMenuItems, AgentSideBarMenuItems } from './SidebarUtils';
-import { Avatar, Box, Toolbar, Typography } from '@mui/material';
+import { Avatar, Toolbar, Typography } from '@mui/material';
 import { SideBarMenuItemType } from '../../store/store';
 import { ExpandMoreIcon, ExpandLessIcon } from '../Icons';
 import { useGetMemberDetails } from '../../api/Memeber';
@@ -92,63 +92,6 @@ const Sidebar = ({ isOpen, onClose, role }: { isOpen: boolean, onClose: () => vo
               gap: '5px'
             }}
           >
-            {/* E-shopy Brand Logo at Top of Sidebar */}
-            <Box
-              sx={{
-                width: '100%',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                pb: 1.5,
-                mb: 1,
-                borderBottom: isNidhiRole ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid #FED7AA'
-              }}
-            >
-              {isNidhiRole ? (
-                <Box sx={{
-                  bgcolor: '#FFFFFF',
-                  px: 1.5,
-                  py: 0.5,
-                  borderRadius: '10px',
-                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)'
-                }}>
-                  <Box
-                    component="img"
-                    src="/e-shopy.jpeg"
-                    alt="E-shopy Logo"
-                    onClick={() => {
-                      navigate('/admin/dashboard');
-                      if (window.innerWidth <= 768) onClose();
-                    }}
-                    sx={{
-                      height: 32,
-                      objectFit: 'contain',
-                      cursor: 'pointer',
-                      display: 'block',
-                      mixBlendMode: 'multiply'
-                    }}
-                  />
-                </Box>
-              ) : (
-                <Box
-                  component="img"
-                  src="/e-shopy.jpeg"
-                  alt="E-shopy Logo"
-                  onClick={() => {
-                    navigate(role === "USER" ? '/user/dashboard' : '/admin/dashboard');
-                    if (window.innerWidth <= 768) onClose();
-                  }}
-                  sx={{
-                    height: 38,
-                    objectFit: 'contain',
-                    cursor: 'pointer',
-                    display: 'block',
-                    mixBlendMode: 'multiply'
-                  }}
-                />
-              )}
-            </Box>
-
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
               <Avatar
                 alt="User Avatar"

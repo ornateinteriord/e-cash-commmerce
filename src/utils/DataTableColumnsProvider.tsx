@@ -2113,3 +2113,100 @@ export const getVendorWalletColumns = () => [
   },
 ];
 
+export const getProductLevelWalletColumns = () => [
+  {
+    name: "Date",
+    selector: (row: any) => {
+      if (!row.transaction_date && !row.createdAt) return "-";
+      const date = new Date(row.transaction_date || row.createdAt);
+      return date.toLocaleDateString();
+    },
+    sortable: true,
+    cell: (row: any) => {
+      if (!row.transaction_date && !row.createdAt) return <span style={{ color: '#94A3B8' }}>-</span>;
+      const date = new Date(row.transaction_date || row.createdAt);
+      return (
+        <span style={{ fontSize: '0.83rem', color: '#64748B', fontWeight: 500 }}>
+          {date.toLocaleDateString()}
+        </span>
+      );
+    }
+  },
+  {
+    name: "Transaction ID",
+    selector: (row: any) => row.tx_no || row.transaction_id || "-",
+    sortable: true,
+    cell: (row: any) => (
+      <span style={{ fontFamily: 'monospace', fontSize: '0.78rem', color: '#64748B' }}>
+        {row.tx_no || row.transaction_id || "-"}
+      </span>
+    )
+  },
+  {
+    name: "Type",
+    selector: (row: any) => row.transaction_type || "Product Level Income",
+    sortable: true,
+    cell: (row: any) => (
+      <span style={{ fontSize: '0.83rem', color: '#0284C7', fontWeight: 800 }}>
+        {row.transaction_type || "Product Level Income"}
+      </span>
+    )
+  },
+  {
+    name: "Amount",
+    selector: (row: any) => {
+      const amt = row.ew_debit || row.gross_amount || row.amount || row.vw_credit || row.ew_credit;
+      return amt ? parseFloat(amt) : 0;
+    },
+    sortable: true,
+    cell: (row: any) => {
+      const isDebit = parseFloat(row.ew_debit || 0) > 0 || (row.transaction_type && row.transaction_type.toLowerCase().includes("withdrawal"));
+      const amt = isDebit ? (row.ew_debit || row.gross_amount || row.amount) : (row.vw_credit || row.ew_credit || row.gross_amount || row.amount);
+      if (!amt || parseFloat(amt) === 0) return <span style={{ color: '#94A3B8' }}>-</span>;
+      return (
+        <span style={{
+          fontWeight: 800,
+          color: isDebit ? '#DC2626' : '#16A34A',
+          fontSize: '0.85rem'
+        }}>
+          {isDebit ? "- " : "+ "}₹{parseFloat(amt).toFixed(2)}
+        </span>
+      );
+    }
+  },
+  {
+    name: "Description",
+    selector: (row: any) => row.description || "-",
+    sortable: true,
+    wrap: true,
+    grow: 1.5,
+    cell: (row: any) => (
+      <span style={{ fontSize: '0.84rem', color: '#1F333B', fontWeight: 500 }}>
+        {row.description || "-"}
+      </span>
+    )
+  },
+  {
+    name: "Status",
+    selector: (row: any) => row.status || "Pending",
+    sortable: true,
+    cell: (row: any) => {
+      const statusStr = String(row.status || 'Pending');
+      const isApproved = statusStr.toLowerCase() === 'approved' || statusStr.toLowerCase() === 'completed' || statusStr.toLowerCase() === 'success';
+      const isRejected = statusStr.toLowerCase() === 'rejected';
+      return (
+        <span style={{
+          padding: '3px 9px',
+          borderRadius: '12px',
+          fontSize: '11px',
+          fontWeight: 700,
+          backgroundColor: isApproved ? '#DCFCE7' : isRejected ? '#FEE2E2' : '#FEF3C7',
+          color: isApproved ? '#15803D' : isRejected ? '#DC2626' : '#B45309'
+        }}>
+          {statusStr}
+        </span>
+      );
+    }
+  },
+];
+

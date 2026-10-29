@@ -1,4 +1,4 @@
-import { Grid, Typography, Box, Paper, Avatar } from '@mui/material';
+import { Grid, Typography, Box, Paper, Avatar, CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import '../../Dashboard/dashboard.scss';
 import DashboardTable from '../../Dashboard/DashboardTable';
@@ -40,16 +40,16 @@ const AdminDashboard = () => {
 
   if (isLoading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '64vh' }}>
-        <Typography sx={{ color: 'white' }}>Loading dashboard data...</Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '64vh', bgcolor: '#FFFFFF' }}>
+        <CircularProgress sx={{ color: '#FE8001' }} />
       </Box>
     );
   }
 
   if (error) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '64vh' }}>
-        <Typography color="error">
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '64vh', bgcolor: '#FFFFFF', p: 3 }}>
+        <Typography color="error" sx={{ fontWeight: 700 }}>
           Error loading dashboard data: {error.message}
         </Typography>
       </Box>
@@ -61,18 +61,17 @@ const AdminDashboard = () => {
       elevation={0}
       onClick={onClick}
       sx={{
-        p: 3,
-        borderRadius: '24px',
-        bgcolor: 'rgba(255, 255, 255, 0.04)',
-        backdropFilter: 'blur(12px)',
-        border: '1px solid rgba(255, 255, 255, 0.08)',
-        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+        p: 2.8,
+        borderRadius: '22px',
+        bgcolor: '#FFFFFF',
+        border: '1.5px solid #E2E8F0',
+        boxShadow: '0 4px 18px rgba(0, 0, 0, 0.04)',
         cursor: onClick ? 'pointer' : 'default',
-        transition: 'all 0.3s ease',
+        transition: 'all 0.25s ease',
         '&:hover': {
-          transform: onClick ? 'translateY(-4px)' : 'none',
-          bgcolor: 'rgba(255, 255, 255, 0.06)',
-          border: `1px solid ${color || 'rgba(255, 255, 255, 0.15)'}`
+          transform: onClick ? 'translateY(-3px)' : 'none',
+          boxShadow: '0 8px 24px rgba(0, 0, 0, 0.08)',
+          border: `1.5px solid ${color || '#FE8001'}`
         },
         display: 'flex',
         flexDirection: 'column',
@@ -84,23 +83,23 @@ const AdminDashboard = () => {
           width: 48, 
           height: 48, 
           borderRadius: '16px', 
-          bgcolor: 'rgba(255,255,255,0.06)',
+          bgcolor: color ? `${color}15` : 'rgba(254, 128, 1, 0.12)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          color: color || '#FFD700'
+          color: color || '#FE8001'
         }}>
           {icon}
         </Box>
       </Box>
-      <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.6)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px', mb: 1 }}>
+      <Typography variant="body2" sx={{ color: '#64748B', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', mb: 0.8, fontSize: '0.78rem' }}>
         {title}
       </Typography>
-      <Typography variant="h4" sx={{ color: 'white', fontWeight: 800, mb: 1 }}>
+      <Typography variant="h4" sx={{ color: '#0F172A', fontWeight: 900, mb: 0.8, fontSize: { xs: '1.5rem', md: '1.85rem' } }}>
         {amount}
       </Typography>
       {subTitle && (
-        <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.4)', fontWeight: 500 }}>
+        <Typography variant="caption" sx={{ color: '#94A3B8', fontWeight: 600 }}>
           {subTitle}
         </Typography>
       )}
@@ -110,22 +109,21 @@ const AdminDashboard = () => {
   return (
     <Box sx={{
       pb: 6,
-      background: 'linear-gradient(180deg, #050916 0%, #0f1e36 100%)',
+      background: '#FFFFFF',
       minHeight: '100vh',
-      px: { xs: 2.5, md: 5, lg: 10, xl: 16 },
-      pt: { xs: 1.5, md: 4 },
+      px: { xs: 2.5, md: 5, lg: 8, xl: 12 },
+      pt: { xs: 2, md: 4 },
       maxWidth: '1800px',
       margin: '0 auto'
     }}>
       {/* Header Section */}
       <Paper elevation={0} sx={{
         mb: 4,
-        p: { xs: 3, md: 4 },
-        borderRadius: '28px',
-        bgcolor: 'rgba(255, 255, 255, 0.04)',
-        backdropFilter: 'blur(12px)',
-        border: '1px solid rgba(255, 255, 255, 0.08)',
-        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+        p: { xs: 2.5, md: 3.5 },
+        borderRadius: '24px',
+        bgcolor: '#FFFFFF',
+        border: '1.5px solid #E2E8F0',
+        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
         display: 'flex',
         flexDirection: { xs: 'column', md: 'row' },
         justifyContent: 'space-between',
@@ -136,19 +134,19 @@ const AdminDashboard = () => {
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2.5 }}>
           <Avatar
             sx={{
-              width: { xs: 62, md: 80 },
-              height: { xs: 62, md: 80 },
-              bgcolor: 'rgba(255,255,255,0.06)',
-              border: '2px solid rgba(255,255,255,0.1)',
+              width: { xs: 58, md: 68 },
+              height: { xs: 58, md: 68 },
+              bgcolor: 'rgba(254, 128, 1, 0.12)',
+              border: '2px solid rgba(254, 128, 1, 0.35)',
             }}
           >
-            <AdminPanelSettingsIcon sx={{ fontSize: { xs: 36, md: 46 }, color: '#FFD700' }} />
+            <AdminPanelSettingsIcon sx={{ fontSize: { xs: 32, md: 38 }, color: '#FE8001' }} />
           </Avatar>
           <Box>
-            <Typography variant="h5" sx={{ color: 'white', fontWeight: 900, letterSpacing: '-0.5px', lineHeight: 1.2, mb: 0.5, fontSize: { xs: '1.4rem', md: '1.8rem' } }}>
+            <Typography variant="h5" sx={{ color: '#0F172A', fontWeight: 900, letterSpacing: '-0.5px', lineHeight: 1.2, mb: 0.5, fontSize: { xs: '1.35rem', md: '1.75rem' } }}>
               Admin Dashboard
             </Typography>
-            <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.7)', fontWeight: 500 }}>
+            <Typography variant="body2" sx={{ color: '#64748B', fontWeight: 600 }}>
               Manage your network and track your success
             </Typography>
           </Box>
@@ -157,32 +155,36 @@ const AdminDashboard = () => {
         {/* Quick Stats in Header */}
         <Box sx={{ 
           display: 'flex', 
-          gap: { xs: 3, md: 5 }, 
+          gap: { xs: 2.5, md: 4.5 }, 
           alignItems: 'center',
           alignSelf: { xs: 'stretch', md: 'auto' },
-          justifyContent: { xs: 'space-between', md: 'center' }
+          justifyContent: { xs: 'space-between', md: 'center' },
+          bgcolor: '#F8FAFC',
+          p: { xs: 1.5, md: 2 },
+          borderRadius: '18px',
+          border: '1px solid #E2E8F0'
         }}>
           <Box sx={{ textAlign: 'center' }}>
-            <Typography variant="h5" sx={{ color: 'white', fontWeight: 900, lineHeight: 1 }}>{totalMembers}</Typography>
-            <Typography variant="caption" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5, color: 'rgba(255,255,255,0.6)', mt: 0.5 }}>
+            <Typography variant="h5" sx={{ color: '#0F172A', fontWeight: 900, lineHeight: 1 }}>{totalMembers}</Typography>
+            <Typography variant="caption" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5, color: '#64748B', fontWeight: 700, mt: 0.5 }}>
               <PeopleIcon sx={{ fontSize: 14 }} /> Total
             </Typography>
           </Box>
           <Box sx={{ textAlign: 'center' }}>
             <Typography variant="h5" sx={{ color: '#10b981', fontWeight: 900, lineHeight: 1 }}>{activeMembers}</Typography>
-            <Typography variant="caption" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5, color: 'rgba(255,255,255,0.6)', mt: 0.5 }}>
+            <Typography variant="caption" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5, color: '#64748B', fontWeight: 700, mt: 0.5 }}>
               <PersonAddIcon sx={{ fontSize: 14 }} /> Active
             </Typography>
           </Box>
           <Box sx={{ textAlign: 'center' }}>
             <Typography variant="h5" sx={{ color: '#f59e0b', fontWeight: 900, lineHeight: 1 }}>{pendingMembers}</Typography>
-            <Typography variant="caption" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5, color: 'rgba(255,255,255,0.6)', mt: 0.5 }}>
+            <Typography variant="caption" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5, color: '#64748B', fontWeight: 700, mt: 0.5 }}>
               <HistoryIcon sx={{ fontSize: 14 }} /> Pending
             </Typography>
           </Box>
           <Box sx={{ textAlign: 'center' }}>
-            <Typography variant="h5" sx={{ color: '#FFD700', fontWeight: 900, lineHeight: 1 }}>₹{(roiSummary?.totalROIDistributed || 0).toLocaleString()}</Typography>
-            <Typography variant="caption" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5, color: 'rgba(255,255,255,0.6)', mt: 0.5 }}>
+            <Typography variant="h5" sx={{ color: '#FE8001', fontWeight: 900, lineHeight: 1 }}>₹{(roiSummary?.totalROIDistributed || 0).toLocaleString()}</Typography>
+            <Typography variant="caption" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5, color: '#64748B', fontWeight: 700, mt: 0.5 }}>
               <PaymentsIcon sx={{ fontSize: 14 }} /> Incentive
             </Typography>
           </Box>
@@ -190,18 +192,18 @@ const AdminDashboard = () => {
       </Paper>
 
       {/* Main Stats Grid */}
-      <Box sx={{ mb: 6 }}>
-        <Typography variant="subtitle2" sx={{ fontWeight: 900, color: 'white', mb: 2, letterSpacing: '1px' }}>
+      <Box sx={{ mb: 5 }}>
+        <Typography variant="subtitle2" sx={{ fontWeight: 900, color: '#0F172A', mb: 2, letterSpacing: '0.8px', fontSize: '0.92rem' }}>
           PLATFORM OVERVIEW
         </Typography>
-        <Grid container spacing={3}>
+        <Grid container spacing={2.5}>
           <Grid item xs={12} sm={6} md={4} lg={2.4}>
             <StatCard
               amount={totalMembers}
               title="Total Vendors"
               subTitle={`${totalMembers} vendors in total`}
               icon={<PeopleIcon />}
-              color="#FFD700"
+              color="#FE8001"
               onClick={() => navigate('/admin/members')}
             />
           </Grid>
@@ -231,7 +233,7 @@ const AdminDashboard = () => {
               title="Daily Incentive"
               subTitle={`Today: ₹${(roiSummary?.todaysTotal || 0).toLocaleString()} (${roiSummary?.todaysCount || 0} payouts)`}
               icon={<PaymentsIcon />}
-              color="#FFD700"
+              color="#0284C7"
               onClick={() => navigate('/admin/income/daily-payouts')}
             />
           </Grid>
@@ -241,7 +243,7 @@ const AdminDashboard = () => {
               title="Level Daily ROI"
               subTitle={`${activeSchedulesCount} Active 50-Day Schedules`}
               icon={<TrendingUpIcon />}
-              color="#818cf8"
+              color="#6366f1"
               onClick={() => navigate('/admin/income/level-daily-roi')}
             />
           </Grid>
@@ -250,19 +252,18 @@ const AdminDashboard = () => {
 
       {/* Member Statistics Table */}
       <Box>
-        <Typography variant="subtitle2" sx={{ fontWeight: 900, color: 'white', mb: 2, letterSpacing: '1px' }}>
+        <Typography variant="subtitle2" sx={{ fontWeight: 900, color: '#0F172A', mb: 2, letterSpacing: '0.8px', fontSize: '0.92rem' }}>
           VENDOR STATISTICS ({sortedMembers.length} VENDORS)
         </Typography>
         <Paper elevation={0} sx={{ 
-          p: 3, 
-          borderRadius: '28px', 
-          bgcolor: 'rgba(255, 255, 255, 0.04)', 
-          border: '1px solid rgba(255, 255, 255, 0.08)',
-          backdropFilter: 'blur(12px)',
-          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+          p: { xs: 1.5, sm: 2.5 }, 
+          borderRadius: '24px', 
+          bgcolor: '#FFFFFF', 
+          border: '1.5px solid #E2E8F0',
+          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
           overflow: 'hidden'
         }}>
-          <Box sx={{ width: '100%', overflowX: 'auto', bgcolor: 'white', borderRadius: '16px', p: 1 }}>
+          <Box sx={{ width: '100%', overflowX: 'auto', bgcolor: '#FFFFFF', borderRadius: '16px' }}>
             <DashboardTable
               data={sortedMembers}
               columns={getAdminDashboardTableColumns()}

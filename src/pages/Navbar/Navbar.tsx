@@ -9,6 +9,7 @@ import TokenService from "../../api/token/tokenService";
 
 import { useState } from 'react';
 import { useGetMemberDetails } from '../../api/Memeber';
+import faviconPng from '../../assets/favicon.png';
 
 
 interface NavbarProps {
@@ -93,23 +94,29 @@ const Navbar = ({ shouldHide, onToggleSidebar }: NavbarProps) => {
                 }}
               >
                 <Avatar
-                  src="/favicon.ico"
                   sx={{
                     width: { xs: 38, md: 42 },
                     height: { xs: 38, md: 42 },
-                    background: 'linear-gradient(135deg, #FE8001 0%, #FFA033 100%)',
-                    color: '#FFFFFF',
-                    fontWeight: 900,
-                    fontSize: { xs: '1rem', md: '1.15rem' },
-                    boxShadow: '0 3px 10px rgba(254, 128, 1, 0.35)',
-                    border: '2px solid rgba(255, 255, 255, 0.9)',
-                    '& .MuiAvatar-img': {
-                      objectFit: 'contain',
-                      p: 0.4
-                    }
+                    bgcolor: '#FFFFFF',
+                    border: '2px solid #FE8001',
+                    boxShadow: '0 3px 10px rgba(254, 128, 1, 0.25)',
+                    p: 0.5,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
                   }}
                 >
-                  {(memberDetails?.Name || 'V').trim().charAt(0).toUpperCase()}
+                  <Box
+                    component="img"
+                    src={faviconPng}
+                    alt="Logo"
+                    sx={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'contain',
+                      display: 'block'
+                    }}
+                  />
                 </Avatar>
 
                 <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
@@ -252,15 +259,26 @@ const Navbar = ({ shouldHide, onToggleSidebar }: NavbarProps) => {
                       sx={{
                         width: { xs: 32, md: 38 },
                         height: { xs: 32, md: 38 },
-                        bgcolor: '#FE8001',
-                        color: '#FFFFFF',
-                        fontWeight: 900,
-                        fontSize: { xs: '0.85rem', md: '1rem' },
-                        border: '2px solid rgba(254, 128, 1, 0.3)',
-                        boxShadow: '0 2px 8px rgba(254, 128, 1, 0.25)'
+                        bgcolor: '#FFFFFF',
+                        border: '2px solid #FE8001',
+                        boxShadow: '0 2px 8px rgba(254, 128, 1, 0.25)',
+                        p: 0.4,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
                       }}
                     >
-                      {memberDetails?.Name?.charAt(0).toUpperCase() || 'U'}
+                      <Box
+                        component="img"
+                        src={faviconPng}
+                        alt="Logo"
+                        sx={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'contain',
+                          display: 'block'
+                        }}
+                      />
                     </Avatar>
                     <ChevronDown size={18} color="#1F333B" style={{ opacity: 0.8 }} />
                   </Box>

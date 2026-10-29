@@ -26,6 +26,7 @@ import TokenService from '../../../api/token/tokenService';
 import { useVerifyPayment, parsePaymentRedirectParams, useGetTransactionDetails, useGetWalletOverview, useGetMemberDetails, useGetDailyPayout } from '../../../api/Memeber';
 
 import ProductsContainer from './ProductsContainer';
+import BitcoinCoin from '../../../components/common/BitcoinCoin';
 
 
 const UserDashboard = () => {
@@ -171,13 +172,12 @@ const UserDashboard = () => {
       <Box sx={{
         width: '100%',
         display: 'flex',
-        flexDirection: { xs: 'column', sm: 'row' },
+        flexDirection: 'column',
         justifyContent: 'space-between',
-        alignItems: { xs: 'stretch', sm: 'center' },
-        gap: { xs: 2, sm: 2.5 },
+        gap: { xs: 1.8, sm: 2.2 },
         mb: 3.5,
         mt: 1,
-        p: { xs: 2.2, sm: 3 },
+        p: { xs: 2.2, sm: 2.8 },
         borderRadius: '24px',
         background: 'linear-gradient(135deg, #15242A 0%, #1F333B 65%, #2B444E 100%)',
         boxShadow: '0 12px 32px rgba(21, 36, 42, 0.35)',
@@ -199,153 +199,185 @@ const UserDashboard = () => {
           pointerEvents: 'none',
         }} />
 
-        {/* User Identity: Avatar, Welcome, Name, Member ID & User ID badge */}
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1.8, sm: 2.5 }, zIndex: 1 }}>
-          <Avatar
-            src={(memberDetails as any)?.profile_image || (memberDetails as any)?.photo || (memberDetails as any)?.avatar || undefined}
-            onClick={() => navigate('/user/account/profile')}
-            sx={{
-              width: { xs: 54, sm: 62 },
-              height: { xs: 54, sm: 62 },
-              background: 'linear-gradient(135deg, #FE8001 0%, #FFA033 100%)',
-              color: '#FFFFFF',
-              fontWeight: 900,
-              fontSize: { xs: '1.45rem', sm: '1.7rem' },
-              cursor: 'pointer',
-              boxShadow: '0 8px 22px rgba(254, 128, 1, 0.45)',
-              border: '2.5px solid rgba(255, 255, 255, 0.25)',
-              transition: 'transform 0.25s ease',
-              '&:hover': { transform: 'scale(1.05)' },
-              '& .MuiAvatar-img': {
-                objectFit: 'cover'
-              }
-            }}
-          >
-            {(memberDetails?.Name || 'V').trim().charAt(0).toUpperCase()}
-          </Avatar>
+        {/* Top Row: User Identity (Left) & Official E-shopy Brand Logo (Right) */}
+        <Box sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          width: '100%',
+          zIndex: 1
+        }}>
+          {/* User Identity: Avatar, Name, Member ID & User ID badge */}
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1.8, sm: 2.5 } }}>
+            <Avatar
+              src={(memberDetails as any)?.profile_image || (memberDetails as any)?.photo || (memberDetails as any)?.avatar || undefined}
+              onClick={() => navigate('/user/account/profile')}
+              sx={{
+                width: { xs: 54, sm: 62 },
+                height: { xs: 54, sm: 62 },
+                background: 'linear-gradient(135deg, #FE8001 0%, #FFA033 100%)',
+                color: '#FFFFFF',
+                fontWeight: 900,
+                fontSize: { xs: '1.45rem', sm: '1.7rem' },
+                cursor: 'pointer',
+                boxShadow: '0 8px 22px rgba(254, 128, 1, 0.45)',
+                border: '2.5px solid rgba(255, 255, 255, 0.25)',
+                transition: 'transform 0.25s ease',
+                '&:hover': { transform: 'scale(1.05)' },
+                '& .MuiAvatar-img': {
+                  objectFit: 'cover'
+                }
+              }}
+            >
+              {(memberDetails?.Name || 'V').trim().charAt(0).toUpperCase()}
+            </Avatar>
 
-          <Box>
-            {/* <Typography sx={{
-              fontSize: { xs: '0.8rem', sm: '0.88rem' },
-              color: '#FFA033',
-              fontWeight: 700,
-              letterSpacing: '0.5px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 0.6,
-              textTransform: 'uppercase',
-            }}>
-              Welcome back 👋
-            </Typography> */}
-            <Typography sx={{
-              fontSize: { xs: '1.1rem', sm: '1rem' },
-              fontWeight: 700,
-              color: '#FFFFFF',
-              lineHeight: 1.2,
-              letterSpacing: '0.5px',
-              mt: 0.3
-            }}>
-              {memberDetails?.Name || 'Member'}
-            </Typography>
+            <Box>
+              <Typography sx={{
+                fontSize: { xs: '1.1rem', sm: '1.2rem' },
+                fontWeight: 800,
+                color: '#FFFFFF',
+                lineHeight: 1.2,
+                letterSpacing: '0.4px',
+                mt: 0.2
+              }}>
+                {memberDetails?.Name || 'Member'}
+              </Typography>
 
-            {/* Clickable ID Badges (Stacked: Login ID, Vendor ID below) */}
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.7, mt: 0.9 }}>
-              {/* Member / Login ID */}
-              <Box
-                onClick={() => {
-                  const id = memberDetails?.Member_id || memberDetails?.member_id || memberId;
-                  if (id) {
-                    navigator.clipboard.writeText(id);
-                    toast.success(`Copied Login ID: ${id}`);
-                  }
-                }}
-                title="Click to copy Login ID"
-                sx={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 0.7,
-                  bgcolor: 'rgba(255, 255, 255, 0.08)',
-                  border: '1px solid rgba(254, 128, 1, 0.35)',
-                  px: 1.3,
-                  py: 0.35,
-                  borderRadius: '999px',
-                  cursor: 'pointer',
-                  width: 'fit-content',
-                  transition: 'all 0.2s ease',
-                  '&:hover': {
-                    bgcolor: 'rgba(254, 128, 1, 0.18)',
-                    borderColor: '#FE8001',
-                    transform: 'translateY(-1px)'
-                  }
-                }}
-              >
-                <Typography sx={{ color: '#94A3B8', fontSize: '0.72rem', fontWeight: 600 }}>
-                  LOGIN ID:
-                </Typography>
-                <Typography sx={{
-                  color: '#FE8001',
-                  fontFamily: 'monospace',
-                  fontWeight: 800,
-                  fontSize: { xs: '0.8rem', sm: '0.85rem' },
-                  letterSpacing: '0.5px'
-                }}>
-                  {memberDetails?.Member_id || memberDetails?.member_id || memberId || 'N/A'}
-                </Typography>
-                <ContentCopyIcon sx={{ fontSize: '0.85rem', color: '#FFA033', opacity: 0.85 }} />
-              </Box>
+              {/* Clickable ID Badges (Stacked: Login ID, Vendor ID below) */}
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.7, mt: 0.8 }}>
+                {/* Member / Login ID */}
+                <Box
+                  onClick={() => {
+                    const id = memberDetails?.Member_id || memberDetails?.member_id || memberId;
+                    if (id) {
+                      navigator.clipboard.writeText(id);
+                      toast.success(`Copied Login ID: ${id}`);
+                    }
+                  }}
+                  title="Click to copy Login ID"
+                  sx={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 0.7,
+                    bgcolor: 'rgba(255, 255, 255, 0.08)',
+                    border: '1px solid rgba(254, 128, 1, 0.35)',
+                    px: 1.3,
+                    py: 0.35,
+                    borderRadius: '999px',
+                    cursor: 'pointer',
+                    width: 'fit-content',
+                    transition: 'all 0.2s ease',
+                    '&:hover': {
+                      bgcolor: 'rgba(254, 128, 1, 0.18)',
+                      borderColor: '#FE8001',
+                      transform: 'translateY(-1px)'
+                    }
+                  }}
+                >
+                  <Typography sx={{ color: '#94A3B8', fontSize: '0.72rem', fontWeight: 600 }}>
+                    LOGIN ID:
+                  </Typography>
+                  <Typography sx={{
+                    color: '#FE8001',
+                    fontFamily: 'monospace',
+                    fontWeight: 800,
+                    fontSize: { xs: '0.8rem', sm: '0.85rem' },
+                    letterSpacing: '0.5px'
+                  }}>
+                    {memberDetails?.Member_id || memberDetails?.member_id || memberId || 'N/A'}
+                  </Typography>
+                  <ContentCopyIcon sx={{ fontSize: '0.85rem', color: '#FFA033', opacity: 0.85 }} />
+                </Box>
 
-              {/* Vendor ID Badge (below Login ID) */}
-              <Box
-                onClick={() => {
-                  const vendorId = memberDetails?.member_code || memberDetails?.user_id || (memberDetails as any)?.reference_id || 'N/A';
-                  if (vendorId !== 'N/A') {
-                    navigator.clipboard.writeText(vendorId);
-                    toast.success(`Copied Vendor ID: ${vendorId}`);
-                  }
-                }}
-                title="Click to copy Vendor ID"
-                sx={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 0.7,
-                  bgcolor: 'rgba(255, 255, 255, 0.05)',
-                  border: '1px solid rgba(255, 255, 255, 0.15)',
-                  px: 1.3,
-                  py: 0.35,
-                  borderRadius: '999px',
-                  cursor: 'pointer',
-                  width: 'fit-content',
-                  transition: 'all 0.2s ease',
-                  '&:hover': {
-                    bgcolor: 'rgba(255, 255, 255, 0.1)',
-                    borderColor: 'rgba(255, 255, 255, 0.3)',
-                    transform: 'translateY(-1px)'
-                  }
-                }}
-              >
-                <Typography sx={{ color: '#94A3B8', fontSize: '0.7rem', fontWeight: 600 }}>
-                  VENDOR ID:
-                </Typography>
-                <Typography sx={{ color: '#F8FAFC', fontFamily: 'monospace', fontWeight: 700, fontSize: { xs: '0.78rem', sm: '0.82rem' } }}>
-                  {memberDetails?.member_code || memberDetails?.user_id || (memberDetails as any)?.reference_id || 'N/A'}
-                </Typography>
-                <ContentCopyIcon sx={{ fontSize: '0.8rem', color: '#94A3B8', opacity: 0.8 }} />
+                {/* Vendor ID Badge (below Login ID) */}
+                <Box
+                  onClick={() => {
+                    const vendorId = memberDetails?.member_code || memberDetails?.user_id || (memberDetails as any)?.reference_id || 'N/A';
+                    if (vendorId !== 'N/A') {
+                      navigator.clipboard.writeText(vendorId);
+                      toast.success(`Copied Vendor ID: ${vendorId}`);
+                    }
+                  }}
+                  title="Click to copy Vendor ID"
+                  sx={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 0.7,
+                    bgcolor: 'rgba(255, 255, 255, 0.05)',
+                    border: '1px solid rgba(255, 255, 255, 0.15)',
+                    px: 1.3,
+                    py: 0.35,
+                    borderRadius: '999px',
+                    cursor: 'pointer',
+                    width: 'fit-content',
+                    transition: 'all 0.2s ease',
+                    '&:hover': {
+                      bgcolor: 'rgba(255, 255, 255, 0.1)',
+                      borderColor: 'rgba(255, 255, 255, 0.3)',
+                      transform: 'translateY(-1px)'
+                    }
+                  }}
+                >
+                  <Typography sx={{ color: '#94A3B8', fontSize: '0.7rem', fontWeight: 600 }}>
+                    VENDOR ID:
+                  </Typography>
+                  <Typography sx={{ color: '#F8FAFC', fontFamily: 'monospace', fontWeight: 700, fontSize: { xs: '0.78rem', sm: '0.82rem' } }}>
+                    {memberDetails?.member_code || memberDetails?.user_id || (memberDetails as any)?.reference_id || 'N/A'}
+                  </Typography>
+                  <ContentCopyIcon sx={{ fontSize: '0.8rem', color: '#94A3B8', opacity: 0.8 }} />
+                </Box>
               </Box>
             </Box>
           </Box>
+
+          {/* Official E-shopy Brand Logo (sm+ screens) */}
+          
         </Box>
 
-        {/* Right Side: Level Badge & Official E-shopy Brand Logo */}
+        {/* Bottom Row: Bitcoin Coin UI (Left Corner Below) & Level Badge (Right Corner) */}
         <Box sx={{
           display: 'flex',
-          flexDirection: { xs: 'row', sm: 'column' },
-          alignItems: { xs: 'center', sm: 'flex-end' },
-          justifyContent: { xs: 'space-between', sm: 'center' },
-          gap: 1.5,
-          zIndex: 1,
-          alignSelf: { xs: 'flex-end', sm: 'center' }
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          width: '100%',
+          pt: { xs: 0.8, sm: 1 },
+          borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+          zIndex: 1
         }}>
-          {/* Level Badge (repositioned to right side) */}
+          {/* Left Corner Below: 3D Gold Bitcoin Coin UI */}
+          <Box sx={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 1.1,
+            bgcolor: 'rgba(255, 179, 0, 0.1)',
+            border: '1.5px solid rgba(255, 179, 0, 0.35)',
+            borderRadius: '999px',
+            pl: 0.5,
+            pr: 1.4,
+            py: 0.35,
+            boxShadow: '0 4px 14px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15)',
+            backdropFilter: 'blur(6px)',
+            transition: 'all 0.25s ease',
+            cursor: 'pointer',
+            '&:hover': {
+              bgcolor: 'rgba(255, 179, 0, 0.18)',
+              borderColor: '#F59E0B',
+              transform: 'translateY(-1px)'
+            }
+          }}>
+            <BitcoinCoin size={34} />
+            <Box>
+              <Typography sx={{ color: '#FCD34D', fontSize: '0.74rem', fontWeight: 900, letterSpacing: '0.6px', lineHeight: 1.1 }}>
+                BITCOIN
+              </Typography>
+              {/* <Typography sx={{ color: '#94A3B8', fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.3px' }}>
+                CRYPTO COIN
+              </Typography> */}
+            </Box>
+          </Box>
+
+          {/* Right Corner: Level Badge */}
           <Box sx={{
             display: 'inline-flex',
             alignItems: 'center',
@@ -359,24 +391,6 @@ const UserDashboard = () => {
             <Typography sx={{ color: '#FFA033', fontSize: { xs: '0.74rem', sm: '0.8rem' }, fontWeight: 800, letterSpacing: '0.6px' }}>
               LEVEL {memberDetails?.level ?? 0}
             </Typography>
-          </Box>
-
-          {/* Official E-shopy Brand Logo in Welcome Bar with matching white container */}
-          <Box sx={{
-            display: { xs: 'none', sm: 'flex' },
-            alignItems: 'center',
-            bgcolor: '#FFFFFF',
-            px: 1.6,
-            py: 0.6,
-            borderRadius: '12px',
-            boxShadow: '0 4px 14px rgba(0, 0, 0, 0.25)'
-          }}>
-            <Box
-              component="img"
-              src="/e-shopy.jpeg"
-              alt="E-shopy"
-              sx={{ height: { sm: 26, md: 30 }, objectFit: 'contain', display: 'block', mixBlendMode: 'multiply' }}
-            />
           </Box>
         </Box>
       </Box>
@@ -729,35 +743,29 @@ const UserDashboard = () => {
           background: 'linear-gradient(90deg, rgba(16, 185, 129, 0.05) 0%, rgba(16, 185, 129, 0.25) 50%, rgba(16, 185, 129, 0.05) 100%)'
         }} />
 
-        {/* 2. Vendor Sale Value Section */}
+        {/* 2. Sale Value & Product Level Wallets (Strictly Side-by-Side) */}
         <Box sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'stretch',
-          justifyContent: 'space-between',
-          gap: { xs: 2, sm: 3, md: 4 },
+          display: 'grid',
+          gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+          gap: { xs: 1.4, sm: 2.2, md: 3 },
           width: '100%'
         }}>
-          {/* Left Side: Vendor Wallet Info & Balance */}
+          {/* Sale Value Card */}
           <Box
-            onClick={() => navigate('/user/vendor-wallet')}
             sx={{
-              flex: 1,
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
               minWidth: 0,
-              gap: { xs: 1.2, sm: 1.6, md: 2 },
               bgcolor: '#FFFFFF',
               border: '1.5px solid #D1FAE5',
-              borderRadius: { xs: '20px', sm: '24px' },
-              p: { xs: 2.2, sm: 3.2, md: 3.8 },
-              minHeight: { xs: '170px', sm: '200px', md: '220px' },
+              borderRadius: { xs: '16px', sm: '22px' },
+              p: { xs: 1.6, sm: 2.5, md: 3 },
+              minHeight: { xs: '160px', sm: '190px' },
               boxShadow: '0 4px 16px rgba(16, 185, 129, 0.05)',
               transition: 'all 0.2s ease',
               position: 'relative',
               overflow: 'hidden',
-              cursor: 'pointer',
               '&:hover': {
                 transform: 'translateY(-2px)',
                 boxShadow: '0 8px 24px rgba(16, 185, 129, 0.12)',
@@ -765,11 +773,14 @@ const UserDashboard = () => {
               }
             }}
           >
-            {/* Icon + Title */}
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1.2, sm: 1.6 } }}>
+            {/* Top: Icon + Title */}
+            <Box 
+              onClick={() => navigate('/user/vendor-wallet')}
+              sx={{ display: 'flex', alignItems: 'center', gap: { xs: 0.8, sm: 1.4 }, cursor: 'pointer' }}
+            >
               <Box sx={{
-                p: { xs: 0.5, sm: 1.1 },
-                borderRadius: '12px',
+                p: { xs: 0.5, sm: 0.8 },
+                borderRadius: '10px',
                 bgcolor: 'rgba(254, 128, 1, 0.12)',
                 display: 'flex',
                 alignItems: 'center',
@@ -777,62 +788,163 @@ const UserDashboard = () => {
                 border: '1px solid rgba(254, 128, 1, 0.4)',
                 flexShrink: 0
               }}>
-                <StorefrontIcon sx={{ fontSize: { xs: 22, sm: 26, md: 30 }, color: '#FE8001' }} />
+                <StorefrontIcon sx={{ fontSize: { xs: 18, sm: 24, md: 26 }, color: '#FE8001' }} />
               </Box>
               <Typography sx={{
                 color: '#FE8001',
                 fontWeight: 900,
-                fontSize: { xs: '1.05rem', sm: '1.2rem', md: '1.35rem' },
+                fontSize: { xs: '0.86rem', sm: '1.1rem', md: '1.25rem' },
                 lineHeight: 1.2,
-                letterSpacing: '0.8px'
+                letterSpacing: '0.4px',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis'
               }}>
-                Vendor Sale Value
+                Sale Value
               </Typography>
             </Box>
 
-            {/* Vendor Balance */}
-            <Box sx={{ display: 'flex', alignItems: 'baseline', gap: { xs: 0.5, sm: 0.8 }, my: { xs: 0.5, sm: 0.8 } }}>
+            {/* Sale Value Balance */}
+            <Box 
+              onClick={() => navigate('/user/vendor-wallet')}
+              sx={{ my: { xs: 1, sm: 1.5 }, cursor: 'pointer' }}
+            >
               <Typography sx={{
                 color: '#1F333B',
                 fontWeight: 900,
-                fontSize: { xs: '1.45rem', sm: '1.85rem', md: '2.2rem' },
+                fontSize: { xs: '1.18rem', sm: '1.65rem', md: '2rem' },
                 lineHeight: 1.1,
                 letterSpacing: '-0.5px'
               }}>
                 ₹{Number(walletOverview?.vendorWalletBalance ?? memberDetails?.vendor_wallet ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </Typography>
             </Box>
-          </Box>
 
-          {/* Right Side: ONLY WITHDRAW BUTTON (Light Violet / Purple) */}
-          <Box sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            width: { xs: '135px', sm: '175px', md: '210px' },
-            flexShrink: 0
-          }}>
+            {/* Withdraw Button below balance */}
             <Button
               variant="contained"
               onClick={() => navigate('/user/vendor-wallet')}
-              startIcon={<PaymentsIcon sx={{ fontSize: { xs: '20px !important', sm: '23px !important' }, color: '#6D28D9' }} />}
+              startIcon={<PaymentsIcon sx={{ fontSize: { xs: '16px !important', sm: '20px !important' }, color: '#6D28D9' }} />}
               fullWidth
               sx={{
-                minHeight: { xs: '54px', sm: '64px', md: '72px' },
+                mt: 'auto',
+                minHeight: { xs: '38px', sm: '44px', md: '48px' },
                 background: 'linear-gradient(135deg, #EDE9FE 0%, #DDD6FE 100%)',
                 color: '#6D28D9',
                 border: '1.5px solid #C4B5FD',
-                borderRadius: { xs: '14px', sm: '18px' },
-                px: { xs: 1.5, sm: 2.2 },
-                py: { xs: 1.2, sm: 1.6 },
+                borderRadius: { xs: '10px', sm: '14px' },
+                px: { xs: 1, sm: 1.8 },
+                py: { xs: 0.6, sm: 1 },
                 fontWeight: 900,
-                fontSize: { xs: '0.95rem', sm: '1.05rem', md: '1.15rem' },
+                fontSize: { xs: '0.8rem', sm: '0.92rem', md: '0.98rem' },
                 textTransform: 'none',
                 justifyContent: 'center',
                 boxShadow: '0 4px 14px rgba(109, 40, 217, 0.15)',
                 '&:hover': {
                   background: 'linear-gradient(135deg, #DDD6FE 0%, #C4B5FD 100%)',
                   boxShadow: '0 6px 20px rgba(109, 40, 217, 0.25)',
+                  transform: 'translateY(-2px)'
+                },
+                transition: 'all 0.2s ease'
+              }}
+            >
+              Withdraw
+            </Button>
+          </Box>
+
+          {/* Product Level Card */}
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              minWidth: 0,
+              bgcolor: '#FFFFFF',
+              border: '1.5px solid #D1FAE5',
+              borderRadius: { xs: '16px', sm: '22px' },
+              p: { xs: 1.6, sm: 2.5, md: 3 },
+              minHeight: { xs: '160px', sm: '190px' },
+              boxShadow: '0 4px 16px rgba(16, 185, 129, 0.05)',
+              transition: 'all 0.2s ease',
+              position: 'relative',
+              overflow: 'hidden',
+              '&:hover': {
+                transform: 'translateY(-2px)',
+                boxShadow: '0 8px 24px rgba(16, 185, 129, 0.12)',
+                borderColor: '#10B981'
+              }
+            }}
+          >
+            {/* Top: Icon + Title */}
+            <Box 
+              onClick={() => navigate('/user/product-level-wallet')}
+              sx={{ display: 'flex', alignItems: 'center', gap: { xs: 0.8, sm: 1.4 }, cursor: 'pointer' }}
+            >
+              <Box sx={{
+                p: { xs: 0.5, sm: 0.8 },
+                borderRadius: '10px',
+                bgcolor: 'rgba(14, 165, 233, 0.12)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                border: '1px solid rgba(14, 165, 233, 0.4)',
+                flexShrink: 0
+              }}>
+                <InventoryIcon sx={{ fontSize: { xs: 18, sm: 24, md: 26 }, color: '#0284C7' }} />
+              </Box>
+              <Typography sx={{
+                color: '#0284C7',
+                fontWeight: 900,
+                fontSize: { xs: '0.86rem', sm: '1.1rem', md: '1.25rem' },
+                lineHeight: 1.2,
+                letterSpacing: '0.4px',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis'
+              }}>
+                Product Level
+              </Typography>
+            </Box>
+
+            {/* Product Level Balance */}
+            <Box 
+              onClick={() => navigate('/user/product-level-wallet')}
+              sx={{ my: { xs: 1, sm: 1.5 }, cursor: 'pointer' }}
+            >
+              <Typography sx={{
+                color: '#1F333B',
+                fontWeight: 900,
+                fontSize: { xs: '1.18rem', sm: '1.65rem', md: '2rem' },
+                lineHeight: 1.1,
+                letterSpacing: '-0.5px'
+              }}>
+                ₹{Number(walletOverview?.productLevelBalance ?? walletOverview?.levelBenefits ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </Typography>
+            </Box>
+
+            {/* Withdraw Button below balance */}
+            <Button
+              variant="contained"
+              onClick={() => navigate('/user/product-level-wallet')}
+              startIcon={<PaymentsIcon sx={{ fontSize: { xs: '16px !important', sm: '20px !important' }, color: '#0369A1' }} />}
+              fullWidth
+              sx={{
+                mt: 'auto',
+                minHeight: { xs: '38px', sm: '44px', md: '48px' },
+                background: 'linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 100%)',
+                color: '#0369A1',
+                border: '1.5px solid #7DD3FC',
+                borderRadius: { xs: '10px', sm: '14px' },
+                px: { xs: 1, sm: 1.8 },
+                py: { xs: 0.6, sm: 1 },
+                fontWeight: 900,
+                fontSize: { xs: '0.8rem', sm: '0.92rem', md: '0.98rem' },
+                textTransform: 'none',
+                justifyContent: 'center',
+                boxShadow: '0 4px 14px rgba(14, 165, 233, 0.15)',
+                '&:hover': {
+                  background: 'linear-gradient(135deg, #BAE6FD 0%, #7DD3FC 100%)',
+                  boxShadow: '0 6px 20px rgba(14, 165, 233, 0.25)',
                   transform: 'translateY(-2px)'
                 },
                 transition: 'all 0.2s ease'
@@ -1173,6 +1285,67 @@ const UserDashboard = () => {
               }}>
                 <Typography sx={{ color: '#065f46', fontWeight: 900, fontSize: { xs: '0.8rem', sm: '0.92rem' }, letterSpacing: '-0.3px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                   ₹{Number(walletOverview?.directBenefits || 0).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
+
+          {/* Card: Product Level Bonus */}
+          <Box
+            onClick={() => navigate('/user/product-level-wallet')}
+            sx={{
+              flex: { xs: '0 0 calc(33.33% - 7px)', sm: '0 0 calc(33.33% - 10px)', md: '0 0 160px' },
+              minWidth: { xs: '115px', sm: '135px' },
+              scrollSnapAlign: 'start',
+              borderRadius: { xs: '20px', sm: '22px' },
+              background: 'linear-gradient(180deg, #F0F9FF 0%, #E0F2FE 100%)',
+              border: '1px solid #BAE6FD',
+              p: { xs: 1.4, sm: 1.8 },
+              cursor: 'pointer',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              minHeight: { xs: '165px', sm: '185px' },
+              boxShadow: '0 4px 14px rgba(2, 132, 199, 0.08)',
+              transition: 'all 0.2s ease',
+              '&:hover': { transform: 'translateY(-2px)', boxShadow: '0 8px 18px rgba(2, 132, 199, 0.14)' }
+            }}
+          >
+            <Box>
+              <Typography sx={{ color: '#0369A1', fontWeight: 900, fontSize: { xs: '0.85rem', sm: '0.95rem' }, lineHeight: 1.2, mb: 0.2 }}>
+                Product Level Bonus
+              </Typography>
+              <Typography sx={{ color: '#475569', fontSize: '9.5px', fontWeight: 600, display: { xs: 'none', sm: 'block' } }}>
+                Product level earnings
+              </Typography>
+            </Box>
+
+            <Box sx={{ mt: 'auto', pt: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <Box sx={{
+                width: { xs: 52, sm: 62 },
+                height: { xs: 52, sm: 62 },
+                borderRadius: '18px',
+                bgcolor: 'rgba(255,255,255,0.7)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                mb: 1,
+                boxShadow: '0 4px 12px rgba(2, 132, 199, 0.06)'
+              }}>
+                <InventoryIcon sx={{ fontSize: { xs: 32, sm: 40 }, color: '#0284C7' }} />
+              </Box>
+              <Box sx={{
+                bgcolor: '#ffffff',
+                border: '1px solid #BAE6FD',
+                borderRadius: '10px',
+                py: 0.4,
+                px: 0.8,
+                width: '100%',
+                textAlign: 'center',
+                boxShadow: '0 2px 6px rgba(2, 132, 199, 0.08)'
+              }}>
+                <Typography sx={{ color: '#0369A1', fontWeight: 900, fontSize: { xs: '0.8rem', sm: '0.92rem' }, letterSpacing: '-0.3px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  ₹{Number(walletOverview?.productLevelBalance ?? walletOverview?.levelBenefits ?? 0).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                 </Typography>
               </Box>
             </Box>
