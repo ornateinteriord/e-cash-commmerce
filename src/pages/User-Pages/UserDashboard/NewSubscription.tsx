@@ -1,17 +1,31 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Card, CardContent, CardHeader, TextField, Button, Box, Typography, CircularProgress, Dialog, DialogTitle, DialogContent, DialogActions, InputAdornment } from '@mui/material';
+import { Card, CardContent, CardHeader, TextField, Button, Box, Typography, CircularProgress, Dialog, DialogTitle, DialogContent, DialogActions, InputAdornment, Select, MenuItem, FormControl } from '@mui/material';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import UserContext from "../../../context/user/userContext";
-import { useGetWalletOverview } from '../../../api/Memeber';
+import { useGetWalletOverview, useGetMemberDetails } from '../../../api/Memeber';
+import TokenService from '../../../api/token/tokenService';
 import { useBuyPackageDirectlyMutation } from '../../../api/Packages';
 import { toast } from 'react-toastify';
 import { get } from '../../../api/Api';
+import { PACKAGES } from './UserPackagesPage';
 
 const NewSubscription: React.FC = () => {
   const { user } = useContext(UserContext);
-  const { data: walletOverview } = useGetWalletOverview(user?.Vendor_id || '');
+  const currentMemberId = TokenService.getMemberId() || user?.Member_id || user?.Vendor_id || '';
+  const { data: memberDetails } = useGetMemberDetails(currentMemberId);
+  const { data: walletOverview } = useGetWalletOverview(currentMemberId);
   const { mutate: buyPackage, isPending: isSubmitting } = useBuyPackageDirectlyMutation();
+
+  // Determine available First / Deposit Wallet balance reliably
+  const availableWalletBalance = Number(
+    walletOverview?.balance ??
+    walletOverview?.data?.balance ??
+    walletOverview?.availableForWithdrawal ??
+    (memberDetails as any)?.wallet_balance ??
+    (user as any)?.wallet_balance ??
+    0
+  );
 
   const [formData, setFormData] = useState({
     targetVendorId: "",
@@ -77,8 +91,8 @@ const NewSubscription: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user?.Vendor_id || !formData.package) {
-      toast.error("Please enter Purchase amount");
+    if (!formData.package) {
+      toast.error("Please select a package option");
       return;
     }
 
@@ -88,9 +102,8 @@ const NewSubscription: React.FC = () => {
       return;
     }
 
-    const availableBalance = Number(walletOverview?.balance ?? walletOverview?.availableForWithdrawal ?? 0);
-    if (packageAmt > availableBalance) {
-      toast.error(`Insufficient Wallet Balance! You have ₹${availableBalance.toLocaleString()} but need ₹${packageAmt.toLocaleString()}`);
+    if (packageAmt > availableWalletBalance) {
+      toast.error(`Insufficient Wallet Balance! You have ₹${availableWalletBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} but need ₹${packageAmt.toLocaleString()}`);
       return;
     }
 
@@ -98,17 +111,19 @@ const NewSubscription: React.FC = () => {
       toast.error("Please provide a valid pending Vendor ID");
       return;
     }
+
+    const activeBuyerId = currentMemberId || user?.Member_id || user?.Vendor_id || '';
     
     buyPackage({
-      member_id: user?.Member_id || "",
-      target_member_id: formData.targetVendorId || user?.Member_id || "",
+      member_id: activeBuyerId,
+      target_member_id: formData.targetVendorId || activeBuyerId,
       requested_amount: packageAmt,
     }, {
       onSuccess: () => {
         let packageName = `₹${packageAmt.toLocaleString()} Investment`;
         
         setPurchasedPkgDetails({
-          targetVendorId: formData.targetVendorId || user?.Member_id,
+          targetVendorId: formData.targetVendorId || activeBuyerId,
           targetName: targetName,
           amount: formData.package,
           packageName: packageName
@@ -196,49 +211,50 @@ const NewSubscription: React.FC = () => {
             <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: { xs: 'flex-start', sm: 'center' }, gap: 1 }}>
               <Typography sx={{ width: '150px', color: '#475569', fontSize: '0.9rem', fontWeight: 600 }}>Wallet Balance</Typography>
               <TextField
-                value={`₹${Number(walletOverview?.balance ?? walletOverview?.availableForWithdrawal ?? 0).toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}`}
+                value={`₹${availableWalletBalance.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}`}
                 fullWidth
                 size="small"
                 disabled
-                sx={{ ...inputStyles, opacity: 0.8 }}
+                sx={{ ...inputStyles, opacity: 0.9, '& .MuiInputBase-input.Mui-disabled': { color: '#0F172A', WebkitTextFillColor: '#0F172A', fontWeight: 700 } }}
               />
             </Box>
 
             <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: { xs: 'flex-start', sm: 'center' }, gap: 1 }}>
               <Typography sx={{ width: '150px', color: '#475569', fontSize: '0.9rem', fontWeight: 600 }}>Purchase Amount (₹) <span style={{color: '#ef4444'}}>*</span></Typography>
-              <TextField
-                name="package"
-                type="text"
-                inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-                value={formData.package}
-                onChange={(e) => {
-                  const val = e.target.value;
-                  if (val === "" || /^\d+$/.test(val)) {
-                    setFormData((prev) => ({ ...prev, package: val }));
-                  }
-                }}
-                placeholder="Min 100"
-                fullWidth
-                size="small"
-                InputProps={{
-                  startAdornment: (
+              <FormControl fullWidth size="small">
+                <Select
+                  name="package"
+                  value={formData.package}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, package: String(e.target.value) }))}
+                  displayEmpty
+                  startAdornment={
                     <InputAdornment position="start">
-                      <PaymentsIcon sx={{ color: '#0a2558', fontSize: 20 }} />
+                      <PaymentsIcon sx={{ color: '#FE8001', fontSize: 20 }} />
                     </InputAdornment>
-                  ),
-                }}
-                sx={{
-                  ...inputStyles,
-                  "& input": {
-                    MozAppearance: "textfield",
-                  },
-                  "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
-                    WebkitAppearance: "none",
-                    display: "none",
-                    margin: 0,
-                  },
-                }}
-              />
+                  }
+                  sx={{
+                    ...inputStyles,
+                    '& .MuiSelect-select': {
+                      py: 1,
+                      fontWeight: 700,
+                      color: formData.package ? '#0F172A' : '#94A3B8'
+                    }
+                  }}
+                  required
+                >
+                  <MenuItem value="" disabled>
+                    <em>Select Package Option</em>
+                  </MenuItem>
+                  {PACKAGES.map((pkg) => (
+                    <MenuItem key={pkg.id} value={String(pkg.amount)}>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
+                        <span style={{ fontWeight: 700, color: '#0F172A' }}>{pkg.title}</span>
+                        <span style={{ fontWeight: 800, color: '#FE8001' }}>₹{pkg.amount.toLocaleString()}</span>
+                      </Box>
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </Box>
 
             <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: { xs: 'flex-start', sm: 'center' }, gap: 1 }}>

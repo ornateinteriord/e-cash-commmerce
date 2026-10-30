@@ -26,7 +26,7 @@ import TokenService from '../../../api/token/tokenService';
 import { useVerifyPayment, parsePaymentRedirectParams, useGetTransactionDetails, useGetWalletOverview, useGetMemberDetails, useGetDailyPayout } from '../../../api/Memeber';
 
 import ProductsContainer from './ProductsContainer';
-import BitcoinCoin from '../../../components/common/BitcoinCoin';
+import TokenCoin from '../../../components/common/TokenCoin';
 
 
 const UserDashboard = () => {
@@ -335,7 +335,7 @@ const UserDashboard = () => {
           
         </Box>
 
-        {/* Bottom Row: Bitcoin Coin UI (Left Corner Below) & Level Badge (Right Corner) */}
+        {/* Bottom Row: Token Coin UI (Left Corner Below) & Level Badge (Right Corner) */}
         <Box sx={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -345,36 +345,40 @@ const UserDashboard = () => {
           borderTop: '1px solid rgba(255, 255, 255, 0.08)',
           zIndex: 1
         }}>
-          {/* Left Corner Below: 3D Gold Bitcoin Coin UI */}
+          {/* Left Corner Below: Extra Large 3D Gold Token Coin UI with Tokens text below */}
           <Box sx={{
             display: 'inline-flex',
+            flexDirection: 'column',
             alignItems: 'center',
-            gap: 1.1,
+            justifyContent: 'center',
+            gap: 0.6,
             bgcolor: 'rgba(255, 179, 0, 0.1)',
-            border: '1.5px solid rgba(255, 179, 0, 0.35)',
-            borderRadius: '999px',
-            pl: 0.5,
-            pr: 1.4,
-            py: 0.35,
-            boxShadow: '0 4px 14px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15)',
+            border: '1.5px solid rgba(255, 179, 0, 0.4)',
+            borderRadius: '18px',
+            px: { xs: 1.8, sm: 2.4 },
+            py: { xs: 1, sm: 1.2 },
+            boxShadow: '0 6px 18px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.15)',
             backdropFilter: 'blur(6px)',
             transition: 'all 0.25s ease',
             cursor: 'pointer',
             '&:hover': {
               bgcolor: 'rgba(255, 179, 0, 0.18)',
               borderColor: '#F59E0B',
-              transform: 'translateY(-1px)'
+              transform: 'translateY(-2px) scale(1.03)'
             }
           }}>
-            <BitcoinCoin size={34} />
-            <Box>
-              <Typography sx={{ color: '#FCD34D', fontSize: '0.74rem', fontWeight: 900, letterSpacing: '0.6px', lineHeight: 1.1 }}>
-                BITCOIN
-              </Typography>
-              {/* <Typography sx={{ color: '#94A3B8', fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.3px' }}>
-                CRYPTO COIN
-              </Typography> */}
-            </Box>
+            <TokenCoin value={memberDetails?.tokens ?? memberDetails?.token ?? 0} size={68} />
+            <Typography sx={{
+              color: '#FCD34D',
+              fontSize: { xs: '0.84rem', sm: '0.92rem' },
+              fontWeight: 900,
+              letterSpacing: '1px',
+              textTransform: 'uppercase',
+              lineHeight: 1,
+              textShadow: '0 2px 4px rgba(0,0,0,0.6)'
+            }}>
+              Tokens
+            </Typography>
           </Box>
 
           {/* Right Corner: Level Badge */}
@@ -820,7 +824,7 @@ const UserDashboard = () => {
               </Typography>
             </Box>
 
-            {/* Withdraw Button below balance */}
+            {/* N-cash Button below balance */}
             <Button
               variant="contained"
               onClick={() => navigate('/user/vendor-wallet')}
@@ -848,7 +852,7 @@ const UserDashboard = () => {
                 transition: 'all 0.2s ease'
               }}
             >
-              Withdraw
+              N-cash
             </Button>
           </Box>
 

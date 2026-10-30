@@ -252,9 +252,24 @@ export const AdminSideBarMenuItems: SideBarMenuItemType[] = [
     isExpandable: true,
     subItems: [
       {
-        name: "Payout History",
+        name: "All Payout Requests",
         path: "/admin/payout",
         icon: <PaymentsIcon />,
+      },
+      {
+        name: "Deposit Wallet Payouts",
+        path: "/admin/payout?wallet=MAIN",
+        icon: <CreditCardIcon />,
+      },
+      {
+        name: "Sale Value Payouts",
+        path: "/admin/payout?wallet=VENDOR",
+        icon: <StorefrontIcon />,
+      },
+      {
+        name: "Product Level Payouts",
+        path: "/admin/payout?wallet=PRODUCT_LEVEL",
+        icon: <ReceiptLongIcon />,
       },
     ],
   },

@@ -1083,6 +1083,21 @@ export const getRequestColumns = (approveTrasaction: (id: any) => void) => [
     sortable: true,
   },
   {
+    name: "Wallet Type",
+    selector: (row: any) => {
+      const type = (row.transaction_type || "").toLowerCase();
+      const desc = (row.description || "").toLowerCase();
+      if (type.includes("vendor") || desc.includes("vendor")) {
+        return "Sale Value Wallet";
+      }
+      if (type.includes("product level") || desc.includes("product level")) {
+        return "Product Level Wallet";
+      }
+      return "Main Wallet";
+    },
+    sortable: true,
+  },
+  {
     name: "Vendor",
     selector: (row: any) => row.member_id || "-",
     sortable: true,
@@ -1103,13 +1118,31 @@ export const getRequestColumns = (approveTrasaction: (id: any) => void) => [
     sortable: true,
   },
   {
-    name: "Paid Amount",
-    selector: (row: any) => row.ew_debit || "-",
+    name: "Request Amount",
+    selector: (row: any) => {
+      const amount = parseFloat(row.vw_debit) || parseFloat(row.ew_debit) || parseFloat(row.gross_amount) || 0;
+      return `₹${amount.toFixed(2)}`;
+    },
     sortable: true,
   },
   {
-    name: "Deducted",
-    selector: (row: any) => row.deduction || "-",
+    name: "Net Payable",
+    selector: (row: any) => {
+      const net = parseFloat(row.net_amount) || 0;
+      if (net > 0) return `₹${net.toFixed(2)}`;
+      const amount = parseFloat(row.vw_debit) || parseFloat(row.ew_debit) || parseFloat(row.gross_amount) || 0;
+      const deduction = parseFloat(row.deduction) || (amount * 0.10);
+      return `₹${Math.max(0, amount - deduction).toFixed(2)}`;
+    },
+    sortable: true,
+  },
+  {
+    name: "Deduction (10%)",
+    selector: (row: any) => {
+      const amount = parseFloat(row.vw_debit) || parseFloat(row.ew_debit) || parseFloat(row.gross_amount) || 0;
+      const deduction = parseFloat(row.deduction) || (amount * 0.10);
+      return `₹${deduction.toFixed(2)}`;
+    },
     sortable: true,
   },
   {
@@ -1122,7 +1155,7 @@ export const getRequestColumns = (approveTrasaction: (id: any) => void) => [
     selector: (_row: any) => {
       return (
         <>
-          <Button variant="contained" onClick={() => approveTrasaction(_row.transaction_id)}>Approve</Button>
+          <Button variant="contained" size="small" sx={{ bgcolor: '#FE8001', '&:hover': { bgcolor: '#e07100' } }} onClick={() => approveTrasaction(_row.transaction_id)}>Approve</Button>
         </>
       )
     },
@@ -1137,6 +1170,21 @@ export const getProccessedColumns = () => [
     sortable: true,
   },
   {
+    name: "Wallet Type",
+    selector: (row: any) => {
+      const type = (row.transaction_type || "").toLowerCase();
+      const desc = (row.description || "").toLowerCase();
+      if (type.includes("vendor") || desc.includes("vendor")) {
+        return "Sale Value Wallet";
+      }
+      if (type.includes("product level") || desc.includes("product level")) {
+        return "Product Level Wallet";
+      }
+      return "Main Wallet";
+    },
+    sortable: true,
+  },
+  {
     name: "Vendor",
     selector: (row: any) => row.member_id || "-",
     sortable: true,
@@ -1158,15 +1206,29 @@ export const getProccessedColumns = () => [
   },
   {
     name: "Paid Amount",
-    selector: (row: any) => row.net_amount || "-",
+    selector: (row: any) => {
+      const net = parseFloat(row.net_amount) || 0;
+      if (net > 0) return `₹${net.toFixed(2)}`;
+      const amount = parseFloat(row.vw_debit) || parseFloat(row.ew_debit) || parseFloat(row.gross_amount) || 0;
+      const deduction = parseFloat(row.deduction) || (amount * 0.10);
+      return `₹${Math.max(0, amount - deduction).toFixed(2)}`;
+    },
     sortable: true,
   },
   {
     name: "Deducted",
-    selector: (row: any) => row.deduction || "-",
+    selector: (row: any) => {
+      const amount = parseFloat(row.vw_debit) || parseFloat(row.ew_debit) || parseFloat(row.gross_amount) || 0;
+      const deduction = parseFloat(row.deduction) || (amount * 0.10);
+      return `₹${deduction.toFixed(2)}`;
+    },
     sortable: true,
   },
-
+  {
+    name: "Status",
+    selector: (row: any) => row.status || "-",
+    sortable: true,
+  },
 ]
 
 export const getPayblesColumns = () => [
