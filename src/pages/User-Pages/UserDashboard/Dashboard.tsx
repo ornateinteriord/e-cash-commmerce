@@ -396,7 +396,7 @@ const UserDashboard = () => {
             boxShadow: '0 2px 10px rgba(254, 128, 1, 0.2)'
           }}>
             <Typography sx={{ color: '#FFA033', fontSize: { xs: '0.74rem', sm: '0.8rem' }, fontWeight: 800, letterSpacing: '0.6px' }}>
-              LEVEL {memberDetails?.level ?? 0}
+              LEVEL {Math.min(20, Math.max(Number(memberDetails?.level || 0), Number(memberDetails?.data?.level || 0), Number(memberDetails?.registration_stats?.direct || 0)))}
             </Typography>
           </Box>
         </Box>
