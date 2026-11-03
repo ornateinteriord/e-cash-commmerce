@@ -704,6 +704,46 @@ export const useProductLevelWalletWithdraw = (memberId: any) => {
   });
 };
 
+export const useGetEarningWalletOverview = (memberId: any) => {
+  return useQuery({
+    queryKey: ["earningWalletOverview", memberId],
+    queryFn: async () => {
+      const response = await get(`/user/earning-wallet/overview/${memberId}`);
+      if (response.success) {
+        return response.data;
+      } else {
+        throw new Error(response.message || "Failed to fetch earning wallet overview");
+      }
+    },
+    enabled: !!memberId,
+  });
+};
+
+export const useEarningWalletWithdraw = (memberId: any) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: { memberId: string; amount: string }) => {
+      return await post(`/user/earning-wallet/withdraw/${memberId}`, data);
+    },
+    onSuccess: (response) => {
+      if (response.success) {
+        toast.success(response.message || "Earning Wallet withdrawal requested successfully!");
+        queryClient.invalidateQueries({ queryKey: ["earningWalletOverview"] });
+        queryClient.invalidateQueries({ queryKey: ["walletOverview"] });
+        queryClient.invalidateQueries({ queryKey: ["memberDetails"] });
+        return response.data;
+      } else {
+        throw new Error(response.message || "Earning Wallet withdrawal failed");
+      }
+    },
+    onError: (error: any) => {
+      const errorMessage = error.response?.data?.message || "Failed to process earning wallet withdrawal";
+      toast.error(errorMessage);
+    },
+  });
+};
+
 export const useGetMultiLevelSponsorship = () => {
   return useQuery({
     queryKey: ["multiLevelSponsors"],

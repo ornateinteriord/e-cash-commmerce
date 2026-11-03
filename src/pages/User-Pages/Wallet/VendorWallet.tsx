@@ -42,6 +42,11 @@ const VendorWallet: React.FC = () => {
   const availableBalance = parseFloat(vendorData?.balance || vendorData?.vendorWalletBalance || "0");
   const transactions: any[] = vendorData?.transactions || [];
 
+  const packageAmount = parseFloat(vendorData?.packageAmount || vendorData?.packagePurchased || "0");
+  const maxLimit = parseFloat(vendorData?.maxWithdrawalLimit || String(packageAmount * 2));
+  const remainingLimit = parseFloat(vendorData?.remainingWithdrawalLimit !== undefined ? vendorData?.remainingWithdrawalLimit : String(Math.max(0, maxLimit - parseFloat(vendorData?.totalWithdrawal || "0"))));
+  const effectiveMaxWithdrawal = Math.min(availableBalance, remainingLimit > 0 ? remainingLimit : availableBalance);
+
   const dashboardTableCustomStyles = {
     table: {
       style: {
@@ -127,7 +132,7 @@ const VendorWallet: React.FC = () => {
     setAmount(value);
     const num = parseFloat(value);
     if (!isNaN(num) && num > 0) {
-      const ded = num * 0.10;
+      const ded = num * 0.05;
       setDeduction(ded);
       setNetAmount(num - ded);
     } else {
@@ -137,10 +142,10 @@ const VendorWallet: React.FC = () => {
   };
 
   const handleQuickPercent = (percent: number) => {
-    if (availableBalance <= 0) return;
-    const calculated = Math.floor((availableBalance * percent) / 100);
+    if (effectiveMaxWithdrawal <= 0) return;
+    const calculated = Math.floor((effectiveMaxWithdrawal * percent) / 100);
     setAmount(String(calculated));
-    const ded = calculated * 0.10;
+    const ded = calculated * 0.05;
     setDeduction(ded);
     setNetAmount(calculated - ded);
   };
@@ -154,6 +159,11 @@ const VendorWallet: React.FC = () => {
 
     if (withdrawalAmount > availableBalance) {
       toast.error(`Withdrawal amount exceeds available balance of ₹${availableBalance.toFixed(2)}`);
+      return;
+    }
+
+    if (remainingLimit > 0 && withdrawalAmount > remainingLimit) {
+      toast.error(`Withdrawal amount exceeds remaining 2X package limit of ₹${remainingLimit.toFixed(2)}`);
       return;
     }
 
@@ -268,6 +278,31 @@ const VendorWallet: React.FC = () => {
             />
           </Box>
 
+          {/* 2X Limit Info Box */}
+          <Box sx={{
+            mb: 2.5,
+            p: 2,
+            borderRadius: '16px',
+            bgcolor: '#FFF7ED',
+            border: '1.5px solid #FED7AA',
+            display: 'grid',
+            gridTemplateColumns: { xs: 'repeat(2, 1fr)', sm: 'repeat(3, 1fr)' },
+            gap: 1.5
+          }}>
+            <Box>
+              <Typography variant="caption" sx={{ color: '#9A3412', fontWeight: 700, display: 'block' }}>Package Amount</Typography>
+              <Typography variant="body1" sx={{ fontWeight: 900, color: '#1F333B' }}>₹{packageAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</Typography>
+            </Box>
+            <Box>
+              <Typography variant="caption" sx={{ color: '#9A3412', fontWeight: 700, display: 'block' }}>2X Max Withdrawal Limit</Typography>
+              <Typography variant="body1" sx={{ fontWeight: 900, color: '#C2410C' }}>₹{maxLimit.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</Typography>
+            </Box>
+            <Box sx={{ gridColumn: { xs: 'span 2', sm: 'auto' } }}>
+              <Typography variant="caption" sx={{ color: '#9A3412', fontWeight: 700, display: 'block' }}>Remaining 2X Limit</Typography>
+              <Typography variant="body1" sx={{ fontWeight: 900, color: remainingLimit > 0 ? '#059669' : '#DC2626' }}>₹{remainingLimit.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</Typography>
+            </Box>
+          </Box>
+
           {/* Amount Field */}
           <Typography variant="caption" sx={{ color: '#1F333B', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px', mb: 0.8, display: 'block' }}>
             Enter Withdrawal Amount
@@ -286,11 +321,13 @@ const VendorWallet: React.FC = () => {
                 </InputAdornment>
               ),
             }}
-            error={parseFloat(amount) > availableBalance}
+            error={parseFloat(amount) > availableBalance || (remainingLimit > 0 && parseFloat(amount) > remainingLimit)}
             helperText={
               parseFloat(amount) > availableBalance
                 ? `Amount exceeds available vendor balance (₹${availableBalance.toFixed(2)})`
-                : "Standard 10% processing deduction applies"
+                : remainingLimit > 0 && parseFloat(amount) > remainingLimit
+                  ? `Amount exceeds remaining 2X package limit (₹${remainingLimit.toFixed(2)})`
+                  : "Standard 5% processing deduction applies"
             }
             sx={{
               mb: 2,
@@ -349,7 +386,7 @@ const VendorWallet: React.FC = () => {
                 <Typography variant="body2" sx={{ fontWeight: 800, color: '#1F333B' }}>₹{parseFloat(amount).toFixed(2)}</Typography>
               </Box>
               <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Typography variant="body2" sx={{ color: '#64748B', fontWeight: 600 }}>Deduction (10%)</Typography>
+                <Typography variant="body2" sx={{ color: '#64748B', fontWeight: 600 }}>Deduction (5%)</Typography>
                 <Typography variant="body2" sx={{ fontWeight: 800, color: '#DC2626' }}>- ₹{deduction.toFixed(2)}</Typography>
               </Box>
               <Divider sx={{ my: 0.5 }} />

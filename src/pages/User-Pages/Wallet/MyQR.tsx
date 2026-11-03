@@ -45,7 +45,10 @@ import jsQR from 'jsqr';
 import { toast } from 'react-toastify';
 import { jwtDecode } from 'jwt-decode';
 import TokenService from '../../../api/token/tokenService';
-import jeeScImage from '../../../assets/chotu_sc.jpg';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import jeeScImage from '../../../assets/newE-cash.jpeg';
 
 const decoder = (jsQR as any).default || jsQR;
 
@@ -129,7 +132,15 @@ const MyQR: React.FC = () => {
   const [depositScreenshotFile, setDepositScreenshotFile] = useState<File | null>(null);
   const [depositScreenshotPreview, setDepositScreenshotPreview] = useState<string | null>(null);
   const [isDepositSubmitting, setIsDepositSubmitting] = useState<boolean>(false);
+  const [copiedField, setCopiedField] = useState<string | null>(null);
   const depositFileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const handleCopy = (text: string, fieldName: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedField(fieldName);
+    toast.success(`${fieldName} copied to clipboard!`);
+    setTimeout(() => setCopiedField(null), 2000);
+  };
 
   const stopCamera = useCallback(() => {
     if (animFrameId.current) {
@@ -786,51 +797,112 @@ const MyQR: React.FC = () => {
               </PaytmIconBadge>
             </Box>
 
-            {/* Company UPI QR Preview Box (E shopy Scanner) */}
+            {/* Option 1: PhonePe / E-Cash Scanner QR Card */}
             <Box
               sx={{
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
                 textAlign: 'center',
-                gap: 1.2,
-                mb: 2.5,
+                p: { xs: 2, sm: 2.5 },
+                bgcolor: '#FFFFFF',
+                borderRadius: '20px',
+                border: '1.5px dashed #FED7AA',
+                mb: 2,
               }}
             >
-              <Typography variant="caption" sx={{ fontWeight: 800, color: '#002970', textTransform: 'uppercase', letterSpacing: '0.8px' }}>
-                Scan & Pay via PhonePe / UPI
+              <Typography variant="caption" sx={{ fontWeight: 800, color: '#FE8001', textTransform: 'uppercase', letterSpacing: '0.8px', mb: 1.5 }}>
+                Option 1: Scan & Pay via UPI / PhonePe / GPay
               </Typography>
               <Box
                 sx={{
+                  position: 'relative',
                   width: '100%',
                   maxWidth: { xs: 300, sm: 330 },
+                  height: 380,
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
                   borderRadius: '18px',
                   overflow: 'hidden',
-                  bgcolor: '#0f0f12',
-                  boxShadow: '0 10px 28px rgba(0, 0, 0, 0.22), 0 0 0 1px rgba(0, 186, 242, 0.35)',
+                  bgcolor: '#FFFFFF',
+                  border: '2px solid #FED7AA',
+                  boxShadow: '0 8px 24px rgba(254, 128, 1, 0.15)',
                   transition: 'transform 0.2s ease, box-shadow 0.2s ease',
                   '&:hover': {
                     transform: 'scale(1.02)',
-                    boxShadow: '0 14px 34px rgba(0, 0, 0, 0.3), 0 0 0 2px rgba(0, 186, 242, 0.55)',
+                    boxShadow: '0 12px 32px rgba(254, 128, 1, 0.25)',
                   }
                 }}
               >
                 <Box
                   component="img"
                   src={jeeScImage}
-                  alt="PhonePe Scanner QR"
+                  alt="E-Cash Scanner QR"
                   sx={{
                     width: '100%',
-                    height: 'auto',
+                    height: '100%',
                     display: 'block',
-                    objectFit: 'contain',
-                    transform: 'scale(1.10)',
-                    transformOrigin: 'center center',
+                    objectFit: 'cover',
+                    objectPosition: 'center 46%',
+                    transform: 'scale(1.18)',
                   }}
                 />
+              </Box>
+            </Box>
+
+            {/* Option 2: YES Bank Direct Transfer */}
+            <Box
+              sx={{
+                p: { xs: 2, sm: 2.5 },
+                bgcolor: '#F8FAFC',
+                borderRadius: '20px',
+                border: '1.5px solid #E2E8F0',
+                mb: 2.5,
+              }}
+            >
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1.8 }}>
+                <AccountBalanceIcon sx={{ color: '#002B49', fontSize: 22 }} />
+                <Box>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 900, color: '#002B49', lineHeight: 1.2 }}>
+                    Option 2: Direct Bank Transfer
+                  </Typography>
+                  <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 600 }}>
+                    NEFT / RTGS / IMPS
+                  </Typography>
+                </Box>
+              </Box>
+
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.2 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 1.2, bgcolor: '#FFFFFF', borderRadius: '12px', border: '1px solid #E2E8F0' }}>
+                  <Box>
+                    <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 700, display: 'block' }}>Bank Name</Typography>
+                    <Typography variant="body2" sx={{ fontWeight: 900, color: '#002B49' }}>YES BANK</Typography>
+                  </Box>
+                  <Typography variant="caption" sx={{ bgcolor: '#E0F2FE', color: '#0369A1', px: 1, py: 0.3, borderRadius: '6px', fontWeight: 700 }}>
+                    Current A/C
+                  </Typography>
+                </Box>
+
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 1.2, bgcolor: '#FFFFFF', borderRadius: '12px', border: '1px solid #E2E8F0' }}>
+                  <Box>
+                    <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 700, display: 'block' }}>Account Number</Typography>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 900, color: '#FE8001', letterSpacing: '0.5px' }}>060988700001106</Typography>
+                  </Box>
+                  <IconButton size="small" onClick={() => handleCopy('060988700001106', 'Account Number')} sx={{ color: '#FE8001' }}>
+                    {copiedField === 'Account Number' ? <CheckCircleOutlineIcon fontSize="small" sx={{ color: '#10B981' }} /> : <ContentCopyIcon fontSize="small" />}
+                  </IconButton>
+                </Box>
+
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 1.2, bgcolor: '#FFFFFF', borderRadius: '12px', border: '1px solid #E2E8F0' }}>
+                  <Box>
+                    <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 700, display: 'block' }}>IFSC Code</Typography>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 900, color: '#002B49', letterSpacing: '0.5px' }}>YESB0000609</Typography>
+                  </Box>
+                  <IconButton size="small" onClick={() => handleCopy('YESB0000609', 'IFSC Code')} sx={{ color: '#FE8001' }}>
+                    {copiedField === 'IFSC Code' ? <CheckCircleOutlineIcon fontSize="small" sx={{ color: '#10B981' }} /> : <ContentCopyIcon fontSize="small" />}
+                  </IconButton>
+                </Box>
               </Box>
             </Box>
 
@@ -1197,8 +1269,9 @@ const MyQR: React.FC = () => {
           </Dialog>
         )}
       </AnimatePresence>
-    </Box>
+      </Box>
   );
 };
 
 export default MyQR;
+

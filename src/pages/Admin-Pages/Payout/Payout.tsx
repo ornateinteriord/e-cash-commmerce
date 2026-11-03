@@ -9,8 +9,9 @@ import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import Inventory2Icon from '@mui/icons-material/Inventory2';
 import AppsIcon from '@mui/icons-material/Apps';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 
-export type WalletFilterType = 'ALL' | 'MAIN' | 'VENDOR' | 'PRODUCT_LEVEL';
+export type WalletFilterType = 'ALL' | 'MAIN' | 'VENDOR' | 'EARNING' | 'PRODUCT_LEVEL';
 
 interface PayoutTableProps {
   data: any[];
@@ -23,6 +24,7 @@ interface PayoutTableProps {
     all: number;
     main: number;
     vendor: number;
+    earning: number;
     productLevel: number;
   };
 }
@@ -33,6 +35,12 @@ const isVendorWithdrawal = (tx: any): boolean => {
   return type.includes('vendor') || desc.includes('vendor');
 };
 
+const isEarningWithdrawal = (tx: any): boolean => {
+  const type = String(tx.transaction_type || '').toLowerCase();
+  const desc = String(tx.description || '').toLowerCase();
+  return type.includes('earning') || desc.includes('earning');
+};
+
 const isProductLevelWithdrawal = (tx: any): boolean => {
   const type = String(tx.transaction_type || '').toLowerCase();
   const desc = String(tx.description || '').toLowerCase();
@@ -40,7 +48,7 @@ const isProductLevelWithdrawal = (tx: any): boolean => {
 };
 
 const isMainWalletWithdrawal = (tx: any): boolean => {
-  return !isVendorWithdrawal(tx) && !isProductLevelWithdrawal(tx);
+  return !isVendorWithdrawal(tx) && !isEarningWithdrawal(tx) && !isProductLevelWithdrawal(tx);
 };
 
 const Payout = () => {
@@ -53,6 +61,7 @@ const Payout = () => {
     const w = (params.get('wallet') || '').toUpperCase();
     if (w === 'MAIN') return 'MAIN';
     if (w === 'VENDOR' || w === 'SALE') return 'VENDOR';
+    if (w === 'EARNING') return 'EARNING';
     if (w === 'PRODUCT_LEVEL' || w === 'PRODUCTLEVEL') return 'PRODUCT_LEVEL';
     return 'ALL';
   }, [location.search]);
@@ -144,6 +153,8 @@ const PayoutTable = ({
       result = result.filter(isMainWalletWithdrawal);
     } else if (walletFilter === 'VENDOR') {
       result = result.filter(isVendorWithdrawal);
+    } else if (walletFilter === 'EARNING') {
+      result = result.filter(isEarningWithdrawal);
     } else if (walletFilter === 'PRODUCT_LEVEL') {
       result = result.filter(isProductLevelWithdrawal);
     }
@@ -224,6 +235,23 @@ const PayoutTable = ({
           />
 
           <Chip
+            icon={<MonetizationOnIcon style={{ fontSize: 18, color: walletFilter === 'EARNING' ? '#FFFFFF' : '#059669' }} />}
+            label={`Earning Wallet (${walletCounts.earning})`}
+            clickable
+            onClick={() => setWalletFilter('EARNING')}
+            sx={{
+              fontWeight: 800,
+              fontSize: '0.85rem',
+              p: 1.5,
+              borderRadius: '12px',
+              bgcolor: walletFilter === 'EARNING' ? '#059669' : '#ECFDF5',
+              color: walletFilter === 'EARNING' ? '#FFFFFF' : '#065F46',
+              border: walletFilter === 'EARNING' ? '1.5px solid #059669' : '1.5px solid #A7F3D0',
+              '&:hover': { bgcolor: walletFilter === 'EARNING' ? '#047857' : '#D1FAE5' }
+            }}
+          />
+
+          <Chip
             icon={<Inventory2Icon style={{ fontSize: 18, color: walletFilter === 'PRODUCT_LEVEL' ? '#FFFFFF' : '#0284C7' }} />}
             label={`Product Level Wallet (${walletCounts.productLevel})`}
             clickable
@@ -256,7 +284,7 @@ const PayoutTable = ({
         <Typography sx={{ color: "#0F172A", fontWeight: 800, fontSize: "1.1rem" }}>
           {tabTitle} {walletFilter !== 'ALL' && (
             <span style={{ color: '#FE8001', fontSize: '0.95rem' }}>
-              • {walletFilter === 'MAIN' ? 'First / Deposit Wallet' : walletFilter === 'VENDOR' ? 'Sale Value Wallet' : 'Product Level Wallet'} ({filteredData.length})
+              • {walletFilter === 'MAIN' ? 'First / Deposit Wallet' : walletFilter === 'VENDOR' ? 'Sale Value Wallet' : walletFilter === 'EARNING' ? 'Earning Wallet' : 'Product Level Wallet'} ({filteredData.length})
             </span>
           )}
         </Typography>
@@ -314,6 +342,7 @@ export const Requests = ({
   const walletCounts = useMemo(() => {
     let main = 0;
     let vendor = 0;
+    let earning = 0;
     let productLevel = 0;
 
     withdrawalRequests.forEach((tx: any) => {
@@ -321,6 +350,8 @@ export const Requests = ({
         productLevel++;
       } else if (isVendorWithdrawal(tx)) {
         vendor++;
+      } else if (isEarningWithdrawal(tx)) {
+        earning++;
       } else {
         main++;
       }
@@ -330,6 +361,7 @@ export const Requests = ({
       all: withdrawalRequests.length,
       main,
       vendor,
+      earning,
       productLevel
     };
   }, [withdrawalRequests]);
@@ -387,6 +419,7 @@ export const Proccessed = ({
   const walletCounts = useMemo(() => {
     let main = 0;
     let vendor = 0;
+    let earning = 0;
     let productLevel = 0;
 
     filteredData.forEach((tx: any) => {
@@ -394,6 +427,8 @@ export const Proccessed = ({
         productLevel++;
       } else if (isVendorWithdrawal(tx)) {
         vendor++;
+      } else if (isEarningWithdrawal(tx)) {
+        earning++;
       } else {
         main++;
       }
@@ -403,6 +438,7 @@ export const Proccessed = ({
       all: filteredData.length,
       main,
       vendor,
+      earning,
       productLevel
     };
   }, [filteredData]);

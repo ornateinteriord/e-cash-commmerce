@@ -117,6 +117,12 @@ export const UserSideBarMenuItems: SideBarMenuItemType[] = [
     isExpandable: false,
   },
   {
+    name: "Earning Wallet",
+    icon: <MonetizationOnIcon />,
+    path: "/user/earning-wallet",
+    isExpandable: false,
+  },
+  {
     name: "Property Fund",
     icon: <CreditCardIcon />,
     path: "/user/upgrade-wallet",
@@ -265,6 +271,11 @@ export const AdminSideBarMenuItems: SideBarMenuItemType[] = [
         name: "Sale Value Payouts",
         path: "/admin/payout?wallet=VENDOR",
         icon: <StorefrontIcon />,
+      },
+      {
+        name: "Earning Wallet Payouts",
+        path: "/admin/payout?wallet=EARNING",
+        icon: <MonetizationOnIcon />,
       },
       {
         name: "Product Level Payouts",

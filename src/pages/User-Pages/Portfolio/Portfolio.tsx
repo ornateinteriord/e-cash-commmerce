@@ -389,7 +389,7 @@ const Portfolio = () => {
                 boxShadow: '0 3px 10px rgba(5, 150, 105, 0.1)'
               }}>
                 <Typography sx={{ color: '#065f46', fontWeight: 900, fontSize: '1.15rem', letterSpacing: '-0.3px' }}>
-                  ₹{Number(walletOverview?.directBenefits || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  ₹{Number(walletOverview?.data?.directBenefits ?? walletOverview?.directBenefits ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </Typography>
               </Box>
             </Box>
@@ -450,7 +450,7 @@ const Portfolio = () => {
                 boxShadow: '0 3px 10px rgba(217, 119, 6, 0.1)'
               }}>
                 <Typography sx={{ color: '#92400e', fontWeight: 900, fontSize: '1.15rem', letterSpacing: '-0.3px' }}>
-                  ₹{Number(walletOverview?.levelBenefits || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  ₹{Number(walletOverview?.data?.levelBenefits ?? walletOverview?.levelBenefits ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </Typography>
               </Box>
             </Box>

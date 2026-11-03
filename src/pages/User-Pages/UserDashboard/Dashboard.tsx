@@ -20,10 +20,11 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
 import ShowChartIcon from '@mui/icons-material/ShowChart';
 import StorefrontIcon from '@mui/icons-material/Storefront';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import { toast } from 'react-toastify';
 
 import TokenService from '../../../api/token/tokenService';
-import { useVerifyPayment, parsePaymentRedirectParams, useGetTransactionDetails, useGetWalletOverview, useGetMemberDetails, useGetDailyPayout } from '../../../api/Memeber';
+import { useVerifyPayment, parsePaymentRedirectParams, useGetTransactionDetails, useGetWalletOverview, useGetMemberDetails, useGetDailyPayout, useGetVendorWalletOverview, useGetEarningWalletOverview } from '../../../api/Memeber';
 
 import ProductsContainer from './ProductsContainer';
 import TokenCoin from '../../../components/common/TokenCoin';
@@ -37,6 +38,8 @@ const UserDashboard = () => {
   const memberId = TokenService.getMemberId();
   const { data: walletOverview } = useGetWalletOverview(memberId);
   const { data: memberDetails, refetch: refetchMemberDetails } = useGetMemberDetails(memberId);
+  const { data: vendorWalletData } = useGetVendorWalletOverview(memberId);
+  const { data: earningWalletData } = useGetEarningWalletOverview(memberId);
   const referralCode = memberDetails?.Member_id || memberDetails?.member_id || memberId || '';
   const { mutate: verifyPayment, isPending: isVerifyingPayment } = useVerifyPayment();
   const { refetch: refetchTransactions } = useGetTransactionDetails("all");
@@ -556,7 +559,7 @@ const UserDashboard = () => {
         }}>
           {/* Left Side: Wallet Balance & Credits info (Parallel Left) */}
           <Box 
-            onClick={() => navigate('/user/transactions?type=credits')}
+            onClick={() => navigate('/user/wallet')}
             sx={{
               flex: 1,
               display: 'flex',
@@ -747,135 +750,35 @@ const UserDashboard = () => {
           background: 'linear-gradient(90deg, rgba(16, 185, 129, 0.05) 0%, rgba(16, 185, 129, 0.25) 50%, rgba(16, 185, 129, 0.05) 100%)'
         }} />
 
-        {/* 2. Sale Value & Product Level Wallets (Strictly Side-by-Side) */}
+        {/* 2. Specialized Wallets (Product Level, Earning Wallet & Sale Value) */}
         <Box sx={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+          gridTemplateColumns: { xs: 'repeat(2, minmax(0, 1fr))', md: 'repeat(3, minmax(0, 1fr))' },
           gap: { xs: 1.4, sm: 2.2, md: 3 },
           width: '100%'
         }}>
-          {/* Sale Value Card */}
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              minWidth: 0,
-              bgcolor: '#FFFFFF',
-              border: '1.5px solid #D1FAE5',
-              borderRadius: { xs: '16px', sm: '22px' },
-              p: { xs: 1.6, sm: 2.5, md: 3 },
-              minHeight: { xs: '160px', sm: '190px' },
-              boxShadow: '0 4px 16px rgba(16, 185, 129, 0.05)',
-              transition: 'all 0.2s ease',
-              position: 'relative',
-              overflow: 'hidden',
-              '&:hover': {
-                transform: 'translateY(-2px)',
-                boxShadow: '0 8px 24px rgba(16, 185, 129, 0.12)',
-                borderColor: '#10B981'
-              }
-            }}
-          >
-            {/* Top: Icon + Title */}
-            <Box 
-              onClick={() => navigate('/user/vendor-wallet')}
-              sx={{ display: 'flex', alignItems: 'center', gap: { xs: 0.8, sm: 1.4 }, cursor: 'pointer' }}
-            >
-              <Box sx={{
-                p: { xs: 0.5, sm: 0.8 },
-                borderRadius: '10px',
-                bgcolor: 'rgba(254, 128, 1, 0.12)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                border: '1px solid rgba(254, 128, 1, 0.4)',
-                flexShrink: 0
-              }}>
-                <StorefrontIcon sx={{ fontSize: { xs: 18, sm: 24, md: 26 }, color: '#FE8001' }} />
-              </Box>
-              <Typography sx={{
-                color: '#FE8001',
-                fontWeight: 900,
-                fontSize: { xs: '0.86rem', sm: '1.1rem', md: '1.25rem' },
-                lineHeight: 1.2,
-                letterSpacing: '0.4px',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis'
-              }}>
-                Sale Value
-              </Typography>
-            </Box>
-
-            {/* Sale Value Balance */}
-            <Box 
-              onClick={() => navigate('/user/vendor-wallet')}
-              sx={{ my: { xs: 1, sm: 1.5 }, cursor: 'pointer' }}
-            >
-              <Typography sx={{
-                color: '#1F333B',
-                fontWeight: 900,
-                fontSize: { xs: '1.18rem', sm: '1.65rem', md: '2rem' },
-                lineHeight: 1.1,
-                letterSpacing: '-0.5px'
-              }}>
-                ₹{Number(walletOverview?.vendorWalletBalance ?? memberDetails?.vendor_wallet ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-              </Typography>
-            </Box>
-
-            {/* N-cash Button below balance */}
-            <Button
-              variant="contained"
-              onClick={() => navigate('/user/vendor-wallet')}
-              startIcon={<PaymentsIcon sx={{ fontSize: { xs: '16px !important', sm: '20px !important' }, color: '#6D28D9' }} />}
-              fullWidth
-              sx={{
-                mt: 'auto',
-                minHeight: { xs: '38px', sm: '44px', md: '48px' },
-                background: 'linear-gradient(135deg, #EDE9FE 0%, #DDD6FE 100%)',
-                color: '#6D28D9',
-                border: '1.5px solid #C4B5FD',
-                borderRadius: { xs: '10px', sm: '14px' },
-                px: { xs: 1, sm: 1.8 },
-                py: { xs: 0.6, sm: 1 },
-                fontWeight: 900,
-                fontSize: { xs: '0.8rem', sm: '0.92rem', md: '0.98rem' },
-                textTransform: 'none',
-                justifyContent: 'center',
-                boxShadow: '0 4px 14px rgba(109, 40, 217, 0.15)',
-                '&:hover': {
-                  background: 'linear-gradient(135deg, #DDD6FE 0%, #C4B5FD 100%)',
-                  boxShadow: '0 6px 20px rgba(109, 40, 217, 0.25)',
-                  transform: 'translateY(-2px)'
-                },
-                transition: 'all 0.2s ease'
-              }}
-            >
-              N-cash
-            </Button>
-          </Box>
-
           {/* Product Level Card */}
           <Box
+            onClick={() => navigate('/user/product-level-wallet')}
+            style={{ cursor: 'pointer' }}
             sx={{
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
               minWidth: 0,
               bgcolor: '#FFFFFF',
-              border: '1.5px solid #D1FAE5',
+              border: '1.5px solid #BAE6FD',
               borderRadius: { xs: '16px', sm: '22px' },
               p: { xs: 1.6, sm: 2.5, md: 3 },
               minHeight: { xs: '160px', sm: '190px' },
-              boxShadow: '0 4px 16px rgba(16, 185, 129, 0.05)',
+              boxShadow: '0 4px 16px rgba(2, 132, 199, 0.05)',
               transition: 'all 0.2s ease',
               position: 'relative',
               overflow: 'hidden',
               '&:hover': {
                 transform: 'translateY(-2px)',
-                boxShadow: '0 8px 24px rgba(16, 185, 129, 0.12)',
-                borderColor: '#10B981'
+                boxShadow: '0 8px 24px rgba(2, 132, 199, 0.12)',
+                borderColor: '#0284C7'
               }
             }}
           >
@@ -906,7 +809,7 @@ const UserDashboard = () => {
                 overflow: 'hidden',
                 textOverflow: 'ellipsis'
               }}>
-                Product Level
+                Product wallet
               </Typography>
             </Box>
 
@@ -955,6 +858,215 @@ const UserDashboard = () => {
               }}
             >
               Withdraw
+            </Button>
+          </Box>
+
+          {/* Earning Wallet Card */}
+          <Box
+            onClick={() => navigate('/user/earning-wallet')}
+            style={{ cursor: 'pointer' }}
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              minWidth: 0,
+              bgcolor: '#FFFFFF',
+              border: '1.5px solid #A7F3D0',
+              borderRadius: { xs: '16px', sm: '22px' },
+              p: { xs: 1.6, sm: 2.5, md: 3 },
+              minHeight: { xs: '160px', sm: '190px' },
+              boxShadow: '0 4px 16px rgba(5, 150, 105, 0.05)',
+              transition: 'all 0.2s ease',
+              position: 'relative',
+              overflow: 'hidden',
+              '&:hover': {
+                transform: 'translateY(-2px)',
+                boxShadow: '0 8px 24px rgba(5, 150, 105, 0.12)',
+                borderColor: '#059669'
+              }
+            }}
+          >
+            {/* Top: Icon + Title */}
+            <Box 
+              onClick={() => navigate('/user/earning-wallet')}
+              sx={{ display: 'flex', alignItems: 'center', gap: { xs: 0.8, sm: 1.4 }, cursor: 'pointer' }}
+            >
+              <Box sx={{
+                p: { xs: 0.5, sm: 0.8 },
+                borderRadius: '10px',
+                bgcolor: 'rgba(5, 150, 105, 0.12)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                border: '1px solid rgba(5, 150, 105, 0.4)',
+                flexShrink: 0
+              }}>
+                <MonetizationOnIcon sx={{ fontSize: { xs: 18, sm: 24, md: 26 }, color: '#059669' }} />
+              </Box>
+              <Typography sx={{
+                color: '#059669',
+                fontWeight: 900,
+                fontSize: { xs: '0.86rem', sm: '1.1rem', md: '1.25rem' },
+                lineHeight: 1.2,
+                letterSpacing: '0.4px',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis'
+              }}>
+                Earning
+              </Typography>
+            </Box>
+
+            {/* Earning Wallet Balance */}
+            <Box 
+              onClick={() => navigate('/user/earning-wallet')}
+              sx={{ my: { xs: 1, sm: 1.5 }, cursor: 'pointer' }}
+            >
+              <Typography sx={{
+                color: '#1F333B',
+                fontWeight: 900,
+                fontSize: { xs: '1.18rem', sm: '1.65rem', md: '2rem' },
+                lineHeight: 1.1,
+                letterSpacing: '-0.5px'
+              }}>
+                ₹{Number(earningWalletData?.balance ?? memberDetails?.earning_wallet ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </Typography>
+            </Box>
+
+            {/* Encash Button below balance */}
+            <Button
+              variant="contained"
+              onClick={() => navigate('/user/earning-wallet')}
+              startIcon={<PaymentsIcon sx={{ fontSize: { xs: '16px !important', sm: '20px !important' }, color: '#047857' }} />}
+              fullWidth
+              sx={{
+                mt: 'auto',
+                minHeight: { xs: '38px', sm: '44px', md: '48px' },
+                background: 'linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%)',
+                color: '#047857',
+                border: '1.5px solid #6EE7B7',
+                borderRadius: { xs: '10px', sm: '14px' },
+                px: { xs: 1, sm: 1.8 },
+                py: { xs: 0.6, sm: 1 },
+                fontWeight: 900,
+                fontSize: { xs: '0.8rem', sm: '0.92rem', md: '0.98rem' },
+                textTransform: 'none',
+                justifyContent: 'center',
+                boxShadow: '0 4px 14px rgba(5, 150, 105, 0.15)',
+                '&:hover': {
+                  background: 'linear-gradient(135deg, #A7F3D0 0%, #6EE7B7 100%)',
+                  boxShadow: '0 6px 20px rgba(5, 150, 105, 0.25)',
+                  transform: 'translateY(-2px)'
+                },
+                transition: 'all 0.2s ease'
+              }}
+            >
+           Withdraw
+            </Button>
+          </Box>
+
+          {/* Sale Value Card */}
+          <Box
+            onClick={() => navigate('/user/vendor-wallet')}
+            style={{ cursor: 'pointer' }}
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              minWidth: 0,
+              bgcolor: '#FFFFFF',
+              border: '1.5px solid #FED7AA',
+              borderRadius: { xs: '16px', sm: '22px' },
+              p: { xs: 1.6, sm: 2.5, md: 3 },
+              minHeight: { xs: '160px', sm: '190px' },
+              boxShadow: '0 4px 16px rgba(254, 128, 1, 0.05)',
+              transition: 'all 0.2s ease',
+              position: 'relative',
+              overflow: 'hidden',
+              gridColumn: { xs: 'span 2', md: 'auto' },
+              '&:hover': {
+                transform: 'translateY(-2px)',
+                boxShadow: '0 8px 24px rgba(254, 128, 1, 0.12)',
+                borderColor: '#FE8001'
+              }
+            }}
+          >
+            {/* Top: Icon + Title */}
+            <Box 
+              onClick={() => navigate('/user/vendor-wallet')}
+              sx={{ display: 'flex', alignItems: 'center', gap: { xs: 0.8, sm: 1.4 }, cursor: 'pointer' }}
+            >
+              <Box sx={{
+                p: { xs: 0.5, sm: 0.8 },
+                borderRadius: '10px',
+                bgcolor: 'rgba(254, 128, 1, 0.12)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                border: '1px solid rgba(254, 128, 1, 0.4)',
+                flexShrink: 0
+              }}>
+                <StorefrontIcon sx={{ fontSize: { xs: 18, sm: 24, md: 26 }, color: '#FE8001' }} />
+              </Box>
+              <Typography sx={{
+                color: '#FE8001',
+                fontWeight: 900,
+                fontSize: { xs: '0.86rem', sm: '1.1rem', md: '1.25rem' },
+                lineHeight: 1.2,
+                letterSpacing: '0.4px',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis'
+              }}>
+                Sale Value
+              </Typography>
+            </Box>
+
+            {/* Sale Value Balance */}
+            <Box 
+              onClick={() => navigate('/user/vendor-wallet')}
+              sx={{ my: { xs: 1, sm: 1.5 }, cursor: 'pointer' }}
+            >
+              <Typography sx={{
+                color: '#1F333B',
+                fontWeight: 900,
+                fontSize: { xs: '1.18rem', sm: '1.65rem', md: '2rem' },
+                lineHeight: 1.1,
+                letterSpacing: '-0.5px'
+              }}>
+                ₹{Number(vendorWalletData?.balance ?? walletOverview?.vendorWalletBalance ?? memberDetails?.vendor_wallet ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </Typography>
+            </Box>
+
+            {/* Encash Button below balance */}
+            <Button
+              variant="contained"
+              onClick={() => navigate('/user/vendor-wallet')}
+              startIcon={<PaymentsIcon sx={{ fontSize: { xs: '16px !important', sm: '20px !important' }, color: '#FE8001' }} />}
+              fullWidth
+              sx={{
+                mt: 'auto',
+                minHeight: { xs: '38px', sm: '44px', md: '48px' },
+                background: 'linear-gradient(135deg, #FFF7ED 0%, #FFEDD5 100%)',
+                color: '#C2410C',
+                border: '1.5px solid #FED7AA',
+                borderRadius: { xs: '10px', sm: '14px' },
+                px: { xs: 1, sm: 1.8 },
+                py: { xs: 0.6, sm: 1 },
+                fontWeight: 900,
+                fontSize: { xs: '0.8rem', sm: '0.92rem', md: '0.98rem' },
+                textTransform: 'none',
+                justifyContent: 'center',
+                boxShadow: '0 4px 14px rgba(254, 128, 1, 0.15)',
+                '&:hover': {
+                  background: 'linear-gradient(135deg, #FFEDD5 0%, #FED7AA 100%)',
+                  boxShadow: '0 6px 20px rgba(254, 128, 1, 0.25)',
+                  transform: 'translateY(-2px)'
+                },
+                transition: 'all 0.2s ease'
+              }}
+            >
+              Encash
             </Button>
           </Box>
         </Box>
@@ -1288,7 +1400,7 @@ const UserDashboard = () => {
                 boxShadow: '0 2px 6px rgba(5, 150, 105, 0.08)'
               }}>
                 <Typography sx={{ color: '#065f46', fontWeight: 900, fontSize: { xs: '0.8rem', sm: '0.92rem' }, letterSpacing: '-0.3px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                  ₹{Number(walletOverview?.directBenefits || 0).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                  ₹{Number(walletOverview?.data?.directBenefits ?? walletOverview?.directBenefits ?? earningWalletData?.balance ?? memberDetails?.earning_wallet ?? 0).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                 </Typography>
               </Box>
             </Box>
@@ -1349,7 +1461,7 @@ const UserDashboard = () => {
                 boxShadow: '0 2px 6px rgba(2, 132, 199, 0.08)'
               }}>
                 <Typography sx={{ color: '#0369A1', fontWeight: 900, fontSize: { xs: '0.8rem', sm: '0.92rem' }, letterSpacing: '-0.3px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                  ₹{Number(walletOverview?.productLevelBalance ?? walletOverview?.levelBenefits ?? 0).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                  ₹{Number(walletOverview?.data?.productLevelBalance ?? walletOverview?.data?.levelBenefits ?? walletOverview?.productLevelBalance ?? walletOverview?.levelBenefits ?? 0).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                 </Typography>
               </Box>
             </Box>
@@ -1410,7 +1522,7 @@ const UserDashboard = () => {
                 boxShadow: '0 2px 6px rgba(217, 119, 6, 0.08)'
               }}>
                 <Typography sx={{ color: '#92400e', fontWeight: 900, fontSize: { xs: '0.8rem', sm: '0.92rem' }, letterSpacing: '-0.3px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                  ₹{Number(walletOverview?.levelBenefits || 0).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                  ₹{Number(walletOverview?.data?.levelBenefits ?? walletOverview?.levelBenefits ?? 0).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                 </Typography>
               </Box>
             </Box>

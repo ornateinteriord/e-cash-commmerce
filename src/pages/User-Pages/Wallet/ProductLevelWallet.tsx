@@ -125,7 +125,7 @@ const ProductLevelWallet: React.FC = () => {
     setAmount(value);
     const num = parseFloat(value);
     if (!isNaN(num) && num > 0) {
-      const ded = num * 0.10;
+      const ded = num * 0.05;
       setDeduction(ded);
       setNetAmount(num - ded);
     } else {
@@ -138,7 +138,7 @@ const ProductLevelWallet: React.FC = () => {
     if (availableBalance <= 0) return;
     const calculated = Math.floor((availableBalance * percent) / 100);
     setAmount(String(calculated));
-    const ded = calculated * 0.10;
+    const ded = calculated * 0.05;
     setDeduction(ded);
     setNetAmount(calculated - ded);
   };
@@ -377,7 +377,7 @@ const ProductLevelWallet: React.FC = () => {
               </Typography>
             </Box>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.8 }}>
-              <Typography sx={{ fontSize: '0.84rem', color: '#DC2626' }}>Standard Deduction (10% TDS / Admin):</Typography>
+              <Typography sx={{ fontSize: '0.84rem', color: '#DC2626' }}>Standard Deduction (5% TDS / Admin):</Typography>
               <Typography sx={{ fontSize: '0.86rem', fontWeight: 700, color: '#DC2626' }}>
                 - ₹{deduction.toFixed(2)}
               </Typography>

@@ -411,15 +411,17 @@ export const getWalletColumns = () => [
   },
   {
     name: "Amount",
-    selector: (row: any) => row.ew_debit,
+    selector: (row: any) => parseFloat(row.ew_debit || row.vw_debit || row.ew_credit || row.vw_credit || row.pw_credit || row.tw_credit || row.gross_amount || row.net_amount || row.amount || 0),
     sortable: true,
     cell: (row: any) => {
-
-      if (parseFloat(row.ew_debit) > 0) {
-        return `-${parseFloat(row.ew_debit).toFixed(2)}`;
-      } else {
-        return `+${parseFloat(row.ew_credit).toFixed(2)}`;
-      }
+      const isDebit = parseFloat(row.ew_debit || 0) > 0 || parseFloat(row.vw_debit || 0) > 0 || (row.transaction_type && /withdraw|debit|purchase|transfer sent/i.test(row.transaction_type));
+      const amt = parseFloat(row.ew_debit || row.vw_debit || row.ew_credit || row.vw_credit || row.pw_credit || row.tw_credit || row.gross_amount || row.net_amount || row.amount || 0);
+      if (amt === 0) return <span style={{ color: '#94A3B8' }}>-</span>;
+      return (
+        <span style={{ fontWeight: 800, color: isDebit ? '#DC2626' : '#16A34A' }}>
+          {isDebit ? "- " : "+ "}₹{amt.toFixed(2)}
+        </span>
+      );
     }
   },
   {
@@ -1131,16 +1133,16 @@ export const getRequestColumns = (approveTrasaction: (id: any) => void) => [
       const net = parseFloat(row.net_amount) || 0;
       if (net > 0) return `₹${net.toFixed(2)}`;
       const amount = parseFloat(row.vw_debit) || parseFloat(row.ew_debit) || parseFloat(row.gross_amount) || 0;
-      const deduction = parseFloat(row.deduction) || (amount * 0.10);
+      const deduction = parseFloat(row.deduction) || (amount * 0.05);
       return `₹${Math.max(0, amount - deduction).toFixed(2)}`;
     },
     sortable: true,
   },
   {
-    name: "Deduction (10%)",
+    name: "Deduction (5%)",
     selector: (row: any) => {
       const amount = parseFloat(row.vw_debit) || parseFloat(row.ew_debit) || parseFloat(row.gross_amount) || 0;
-      const deduction = parseFloat(row.deduction) || (amount * 0.10);
+      const deduction = parseFloat(row.deduction) || (amount * 0.05);
       return `₹${deduction.toFixed(2)}`;
     },
     sortable: true,
@@ -1210,7 +1212,7 @@ export const getProccessedColumns = () => [
       const net = parseFloat(row.net_amount) || 0;
       if (net > 0) return `₹${net.toFixed(2)}`;
       const amount = parseFloat(row.vw_debit) || parseFloat(row.ew_debit) || parseFloat(row.gross_amount) || 0;
-      const deduction = parseFloat(row.deduction) || (amount * 0.10);
+      const deduction = parseFloat(row.deduction) || (amount * 0.05);
       return `₹${Math.max(0, amount - deduction).toFixed(2)}`;
     },
     sortable: true,
@@ -1219,7 +1221,7 @@ export const getProccessedColumns = () => [
     name: "Deducted",
     selector: (row: any) => {
       const amount = parseFloat(row.vw_debit) || parseFloat(row.ew_debit) || parseFloat(row.gross_amount) || 0;
-      const deduction = parseFloat(row.deduction) || (amount * 0.10);
+      const deduction = parseFloat(row.deduction) || (amount * 0.05);
       return `₹${deduction.toFixed(2)}`;
     },
     sortable: true,
@@ -2119,22 +2121,15 @@ export const getVendorWalletColumns = () => [
   },
   {
     name: "Amount",
-    selector: (row: any) => {
-      const amt = row.vw_debit || row.gross_amount || row.amount || row.vw_credit;
-      return amt ? parseFloat(amt) : 0;
-    },
+    selector: (row: any) => parseFloat(row.vw_debit || row.ew_debit || row.vw_credit || row.ew_credit || row.gross_amount || row.net_amount || row.amount || 0),
     sortable: true,
     cell: (row: any) => {
-      const amt = row.vw_debit || row.gross_amount || row.amount || row.vw_credit;
-      const isDebit = parseFloat(row.vw_debit || 0) > 0 || (row.transaction_type && row.transaction_type.toLowerCase().includes("withdrawal"));
-      if (!amt || parseFloat(amt) === 0) return <span style={{ color: '#94A3B8' }}>-</span>;
+      const isDebit = parseFloat(row.vw_debit || 0) > 0 || parseFloat(row.ew_debit || 0) > 0 || (row.transaction_type && /withdraw|debit/i.test(row.transaction_type));
+      const amt = parseFloat(row.vw_debit || row.ew_debit || row.vw_credit || row.ew_credit || row.gross_amount || row.net_amount || row.amount || 0);
+      if (!amt || amt === 0) return <span style={{ color: '#94A3B8' }}>-</span>;
       return (
-        <span style={{
-          fontWeight: 800,
-          color: isDebit ? '#DC2626' : '#16A34A',
-          fontSize: '0.85rem'
-        }}>
-          {isDebit ? "- " : "+ "}₹{parseFloat(amt).toFixed(2)}
+        <span style={{ fontWeight: 800, color: isDebit ? '#DC2626' : '#16A34A', fontSize: '0.85rem' }}>
+          {isDebit ? "- " : "+ "}₹{amt.toFixed(2)}
         </span>
       );
     }
@@ -2216,22 +2211,15 @@ export const getProductLevelWalletColumns = () => [
   },
   {
     name: "Amount",
-    selector: (row: any) => {
-      const amt = row.ew_debit || row.gross_amount || row.amount || row.vw_credit || row.ew_credit;
-      return amt ? parseFloat(amt) : 0;
-    },
+    selector: (row: any) => parseFloat(row.pw_credit || row.ew_debit || row.pw_debit || row.vw_credit || row.ew_credit || row.gross_amount || row.net_amount || row.amount || 0),
     sortable: true,
     cell: (row: any) => {
-      const isDebit = parseFloat(row.ew_debit || 0) > 0 || (row.transaction_type && row.transaction_type.toLowerCase().includes("withdrawal"));
-      const amt = isDebit ? (row.ew_debit || row.gross_amount || row.amount) : (row.vw_credit || row.ew_credit || row.gross_amount || row.amount);
-      if (!amt || parseFloat(amt) === 0) return <span style={{ color: '#94A3B8' }}>-</span>;
+      const isDebit = parseFloat(row.ew_debit || 0) > 0 || parseFloat(row.pw_debit || 0) > 0 || (row.transaction_type && /withdraw|debit/i.test(row.transaction_type));
+      const amt = parseFloat(row.pw_credit || row.ew_debit || row.pw_debit || row.vw_credit || row.ew_credit || row.gross_amount || row.net_amount || row.amount || 0);
+      if (!amt || amt === 0) return <span style={{ color: '#94A3B8' }}>-</span>;
       return (
-        <span style={{
-          fontWeight: 800,
-          color: isDebit ? '#DC2626' : '#16A34A',
-          fontSize: '0.85rem'
-        }}>
-          {isDebit ? "- " : "+ "}₹{parseFloat(amt).toFixed(2)}
+        <span style={{ fontWeight: 800, color: isDebit ? '#DC2626' : '#16A34A', fontSize: '0.85rem' }}>
+          {isDebit ? "- " : "+ "}₹{amt.toFixed(2)}
         </span>
       );
     }
@@ -2272,3 +2260,94 @@ export const getProductLevelWalletColumns = () => [
   },
 ];
 
+
+
+export const getEarningWalletColumns = () => [
+  {
+    name: "Date",
+    selector: (row: any) => {
+      if (!row.transaction_date && !row.createdAt) return "-";
+      const date = new Date(row.transaction_date || row.createdAt);
+      return date.toLocaleDateString();
+    },
+    sortable: true,
+    cell: (row: any) => {
+      if (!row.transaction_date && !row.createdAt) return <span style={{ color: '#94A3B8' }}>-</span>;
+      const date = new Date(row.transaction_date || row.createdAt);
+      return (
+        <span style={{ fontSize: '0.83rem', color: '#64748B', fontWeight: 500 }}>
+          {date.toLocaleDateString()}
+        </span>
+      );
+    }
+  },
+  {
+    name: "Transaction ID",
+    selector: (row: any) => row.tx_no || row.transaction_id || "-",
+    sortable: true,
+    cell: (row: any) => (
+      <span style={{ fontFamily: 'monospace', fontSize: '0.78rem', color: '#64748B' }}>
+        {row.tx_no || row.transaction_id || "-"}
+      </span>
+    )
+  },
+  {
+    name: "Type",
+    selector: (row: any) => row.transaction_type || "Referral Bonus",
+    sortable: true,
+    cell: (row: any) => (
+      <span style={{ fontSize: '0.83rem', color: '#7C3AED', fontWeight: 800 }}>
+        {row.transaction_type || "Referral Bonus"}
+      </span>
+    )
+  },
+  {
+    name: "Amount",
+    selector: (row: any) => parseFloat(row.ew_debit || row.ew_credit || row.gross_amount || row.net_amount || row.amount || row.vw_credit || 0),
+    sortable: true,
+    cell: (row: any) => {
+      const isDebit = parseFloat(row.ew_debit || 0) > 0 || (row.transaction_type && /withdraw|debit/i.test(row.transaction_type));
+      const amt = parseFloat(row.ew_debit || row.ew_credit || row.gross_amount || row.net_amount || row.amount || row.vw_credit || 0);
+      if (!amt || amt === 0) return <span style={{ color: '#94A3B8' }}>-</span>;
+      return (
+        <span style={{ fontWeight: 800, color: isDebit ? '#DC2626' : '#16A34A', fontSize: '0.85rem' }}>
+          {isDebit ? "- " : "+ "}₹{amt.toFixed(2)}
+        </span>
+      );
+    }
+  },
+  {
+    name: "Description",
+    selector: (row: any) => row.description || "-",
+    sortable: true,
+    wrap: true,
+    grow: 1.5,
+    cell: (row: any) => (
+      <span style={{ fontSize: '0.84rem', color: '#1F333B', fontWeight: 500 }}>
+        {row.description || "-"}
+      </span>
+    )
+  },
+  {
+    name: "Status",
+    selector: (row: any) => row.status || "Completed",
+    sortable: true,
+    cell: (row: any) => {
+      const statusStr = String(row.status || 'Completed');
+      const isApproved = statusStr.toLowerCase() === 'approved' || statusStr.toLowerCase() === 'completed' || statusStr.toLowerCase() === 'success';
+      const isRejected = statusStr.toLowerCase() === 'rejected';
+      return (
+        <span style={{
+          padding: '3px 9px',
+          borderRadius: '12px',
+          fontSize: '11px',
+          fontWeight: 700,
+          backgroundColor: isApproved ? '#DCFCE7' : isRejected ? '#FEE2E2' : '#FEF3C7',
+          color: isApproved ? '#15803D' : isRejected ? '#DC2626' : '#B45309'
+        }}>
+          {statusStr}
+        </span>
+      );
+    }
+  },
+];

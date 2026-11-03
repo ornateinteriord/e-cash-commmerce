@@ -84,7 +84,7 @@ const Wallet = () => {
 
     if (value && value !== "0") {
       const withdrawalAmount = parseFloat(value);
-      const deductionAmount = withdrawalAmount * 0.10; // 10% deduction
+      const deductionAmount = withdrawalAmount * 0.05; // 5% deduction
       const calculatedNetAmount = withdrawalAmount - deductionAmount;
 
       setTds(deductionAmount);
@@ -345,7 +345,7 @@ const Wallet = () => {
               */}
 
               <TextField
-                label="Deduction (10%)"
+                label="Deduction (5%)"
                 value={`${tds.toFixed(2)}`}
                 fullWidth
                 size="medium"

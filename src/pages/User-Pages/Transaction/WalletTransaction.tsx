@@ -99,17 +99,16 @@ const WalletTransaction: React.FC = () => {
       // 1. Filter by credit / debit mode
       if (filterMode === 'credit') {
         data = data.filter((tx: any) => {
-          const ew = parseFloat(tx.ew_credit || 0);
-          const tw = parseFloat(tx.tw_credit || 0);
-          const credit = parseFloat(tx.credit || 0);
-          return (ew > 0 || tw > 0 || credit > 0);
+          const isDebit = parseFloat(tx.ew_debit || tx.vw_debit || tx.pw_debit || tx.tw_debit || tx.debit || 0) > 0 ||
+            (tx.transaction_type && /withdraw|debit|repayment|purchase/i.test(tx.transaction_type));
+          const amt = parseFloat(tx.ew_credit || tx.vw_credit || tx.pw_credit || tx.tw_credit || tx.credit || 0);
+          return !isDebit && (amt > 0 || parseFloat(tx.gross_amount || tx.amount || tx.net_amount || 0) > 0);
         });
       } else if (filterMode === 'debit') {
         data = data.filter((tx: any) => {
-          const ew = parseFloat(tx.ew_debit || 0);
-          const tw = parseFloat(tx.tw_debit || 0);
-          const debit = parseFloat(tx.debit || 0);
-          return (ew > 0 || tw > 0 || debit > 0);
+          const isDebit = parseFloat(tx.ew_debit || tx.vw_debit || tx.pw_debit || tx.tw_debit || tx.debit || 0) > 0 ||
+            (tx.transaction_type && /withdraw|debit|repayment|purchase/i.test(tx.transaction_type));
+          return isDebit;
         });
       }
 

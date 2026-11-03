@@ -18,8 +18,15 @@ const ReferralBonus = () => {
       ? transactionsData
       : [];
 
+  const seenBonus = new Set();
   const referralBonusData = transactions
     .filter((transaction: any) => {
+      const amt = (parseFloat(transaction.ew_credit) || 0) + (parseFloat(transaction.vw_credit) || 0) + (parseFloat(transaction.amount) || 0) + (parseFloat(transaction.gross_amount) || 0) + (parseFloat(transaction.net_amount) || 0);
+      if (amt <= 0) return false;
+      const key = `${transaction.related_member_id || transaction.related_member_name}_${transaction.transaction_date ? String(transaction.transaction_date).split("T")[0] : ""}_${amt.toFixed(2)}`;
+      if (seenBonus.has(key) || seenBonus.has(transaction.transaction_id || transaction._id)) return false;
+      if (key) seenBonus.add(key);
+      if (transaction.transaction_id) seenBonus.add(transaction.transaction_id);
       if (!transaction || typeof transaction !== 'object') return false;
 
       const txType = transaction.transaction_type?.toLowerCase() || "";
@@ -42,7 +49,7 @@ const ReferralBonus = () => {
         payoutLevel: payoutLvl,
         memberName: transaction.related_member_name || 'N/A',
         memberId: transaction.related_member_id || 'N/A',
-        amount: `${((parseFloat(transaction.ew_credit) || 0) + (parseFloat(transaction.uw_credit) || 0) + (parseFloat(transaction.fd_credit) || 0) + (parseFloat(transaction.pw_credit) || 0)).toFixed(2)}`,
+        amount: `${((parseFloat(transaction.vw_credit) || 0) + (parseFloat(transaction.ew_credit) || 0) + (parseFloat(transaction.uw_credit) || 0) + (parseFloat(transaction.fd_credit) || 0) + (parseFloat(transaction.pw_credit) || 0) || (parseFloat(transaction.amount) || 0) || (parseFloat(transaction.gross_amount) || 0) || (parseFloat(transaction.net_amount) || 0)).toFixed(2)}`,
         description: transaction.description,
         transactionType: transaction.transaction_type
       };
