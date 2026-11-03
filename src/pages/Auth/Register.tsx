@@ -328,12 +328,6 @@ const Register = () => {
               boxShadow: '0 6px 20px rgba(0, 0, 0, 0.12)'
             }}
           />
-          <Typography
-            variant={isMobile ? "h5" : "h3"}
-            sx={{ color: '#E5989B', fontWeight: 900, mb: 1.5, lineHeight: 1.2 }}
-          >
-            Join the Network
-          </Typography>
           {!isMobile && (
             <Box sx={{ display: 'flex', gap: 3, mt: 2 }}>
               {[
