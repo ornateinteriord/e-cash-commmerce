@@ -23,7 +23,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import TokenService from "../../../api/token/tokenService";
 import { useGetVendorWalletOverview, useVendorWalletWithdraw, useGetMemberDetails } from '../../../api/Memeber';
-import { getVendorWalletColumns } from '../../../utils/DataTableColumnsProvider';
+import { getVendorWalletColumns, extractTransactionAmount } from '../../../utils/DataTableColumnsProvider';
 
 const VendorWallet: React.FC = () => {
   const navigate = useNavigate();
@@ -116,12 +116,14 @@ const VendorWallet: React.FC = () => {
   const filteredTransactions = transactions.filter((tx: any) => {
     if (!searchQuery.trim()) return true;
     const q = searchQuery.toLowerCase().trim();
+    const txAmt = extractTransactionAmount(tx);
     return (
       (tx.transaction_id && tx.transaction_id.toLowerCase().includes(q)) ||
       (tx.tx_no && tx.tx_no.toLowerCase().includes(q)) ||
       (tx.description && tx.description.toLowerCase().includes(q)) ||
       (tx.status && tx.status.toLowerCase().includes(q)) ||
-      (tx.amount && tx.amount.toString().includes(q))
+      (tx.transaction_type && tx.transaction_type.toLowerCase().includes(q)) ||
+      (txAmt > 0 && txAmt.toString().includes(q))
     );
   });
 

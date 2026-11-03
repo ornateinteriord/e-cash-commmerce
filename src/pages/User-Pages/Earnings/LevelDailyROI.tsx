@@ -20,7 +20,7 @@ import PaymentsIcon from '@mui/icons-material/Payments';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import DataTable from 'react-data-table-component';
-import { DASHBOARD_CUTSOM_STYLE } from '../../../utils/DataTableColumnsProvider';
+import { DASHBOARD_CUTSOM_STYLE, extractTransactionAmount } from '../../../utils/DataTableColumnsProvider';
 import { getFormattedDate } from '../../../utils/common';
 import { useGetTransactionDetails, useGetMemberLevelRoiSchedules } from '../../../api/Memeber';
 
@@ -76,7 +76,7 @@ const LevelDailyROI = () => {
 
   // Totals
   const totalEarned = levelRoiTxs.reduce(
-    (sum, t) => sum + parseFloat(t.ew_credit || t.amount || 0),
+    (sum, t) => sum + extractTransactionAmount(t),
     0
   );
 
@@ -153,10 +153,10 @@ const LevelDailyROI = () => {
     },
     {
       name: 'Amount (₹)',
-      selector: (row: any) => parseFloat(row.ew_credit || row.amount || 0),
+      selector: (row: any) => extractTransactionAmount(row),
       cell: (row: any) => (
         <Typography sx={{ fontWeight: 800, color: '#059669' }}>
-          +₹{parseFloat(row.ew_credit || row.amount || 0).toFixed(2)}
+          +₹{extractTransactionAmount(row).toFixed(2)}
         </Typography>
       ),
       sortable: true,
@@ -214,10 +214,10 @@ const LevelDailyROI = () => {
       width: '130px',
     },
     {
-      name: '50-Day Progress',
+      name: '100-Day Progress',
       cell: (row: any) => {
         const count = row.payout_count || 0;
-        const target = row.target_days || 50;
+        const target = row.target_days || 100;
         const percent = Math.min(100, Math.round((count / target) * 100));
         return (
           <Box sx={{ width: '100%', pr: 2 }}>
@@ -428,7 +428,7 @@ const LevelDailyROI = () => {
               </Box>
               <Box sx={{ minWidth: 0 }}>
                 <Typography sx={{ fontSize: { xs: '0.72rem', sm: '0.78rem' }, color: '#7e22ce', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.3px' }}>
-                  Active 50-Day Contracts
+                  Active 100-Day Contracts
                 </Typography>
                 <Typography sx={{
                   fontSize: { xs: '1.2rem', sm: '1.35rem', md: '1.5rem' },
@@ -500,7 +500,7 @@ const LevelDailyROI = () => {
                 {isMobile ? `Payouts (${filteredTxs.length})` : `Daily Payout Transactions (${filteredTxs.length})`}
               </ToggleButton>
               <ToggleButton value="schedules">
-                {isMobile ? `Schedules (${filteredSchedules.length})` : `My 50-Day Active Schedules (${filteredSchedules.length})`}
+                {isMobile ? `Schedules (${filteredSchedules.length})` : `My 100-Day Active Schedules (${filteredSchedules.length})`}
               </ToggleButton>
             </ToggleButtonGroup>
 
@@ -584,7 +584,7 @@ const LevelDailyROI = () => {
                       </Box>
 
                       <Typography sx={{ fontSize: '1.15rem', fontWeight: 900, color: '#059669', whiteSpace: 'nowrap' }}>
-                        +₹{parseFloat(tx.ew_credit || tx.amount || 0).toFixed(2)}
+                        +₹{extractTransactionAmount(tx).toFixed(2)}
                       </Typography>
                     </Box>
 
@@ -601,10 +601,10 @@ const LevelDailyROI = () => {
                   </Paper>
                 ))
               ) : (
-                /* Mobile 50-Day Schedule Cards */
+                /* Mobile 100-Day Schedule Cards */
                 paginatedMobileList.map((sch: any, idx: number) => {
                   const count = sch.payout_count || 0;
-                  const target = sch.target_days || 50;
+                  const target = sch.target_days || 100;
                   const percent = Math.min(100, Math.round((count / target) * 100));
 
                   return (

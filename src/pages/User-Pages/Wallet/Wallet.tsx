@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, TextField, Typography, Box, Button, CircularProgress, Fade, IconButton, Alert, Divider } from '@mui/material';
 import DataTable from "react-data-table-component";
 import { useMediaQuery } from '@mui/material';
-import { DASHBOARD_CUTSOM_STYLE, getWalletColumns,  } from '../../../utils/DataTableColumnsProvider';
+import { DASHBOARD_CUTSOM_STYLE, getWalletColumns, extractTransactionAmount } from '../../../utils/DataTableColumnsProvider';
 import TokenService from "../../../api/token/tokenService";
 import { useGetWalletOverview, useWalletWithdraw } from '../../../api/Memeber';
 import { toast } from 'react-toastify';
@@ -16,6 +16,7 @@ const Wallet = () => {
   const isWithdrawalView = searchParams.get('type') === 'withdrawal';
   const isMobile = useMediaQuery("(max-width:600px)");
   const [amount, setAmount] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
   const [tds, setTds] = useState(0); const [netAmount, setNetAmount] = useState(0);
   const [optimisticBalance, setOptimisticBalance] = useState<number | null>(null);
   const [isWithdrawalAllowed, setIsWithdrawalAllowed] = useState<boolean>(true);
@@ -402,7 +403,7 @@ const Wallet = () => {
                   </Typography>
                   <Box sx={{ display: "flex", gap: 4, flexDirection: isMobile ? "column" : "row" }}>
                     <Box>
-                      <Typography variant="body2">• 10% Deduction applied</Typography>
+                      <Typography variant="body2">• 5% Deduction applied</Typography>
                       <Typography variant="body2">• Maximum withdrawal: 2x of total invest amount (₹{maxWithdrawalLimit.toFixed(2)})</Typography>
                       <Typography variant="body2">• One withdrawal per day allowed</Typography>
                     </Box>
@@ -526,57 +527,97 @@ const Wallet = () => {
         )}
 
         {/* Transaction History */}
-        {!isWithdrawalView && (
-        <>
-        <div style={{ marginBottom: "1.2rem", color: "#1F333B", fontWeight: 800, fontSize: "1.25rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <span>Transaction History</span>
-          <Button 
-            variant="contained" 
-            onClick={() => setSearchParams({ type: 'withdrawal' })}
-            sx={{
-              background: "linear-gradient(135deg, #FE8001 0%, #FF9933 100%)",
-              color: "#FFFFFF",
-              "&:hover": { background: "linear-gradient(135deg, #E06F00 0%, #FE8001 100%)" },
-              borderRadius: "12px",
-              fontWeight: 800,
-              textTransform: "none",
-              px: 3,
-              boxShadow: "0 4px 12px rgba(109,33,79,0.2)"
-            }}
-          >
-            Withdraw
-          </Button>
-        </div>
-          <Box sx={{ width: '100%', overflowX: 'auto' }}>
-            <DataTable
-              columns={getWalletColumns()}
-              data={walletData?.transactions || []}
-              pagination
-              customStyles={DASHBOARD_CUTSOM_STYLE}
-              paginationPerPage={isMobile ? 10 : 25}
-              paginationRowsPerPageOptions={
-                isMobile ? [10, 20, 50] : [25, 50, 100]
-              }
-              highlightOnHover
-              responsive
-              noDataComponent={
-                <Box sx={{ textAlign: "center", py: 4, width: "100%" }}>
-                  <Typography variant="h6" color="textSecondary" sx={{ fontSize: '0.95rem', fontWeight: 600 }}>
-                    No transactions found
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    sx={{ mt: 0.5, fontSize: '0.85rem' }}
-                  >
-                    Your transaction history will appear here
-                  </Typography>
-                </Box>
-              }
-            />
-          </Box>
-        </>
-        )}
+        {!isWithdrawalView && (() => {
+          const allTransactions: any[] = walletData?.transactions || walletData?.data?.transactions || [];
+          const filteredTransactions = allTransactions.filter((tx: any) => {
+            if (!searchQuery.trim()) return true;
+            const q = searchQuery.toLowerCase().trim();
+            const txAmt = extractTransactionAmount(tx);
+            return (
+              (tx.transaction_id && String(tx.transaction_id).toLowerCase().includes(q)) ||
+              (tx.tx_no && String(tx.tx_no).toLowerCase().includes(q)) ||
+              (tx.description && String(tx.description).toLowerCase().includes(q)) ||
+              (tx.status && String(tx.status).toLowerCase().includes(q)) ||
+              (tx.transaction_type && String(tx.transaction_type).toLowerCase().includes(q)) ||
+              (txAmt > 0 && txAmt.toString().includes(q))
+            );
+          });
+
+          return (
+            <>
+              <div style={{ marginBottom: "1.2rem", color: "#1F333B", fontWeight: 800, fontSize: "1.25rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span>Transaction History</span>
+                <Button 
+                  variant="contained" 
+                  onClick={() => setSearchParams({ type: 'withdrawal' })}
+                  sx={{
+                    background: "linear-gradient(135deg, #FE8001 0%, #FF9933 100%)",
+                    color: "#FFFFFF",
+                    "&:hover": { background: "linear-gradient(135deg, #E06F00 0%, #FE8001 100%)" },
+                    borderRadius: "12px",
+                    fontWeight: 800,
+                    textTransform: "none",
+                    px: 3,
+                    boxShadow: "0 4px 12px rgba(109,33,79,0.2)"
+                  }}
+                >
+                  Withdraw
+                </Button>
+              </div>
+
+              {/* Search Box */}
+              <Box sx={{ mb: 1.8 }}>
+                <TextField
+                  fullWidth
+                  placeholder="Search transactions..."
+                  variant="outlined"
+                  size="small"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: '12px',
+                      bgcolor: '#FFFFFF',
+                      fontSize: '0.88rem',
+                      '& fieldset': { borderColor: '#FED7AA' },
+                      '&:hover fieldset': { borderColor: '#FE8001' },
+                      '&.Mui-focused fieldset': { borderColor: '#FE8001', borderWidth: '1.5px' }
+                    }
+                  }}
+                />
+              </Box>
+
+              <Box sx={{ width: '100%', overflowX: 'auto', border: '1px solid #FED7AA', borderRadius: '12px' }}>
+                <DataTable
+                  columns={getWalletColumns()}
+                  data={filteredTransactions}
+                  pagination
+                  customStyles={DASHBOARD_CUTSOM_STYLE}
+                  paginationPerPage={isMobile ? 10 : 25}
+                  paginationRowsPerPageOptions={
+                    isMobile ? [10, 20, 50] : [25, 50, 100]
+                  }
+                  highlightOnHover
+                  responsive
+                  noDataComponent={
+                    <Box sx={{ textAlign: "center", py: 4, width: "100%" }}>
+                      <Typography variant="h6" color="textSecondary" sx={{ fontSize: '0.95rem', fontWeight: 600 }}>
+                        {searchQuery ? `No transactions match "${searchQuery}"` : "No transactions found"}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="textSecondary"
+                        sx={{ mt: 0.5, fontSize: '0.85rem' }}
+                      >
+                        Your transaction history will appear here
+                      </Typography>
+                    </Box>
+                  }
+                />
+              </Box>
+            </>
+          );
+        })()}
       </CardContent>
     </Card>
   );

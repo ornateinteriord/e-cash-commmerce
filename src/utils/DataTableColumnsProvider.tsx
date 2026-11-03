@@ -6,6 +6,88 @@ import { getFormattedDate } from './common';
 export { getFormattedDate };
 import { MemberDetails } from '../store/store';
 
+/**
+ * Safely extracts numeric transaction amount from all possible fields and description text fallbacks.
+ * Handles cases where database records have "0", empty or missing credit/debit fields,
+ * extracting the explicit amount from patterns like:
+ * - "Daily Incentive (Level 2 - ₹500/day) - 2/100" -> 500
+ * - "Level 2 Daily ROI (₹500/day) - Day 2/50" -> 500
+ * - "Daily Incentive (0.50% of ₹25000)" -> 125
+ * - "Purchased Package (₹25000)" -> 25000
+ */
+export const extractTransactionAmount = (row: any): number => {
+  if (!row) return 0;
+
+  // 1. Direct positive credit / amount fields
+  const candidates = [
+    row.vw_credit,
+    row.ew_credit,
+    row.pw_credit,
+    row.fd_credit,
+    row.uw_credit,
+    row.tw_credit,
+    row.gross_amount,
+    row.net_amount,
+    row.amount,
+    row.requested_amount,
+    row.credit,
+    row.bonus
+  ];
+
+  for (const val of candidates) {
+    if (val !== undefined && val !== null && val !== "" && val !== "0" && val !== 0) {
+      const parsed = parseFloat(String(val).replace(/,/g, ''));
+      if (!isNaN(parsed) && parsed > 0) return parsed;
+    }
+  }
+
+  // 2. Direct debit fields if it's a debit/withdrawal
+  const debitCandidates = [
+    row.vw_debit,
+    row.ew_debit,
+    row.pw_debit,
+    row.uw_debit,
+    row.tw_debit,
+    row.debit,
+    row.withdrawal_amount
+  ];
+
+  for (const val of debitCandidates) {
+    if (val !== undefined && val !== null && val !== "" && val !== "0" && val !== 0) {
+      const parsed = parseFloat(String(val).replace(/,/g, ''));
+      if (!isNaN(parsed) && parsed > 0) return parsed;
+    }
+  }
+
+  // 3. Fallback extraction from description
+  const desc = String(row.description || "");
+  if (!desc) return 0;
+
+  // Pattern A: "₹500/day" or "500/day" or "(Level 2 - ₹500/day)"
+  const dayMatch = desc.match(/(?:₹\s*)?(\d+(?:\.\d+)?)\s*\/\s*day/i);
+  if (dayMatch && parseFloat(dayMatch[1]) > 0) {
+    return parseFloat(dayMatch[1]);
+  }
+
+  // Pattern B: "0.50% of ₹25000" or "0.5% of 25000"
+  const pctMatch = desc.match(/(\d+(?:\.\d+)?)\s*%\s*of\s*₹?\s*(\d+(?:\.\d+)?)/i);
+  if (pctMatch) {
+    const rate = parseFloat(pctMatch[1]);
+    const base = parseFloat(pctMatch[2]);
+    if (rate > 0 && base > 0) {
+      return (base * rate) / 100;
+    }
+  }
+
+  // Pattern C: "Purchased Package (₹25000)" or "(₹500)" or general "₹ 500"
+  const rupeeMatch = desc.match(/₹\s*(\d+(?:\.\d+)?)/);
+  if (rupeeMatch && parseFloat(rupeeMatch[1]) > 0) {
+    return parseFloat(rupeeMatch[1]);
+  }
+
+  return 0;
+};
+
 
 
 export const getUserDashboardTableColumns = () => [
@@ -204,13 +286,21 @@ export const getDailyPayoutColumns = () => [
   },
   {
     name: "Description",
-    selector: (row: any) => (row.description || "").replace(/\/300/g, '/120'),
+    selector: (row: any) => (row.description || "").replace(/\/300/g, "/120"),
     sortable: true,
   },
   {
     name: "Amount",
-    selector: (row: any) => `${parseFloat(row.ew_credit || row.amount || 0).toFixed(2)}`,
+    selector: (row: any) => `${extractTransactionAmount(row).toFixed(2)}`,
     sortable: true,
+    cell: (row: any) => {
+      const amt = extractTransactionAmount(row);
+      return (
+        <span style={{ fontWeight: 800, color: "#16A34A", fontSize: "0.85rem" }}>
+          + ₹{amt.toFixed(2)}
+        </span>
+      );
+    },
   },
   {
     name: "Status",
@@ -380,27 +470,58 @@ export const getJournalEntriesColumns = () => [
 export const getWalletColumns = () => [
   {
     name: "Date",
-    selector: (row: any) => row.transaction_date,
+    selector: (row: any) => {
+      if (!row.transaction_date && !row.createdAt) return "-";
+      const date = new Date(row.transaction_date || row.createdAt);
+      return isNaN(date.getTime()) ? String(row.transaction_date || "-") : date.toLocaleDateString();
+    },
     sortable: true,
-    cell: (row: any) => new Date(row.transaction_date).toLocaleDateString()
+    cell: (row: any) => {
+      if (!row.transaction_date && !row.createdAt) return <span style={{ color: '#94A3B8' }}>-</span>;
+      const date = new Date(row.transaction_date || row.createdAt);
+      return (
+        <span style={{ fontSize: '0.83rem', color: '#64748B', fontWeight: 500 }}>
+          {isNaN(date.getTime()) ? String(row.transaction_date || "-") : date.toLocaleDateString()}
+        </span>
+      );
+    }
   },
   {
     name: "Transaction ID",
-    selector: (row: any) => row.transaction_id,
+    selector: (row: any) => row.tx_no || row.transaction_id || "-",
     sortable: true,
+    cell: (row: any) => (
+      <span style={{ fontFamily: 'monospace', fontSize: '0.78rem', color: '#64748B' }}>
+        {row.tx_no || row.transaction_id || "-"}
+      </span>
+    )
   },
   {
     name: "Type",
-    selector: (row: any) => row.transaction_type,
-    sortable: true,
-    cell: (row: any) => {
+    selector: (row: any) => {
       if (row.transaction_type === "Level Benefits") {
         if (row.description && row.description.toLowerCase().includes('referral')) {
           return "Referral Bonus";
         }
         return "Level Bonus";
       }
-      return row.transaction_type;
+      return row.transaction_type || row.benefit_type || "Transaction";
+    },
+    sortable: true,
+    cell: (row: any) => {
+      let t = row.transaction_type || row.benefit_type || "Transaction";
+      if (t === "Level Benefits") {
+        if (row.description && row.description.toLowerCase().includes('referral')) {
+          t = "Referral Bonus";
+        } else {
+          t = "Level Bonus";
+        }
+      }
+      return (
+        <span style={{ fontSize: '0.83rem', color: '#FE8001', fontWeight: 800 }}>
+          {t}
+        </span>
+      );
     }
   },
   {
@@ -408,17 +529,23 @@ export const getWalletColumns = () => [
     selector: (row: any) => row.description || "-",
     sortable: true,
     wrap: true,
+    grow: 1.5,
+    cell: (row: any) => (
+      <span style={{ fontSize: '0.84rem', color: '#1F333B', fontWeight: 500 }}>
+        {row.description || "-"}
+      </span>
+    )
   },
   {
     name: "Amount",
-    selector: (row: any) => parseFloat(row.ew_debit || row.vw_debit || row.ew_credit || row.vw_credit || row.pw_credit || row.tw_credit || row.gross_amount || row.net_amount || row.amount || 0),
+    selector: (row: any) => extractTransactionAmount(row),
     sortable: true,
     cell: (row: any) => {
       const isDebit = parseFloat(row.ew_debit || 0) > 0 || parseFloat(row.vw_debit || 0) > 0 || (row.transaction_type && /withdraw|debit|purchase|transfer sent/i.test(row.transaction_type));
-      const amt = parseFloat(row.ew_debit || row.vw_debit || row.ew_credit || row.vw_credit || row.pw_credit || row.tw_credit || row.gross_amount || row.net_amount || row.amount || 0);
+      const amt = extractTransactionAmount(row);
       if (amt === 0) return <span style={{ color: '#94A3B8' }}>-</span>;
       return (
-        <span style={{ fontWeight: 800, color: isDebit ? '#DC2626' : '#16A34A' }}>
+        <span style={{ fontWeight: 800, color: isDebit ? '#DC2626' : '#16A34A', fontSize: '0.85rem' }}>
           {isDebit ? "- " : "+ "}₹{amt.toFixed(2)}
         </span>
       );
@@ -426,9 +553,25 @@ export const getWalletColumns = () => [
   },
   {
     name: "Status",
-    selector: (row: any) => row.status,
+    selector: (row: any) => row.status || "Completed",
     sortable: true,
-    cell: (row: any) => row.status.charAt(0).toUpperCase() + row.status.slice(1)
+    cell: (row: any) => {
+      const statusStr = String(row.status || 'Completed');
+      const isApproved = statusStr.toLowerCase() === 'approved' || statusStr.toLowerCase() === 'completed' || statusStr.toLowerCase() === 'success';
+      const isRejected = statusStr.toLowerCase() === 'rejected';
+      return (
+        <span style={{
+          padding: '3px 9px',
+          borderRadius: '12px',
+          fontSize: '11px',
+          fontWeight: 700,
+          backgroundColor: isApproved ? '#DCFCE7' : isRejected ? '#FEE2E2' : '#FEF3C7',
+          color: isApproved ? '#15803D' : isRejected ? '#DC2626' : '#B45309'
+        }}>
+          {statusStr}
+        </span>
+      );
+    }
   }
 ];
 
@@ -1502,11 +1645,11 @@ export const getAdminLevelBonusColumns = () => [
   },
   {
     name: "Bonus (₹)",
-    selector: (row: any) => parseFloat(row.ew_credit || row.amount || 0),
+    selector: (row: any) => extractTransactionAmount(row),
     sortable: true,
     width: "130px",
     cell: (row: any) => {
-      const amt = parseFloat(row.ew_credit || row.amount || 0);
+      const amt = extractTransactionAmount(row);
       return (
         <span style={{ color: "#16a34a", fontWeight: 800, fontSize: "13px" }}>
           ₹{amt.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -1594,11 +1737,11 @@ export const getAdminDailyIncentiveColumns = () => [
   },
   {
     name: "Incentive (₹)",
-    selector: (row: any) => parseFloat(row.ew_credit || row.amount || 0),
+    selector: (row: any) => extractTransactionAmount(row),
     sortable: true,
     width: "135px",
     cell: (row: any) => {
-      const amt = parseFloat(row.ew_credit || row.amount || 0);
+      const amt = extractTransactionAmount(row);
       return (
         <span style={{ color: "#16a34a", fontWeight: 800, fontSize: "13px" }}>
           ₹{amt.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -2121,11 +2264,11 @@ export const getVendorWalletColumns = () => [
   },
   {
     name: "Amount",
-    selector: (row: any) => parseFloat(row.vw_debit || row.ew_debit || row.vw_credit || row.ew_credit || row.gross_amount || row.net_amount || row.amount || 0),
+    selector: (row: any) => extractTransactionAmount(row),
     sortable: true,
     cell: (row: any) => {
       const isDebit = parseFloat(row.vw_debit || 0) > 0 || parseFloat(row.ew_debit || 0) > 0 || (row.transaction_type && /withdraw|debit/i.test(row.transaction_type));
-      const amt = parseFloat(row.vw_debit || row.ew_debit || row.vw_credit || row.ew_credit || row.gross_amount || row.net_amount || row.amount || 0);
+      const amt = extractTransactionAmount(row);
       if (!amt || amt === 0) return <span style={{ color: '#94A3B8' }}>-</span>;
       return (
         <span style={{ fontWeight: 800, color: isDebit ? '#DC2626' : '#16A34A', fontSize: '0.85rem' }}>
@@ -2211,11 +2354,11 @@ export const getProductLevelWalletColumns = () => [
   },
   {
     name: "Amount",
-    selector: (row: any) => parseFloat(row.pw_credit || row.ew_debit || row.pw_debit || row.vw_credit || row.ew_credit || row.gross_amount || row.net_amount || row.amount || 0),
+    selector: (row: any) => extractTransactionAmount(row),
     sortable: true,
     cell: (row: any) => {
       const isDebit = parseFloat(row.ew_debit || 0) > 0 || parseFloat(row.pw_debit || 0) > 0 || (row.transaction_type && /withdraw|debit/i.test(row.transaction_type));
-      const amt = parseFloat(row.pw_credit || row.ew_debit || row.pw_debit || row.vw_credit || row.ew_credit || row.gross_amount || row.net_amount || row.amount || 0);
+      const amt = extractTransactionAmount(row);
       if (!amt || amt === 0) return <span style={{ color: '#94A3B8' }}>-</span>;
       return (
         <span style={{ fontWeight: 800, color: isDebit ? '#DC2626' : '#16A34A', fontSize: '0.85rem' }}>
@@ -2303,11 +2446,11 @@ export const getEarningWalletColumns = () => [
   },
   {
     name: "Amount",
-    selector: (row: any) => parseFloat(row.ew_debit || row.ew_credit || row.gross_amount || row.net_amount || row.amount || row.vw_credit || 0),
+    selector: (row: any) => extractTransactionAmount(row),
     sortable: true,
     cell: (row: any) => {
       const isDebit = parseFloat(row.ew_debit || 0) > 0 || (row.transaction_type && /withdraw|debit/i.test(row.transaction_type));
-      const amt = parseFloat(row.ew_debit || row.ew_credit || row.gross_amount || row.net_amount || row.amount || row.vw_credit || 0);
+      const amt = extractTransactionAmount(row);
       if (!amt || amt === 0) return <span style={{ color: '#94A3B8' }}>-</span>;
       return (
         <span style={{ fontWeight: 800, color: isDebit ? '#DC2626' : '#16A34A', fontSize: '0.85rem' }}>
