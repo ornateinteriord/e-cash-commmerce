@@ -26,6 +26,7 @@ export const extractTransactionAmount = (row: any): number => {
     row.fd_credit,
     row.uw_credit,
     row.tw_credit,
+    row.commission_amount,
     row.gross_amount,
     row.net_amount,
     row.amount,
@@ -557,7 +558,7 @@ export const getWalletColumns = () => [
     sortable: true,
     cell: (row: any) => {
       const statusStr = String(row.status || 'Completed');
-      const isApproved = statusStr.toLowerCase() === 'approved' || statusStr.toLowerCase() === 'completed' || statusStr.toLowerCase() === 'success';
+      const isApproved = statusStr.toLowerCase() === 'approved' || statusStr.toLowerCase() === 'completed' || statusStr.toLowerCase() === 'credited' || statusStr.toLowerCase() === 'success';
       const isRejected = statusStr.toLowerCase() === 'rejected';
       return (
         <span style={{

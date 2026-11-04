@@ -17,10 +17,10 @@ import GroupsIcon from '@mui/icons-material/Groups';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
 import ShowChartIcon from '@mui/icons-material/ShowChart';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { toast } from 'react-toastify';
 
 import TokenService from '../../../api/token/tokenService';
@@ -89,7 +89,7 @@ const UserDashboard = () => {
     if (!code) return;
     const referralLink = `${window.location.origin}/register?ref=${code}`;
     navigator.clipboard.writeText(referralLink)
-      .then(() => toast.success('Referral link copied to clipboard!'))
+      .then(() => toast.success('Vendor referral link copied to clipboard!'))
       .catch(() => toast.error('Failed to copy link'));
   };
 
@@ -100,8 +100,8 @@ const UserDashboard = () => {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: 'Join E shopy & Start Earning',
-          text: `Join E shopy with my referral code ${code} and unlock direct commissions & brokerage rewards!`,
+          title: 'Join E shopy as Vendor & Start Earning',
+          text: `Join E shopy as a vendor with my referral code ${code} and unlock direct commissions & business rewards!`,
           url: referralLink,
         });
       } catch (err) {
@@ -109,6 +109,34 @@ const UserDashboard = () => {
       }
     } else {
       handleCopyReferralLink();
+    }
+  };
+
+  const handleCopyCustomerReferralLink = () => {
+    const code = memberDetails?.Member_id || memberDetails?.member_id || memberId;
+    if (!code) return;
+    const customerReferralLink = `https://www.eshopy.biz/register?referralcode=${code}`;
+    navigator.clipboard.writeText(customerReferralLink)
+      .then(() => toast.success('Customer referral link copied to clipboard!'))
+      .catch(() => toast.error('Failed to copy link'));
+  };
+
+  const handleShareCustomerReferral = async () => {
+    const code = memberDetails?.Member_id || memberDetails?.member_id || memberId;
+    if (!code) return;
+    const customerReferralLink = `https://www.eshopy.biz/register?referralcode=${code}`;
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'Shop on E shopy',
+          text: `Shop on E shopy using my referral code ${code} for exclusive deals and discounts!`,
+          url: customerReferralLink,
+        });
+      } catch (err) {
+        // User dismissed share dialog
+      }
+    } else {
+      handleCopyCustomerReferralLink();
     }
   };
 
@@ -1072,26 +1100,37 @@ const UserDashboard = () => {
         </Box>
       </Paper>
 
-      {/* Modern Redesigned Refer & Earn Bar (Royal Indigo-Violet Gradient) */}
-      <Box sx={{ mt: 2.5, mb: 3.5 }}>
+      {/* ── REFERRAL CONTAINERS (REFER A VENDOR & REFER A CUSTOMER) ── */}
+      <Box sx={{ mt: 2.5, mb: 3.5, display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+        {/* 1. Refer a Vendor Container (Royal Indigo-Violet Gradient) */}
         <Paper
           elevation={0}
+          onClick={handleCopyReferralLink}
           sx={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            gap: 1.5,
-            p: { xs: '14px 18px', sm: '16px 24px' },
-            borderRadius: '20px',
+            gap: { xs: 1, sm: 1.5 },
+            p: { xs: '12px 14px', sm: '14px 20px' },
+            borderRadius: '18px',
             background: 'linear-gradient(135deg, #4338CA 0%, #6366F1 50%, #8B5CF6 100%)',
-            boxShadow: '0 10px 28px rgba(99, 102, 241, 0.28)',
+            boxShadow: '0 8px 24px rgba(99, 102, 241, 0.24)',
             border: '1px solid rgba(255, 255, 255, 0.22)',
             color: '#FFFFFF',
             position: 'relative',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            cursor: 'pointer',
+            transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+            '&:hover': {
+              transform: 'translateY(-2px)',
+              boxShadow: '0 12px 32px rgba(99, 102, 241, 0.38)'
+            },
+            '&:active': {
+              transform: 'scale(0.99)'
+            }
           }}
         >
-          {/* Subtle background ambient lights */}
+          {/* Ambient light */}
           <Box sx={{
             position: 'absolute', top: -30, right: -30,
             width: 100, height: 100, borderRadius: '50%',
@@ -1100,12 +1139,12 @@ const UserDashboard = () => {
           }} />
 
           {/* Left: Icon + Title & Code */}
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, minWidth: 0, zIndex: 1 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1.2, sm: 1.5 }, minWidth: 0, flex: 1, zIndex: 1 }}>
             <Box
               sx={{
-                width: { xs: 40, sm: 46 },
-                height: { xs: 40, sm: 46 },
-                borderRadius: '14px',
+                width: { xs: 38, sm: 44 },
+                height: { xs: 38, sm: 44 },
+                borderRadius: '13px',
                 bgcolor: 'rgba(255, 255, 255, 0.2)',
                 backdropFilter: 'blur(8px)',
                 border: '1px solid rgba(255, 255, 255, 0.3)',
@@ -1117,19 +1156,20 @@ const UserDashboard = () => {
                 boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
               }}
             >
-              <CardGiftcardIcon sx={{ fontSize: { xs: 24, sm: 26 } }} />
+              <StorefrontIcon sx={{ fontSize: { xs: 22, sm: 25 } }} />
             </Box>
-            <Box sx={{ minWidth: 0 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
+            <Box sx={{ minWidth: 0, flex: 1 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.8, flexWrap: 'wrap' }}>
                 <Typography
+                  noWrap
                   sx={{
                     fontWeight: 900,
-                    fontSize: { xs: '0.98rem', sm: '1.1rem' },
+                    fontSize: { xs: '0.9rem', sm: '1.05rem' },
                     color: '#FFFFFF',
                     lineHeight: 1.2,
                   }}
                 >
-                  Refer & Earn
+                  Refer a Vendor
                 </Typography>
                 {referralCode && (
                   <Chip
@@ -1139,9 +1179,10 @@ const UserDashboard = () => {
                       bgcolor: 'rgba(255, 255, 255, 0.2)',
                       color: '#FFFFFF',
                       fontWeight: 800,
-                      fontSize: '0.68rem',
-                      height: '20px',
-                      border: '1px solid rgba(255, 255, 255, 0.35)'
+                      fontSize: '0.65rem',
+                      height: '19px',
+                      border: '1px solid rgba(255, 255, 255, 0.35)',
+                      flexShrink: 0
                     }}
                   />
                 )}
@@ -1149,31 +1190,34 @@ const UserDashboard = () => {
               <Typography
                 noWrap
                 sx={{
-                  fontSize: { xs: '0.74rem', sm: '0.82rem' },
+                  fontSize: { xs: '0.72rem', sm: '0.8rem' },
                   color: '#E0E7FF',
                   fontWeight: 600,
-                  mt: 0.3,
+                  mt: 0.2,
                 }}
               >
-                Share your referral link with friends and earn rewards
+                Share vendor referral link to expand your team & earn commissions
               </Typography>
             </Box>
           </Box>
 
           {/* Right: Copy & Share Buttons */}
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexShrink: 0, zIndex: 1 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 0.8, sm: 1 }, flexShrink: 0, zIndex: 1 }}>
             <Button
-              onClick={handleCopyReferralLink}
-              startIcon={<ContentCopyIcon sx={{ fontSize: '16px !important' }} />}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleCopyReferralLink();
+              }}
+              startIcon={<ContentCopyIcon sx={{ fontSize: '15px !important' }} />}
               sx={{
                 bgcolor: '#FFFFFF',
                 color: '#4338CA',
-                borderRadius: '12px',
+                borderRadius: '11px',
                 fontWeight: 850,
-                fontSize: { xs: '0.8rem', sm: '0.88rem' },
+                fontSize: { xs: '0.76rem', sm: '0.85rem' },
                 textTransform: 'none',
-                px: { xs: 1.5, sm: 2 },
-                py: 0.8,
+                px: { xs: 1.3, sm: 1.8 },
+                py: { xs: 0.6, sm: 0.75 },
                 boxShadow: '0 4px 14px rgba(0,0,0,0.18)',
                 '&:hover': {
                   bgcolor: '#F5F3FF',
@@ -1181,28 +1225,187 @@ const UserDashboard = () => {
                   boxShadow: '0 6px 18px rgba(0,0,0,0.22)'
                 },
                 transition: 'all 0.2s ease',
+                whiteSpace: 'nowrap'
               }}
             >
               Copy Link
             </Button>
             <IconButton
-              onClick={handleShareReferral}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleShareReferral();
+              }}
               title="Share"
               sx={{
                 bgcolor: 'rgba(255, 255, 255, 0.2)',
                 color: '#FFFFFF',
-                borderRadius: '12px',
-                width: 40,
-                height: 40,
+                borderRadius: '11px',
+                width: { xs: 34, sm: 38 },
+                height: { xs: 34, sm: 38 },
                 border: '1px solid rgba(255, 255, 255, 0.35)',
                 '&:hover': {
                   bgcolor: 'rgba(255, 255, 255, 0.32)',
                   transform: 'scale(1.05)'
                 },
-                transition: 'all 0.2s ease'
+                transition: 'all 0.2s ease',
+                flexShrink: 0
               }}
             >
-              <ShareIcon sx={{ fontSize: 19 }} />
+              <ShareIcon sx={{ fontSize: { xs: 17, sm: 19 } }} />
+            </IconButton>
+          </Box>
+        </Paper>
+
+        {/* 2. Refer a Customer Container (Fresh Emerald-Teal Gradient - Exact Same Dimensions) */}
+        <Paper
+          elevation={0}
+          onClick={handleCopyCustomerReferralLink}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: { xs: 1, sm: 1.5 },
+            p: { xs: '12px 14px', sm: '14px 20px' },
+            borderRadius: '18px',
+            background: 'linear-gradient(135deg, #059669 0%, #10B981 50%, #14B8A6 100%)',
+            boxShadow: '0 8px 24px rgba(16, 185, 129, 0.24)',
+            border: '1px solid rgba(255, 255, 255, 0.22)',
+            color: '#FFFFFF',
+            position: 'relative',
+            overflow: 'hidden',
+            cursor: 'pointer',
+            transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+            '&:hover': {
+              transform: 'translateY(-2px)',
+              boxShadow: '0 12px 32px rgba(16, 185, 129, 0.38)'
+            },
+            '&:active': {
+              transform: 'scale(0.99)'
+            }
+          }}
+        >
+          {/* Ambient light */}
+          <Box sx={{
+            position: 'absolute', top: -30, right: -30,
+            width: 100, height: 100, borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(255, 255, 255, 0.25) 0%, transparent 70%)',
+            pointerEvents: 'none'
+          }} />
+
+          {/* Left: Icon + Title & Code */}
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1.2, sm: 1.5 }, minWidth: 0, flex: 1, zIndex: 1 }}>
+            <Box
+              sx={{
+                width: { xs: 38, sm: 44 },
+                height: { xs: 38, sm: 44 },
+                borderRadius: '13px',
+                bgcolor: 'rgba(255, 255, 255, 0.2)',
+                backdropFilter: 'blur(8px)',
+                border: '1px solid rgba(255, 255, 255, 0.3)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+                color: '#FFFFFF',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+              }}
+            >
+              <ShoppingCartIcon sx={{ fontSize: { xs: 22, sm: 25 } }} />
+            </Box>
+            <Box sx={{ minWidth: 0, flex: 1 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.8, flexWrap: 'wrap' }}>
+                <Typography
+                  noWrap
+                  sx={{
+                    fontWeight: 900,
+                    fontSize: { xs: '0.9rem', sm: '1.05rem' },
+                    color: '#FFFFFF',
+                    lineHeight: 1.2,
+                  }}
+                >
+                  Refer a Customer
+                </Typography>
+                {referralCode && (
+                  <Chip
+                    label={`Code: ${referralCode}`}
+                    size="small"
+                    sx={{
+                      bgcolor: 'rgba(255, 255, 255, 0.2)',
+                      color: '#FFFFFF',
+                      fontWeight: 800,
+                      fontSize: '0.65rem',
+                      height: '19px',
+                      border: '1px solid rgba(255, 255, 255, 0.35)',
+                      flexShrink: 0
+                    }}
+                  />
+                )}
+              </Box>
+              <Typography
+                noWrap
+                sx={{
+                  fontSize: { xs: '0.72rem', sm: '0.8rem' },
+                  color: '#D1FAE5',
+                  fontWeight: 600,
+                  mt: 0.2,
+                }}
+              >
+                Share customer referral link to shop on E-shopy & earn rewards
+              </Typography>
+            </Box>
+          </Box>
+
+          {/* Right: Copy & Share Buttons */}
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 0.8, sm: 1 }, flexShrink: 0, zIndex: 1 }}>
+            <Button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleCopyCustomerReferralLink();
+              }}
+              startIcon={<ContentCopyIcon sx={{ fontSize: '15px !important' }} />}
+              sx={{
+                bgcolor: '#FFFFFF',
+                color: '#059669',
+                borderRadius: '11px',
+                fontWeight: 850,
+                fontSize: { xs: '0.76rem', sm: '0.85rem' },
+                textTransform: 'none',
+                px: { xs: 1.3, sm: 1.8 },
+                py: { xs: 0.6, sm: 0.75 },
+                boxShadow: '0 4px 14px rgba(0,0,0,0.18)',
+                '&:hover': {
+                  bgcolor: '#ECFDF5',
+                  transform: 'translateY(-1px)',
+                  boxShadow: '0 6px 18px rgba(0,0,0,0.22)'
+                },
+                transition: 'all 0.2s ease',
+                whiteSpace: 'nowrap'
+              }}
+            >
+              Copy Link
+            </Button>
+            <IconButton
+              onClick={(e) => {
+                e.stopPropagation();
+                handleShareCustomerReferral();
+              }}
+              title="Share"
+              sx={{
+                bgcolor: 'rgba(255, 255, 255, 0.2)',
+                color: '#FFFFFF',
+                borderRadius: '11px',
+                width: { xs: 34, sm: 38 },
+                height: { xs: 34, sm: 38 },
+                border: '1px solid rgba(255, 255, 255, 0.35)',
+                '&:hover': {
+                  bgcolor: 'rgba(255, 255, 255, 0.32)',
+                  transform: 'scale(1.05)'
+                },
+                transition: 'all 0.2s ease',
+                flexShrink: 0
+              }}
+            >
+              <ShareIcon sx={{ fontSize: { xs: 17, sm: 19 } }} />
             </IconButton>
           </Box>
         </Paper>
