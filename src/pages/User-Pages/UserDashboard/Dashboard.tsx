@@ -853,7 +853,7 @@ const UserDashboard = () => {
                 lineHeight: 1.1,
                 letterSpacing: '-0.5px'
               }}>
-                ₹{Number(walletOverview?.productLevelBalance ?? walletOverview?.levelBenefits ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                ₹{Number(walletOverview?.productLevelBalance ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </Typography>
             </Box>
 
@@ -1664,7 +1664,7 @@ const UserDashboard = () => {
                 boxShadow: '0 2px 6px rgba(2, 132, 199, 0.08)'
               }}>
                 <Typography sx={{ color: '#0369A1', fontWeight: 900, fontSize: { xs: '0.8rem', sm: '0.92rem' }, letterSpacing: '-0.3px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                  ₹{Number(walletOverview?.data?.productLevelBalance ?? walletOverview?.data?.levelBenefits ?? walletOverview?.productLevelBalance ?? walletOverview?.levelBenefits ?? 0).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                  ₹{Number(walletOverview?.data?.productLevelBalance ?? walletOverview?.productLevelBalance ?? 0).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                 </Typography>
               </Box>
             </Box>

@@ -106,7 +106,7 @@ const PackageDetail: React.FC = () => {
     },
     {
       title: 'Product Level Bonus',
-      amount: Number(walletOverview?.productLevelBalance ?? walletOverview?.levelBenefits ?? 0),
+      amount: Number(walletOverview?.productLevelBalance ?? 0),
       description: 'Earnings from product listings and catalog tier sales commissions.',
       icon: <StorefrontIcon sx={{ fontSize: { xs: 20, sm: 24 }, color: '#7C3AED' }} />,
       bgColor: '#F5F3FF',
