@@ -39,13 +39,24 @@ const VendorWallet: React.FC = () => {
   const [isHistoryOpen, setIsHistoryOpen] = useState<boolean>(true);
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  const availableBalance = parseFloat(vendorData?.balance || vendorData?.vendorWalletBalance || "0");
   const transactions: any[] = vendorData?.transactions || [];
 
   const packageAmount = parseFloat(vendorData?.packageAmount || vendorData?.packagePurchased || "0");
+  const totalDailyRoi = parseFloat(vendorData?.totalDailyRoi || "0");
+  const totalWithdrawn = parseFloat(vendorData?.totalWithdrawn || vendorData?.totalWithdrawal || "0");
+
+  // User Rule: Only ROI Earnings are eligible for withdrawal; Package amount is non-withdrawable
+  const availableRoiWithdrawal = parseFloat(
+    vendorData?.availableRoiWithdrawal !== undefined
+      ? vendorData.availableRoiWithdrawal
+      : String(Math.max(0, totalDailyRoi - totalWithdrawn))
+  );
+
   const maxLimit = parseFloat(vendorData?.maxWithdrawalLimit || String(packageAmount * 2));
-  const remainingLimit = parseFloat(vendorData?.remainingWithdrawalLimit !== undefined ? vendorData?.remainingWithdrawalLimit : String(Math.max(0, maxLimit - parseFloat(vendorData?.totalWithdrawal || "0"))));
-  const effectiveMaxWithdrawal = Math.min(availableBalance, remainingLimit > 0 ? remainingLimit : availableBalance);
+  const remainingLimit = parseFloat(vendorData?.remainingWithdrawalLimit !== undefined ? vendorData?.remainingWithdrawalLimit : String(Math.max(0, maxLimit - totalWithdrawn)));
+  
+  // Maximum allowed withdrawal is strictly restricted to ROI Earnings
+  const effectiveMaxWithdrawal = Math.min(availableRoiWithdrawal, remainingLimit > 0 ? remainingLimit : availableRoiWithdrawal);
 
   const dashboardTableCustomStyles = {
     table: {
@@ -159,8 +170,8 @@ const VendorWallet: React.FC = () => {
       return;
     }
 
-    if (withdrawalAmount > availableBalance) {
-      toast.error(`Withdrawal amount exceeds available balance of ₹${availableBalance.toFixed(2)}`);
+    if (withdrawalAmount > effectiveMaxWithdrawal) {
+      toast.error(`Withdrawal amount exceeds available ROI earnings of ₹${effectiveMaxWithdrawal.toFixed(2)}. Package amount cannot be withdrawn.`);
       return;
     }
 
@@ -254,31 +265,64 @@ const VendorWallet: React.FC = () => {
         </Box>
 
         <CardContent sx={{ p: { xs: 2.2, sm: 3 } }}>
-          <Alert severity="info" sx={{ mb: 2.5, borderRadius: '14px', bgcolor: '#FFF7ED', color: '#9A3412', border: '1px solid #FED7AA' }}>
-            Withdrawals are credited directly to your verified bank account.
+          <Alert severity="warning" sx={{ mb: 2.5, borderRadius: '14px', bgcolor: '#FFFBEB', color: '#92400E', border: '1.5px solid #FDE68A' }}>
+            <strong>Withdrawal Rule:</strong> Only <strong>ROI Earnings</strong> are eligible for withdrawal. The package investment amount of <strong>₹{packageAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong> is locked and cannot be withdrawn.
           </Alert>
 
-          {/* Available Balance Display */}
+          {/* 1. Package Amount Display (FIRST) */}
           <Box sx={{ mb: 2.5 }}>
-            <Typography variant="caption" sx={{ color: '#1F333B', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px', mb: 0.8, display: 'block' }}>
-              Available Vendor Balance
-            </Typography>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 0.8 }}>
+              <Typography variant="caption" sx={{ color: '#9A3412', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                Package Amount
+              </Typography>
+              <Typography variant="caption" sx={{ bgcolor: '#FEE2E2', color: '#DC2626', px: 1, py: 0.2, borderRadius: '6px', fontWeight: 800, fontSize: '10px' }}>
+                NON-WITHDRAWABLE
+              </Typography>
+            </Box>
             <TextField
               fullWidth
-              value={`₹${availableBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
+              value={`₹${packageAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
               InputProps={{ readOnly: true }}
               sx={{
                 '& .MuiOutlinedInput-root': {
                   borderRadius: '16px',
-                  bgcolor: '#FFFDF9',
+                  bgcolor: '#FFF7ED',
                   fontSize: '1.2rem',
                   fontWeight: 900,
-                  color: '#FE8001',
+                  color: '#9A3412',
                   '& fieldset': { borderColor: '#FED7AA', borderWidth: '1.5px' },
                 }
               }}
             />
           </Box>
+
+          {/* 2. ROI Earning Available for Withdrawal (SECOND) */}
+          <Box sx={{ mb: 2.5 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 0.8 }}>
+              <Typography variant="caption" sx={{ color: '#166534', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                ROI Earnings (Available for Withdrawal)
+              </Typography>
+              <Typography variant="caption" sx={{ bgcolor: '#DCFCE7', color: '#15803D', px: 1, py: 0.2, borderRadius: '6px', fontWeight: 800, fontSize: '10px' }}>
+                WITHDRAWABLE
+              </Typography>
+            </Box>
+            <TextField
+              fullWidth
+              value={`₹${availableRoiWithdrawal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
+              InputProps={{ readOnly: true }}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: '16px',
+                  bgcolor: '#F0FDF4',
+                  fontSize: '1.25rem',
+                  fontWeight: 900,
+                  color: '#166534',
+                  '& fieldset': { borderColor: '#86EFAC', borderWidth: '2px' },
+                }
+              }}
+            />
+          </Box>
+
 
           {/* 2X Limit Info Box */}
           <Box sx={{
@@ -294,20 +338,23 @@ const VendorWallet: React.FC = () => {
             <Box>
               <Typography variant="caption" sx={{ color: '#9A3412', fontWeight: 700, display: 'block' }}>Package Amount</Typography>
               <Typography variant="body1" sx={{ fontWeight: 900, color: '#1F333B' }}>₹{packageAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</Typography>
+              <Typography variant="caption" sx={{ color: '#DC2626', fontWeight: 700, fontSize: '10px' }}>Non-withdrawable</Typography>
             </Box>
             <Box>
               <Typography variant="caption" sx={{ color: '#9A3412', fontWeight: 700, display: 'block' }}>2X Max Withdrawal Limit</Typography>
               <Typography variant="body1" sx={{ fontWeight: 900, color: '#C2410C' }}>₹{maxLimit.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</Typography>
+              <Typography variant="caption" sx={{ color: '#9A3412', fontSize: '10px' }}>2x Total Package</Typography>
             </Box>
             <Box sx={{ gridColumn: { xs: 'span 2', sm: 'auto' } }}>
               <Typography variant="caption" sx={{ color: '#9A3412', fontWeight: 700, display: 'block' }}>Remaining 2X Limit</Typography>
               <Typography variant="body1" sx={{ fontWeight: 900, color: remainingLimit > 0 ? '#059669' : '#DC2626' }}>₹{remainingLimit.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</Typography>
+              <Typography variant="caption" sx={{ color: '#059669', fontSize: '10px' }}>Limit available</Typography>
             </Box>
           </Box>
 
           {/* Amount Field */}
           <Typography variant="caption" sx={{ color: '#1F333B', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px', mb: 0.8, display: 'block' }}>
-            Enter Withdrawal Amount
+            Enter Withdrawal Amount (ROI Earnings Only)
           </Typography>
 
           <TextField
@@ -323,10 +370,10 @@ const VendorWallet: React.FC = () => {
                 </InputAdornment>
               ),
             }}
-            error={parseFloat(amount) > availableBalance || (remainingLimit > 0 && parseFloat(amount) > remainingLimit)}
+            error={parseFloat(amount) > effectiveMaxWithdrawal || (remainingLimit > 0 && parseFloat(amount) > remainingLimit)}
             helperText={
-              parseFloat(amount) > availableBalance
-                ? `Amount exceeds available vendor balance (₹${availableBalance.toFixed(2)})`
+              parseFloat(amount) > effectiveMaxWithdrawal
+                ? `Amount exceeds available ROI earnings (₹${effectiveMaxWithdrawal.toFixed(2)}). Package amount cannot be withdrawn.`
                 : remainingLimit > 0 && parseFloat(amount) > remainingLimit
                   ? `Amount exceeds remaining 2X package limit (₹${remainingLimit.toFixed(2)})`
                   : "Standard 5% processing deduction applies"
@@ -353,7 +400,7 @@ const VendorWallet: React.FC = () => {
                 key={pct}
                 size="small"
                 onClick={() => handleQuickPercent(pct)}
-                disabled={availableBalance <= 0}
+                disabled={effectiveMaxWithdrawal <= 0}
                 sx={{
                   flex: 1,
                   minWidth: '60px',
@@ -431,7 +478,7 @@ const VendorWallet: React.FC = () => {
               withdrawMutation.isPending ||
               !amount ||
               parseFloat(amount) <= 0 ||
-              parseFloat(amount) > availableBalance
+              parseFloat(amount) > effectiveMaxWithdrawal
             }
             onClick={handleWithdraw}
             sx={{
