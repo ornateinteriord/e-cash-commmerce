@@ -26,30 +26,36 @@ const LevelBenifits = () => {
       const benefitType = transaction.benefit_type?.toLowerCase() || "";
       const descStr = transaction.description?.toLowerCase() || "";
 
-      // Match Level Benefit exactly like the backend dashboard does
-      const isLevelBonus = (txType.includes('level benefit') || txType.includes('level bonus') || benefitType.includes('level income') || descStr.includes('level bonus')) && 
-                           !txType.includes('roi') && !descStr.includes('roi') &&
-                           !txType.includes('referral') && !descStr.includes('referral');
+      // Match Level Income (Levels 2-10)
+      const isLevelIncome = (
+        txType.includes('level income') ||
+        descStr.includes('level income') ||
+        txType.includes('product level') ||
+        descStr.includes('product level') ||
+        txType.includes('level benefit') ||
+        descStr.includes('level benefit') ||
+        txType.includes('level bonus') ||
+        descStr.includes('level bonus') ||
+        benefitType.includes('level income')
+      ) && 
+      !txType.includes('roi') && !descStr.includes('roi') &&
+      !txType.includes('referral') && !descStr.includes('referral') &&
+      !txType.includes('daily incentive') && !descStr.includes('daily incentive') &&
+      !txType.includes('order margin') && !descStr.includes('order margin');
       
-      return isLevelBonus;
+      return isLevelIncome;
     })
     .map((transaction: any) => {
-      // Helper for ordinal numbers (1st, 2nd, etc.)
-      const getOrdinal = (n: number) => {
-        const s = ["th", "st", "nd", "rd"];
-        const v = n % 100;
-        return n + (s[(v - 20) % 10] || s[v] || s[0]);
-      };
-
       let levelStr = transaction.description && transaction.description.toLowerCase().includes('level') 
           ? transaction.description 
           : transaction.level 
-            ? `${getOrdinal(transaction.level)} Level Bonus` 
+            ? `Level ${transaction.level} Income` 
             : 'N/A';
 
       if (levelStr) {
-        levelStr = levelStr.replace(/Level Benefits?/gi, 'Level Bonus');
-        levelStr = levelStr.replace(/Benefit/gi, 'Bonus');
+        levelStr = levelStr.replace(/Product\s*Level/gi, 'Level');
+        levelStr = levelStr.replace(/Level Benefits?/gi, 'Level Income');
+        levelStr = levelStr.replace(/Level Bonus/gi, 'Level Income');
       }
 
       return {
@@ -67,7 +73,7 @@ const LevelBenifits = () => {
 
   const noDataComponent = (
     <div style={{ padding: '24px' }}>
-      No level bonus data available
+      No level income data available
     </div>
   );
 
@@ -76,7 +82,7 @@ const LevelBenifits = () => {
       <Card sx={{ margin: '2rem', mt: 10 }}>
         <CardContent>
           <div style={{ padding: '24px', textAlign: 'center', color: 'red' }}>
-            Error loading level bonus data: {error?.message}
+            Error loading level income data: {error?.message}
           </div>
         </CardContent>
       </Card>
@@ -86,7 +92,7 @@ const LevelBenifits = () => {
   return (
     <Card sx={{ margin: '2rem', mt: 10 }}>
       <CardContent>
-        <div style={{ marginBottom: "1rem", color: "#000", fontWeight: "bold", fontSize: "1.25rem"     }}>List of Level Bonus ({levelBenefitsData.length})</div>
+        <div style={{ marginBottom: "1rem", color: "#000", fontWeight: "bold", fontSize: "1.25rem" }}>List of Level Income ({levelBenefitsData.length})</div>
           <DataTable
               columns={getLevelBenifitsColumns()}
               data={levelBenefitsData}
