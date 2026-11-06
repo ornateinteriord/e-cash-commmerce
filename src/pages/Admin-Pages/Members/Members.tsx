@@ -1,5 +1,5 @@
 import DataTable from 'react-data-table-component';
-import { Card, CardContent, TextField, Typography, Button, Grid, CircularProgress, Dialog, DialogTitle, DialogContent, DialogActions, Box, Divider, InputAdornment } from '@mui/material';
+import { Card, CardContent, TextField, Typography, Button, Grid, CircularProgress, Dialog, DialogTitle, DialogContent, DialogActions, Box, Divider, FormControl, InputLabel, Select, MenuItem, Chip, Alert } from '@mui/material';
 import { CheckCircle, WarningAmber } from '@mui/icons-material';
 import { DASHBOARD_CUTSOM_STYLE, getMembersColumns, getPendingMembersColumns, getPermissionsColumns } from '../../../utils/DataTableColumnsProvider';
 import './Members.scss'
@@ -279,43 +279,68 @@ export const InActiveMembers = () => {
   )
 }
 
+// Preset Package Plans for Admin Activation
+interface PackageOptionItem {
+  value: string;
+  name: string;
+  amount: number;
+  tag?: string;
+}
+
+const PRESENT_PACKAGES: PackageOptionItem[] = [
+  { value: 'Ecash_25000',  name: 'Starter Store',       amount: 25000,  tag: '₹25,000' },
+  { value: 'Ecash_50000',  name: 'Prime Merchant',       amount: 50000,  tag: '₹50,000' },
+  { value: 'Ecash_100000', name: 'Power Seller Hub',     amount: 100000, tag: '₹1,00,000' },
+  { value: 'Ecash_200000', name: 'Super Store Partner',  amount: 200000, tag: '₹2,00,000' },
+  { value: 'Ecash_500000', name: 'Mega Flagship Store',  amount: 500000, tag: '₹5,00,000' },
+];
+
 export const PendingMembers = () => {
   const { memberdata, isLoading } = useMembers("Pending");
   const { mutate: activatePackage, isPending: isActivating } = useActivatePackage();
 
-
   // Dialog state
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedMember, setSelectedMember] = useState<any>(null);
-  const [investmentAmount, setInvestmentAmount] = useState<string>('');
+  const [selectedPackage, setSelectedPackage] = useState<string>('');
+
 
   const handleActivateClick = (member: any) => {
     setSelectedMember(member);
-    setInvestmentAmount(member?.package_value ? String(member.package_value) : '');
+    const existingVal = Number(member?.package_value || member?.amount || 0);
+    const matched = PRESENT_PACKAGES.find(p => p.amount === existingVal);
+    if (matched) {
+      setSelectedPackage(matched.value);
+    } else {
+      setSelectedPackage('');
+    }
     setDialogOpen(true);
   };
+
+  const selectedPkgObj = PRESENT_PACKAGES.find(p => p.value === selectedPackage);
+  const effectiveAmount = selectedPkgObj ? selectedPkgObj.amount : 0;
 
   const handleConfirm = () => {
     if (!selectedMember) return;
 
-    const amt = Number(investmentAmount);
-    if (!amt || amt <= 0) {
-      toast.error('Please enter a valid investment amount.');
+    if (!selectedPackage || effectiveAmount <= 0) {
+      toast.error('Please select a valid package plan to activate the vendor.');
       return;
     }
 
-    const packageType = `Ecash_${amt}`;
+    const packageType = selectedPackage;
 
     activatePackage(
       { memberId: selectedMember.Member_id, packageType },
       {
         onSuccess: () => {
+          toast.success(`Vendor ${selectedMember.Name || selectedMember.Member_id} activated successfully with ₹${effectiveAmount.toLocaleString('en-IN')} package!`);
           setDialogOpen(false);
           setSelectedMember(null);
-          setInvestmentAmount('');
+          setSelectedPackage('');
         },
-        onError: () => {
-          setDialogOpen(false);
+        onError: (err: any) => {
+          toast.error(err?.response?.data?.message || 'Failed to activate vendor');
         },
       }
     );
@@ -335,7 +360,7 @@ export const PendingMembers = () => {
         isActivating={isActivating}
       />
 
-      {/* ── Activation Confirmation Dialog ── */}
+      {/* ── Activation Confirmation Dialog With Package Dropdown ── */}
       <Dialog
         open={dialogOpen}
         onClose={() => !isActivating && setDialogOpen(false)}
@@ -343,84 +368,144 @@ export const PendingMembers = () => {
         fullWidth
       >
         <DialogTitle sx={{ backgroundColor: primaryColor, color: '#fff', fontWeight: 600 }}>
-          Confirm Vendor Activation
+          Activate Pending Vendor
         </DialogTitle>
 
         <DialogContent sx={{ pt: 3 }}>
           {/* Vendor Details */}
-          <Box sx={{ backgroundColor: '#f5f7fa', borderRadius: 2, p: 2, mb: 3 }}>
-            <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-              Vendor Details
+          <Box sx={{ backgroundColor: '#f5f7fa', borderRadius: 2, p: 2, mb: 2.5 }}>
+            <Typography variant="subtitle2" color="text.secondary" gutterBottom sx={{ fontWeight: 700 }}>
+              Vendor Information
             </Typography>
             <Divider sx={{ mb: 1.5 }} />
             <Grid container spacing={1.5}>
               <Grid item xs={6}>
-                <Typography variant="caption" color="text.secondary">Vendor ID</Typography>
-                <Typography variant="body2" fontWeight={600}>{selectedMember?.Member_id}</Typography>
+                <Typography variant="caption" color="text.secondary">Vendor ID (Mobile)</Typography>
+                <Typography variant="body2" fontWeight={700}>{selectedMember?.Member_id}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant="caption" color="text.secondary">Vendor Code</Typography>
+                <Typography variant="body2" fontWeight={700} sx={{ color: '#6366f1' }}>
+                  {selectedMember?.member_code || '-'}
+                </Typography>
               </Grid>
               <Grid item xs={6}>
                 <Typography variant="caption" color="text.secondary">Name</Typography>
                 <Typography variant="body2" fontWeight={600}>{selectedMember?.Name}</Typography>
               </Grid>
               <Grid item xs={6}>
-                <Typography variant="caption" color="text.secondary">Mobile</Typography>
-                <Typography variant="body2" fontWeight={600}>{selectedMember?.mobileno}</Typography>
-              </Grid>
-
-              <Grid item xs={6}>
                 <Typography variant="caption" color="text.secondary">Sponsor</Typography>
                 <Typography variant="body2" fontWeight={600}>{selectedMember?.Sponsor_name ?? '-'}</Typography>
               </Grid>
               <Grid item xs={6}>
                 <Typography variant="caption" color="text.secondary">Current Status</Typography>
-                <Typography variant="body2" fontWeight={600} sx={{ color: '#FFC000' }}>
+                <Typography variant="body2" fontWeight={700} sx={{ color: '#f59e0b' }}>
                   {selectedMember?.status}
                 </Typography>
               </Grid>
             </Grid>
           </Box>
 
-          {/* Investment Amount Input */}
+          {/* Package Selection Dropdown (Mandatory) */}
           <Box sx={{ mt: 1 }}>
-            <TextField
-              label="Investment Amount"
-              fullWidth
-              type="number"
-              value={investmentAmount}
-              onChange={(e) => setInvestmentAmount(e.target.value)}
-              placeholder="e.g. 1000"
-              helperText="Enter the investment amount to activate this vendor"
-              autoFocus
-              InputProps={{
-                startAdornment: <InputAdornment position="start">₹</InputAdornment>,
-              }}
-              sx={{
-                '& .MuiOutlinedInput-root': {
-                  '&.Mui-focused fieldset': { borderColor: primaryColor },
-                },
-                '& .MuiInputLabel-root.Mui-focused': { color: primaryColor }
-              }}
-            />
-          </Box>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 1, color: '#1e293b' }}>
+              Select Package Plan <span style={{ color: '#ef4444' }}>*</span>
+            </Typography>
 
+            <FormControl fullWidth size="medium">
+              <InputLabel id="pending-package-select-label">Choose Package</InputLabel>
+              <Select
+                labelId="pending-package-select-label"
+                value={selectedPackage}
+                label="Choose Package"
+                onChange={(e) => setSelectedPackage(e.target.value)}
+                sx={{
+                  borderRadius: '10px',
+                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: primaryColor },
+                }}
+              >
+                <MenuItem value="" disabled>
+                  <em>-- Select a Package Plan --</em>
+                </MenuItem>
+                {PRESENT_PACKAGES.map((pkg) => (
+                  <MenuItem key={pkg.value} value={pkg.value} sx={{ py: 1 }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                      <Typography sx={{ fontWeight: 600, fontSize: '0.9rem' }}>
+                        {pkg.name}
+                      </Typography>
+                      <Chip
+                        label={pkg.tag || `₹${pkg.amount.toLocaleString('en-IN')}`}
+                        size="small"
+                        sx={{
+                          ml: 1.5,
+                          height: 22,
+                          fontSize: '0.72rem',
+                          fontWeight: 700,
+                          backgroundColor: '#e0e7ff',
+                          color: '#3730a3'
+                        }}
+                      />
+                    </Box>
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            {/* Live Benefits Breakdown Preview */}
+            {effectiveAmount > 0 ? (
+              <Box sx={{ mt: 2.5, p: 2, borderRadius: 2, bgcolor: '#f0fdf4', border: '1px solid #bbf7d0' }}>
+                <Typography variant="caption" sx={{ fontWeight: 800, color: '#166534', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                  Package Benefits Preview
+                </Typography>
+                <Divider sx={{ my: 1, borderColor: '#bbf7d0' }} />
+                <Grid container spacing={1.5}>
+                  <Grid item xs={4}>
+                    <Typography variant="caption" color="text.secondary">Package Value</Typography>
+                    <Typography variant="body2" sx={{ fontWeight: 800, color: '#15803d' }}>
+                      ₹{effectiveAmount.toLocaleString('en-IN')}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Typography variant="caption" color="text.secondary">Daily ROI (400 Days)</Typography>
+                    <Typography variant="body2" sx={{ fontWeight: 700, color: '#0369a1' }}>
+                      ₹{(effectiveAmount * 0.0005).toFixed(2)}/day
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Typography variant="caption" color="text.secondary">Direct Sponsor (5%)</Typography>
+                    <Typography variant="body2" sx={{ fontWeight: 700, color: '#7c3aed' }}>
+                      ₹{(effectiveAmount * 0.05).toLocaleString('en-IN')}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </Box>
+            ) : (
+              <Alert severity="warning" sx={{ mt: 2, borderRadius: 2 }}>
+                Vendor activation requires selecting a package. Activation without a package is disabled.
+              </Alert>
+            )}
+          </Box>
         </DialogContent>
 
-        <DialogActions sx={{ px: 3, pb: 2, gap: 1 }}>
+        <DialogActions sx={{ px: 3, pb: 2.5, gap: 1 }}>
           <Button
             onClick={() => setDialogOpen(false)}
             disabled={isActivating}
             variant="outlined"
-            sx={{ borderColor: '#ccc', color: '#555' }}
+            sx={{ borderColor: '#ccc', color: '#555', textTransform: 'none' }}
           >
             Cancel
           </Button>
           <Button
             onClick={handleConfirm}
-            disabled={isActivating}
+            disabled={isActivating || !selectedPackage || effectiveAmount <= 0}
             variant="contained"
             startIcon={isActivating ? <CircularProgress size={18} sx={{ color: '#fff' }} /> : <CheckCircle />}
             sx={{
               backgroundColor: primaryColor,
+              textTransform: 'none',
+              fontWeight: 700,
+              px: 2.5,
               '&:hover': { backgroundColor: '#081d47' },
               '&:disabled': { backgroundColor: '#ccc' },
             }}

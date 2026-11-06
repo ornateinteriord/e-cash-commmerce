@@ -248,7 +248,7 @@ const Profile: React.FC = () => {
                           fontWeight: 700, 
                           fontSize: { xs: '0.78rem', sm: '0.82rem' } 
                         }}>
-                          {activeUser?.member_code || (activeUser as any)?.user_id || (activeUser as any)?.reference_id || '0101'}
+                          {activeUser?.member_code || (activeUser as any)?.user_id || (activeUser as any)?.reference_id || '562010'}
                         </Typography>
                       </Box>
                     </Box>

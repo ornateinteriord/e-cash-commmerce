@@ -246,7 +246,7 @@ const Register = () => {
   }, [refCode]);
 
   useEffect(() => {
-    if (formData.Sponsor_code && formData.Sponsor_code.length >= 5) refetch();
+    if (formData.Sponsor_code && formData.Sponsor_code.length >= 3) refetch();
   }, [formData.Sponsor_code, refetch]);
 
   useEffect(() => {
@@ -264,7 +264,7 @@ const Register = () => {
   };
 
   const handleSponsorCodeBlur = () => {
-    if (formData.Sponsor_code && formData.Sponsor_code.length >= 5) refetch();
+    if (formData.Sponsor_code && formData.Sponsor_code.length >= 3) refetch();
   };
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -303,7 +303,7 @@ const Register = () => {
     setErrorMessage("");
 
     if (!formData.gender) return setGenderError(true);
-    if (!formData.Sponsor_code || formData.Sponsor_code.length < 5) return setErrorMessage("Valid sponsor code is required");
+    if (!formData.Sponsor_code || formData.Sponsor_code.length < 3) return setErrorMessage("Valid sponsor code is required");
     if (!formData.Sponsor_name) return setErrorMessage("Please enter a valid sponsor code");
     if (!formData.country) return setErrorMessage("Country is required");
     if (!/^\d{10}$/.test(formData.mobileno)) return setErrorMessage("Please enter a valid 10-digit mobile number");
@@ -475,11 +475,11 @@ const Register = () => {
                 <TextField
                   required fullWidth name="Sponsor_code" placeholder="Sponsor Code"
                   value={formData.Sponsor_code} onChange={handleSponsorCodeChange} onBlur={handleSponsorCodeBlur}
-                  error={(formData.Sponsor_code.length > 0 && formData.Sponsor_code.length < 5) || (formData.Sponsor_code.length >= 5 && !!sponsorError)}
+                  error={(formData.Sponsor_code.length > 0 && formData.Sponsor_code.length < 3) || (formData.Sponsor_code.length >= 3 && !!sponsorError)}
                   helperText={
-                    (formData.Sponsor_code.length > 0 && formData.Sponsor_code.length < 5)
-                      ? "Minimum 5 chars."
-                      : formData.Sponsor_code.length >= 5 && sponsorError ? sponsorError : ""
+                    (formData.Sponsor_code.length > 0 && formData.Sponsor_code.length < 3)
+                      ? "Minimum 3 chars."
+                      : formData.Sponsor_code.length >= 3 && sponsorError ? sponsorError : ""
                   }
                   InputProps={{ startAdornment: <InputAdornment position="start"><LockIcon sx={{ color: "#b08090" }} /></InputAdornment> }}
                   sx={textFieldStyles}

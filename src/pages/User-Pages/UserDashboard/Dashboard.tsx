@@ -40,7 +40,7 @@ const UserDashboard = () => {
   const { data: memberDetails, refetch: refetchMemberDetails } = useGetMemberDetails(memberId);
   const { data: vendorWalletData } = useGetVendorWalletOverview(memberId);
   const { data: earningWalletData } = useGetEarningWalletOverview(memberId);
-  const referralCode = memberDetails?.Member_id || memberDetails?.member_id || memberId || '';
+  const referralCode = memberDetails?.member_code || memberDetails?.Member_code || memberDetails?.Member_id || memberDetails?.member_id || memberId || '';
   const { mutate: verifyPayment, isPending: isVerifyingPayment } = useVerifyPayment();
   const { refetch: refetchTransactions } = useGetTransactionDetails("all");
   useGetDailyPayout(memberId);
@@ -85,7 +85,7 @@ const UserDashboard = () => {
   */
 
   const handleCopyReferralLink = () => {
-    const code = memberDetails?.Member_id || memberDetails?.member_id || memberId;
+    const code = referralCode || memberDetails?.member_code || memberDetails?.Member_code || memberDetails?.Member_id || memberDetails?.member_id || memberId;
     if (!code) return;
     const referralLink = `${window.location.origin}/register?ref=${code}`;
     navigator.clipboard.writeText(referralLink)
@@ -94,7 +94,7 @@ const UserDashboard = () => {
   };
 
   const handleShareReferral = async () => {
-    const code = memberDetails?.Member_id || memberDetails?.member_id || memberId;
+    const code = referralCode || memberDetails?.member_code || memberDetails?.Member_code || memberDetails?.Member_id || memberDetails?.member_id || memberId;
     if (!code) return;
     const referralLink = `${window.location.origin}/register?ref=${code}`;
     if (navigator.share) {
@@ -113,7 +113,7 @@ const UserDashboard = () => {
   };
 
   const handleCopyCustomerReferralLink = () => {
-    const code = memberDetails?.Member_id || memberDetails?.member_id || memberId;
+    const code = referralCode || memberDetails?.member_code || memberDetails?.Member_code || memberDetails?.Member_id || memberDetails?.member_id || memberId;
     if (!code) return;
     const customerReferralLink = `https://www.eshopy.biz/register?referralcode=${code}`;
     navigator.clipboard.writeText(customerReferralLink)
@@ -122,7 +122,7 @@ const UserDashboard = () => {
   };
 
   const handleShareCustomerReferral = async () => {
-    const code = memberDetails?.Member_id || memberDetails?.member_id || memberId;
+    const code = referralCode || memberDetails?.member_code || memberDetails?.Member_code || memberDetails?.Member_id || memberDetails?.member_id || memberId;
     if (!code) return;
     const customerReferralLink = `https://www.eshopy.biz/register?referralcode=${code}`;
     if (navigator.share) {
