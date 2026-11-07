@@ -157,7 +157,7 @@ const ActivatePackage: React.FC = () => {
             Activate Package
           </Typography>
           <Typography variant="h6" color="purple.100">
-            Activate packages for members
+            Activate packages for vendors
           </Typography>
         </Box>
 
@@ -167,13 +167,13 @@ const ActivatePackage: React.FC = () => {
             {/* Search Section */}
             <Box mb={4}>
               <Typography variant="h6" gutterBottom sx={{ color: 'text.primary' }}>
-                Enter Member ID
+                Enter Vendor ID / Code
               </Typography>
               <Box display="flex" gap={2} alignItems="flex-start">
                 <TextField
                   fullWidth
                   variant="outlined"
-                  placeholder="Enter member ID"
+                  placeholder="Enter vendor ID or code"
                   value={memberId}
                   onChange={(e) => setMemberId(e.target.value)}
                   onKeyPress={handleKeyPress}
@@ -365,10 +365,10 @@ const ActivatePackage: React.FC = () => {
         <DialogContent>
           <Box sx={{ backgroundColor: 'grey.50', borderRadius: 1, p: 2, mb: 2 }}>
             <Typography variant="body1" fontWeight="medium">
-              Member ID: {selectedMember?.Member_id}
+              Vendor Code: {selectedMember?.member_code || selectedMember?.Member_id}
             </Typography>
             <Typography variant="body1" fontWeight="medium">
-              Member Name: {selectedMember?.Name}
+              Vendor Name: {selectedMember?.Name}
             </Typography>
             <Typography variant="body1" fontWeight="medium">
               Current Status: {selectedMember?.status}
@@ -379,7 +379,7 @@ const ActivatePackage: React.FC = () => {
             <strong>
               {packageOptions.find(pkg => pkg.value === selectedPackage)?.label || 'No package selected'}
             </strong>{' '}
-            package for this member?
+            package for this vendor?
           </Typography>
           <Typography variant="caption" color="text.secondary" sx={{ mt: 2, display: 'block', fontStyle: 'italic' }}>
             Note: Commission will be automatically distributed to eligible sponsors upon activation.
@@ -429,7 +429,7 @@ const ActivatePackage: React.FC = () => {
           <Box sx={{ mb: 3 }}>
             <Typography variant="body1" fontWeight="medium" gutterBottom>
               {/* USE the STABLE activatedMember & activatedPackage so dialog doesn't show cleared values */}
-              Member: {activatedMember?.Name || 'N/A'} ({activatedMember?.Member_id || 'N/A'})
+              Vendor: {activatedMember?.Name || 'N/A'} ({activatedMember?.member_code || activatedMember?.Member_id || 'N/A'})
             </Typography>
             <Typography variant="body1" fontWeight="medium" gutterBottom>
               Package: {packageOptions.find(pkg => pkg.value === activatedPackage)?.label || 'N/A'}
@@ -454,8 +454,8 @@ const ActivatePackage: React.FC = () => {
                     <TableHead>
                       <TableRow sx={{ backgroundColor: 'grey.100' }}>
                         <TableCell sx={{ fontWeight: 'bold' }}>Level</TableCell>
-                        <TableCell sx={{ fontWeight: 'bold' }}>Member ID</TableCell>
-                        <TableCell sx={{ fontWeight: 'bold' }}>Member Name</TableCell>
+                        <TableCell sx={{ fontWeight: 'bold' }}>Vendor ID</TableCell>
+                        <TableCell sx={{ fontWeight: 'bold' }}>Vendor Name</TableCell>
                         <TableCell sx={{ fontWeight: 'bold' }}>Commission Type</TableCell>
                         <TableCell align="right" sx={{ fontWeight: 'bold' }}>Amount ()</TableCell>
                       </TableRow>

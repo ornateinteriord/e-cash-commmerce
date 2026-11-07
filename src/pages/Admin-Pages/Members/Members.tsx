@@ -167,10 +167,10 @@ const MemberTable = ({
         </DialogTitle>
         <DialogContent>
           <Typography variant="body1" sx={{ color: '#555', mb: 2 }}>
-            Do you want to open the dashboard for member <strong>{memberToImpersonate?.Name} ({memberToImpersonate?.Member_id})</strong> in a new tab?
+            Do you want to open the dashboard for vendor <strong>{memberToImpersonate?.Name} ({memberToImpersonate?.member_code || memberToImpersonate?.Member_id})</strong> in a new tab?
           </Typography>
           <Typography variant="caption" color="text.secondary">
-            This will allow you to view the application as this member.
+            This will allow you to view the application as this vendor.
           </Typography>
         </DialogContent>
         <DialogActions sx={{ px: 3, pb: 2, gap: 1 }}>
@@ -380,7 +380,7 @@ export const PendingMembers = () => {
             <Divider sx={{ mb: 1.5 }} />
             <Grid container spacing={1.5}>
               <Grid item xs={6}>
-                <Typography variant="caption" color="text.secondary">Vendor ID (Mobile)</Typography>
+                <Typography variant="caption" color="text.secondary">Mobile No</Typography>
                 <Typography variant="body2" fontWeight={700}>{selectedMember?.Member_id}</Typography>
               </Grid>
               <Grid item xs={6}>
@@ -540,7 +540,7 @@ export const PermissionsMembers = () => {
     // Use upgrade_status for this specific ROI permissions page
     updateStatus({ memberId: selectedMember.id, upgrade_status: newStatus }, {
       onSuccess: () => {
-        toast.success(`Member ${newStatus === 'Active' ? 'activated' : 'inactive'} success`);
+        toast.success(`Vendor ${newStatus === 'Active' ? 'activated' : 'inactive'} success`);
         setConfirmOpen(false);
         setSelectedMember(null);
       },
@@ -553,7 +553,7 @@ export const PermissionsMembers = () => {
   // Update handleToggleStatus wrapper for the column definition
   const onToggleRequest = (memberId: string, currentStatus: string) => {
     const member = filteredData.find(m => m.Member_id === memberId);
-    handleToggleClick(memberId, currentStatus, member?.Name || 'Member');
+    handleToggleClick(memberId, currentStatus, member?.Name || 'Vendor');
   };
 
   // Filter members who are "ROI Active" (have a package)

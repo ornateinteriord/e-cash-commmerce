@@ -25,19 +25,25 @@ import { exportToExcel } from '../../../utils/excelExport';
 import { getFormattedDate } from '../../../utils/common';
 import { useGetTransactionDetails, useGetWalletOverview } from '../../../api/Memeber';
 import TokenService from '../../../api/token/tokenService';
+import { formatVendorDescription, formatVendorCode } from '../../../utils/DataTableColumnsProvider';
 
-const getSourceMemberId = (tx: any): string | null => {
+const getSourceVendorCode = (tx: any): string | null => {
   if (!tx) return null;
-  const rawId = tx.related_member_id || tx.member_id_from || tx.from_member_id || tx.sender_id;
-  if (rawId && String(rawId).trim()) {
-    return String(rawId).trim();
+  const rawCode = tx.related_member_code;
+  if (rawCode && String(rawCode).trim() && !/^\d{10}$/.test(String(rawCode).trim())) {
+    return String(rawCode).trim();
   }
   if (tx.description && typeof tx.description === 'string') {
-    const match = tx.description.match(/from\s+member\s+([A-Za-z0-9_-]+)/i) ||
-                  tx.description.match(/from\s+(U\w+|\d{6,})/i);
+    const match = tx.description.match(/from\s+vendor\s+([A-Za-z0-9_-]+)/i) ||
+                  tx.description.match(/from\s+member\s+([A-Za-z0-9_-]+)/i) ||
+                  tx.description.match(/from\s+(56\d{4})/i);
     if (match && match[1]) {
-      return match[1].trim();
+      return formatVendorCode(match[1].trim());
     }
+  }
+  const rawId = tx.related_member_id || tx.member_id_from || tx.from_member_id || tx.sender_id;
+  if (rawId && String(rawId).trim()) {
+    return formatVendorCode(String(rawId).trim());
   }
   return null;
 };
@@ -240,20 +246,21 @@ const WalletTransaction: React.FC = () => {
       wrap: true,
       grow: 2,
       cell: (row: any) => {
-        const sourceMemberId = getSourceMemberId(row);
+        const sourceVendorCode = getSourceVendorCode(row);
+        const cleanDesc = formatVendorDescription(row.description);
         return (
           <Box sx={{ py: 0.5 }}>
             <span style={{ fontSize: '0.84rem', color: '#1E293B', fontWeight: 500 }}>
-              {row.description || "-"}
+              {cleanDesc}
             </span>
             {row.transaction_id && (
               <span style={{ display: 'block', fontSize: '0.72rem', color: '#94A3B8', fontFamily: 'monospace' }}>
                 ID: {row.transaction_id}
               </span>
             )}
-            {sourceMemberId && (
+            {sourceVendorCode && (
               <span style={{ display: 'block', fontSize: '0.72rem', color: '#94A3B8', fontFamily: 'monospace' }}>
-                User ID: {sourceMemberId}
+                Vendor Code: {sourceVendorCode}
               </span>
             )}
           </Box>

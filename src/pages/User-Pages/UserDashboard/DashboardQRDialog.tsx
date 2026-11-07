@@ -55,7 +55,7 @@ const DashboardQRDialog: React.FC<DashboardQRDialogProps> = ({ open, onClose, me
       try {
         await navigator.share({
           title: 'My E shopy QR',
-          text: `Pay me using my QR code! My Member ID is: ${memberId}`,
+          text: `Pay me using my QR code! My Vendor ID is: ${memberId}`,
           url: qrImageUrl,
         });
       } catch (err) {

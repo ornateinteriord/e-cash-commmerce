@@ -154,7 +154,7 @@ const AddNew: React.FC = () => {
   // Handle member info fetch
   const handleGetInfo = async () => {
     if (!memberId) {
-      toast.error('Please enter a member ID');
+      toast.error('Please enter a vendor ID/code');
       return;
     }
 
@@ -171,13 +171,13 @@ const AddNew: React.FC = () => {
           introducerName: member.introducer_name || '',
         }));
 
-        toast.success('Member information loaded successfully');
+        toast.success('Vendor information loaded successfully');
       } else {
-        toast.error('Member not found');
+        toast.error('Vendor not found');
         setMemberInfo(null);
       }
     } catch (error) {
-      toast.error('Failed to fetch member information');
+      toast.error('Failed to fetch vendor information');
       setMemberInfo(null);
     }
   };
@@ -240,7 +240,7 @@ const AddNew: React.FC = () => {
 
   const handleSubmit = async () => {
     if (!memberInfo) {
-      toast.error('Please fetch member information first');
+      toast.error('Please fetch vendor information first');
       return;
     }
 
@@ -255,7 +255,7 @@ const AddNew: React.FC = () => {
     }
 
     if (form.accountOperation === 'Any two' && !form.jointMember) {
-      toast.error('Please enter joint member details');
+      toast.error('Please enter joint vendor details');
       return;
     }
 
@@ -350,12 +350,12 @@ const AddNew: React.FC = () => {
                 <Grid container spacing={2}>
                   <Grid item xs={12} md={8}>
                     <TextField
-                      placeholder="Member ID"
+                      placeholder="Vendor ID/Code"
                       size="small"
                       fullWidth
                       value={memberId}
                       onChange={(e) => setMemberId(e.target.value)}
-                      label="Member ID"
+                      label="Vendor ID/Code"
                       sx={memberInputStyle}
                     />
                   </Grid>
@@ -390,7 +390,7 @@ const AddNew: React.FC = () => {
                     <>
                       <Grid item xs={12}>
                         <TextField
-                          label="Member Name"
+                          label="Vendor Name"
                           fullWidth
                           size="small"
                           value={memberInfo.name || ''}
@@ -477,12 +477,12 @@ const AddNew: React.FC = () => {
                   {form.accountOperation === 'Any two' && (
                     <Grid item xs={12}>
                       <TextField
-                        label="Joint Member"
+                        label="Joint Vendor"
                         fullWidth
                         size="small"
                         value={form.jointMember}
                         onChange={(e) => handleChange('jointMember', e.target.value)}
-                        placeholder="Joint member"
+                        placeholder="Joint vendor"
                         sx={accountInputStyle}
                       />
                     </Grid>

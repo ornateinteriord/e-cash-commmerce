@@ -21,7 +21,7 @@ import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import DataTable from 'react-data-table-component';
-import { DASHBOARD_CUTSOM_STYLE } from '../../../utils/DataTableColumnsProvider';
+import { DASHBOARD_CUTSOM_STYLE, formatVendorDescription, formatVendorCode } from '../../../utils/DataTableColumnsProvider';
 import { getFormattedDate } from '../../../utils/common';
 import { useGetAllTransactionDetails } from '../../../api/Admin';
 import { useGetLevelRoiSchedules } from '../../../api/Admin';
@@ -127,7 +127,7 @@ const AdminLevelDailyROI = () => {
     },
     {
       name: 'Beneficiary (Sponsor)',
-      selector: (row: any) => `${row.Name || '-'} (${row.member_id})`,
+      selector: (row: any) => `${row.Name || '-'} (${row.member_code || formatVendorCode(row.member_id)})`,
       sortable: true,
       minWidth: '180px',
     },
@@ -148,13 +148,13 @@ const AdminLevelDailyROI = () => {
     },
     {
       name: 'Downline Vendor',
-      selector: (row: any) => row.related_member_id || '-',
+      selector: (row: any) => row.related_member_code || formatVendorCode(row.related_member_id),
       sortable: true,
       width: '140px',
     },
     {
       name: 'Description',
-      selector: (row: any) => row.description || '-',
+      selector: (row: any) => formatVendorDescription(row.description),
       sortable: true,
       grow: 2,
     },
@@ -200,13 +200,13 @@ const AdminLevelDailyROI = () => {
     },
     {
       name: 'Sponsor (Beneficiary)',
-      selector: (row: any) => `${row.sponsor_name || '-'} (${row.sponsor_id})`,
+      selector: (row: any) => `${row.sponsor_name || '-'} (${row.sponsor_code || formatVendorCode(row.sponsor_id)})`,
       sortable: true,
       minWidth: '170px',
     },
     {
       name: 'From Vendor (Investor)',
-      selector: (row: any) => `${row.from_member_name || '-'} (${row.from_member_id})`,
+      selector: (row: any) => `${row.from_member_name || '-'} (${row.from_member_code || formatVendorCode(row.from_member_id)})`,
       sortable: true,
       minWidth: '170px',
     },
@@ -619,11 +619,11 @@ const AdminLevelDailyROI = () => {
                         </Typography>
                         {tx.related_member_id && (
                           <Typography sx={{ fontSize: '0.75rem', color: '#64748b', mt: 0.2 }}>
-                            Downline: <strong style={{ color: '#0f172a' }}>{tx.related_member_id}</strong>
+                            Downline: <strong style={{ color: '#0f172a' }}>{tx.related_member_code || formatVendorCode(tx.related_member_id)}</strong>
                           </Typography>
                         )}
                         <Typography sx={{ fontSize: '0.75rem', color: '#64748b', mt: 0.2 }}>
-                          {tx.description || 'Level Daily ROI'}
+                          {formatVendorDescription(tx.description || 'Level Daily ROI')}
                         </Typography>
                         {tx.transaction_id && (
                           <Typography sx={{ fontSize: '0.7rem', color: '#94a3b8', fontFamily: 'monospace', mt: 0.2 }}>
@@ -702,7 +702,7 @@ const AdminLevelDailyROI = () => {
                               Investor (Downline)
                             </Typography>
                             <Typography sx={{ fontSize: '0.82rem', fontWeight: 700, color: '#334155' }}>
-                              {sch.from_member_name || '-'} ({sch.from_member_id})
+                              {sch.from_member_name || '-'} ({sch.from_member_code || formatVendorCode(sch.from_member_id)})
                             </Typography>
                             <Typography sx={{ fontSize: '0.72rem', color: '#64748b', mt: 0.2 }}>
                               Package: <strong style={{ color: '#0f172a' }}>₹{parseFloat(sch.package_amount || 0).toLocaleString()}</strong>

@@ -209,13 +209,13 @@ const TransferMoneyDialog: React.FC<TransferMoneyDialogProps> = ({ open, onClose
                 <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
                     <TextField
                         fullWidth
-                        label="Recipient Member ID"
+                        label="Recipient Vendor ID/Code"
                         value={recipientMemberId}
                         onChange={(e) => {
                             setRecipientMemberId(e.target.value);
                             setFetchRecipient(false);
                         }}
-                        placeholder="Enter member ID"
+                        placeholder="Enter vendor ID or code"
                     />
                     <Button
                         variant="contained"

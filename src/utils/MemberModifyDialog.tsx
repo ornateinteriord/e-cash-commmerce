@@ -304,7 +304,7 @@ const MemberModifyDialog: React.FC<ModifyDialogProps> = ({
         py: 2,
       }}>
         <Typography variant="h6">
-          {isEditMode ? 'Update Member Details' : 'Create New Member'}
+          {isEditMode ? 'Update Vendor Details' : 'Create New Vendor'}
         </Typography>
         <IconButton onClick={onClose} sx={{ color: 'white' }}>
           <CloseIcon />
@@ -541,10 +541,10 @@ const MemberModifyDialog: React.FC<ModifyDialogProps> = ({
                 }}
                 helperText={
                   isEditMode
-                    ? "Introducer cannot be changed after member creation"
+                    ? "Introducer cannot be changed after vendor creation"
                     : introducerError
                       ? "Introducer ID not found in our records"
-                      : "Enter Agent or Member ID"
+                      : "Enter Agent or Vendor ID"
                 }
               />
             </Grid>
@@ -627,7 +627,7 @@ const MemberModifyDialog: React.FC<ModifyDialogProps> = ({
             '&:hover': { backgroundColor: '#283593' }
           }}
         >
-          {isEditMode ? 'Update Member' : 'Create Member'}
+          {isEditMode ? 'Update Vendor' : 'Create Vendor'}
         </Button>
       </DialogActions>
     </Dialog>

@@ -105,11 +105,11 @@ const EcashScanner: React.FC = () => {
         setRecipient(result);
         setPaymentDialogOpen(true);
       } else {
-        toast.error('Member not found. Please try scanning again.');
+        toast.error('Vendor not found. Please try scanning again.');
         setIsScanning(true);
       }
     } catch (err: any) {
-      toast.error(err?.response?.data?.message || 'Member lookup failed. Please try again.');
+      toast.error(err?.response?.data?.message || 'Vendor lookup failed. Please try again.');
       setIsScanning(true);
     }
   }, [currentMemberId, memberDetails, lookupMutation, stopCamera]);
@@ -237,7 +237,7 @@ const EcashScanner: React.FC = () => {
   const handleManualSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (!manualInput.trim()) {
-      toast.error('Please enter a Member ID or Phone number');
+      toast.error('Please enter a Vendor Code, ID or Phone number');
       return;
     }
     handleLookup(manualInput);
@@ -266,7 +266,7 @@ const EcashScanner: React.FC = () => {
         idToken: 'BYPASS_TOKEN',
       });
 
-      toast.success(`₹${numAmount.toLocaleString()} successfully transferred to ${recipient?.Name || 'Member'}!`);
+      toast.success(`₹${numAmount.toLocaleString()} successfully transferred to ${recipient?.Name || 'Vendor'}!`);
       setPaymentDialogOpen(false);
       setAmount('');
       setRecipient(null);
@@ -574,7 +574,7 @@ const EcashScanner: React.FC = () => {
         >
           <TextField
             fullWidth
-            placeholder="Or enter Member ID to Pay"
+            placeholder="Or enter Vendor Code/ID to Pay"
             value={manualInput}
             onChange={(e) => setManualInput(e.target.value)}
             variant="standard"
@@ -661,12 +661,12 @@ const EcashScanner: React.FC = () => {
                 <Box>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                     <Typography sx={{ fontWeight: 900, fontSize: '1.1rem', lineHeight: 1.2 }}>
-                      {recipient?.Name || 'Member'}
+                      {recipient?.Name || 'Vendor'}
                     </Typography>
                     <CheckCircleIcon sx={{ fontSize: 16, color: '#38BDF8' }} />
                   </Box>
                   <Typography variant="caption" sx={{ color: '#E0F2FE', fontWeight: 700 }}>
-                    ID: {recipient?.Member_id || recipient?.member_id || recipient?.id || 'N/A'}
+                    Vendor Code: {recipient?.member_code || recipient?.Member_id || recipient?.member_id || recipient?.id || 'N/A'}
                   </Typography>
                   {recipient?.mobile && (
                     <Typography variant="caption" sx={{ display: 'block', color: '#BAE6FD', fontSize: '0.72rem' }}>

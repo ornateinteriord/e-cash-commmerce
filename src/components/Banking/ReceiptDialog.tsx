@@ -221,7 +221,7 @@ const ReceiptDialog: React.FC<ReceiptDialogProps> = ({ open, onClose, receiptId 
                             <Box sx={{ display: 'flex', gap: 1 }}>
                                 <TextField
                                     fullWidth
-                                    label="Member ID"
+                                    label="Vendor ID/Code"
                                     value={formData.member_id}
                                     onChange={(e) => handleChange('member_id', e.target.value)}
                                     placeholder="Enter member ID"

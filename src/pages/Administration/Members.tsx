@@ -67,7 +67,7 @@ const Members: React.FC = () => {
 
   // Print columns configuration
   const printColumns: PrintColumn[] = [
-    { id: 'member_id', label: 'Member ID', width: '10%' },
+    { id: 'member_id', label: 'Vendor ID', width: '10%' },
     { id: 'displayName', label: 'Name', width: '12%' },
     { id: 'email', label: 'Email', width: '15%' },
     { id: 'contact', label: 'Contact', width: '10%' },
@@ -130,7 +130,7 @@ const Members: React.FC = () => {
     },
     {
       id: 'name',
-      label: 'Member',
+      label: 'Vendor',
       sortable: true,
       minWidth: 200,
       renderCell: (row: Member) => (
@@ -564,7 +564,7 @@ const Members: React.FC = () => {
         title: 'Manipal Society - Members List',
         columns: [
           { header: 'Date', key: 'date', width: 15 },
-          { header: 'Member ID', key: 'member_id', width: 15 },
+          { header: 'Vendor ID', key: 'member_id', width: 15 },
           { header: 'Name', key: 'displayName', width: 25 },
           { header: 'Email', key: 'email', width: 25 },
           { header: 'Contact', key: 'contact', width: 15 },
@@ -582,7 +582,7 @@ const Members: React.FC = () => {
           { header: 'Introducer Code', key: 'introducer', width: 15 },
           { header: 'Introducer Name', key: 'introducer_name', width: 20 },
           { header: 'Branch ID', key: 'branch_id', width: 10 },
-          { header: 'Membership Type', key: 'membershipType', width: 15 },
+          { header: 'Vendor Type', key: 'membershipType', width: 15 },
           { header: 'Status', key: 'status', width: 12 }
         ],
         data: dataToExport,
@@ -592,7 +592,7 @@ const Members: React.FC = () => {
       setIsExporting(false);
       setSnackbar({
         open: true,
-        message: 'Members data exported to Excel successfully',
+        message: 'Vendors data exported to Excel successfully',
         severity: 'success'
       });
     }, 100);
@@ -610,7 +610,7 @@ const Members: React.FC = () => {
           onSuccess: () => {
             setSnackbar({
               open: true,
-              message: 'Member updated successfully',
+              message: 'Vendor updated successfully',
               severity: 'success'
             });
             setModifyDialogOpen(false);
@@ -618,7 +618,7 @@ const Members: React.FC = () => {
           onError: (error: any) => {
             setSnackbar({
               open: true,
-              message: error?.message || 'Failed to update member',
+              message: error?.message || 'Failed to update vendor',
               severity: 'error'
             });
           }
@@ -630,7 +630,7 @@ const Members: React.FC = () => {
         onSuccess: () => {
           setSnackbar({
             open: true,
-            message: 'Member created successfully',
+            message: 'Vendor created successfully',
             severity: 'success'
           });
           setModifyDialogOpen(false);
@@ -638,7 +638,7 @@ const Members: React.FC = () => {
         onError: (error: any) => {
           setSnackbar({
             open: true,
-            message: error?.message || 'Failed to create member',
+            message: error?.message || 'Failed to create vendor',
             severity: 'error'
           });
         }
@@ -698,10 +698,10 @@ const Members: React.FC = () => {
       {/* Page Header */}
       <Box sx={{ mb: { xs: 2, sm: 3, md: 4 } }}>
         <Typography variant="h4" sx={{ fontWeight: 700, color: '#1a237e', mb: 1, fontSize: { xs: '1.5rem', sm: '1.75rem', md: '2rem' } }}>
-          List of Member
+          List of Vendors
         </Typography>
         <Typography variant="body1" sx={{ color: '#64748b', fontSize: { xs: '0.875rem', sm: '1rem' } }}>
-          Manage and monitor all registered members in the system
+          Manage and monitor all registered vendors in the system
         </Typography>
       </Box>
 
@@ -709,7 +709,7 @@ const Members: React.FC = () => {
       <AdminReusableTable<Member>
         columns={columns}
         data={members}
-        title="Member Management"
+        title="Vendor Management"
         isLoading={isLoading}
         onSearchChange={handleSearchChange}
         onSearch={handleSearch}
@@ -717,7 +717,7 @@ const Members: React.FC = () => {
         searchQuery={searchInput}
         paginationPerPage={rowsPerPage}
         actions={tableActions}
-        emptyMessage="No members found"
+        emptyMessage="No vendors found"
         totalCount={membersData?.pagination?.total}
         currentPage={page - 1}
         onPageChange={(newPage) => setPage(newPage + 1)}
@@ -790,7 +790,7 @@ const Members: React.FC = () => {
           }}
         >
           <Typography variant="h6" sx={{ fontWeight: 600 }}>
-            Members Print Preview
+            Vendors Print Preview
           </Typography>
           <IconButton
             onClick={() => setPrintDialogOpen(false)}
@@ -804,7 +804,7 @@ const Members: React.FC = () => {
           <Box sx={{ maxHeight: '70vh', overflow: 'auto', p: 2 }}>
             <TablePDF
               ref={tablePrintRef}
-              title="Member Register"
+              title="Vendor Register"
               columns={printColumns}
               data={allMembersForExport}
             />

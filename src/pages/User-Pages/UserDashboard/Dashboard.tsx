@@ -272,7 +272,7 @@ const UserDashboard = () => {
                 letterSpacing: '0.4px',
                 mt: 0.2
               }}>
-                {memberDetails?.Name || 'Member'}
+                {memberDetails?.Name || 'Vendor'}
               </Typography>
 
               {/* Clickable ID Badges (Stacked: Login ID, Vendor ID below) */}

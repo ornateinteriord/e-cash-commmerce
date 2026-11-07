@@ -20,7 +20,7 @@ import PaymentsIcon from '@mui/icons-material/Payments';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import DataTable from 'react-data-table-component';
-import { DASHBOARD_CUTSOM_STYLE, extractTransactionAmount } from '../../../utils/DataTableColumnsProvider';
+import { DASHBOARD_CUTSOM_STYLE, extractTransactionAmount, formatVendorDescription, formatVendorCode } from '../../../utils/DataTableColumnsProvider';
 import { getFormattedDate } from '../../../utils/common';
 import { useGetTransactionDetails, useGetMemberLevelRoiSchedules } from '../../../api/Memeber';
 
@@ -140,14 +140,14 @@ const LevelDailyROI = () => {
       width: '110px',
     },
     {
-      name: 'From Member',
-      selector: (row: any) => row.related_member_id || '-',
+      name: 'From Vendor',
+      selector: (row: any) => row.related_member_code || formatVendorCode(row.related_member_id),
       sortable: true,
       width: '140px',
     },
     {
       name: 'Description',
-      selector: (row: any) => row.description || '-',
+      selector: (row: any) => formatVendorDescription(row.description),
       sortable: true,
       grow: 2,
     },
@@ -192,7 +192,7 @@ const LevelDailyROI = () => {
     },
     {
       name: 'From Investor',
-      selector: (row: any) => `${row.from_member_name || '-'} (${row.from_member_id})`,
+      selector: (row: any) => `${row.from_member_name || '-'} (${row.from_member_code || formatVendorCode(row.from_member_id)})`,
       sortable: true,
       minWidth: '160px',
     },
@@ -308,7 +308,7 @@ const LevelDailyROI = () => {
           mt: 0.5,
           fontSize: { xs: '0.78rem', sm: '0.88rem' }
         }}>
-          Your 50-day multi-tier daily earnings generated from your downline members' package investments
+          Your 50-day multi-tier daily earnings generated from your downline vendors' package investments
         </Typography>
       </Box>
 
@@ -569,11 +569,11 @@ const LevelDailyROI = () => {
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 1.2 }}>
                       <Box sx={{ flex: 1, minWidth: 0 }}>
                         <Typography sx={{ fontSize: '0.88rem', fontWeight: 700, color: '#1e293b', lineHeight: 1.3 }}>
-                          {tx.description || 'Level Daily ROI'}
+                          {formatVendorDescription(tx.description || 'Level Daily ROI')}
                         </Typography>
                         {tx.related_member_id && (
                           <Typography sx={{ fontSize: '0.75rem', color: '#64748b', mt: 0.3 }}>
-                            From: <strong style={{ color: '#0f172a' }}>{tx.related_member_id}</strong>
+                            From: <strong style={{ color: '#0f172a' }}>{tx.related_member_code || formatVendorCode(tx.related_member_id)}</strong>
                           </Typography>
                         )}
                         {tx.transaction_id && (
@@ -651,7 +651,7 @@ const LevelDailyROI = () => {
                             Downline Investor
                           </Typography>
                           <Typography sx={{ fontSize: '0.85rem', fontWeight: 800, color: '#1e293b', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                            {sch.from_member_name || '-'} ({sch.from_member_id})
+                            {sch.from_member_name || '-'} ({sch.from_member_code || formatVendorCode(sch.from_member_id)})
                           </Typography>
                           <Typography sx={{ fontSize: '0.74rem', color: '#64748b', mt: 0.2 }}>
                             Package: <strong style={{ color: '#0f172a' }}>₹{parseFloat(sch.package_amount || 0).toLocaleString()}</strong>

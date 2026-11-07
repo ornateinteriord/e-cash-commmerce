@@ -266,8 +266,8 @@ const AgentAssignment: React.FC = () => {
                   <TableRow>
                     {[
                       "Account No",
-                      "Member ID",
-                      !isMobile && "Member Name",
+                      "Vendor ID",
+                      !isMobile && "Vendor Name",
                       "Account Type",
                       "Status",
                       "Assigned Agent",

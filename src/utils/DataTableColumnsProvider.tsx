@@ -91,6 +91,45 @@ export const extractTransactionAmount = (row: any): number => {
 
 
 
+
+/**
+ * Sanitizes any raw mobile numbers in description texts to vendor codes,
+ * and ensures "Member" is changed to "Vendor".
+ */
+export const formatVendorDescription = (desc: any): string => {
+  if (!desc) return "-";
+  let str = String(desc)
+    .replace(/\bMember\b/g, "Vendor")
+    .replace(/\bmember\b/g, "vendor");
+
+  // Specific known mappings
+  str = str.replace(/9004478100/g, '564080');
+  str = str.replace(/9740406962/g, '566962');
+
+  // Replace any remaining 10-digit mobile number starting with 6,7,8,9
+  str = str.replace(/\b([6-9]\d{9})\b/g, (_m, phone) => `56${phone.slice(-4)}`);
+
+  return str;
+};
+
+/**
+ * Formats a vendor ID / mobile number to a safe vendor code.
+ * Replaces raw 10-digit mobile numbers with 6-digit codes.
+ */
+export const formatVendorCode = (id: any, code?: any): string => {
+  if (code && String(code).trim() && !/^[6-9]\d{9}$/.test(String(code).trim())) {
+    return String(code).trim();
+  }
+  const idStr = String(id || '').trim();
+  if (!idStr || idStr === '-' || idStr === 'N/A') return 'N/A';
+  if (idStr === '9004478100') return '564080';
+  if (idStr === '9740406962') return '566962';
+  if (/^[6-9]\d{9}$/.test(idStr)) {
+    return `56${idStr.slice(-4)}`;
+  }
+  return idStr;
+};
+
 export const getUserDashboardTableColumns = () => [
   {
     selector: (row: any) => row.title,
@@ -249,8 +288,8 @@ export const getLevelBenifitsColumns = () => [
     sortable: true,
   },
   {
-    name: "Vendor Name (ID)",
-    selector: (row: any) => `${row.memberName || 'N/A'} (${row.memberId || 'N/A'})`,
+    name: "Vendor Name (Code)",
+    selector: (row: any) => `${row.memberName || "N/A"} (${row.memberCode || formatVendorCode(row.memberId)})`,
     sortable: true,
   },
   {
@@ -267,8 +306,8 @@ export const getAdminAggregatedIncomeColumns = () => [
     width: "80px",
   },
   {
-    name: "Vendor Name (ID)",
-    selector: (row: any) => `${row.name || "-"} (${row.member_id})`,
+    name: "Vendor Name (Code)",
+    selector: (row: any) => `${row.name || "-"} (${row.memberCode || row.member_code || formatVendorCode(row.member_id)})`,
     sortable: true,
   },
   {
@@ -287,7 +326,7 @@ export const getDailyPayoutColumns = () => [
   },
   {
     name: "Description",
-    selector: (row: any) => (row.description || "").replace(/\/300/g, "/120"),
+    selector: (row: any) => formatVendorDescription(row.description),
     sortable: true,
   },
   {
@@ -340,9 +379,14 @@ export const getTransactionColumns = () => [
   },
   {
     name: "Description",
-    selector: (row: any) => row.description || "-",
+    selector: (row: any) => formatVendorDescription(row.description),
     sortable: true,
     wrap: true,
+    cell: (row: any) => (
+      <span style={{ fontSize: "0.84rem", color: "#1F333B", fontWeight: 500 }}>
+        {formatVendorDescription(row.description)}
+      </span>
+    ),
   },
   {
     name: "Credit",
@@ -613,8 +657,8 @@ export const getMembersColumns = (
       sortable: true,
     },
     {
-      name: "Vendor Name (ID)",
-      selector: (row: any) => `${row.Name ?? "-"} (${row.Member_id})`,
+      name: "Vendor Name (Code)",
+      selector: (row: any) => `${row.Name ?? "-"} (${row.member_code || row.Member_id})`,
       sortable: true,
     },
     {
@@ -744,8 +788,8 @@ export const getPermissionsColumns = (
       width: "70px",
     },
     {
-      name: "Vendor Name (ID)",
-      selector: (row: any) => `${row.Name ?? "-"} (${row.Member_id})`,
+      name: "Vendor Name (Code)",
+      selector: (row: any) => `${row.Name ?? "-"} (${row.member_code || row.Member_id})`,
       sortable: true,
     },
     {
@@ -818,8 +862,8 @@ export const getPendingMembersColumns = (
       width: "70px",
     },
     {
-      name: "Vendor Name (ID)",
-      selector: (row: any) => `${row.Name ?? "-"} (${row.Member_id})`,
+      name: "Vendor Name (Code)",
+      selector: (row: any) => `${row.Name ?? "-"} (${row.member_code || row.Member_id})`,
       sortable: true,
     },
     {
@@ -1101,12 +1145,12 @@ export const getAdminPageTransactionColumns = () => [
   },
   {
     name: "Vendor",
-    selector: (row: any) => row.member_id,
+    selector: (row: any) => row.member_code || row.member_id,
     sortable: true,
   },
   {
     name: "Description",
-    selector: (row: any) => row.description,
+    selector: (row: any) => (row.description || "").replace(/\bMember\b/g, "Vendor").replace(/\bmember\b/g, "vendor"),
     sortable: true,
   },
   {
@@ -1509,13 +1553,13 @@ export const getAdminReferralIncomeColumns = () => [
     ),
   },
   {
-    name: "Sponsor ID",
-    selector: (row: any) => row.member_id || "-",
+    name: "Sponsor Code",
+    selector: (row: any) => row.member_code || formatVendorCode(row.member_id),
     sortable: true,
     minWidth: "130px",
     cell: (row: any) => (
       <span style={{ fontWeight: 600, color: "#002970", fontSize: "12px", fontFamily: "monospace" }}>
-        {row.member_id || "-"}
+        {row.member_code || formatVendorCode(row.member_id)}
       </span>
     ),
   },
@@ -1531,13 +1575,13 @@ export const getAdminReferralIncomeColumns = () => [
     ),
   },
   {
-    name: "Vendor ID",
-    selector: (row: any) => row.related_member_id || "-",
+    name: "Vendor Code",
+    selector: (row: any) => row.related_member_code || formatVendorCode(row.related_member_id),
     sortable: true,
     minWidth: "130px",
     cell: (row: any) => (
       <span style={{ fontWeight: 600, color: "#475569", fontSize: "12px", fontFamily: "monospace" }}>
-        {row.related_member_id || "-"}
+        {row.related_member_code || formatVendorCode(row.related_member_id)}
       </span>
     ),
   },
@@ -1634,13 +1678,13 @@ export const getAdminLevelBonusColumns = () => [
     ),
   },
   {
-    name: "Vendor ID",
-    selector: (row: any) => row.related_member_id || "-",
+    name: "Vendor Code",
+    selector: (row: any) => row.related_member_code || formatVendorCode(row.related_member_id),
     sortable: true,
     minWidth: "130px",
     cell: (row: any) => (
       <span style={{ fontWeight: 600, color: "#475569", fontSize: "12px", fontFamily: "monospace" }}>
-        {row.related_member_id || "-"}
+        {row.related_member_code || formatVendorCode(row.related_member_id)}
       </span>
     ),
   },
@@ -2179,7 +2223,7 @@ export const getFixedDepositWalletColumns = () => [
   },
   {
     name: "Description",
-    selector: (row: any) => row.description || "-",
+    selector: (row: any) => formatVendorDescription(row.description),
     sortable: true,
   },
   {
@@ -2214,7 +2258,7 @@ export const getPurchaseWalletColumns = () => [
   },
   {
     name: "Description",
-    selector: (row: any) => row.description || "-",
+    selector: (row: any) => formatVendorDescription(row.description),
     sortable: true,
   },
   {
@@ -2280,13 +2324,13 @@ export const getVendorWalletColumns = () => [
   },
   {
     name: "Description",
-    selector: (row: any) => row.description || "-",
+    selector: (row: any) => formatVendorDescription(row.description),
     sortable: true,
     wrap: true,
     grow: 1.5,
     cell: (row: any) => (
       <span style={{ fontSize: '0.84rem', color: '#1F333B', fontWeight: 500 }}>
-        {row.description || "-"}
+        {formatVendorDescription(row.description)}
       </span>
     )
   },
@@ -2370,13 +2414,13 @@ export const getProductLevelWalletColumns = () => [
   },
   {
     name: "Description",
-    selector: (row: any) => row.description || "-",
+    selector: (row: any) => formatVendorDescription(row.description),
     sortable: true,
     wrap: true,
     grow: 1.5,
     cell: (row: any) => (
       <span style={{ fontSize: '0.84rem', color: '#1F333B', fontWeight: 500 }}>
-        {row.description || "-"}
+        {formatVendorDescription(row.description)}
       </span>
     )
   },
@@ -2462,13 +2506,13 @@ export const getEarningWalletColumns = () => [
   },
   {
     name: "Description",
-    selector: (row: any) => row.description || "-",
+    selector: (row: any) => formatVendorDescription(row.description),
     sortable: true,
     wrap: true,
     grow: 1.5,
     cell: (row: any) => (
       <span style={{ fontSize: '0.84rem', color: '#1F333B', fontWeight: 500 }}>
-        {row.description || "-"}
+        {formatVendorDescription(row.description)}
       </span>
     )
   },

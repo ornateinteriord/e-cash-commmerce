@@ -63,7 +63,8 @@ const LevelBenifits = () => {
         date: transaction.transaction_date,
         payoutLevel: levelStr,
         memberName: transaction.related_member_name || 'N/A',
-        memberId: transaction.related_member_id || 'N/A',
+        memberId: transaction.related_member_code || transaction.member_code || (transaction.related_member_id === '9004478100' ? '564080' : transaction.related_member_id?.length === 10 ? ('56' + transaction.related_member_id.slice(-4)) : transaction.related_member_id) || 'N/A',
+        memberCode: transaction.related_member_code || transaction.member_code || (transaction.related_member_id === '9004478100' ? '564080' : transaction.related_member_id?.length === 10 ? ('56' + transaction.related_member_id.slice(-4)) : transaction.related_member_id) || 'N/A',
         amount: `${((parseFloat(transaction.vw_credit) || 0) + (parseFloat(transaction.ew_credit) || 0) + (parseFloat(transaction.uw_credit) || 0) + (parseFloat(transaction.fd_credit) || 0) + (parseFloat(transaction.pw_credit) || 0) || (parseFloat(transaction.amount) || 0) || (parseFloat(transaction.gross_amount) || 0) || (parseFloat(transaction.net_amount) || 0)).toFixed(2)}`,
         description: transaction.description,
         transactionType: transaction.transaction_type

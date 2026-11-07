@@ -75,7 +75,7 @@ export const TransactionDataTable = ({
         <Grid className="transaction-content">
           <TextField
             size="small"
-            placeholder="Member Id"
+            placeholder="Vendor Id"
             className="member-id"
           />
           <MuiDatePicker date={fromDate} setDate={setFromDate} label="From Date" />
