@@ -289,7 +289,7 @@ export const getLevelBenifitsColumns = () => [
   },
   {
     name: "Vendor Name (Code)",
-    selector: (row: any) => `${row.memberName || "N/A"} (${row.memberCode || formatVendorCode(row.memberId)})`,
+    selector: (row: any) => `${row.memberName || "N/A"} (${formatVendorCode(row.memberId, row.memberCode)})`,
     sortable: true,
   },
   {
