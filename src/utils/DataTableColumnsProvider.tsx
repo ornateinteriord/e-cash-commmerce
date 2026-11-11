@@ -98,18 +98,10 @@ export const extractTransactionAmount = (row: any): number => {
  */
 export const formatVendorDescription = (desc: any): string => {
   if (!desc) return "-";
-  let str = String(desc)
-    .replace(/\bMember\b/g, "Vendor")
-    .replace(/\bmember\b/g, "vendor");
-
-  // Specific known mappings
-  str = str.replace(/9004478100/g, '564080');
-  str = str.replace(/9740406962/g, '566962');
-
-  // Replace any remaining 10-digit mobile number starting with 6,7,8,9
-  str = str.replace(/\b([6-9]\d{9})\b/g, (_m, phone) => `56${phone.slice(-4)}`);
-
-  return str;
+  let s = String(desc);
+  s = s.replace(/Vendor\s+Vendor\s+Benefits/gi, 'Vendor Level Benefits');
+  s = s.replace(/\bVendor\s+Vendor\b/gi, 'Vendor');
+  return s;
 };
 
 /**

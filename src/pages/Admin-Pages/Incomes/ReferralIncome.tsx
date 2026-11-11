@@ -107,7 +107,7 @@ const ReferralIncome = () => {
       {/* Page Header */}
       <Box sx={{ mb: 3 }}>
         <Typography variant="h4" sx={{ fontWeight: 700, color: '#1e293b' }}>
-          Referral Commission
+          Referral Benefits
         </Typography>
         <Typography variant="body2" sx={{ color: '#64748b', mt: 0.5 }}>
           Track all direct sponsor commission earnings, downline investors, rates, and transaction details

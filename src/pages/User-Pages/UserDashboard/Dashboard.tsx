@@ -1571,7 +1571,7 @@ const UserDashboard = () => {
           >
             <Box>
               <Typography sx={{ color: '#064e3b', fontWeight: 900, fontSize: { xs: '0.85rem', sm: '0.95rem' }, lineHeight: 1.2, mb: 0.2 }}>
-                Referral Bonus
+                Referral Benefits
               </Typography>
               <Typography sx={{ color: '#475569', fontSize: '9.5px', fontWeight: 600, display: { xs: 'none', sm: 'block' } }}>
                 Instant bonus
@@ -1609,7 +1609,7 @@ const UserDashboard = () => {
             </Box>
           </Box>
 
-          {/* Card: Product Level Bonus */}
+          {/* Card: Product Vendor Benefits */}
           <Box
             onClick={() => navigate('/user/product-level-wallet')}
             sx={{
@@ -1693,7 +1693,7 @@ const UserDashboard = () => {
           >
             <Box>
               <Typography sx={{ color: '#78350f', fontWeight: 900, fontSize: { xs: '0.85rem', sm: '0.95rem' }, lineHeight: 1.2, mb: 0.2 }}>
-                Level Bonus
+                Vendor Benefits
               </Typography>
               <Typography sx={{ color: '#475569', fontSize: '9.5px', fontWeight: 600, display: { xs: 'none', sm: 'block' } }}>
                 Level progression
@@ -1731,7 +1731,7 @@ const UserDashboard = () => {
             </Box>
           </Box>
 
-          {/* Card: Level Daily ROI (50-Day ROI) */}
+          {/* Card: Vendor Level Benefits (50-Day ROI) */}
           <Box
             onClick={() => navigate('/user/earnings/level-daily-roi')}
             sx={{
@@ -1754,7 +1754,7 @@ const UserDashboard = () => {
           >
             <Box>
               <Typography sx={{ color: '#312e81', fontWeight: 900, fontSize: { xs: '0.85rem', sm: '0.95rem' }, lineHeight: 1.2, mb: 0.2 }}>
-                Level Daily ROI
+                Vendor Level Benefits
               </Typography>
               <Typography sx={{ color: '#475569', fontSize: '9.5px', fontWeight: 600, display: { xs: 'none', sm: 'block' } }}>
                 50-day payout

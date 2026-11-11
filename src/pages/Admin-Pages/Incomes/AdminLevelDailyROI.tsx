@@ -59,12 +59,12 @@ const AdminLevelDailyROI = () => {
   const { data: allTransactions, isLoading: isTxLoading, isError: isTxError } = useGetAllTransactionDetails();
   const { data: allSchedules, isLoading: isSchLoading, isError: isSchError } = useGetLevelRoiSchedules();
 
-  // Filter transactions for Level Daily ROI
+  // Filter transactions for Vendor Level Benefits
   const levelRoiTransactions: any[] = (allTransactions || []).filter((tx: any) => {
     if (!tx || typeof tx !== 'object') return false;
     const txType = (tx.transaction_type || '').toLowerCase();
     const desc = (tx.description || '').toLowerCase();
-    return txType === 'level daily roi' || desc.includes('level daily roi') || tx.benefit_type === 'Level ROI';
+    return txType === 'level daily roi' || txType.includes('vendor level benefit') || desc.includes('level daily roi') || desc.includes('vendor level benefit') || tx.benefit_type === 'Level ROI' || tx.benefit_type === 'Vendor Level Benefits';
   });
 
   const schedules: any[] = Array.isArray(allSchedules) ? allSchedules : [];
@@ -316,7 +316,7 @@ const AdminLevelDailyROI = () => {
             fontSize: { xs: '1.25rem', sm: '1.6rem', md: '1.9rem' },
             lineHeight: 1.2
           }}>
-            Level Daily ROI (50 Days)
+            Vendor Level Benefits (100 Days)
           </Typography>
           <Typography sx={{
             color: '#64748b',
@@ -326,7 +326,7 @@ const AdminLevelDailyROI = () => {
             Multi-level daily revenue share distributed across 7 upline tiers for 50 days (Levels 1 to 7, Rank ≥ 3)
           </Typography>
         </Box>
-        <TriggerMissingROIButton defaultType="level_roi" pageTitle="Level Daily ROI" label="Trigger Missing ROI" />
+        <TriggerMissingROIButton defaultType="level_roi" pageTitle="Vendor Level Benefits" label="Trigger Missing Benefits" />
       </Box>
 
       {/* KPI Summary Cards: 2x2 grid on mobile, 4 in row on desktop */}
@@ -575,7 +575,7 @@ const AdminLevelDailyROI = () => {
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.4 }}>
               {paginatedMobileList.length === 0 ? (
                 <Box sx={{ p: 4, textAlign: 'center', color: '#64748b' }}>
-                  {isTxError || isSchError ? 'Error loading data' : 'No Level Daily ROI records found'}
+                  {isTxError || isSchError ? 'Error loading data' : 'No Vendor Level Benefits records found'}
                 </Box>
               ) : viewMode === 'transactions' ? (
                 /* Mobile Admin Daily Payout Transaction Cards */
@@ -623,7 +623,7 @@ const AdminLevelDailyROI = () => {
                           </Typography>
                         )}
                         <Typography sx={{ fontSize: '0.75rem', color: '#64748b', mt: 0.2 }}>
-                          {formatVendorDescription(tx.description || 'Level Daily ROI')}
+                          {formatVendorDescription(tx.description || 'Vendor Level Benefits')}
                         </Typography>
                         {tx.transaction_id && (
                           <Typography sx={{ fontSize: '0.7rem', color: '#94a3b8', fontFamily: 'monospace', mt: 0.2 }}>
@@ -784,7 +784,7 @@ const AdminLevelDailyROI = () => {
                 highlightOnHover
                 noDataComponent={
                   <Box sx={{ p: 4, textAlign: 'center', color: '#64748b' }}>
-                    {isTxError || isSchError ? 'Error loading data' : 'No Level Daily ROI records found'}
+                    {isTxError || isSchError ? 'Error loading data' : 'No Vendor Level Benefits records found'}
                   </Box>
                 }
               />

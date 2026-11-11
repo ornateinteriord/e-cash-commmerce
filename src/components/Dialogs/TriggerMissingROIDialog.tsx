@@ -194,9 +194,9 @@ export const TriggerMissingROIDialog: React.FC<TriggerMissingROIDialogProps> = (
                 },
               }}
             >
-              <MenuItem value="all">All Payouts (Daily Incentive + Level Daily ROI)</MenuItem>
+              <MenuItem value="all">All Payouts (Daily Incentive + Vendor Level Benefits)</MenuItem>
               <MenuItem value="daily_incentive">Daily Incentive Only (1% Primary & Addon)</MenuItem>
-              <MenuItem value="level_roi">Level Daily ROI Only (50 Days Multi-level)</MenuItem>
+              <MenuItem value="level_roi">Vendor Level Benefits Only (100 Days Multi-level)</MenuItem>
             </TextField>
           </Box>
 
@@ -288,7 +288,7 @@ export const TriggerMissingROIDialog: React.FC<TriggerMissingROIDialogProps> = (
                   variant="outlined"
                 />
                 <Chip
-                  label={`Level ROI: ${executionResult.levelRoiProcessedCount ?? 0}`}
+                  label={`Vendor Level Benefits: ${executionResult.levelRoiProcessedCount ?? 0}`}
                   size="small"
                   variant="outlined"
                 />

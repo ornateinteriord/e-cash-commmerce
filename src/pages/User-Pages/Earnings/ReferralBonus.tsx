@@ -41,7 +41,7 @@ const ReferralBonus = () => {
     })
     .map((transaction: any) => {
       // Show actual description but provide a fallback
-      let payoutLvl = transaction.description || transaction.transaction_type || 'Referral Bonus';
+      let payoutLvl = transaction.description || transaction.transaction_type || 'Referral Benefits';
       
       return {
         id: transaction._id || transaction.transaction_id,
@@ -77,7 +77,7 @@ const ReferralBonus = () => {
   return (
     <Card sx={{ margin: '2rem', mt: 10 }}>
       <CardContent>
-        <div style={{ marginBottom: "1rem", color: "#000", fontWeight: "bold", fontSize: "1.25rem"     }}>List of Referral Bonus ({referralBonusData.length})</div>
+        <div style={{ marginBottom: "1rem", color: "#000", fontWeight: "bold", fontSize: "1.25rem"     }}>List of Referral Benefits ({referralBonusData.length})</div>
           <DataTable
               columns={getLevelBenifitsColumns()}
               data={referralBonusData}

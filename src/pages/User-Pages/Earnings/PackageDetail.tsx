@@ -69,7 +69,7 @@ const PackageDetail: React.FC = () => {
 
   const commissionCards = [
     {
-      title: 'Referral Bonus',
+      title: 'Referral Benefits',
       amount: Number(walletOverview?.directBenefits || 0),
       description: 'Instant direct referral rewards for onboarding new members and active stores.',
       icon: <PaymentsIcon sx={{ fontSize: { xs: 20, sm: 24 }, color: '#FE8001' }} />,
@@ -78,7 +78,7 @@ const PackageDetail: React.FC = () => {
       path: '/user/earnings/referral-bonus',
     },
     {
-      title: 'Level Bonus',
+      title: 'Vendor Benefits',
       amount: Number(walletOverview?.levelBenefits || 0),
       description: 'Multi-tier commissions earned across team affiliate levels in your network.',
       icon: <AccountTreeIcon sx={{ fontSize: { xs: 20, sm: 24 }, color: '#0284C7' }} />,
@@ -87,7 +87,7 @@ const PackageDetail: React.FC = () => {
       path: '/user/earnings/level-benefits',
     },
     {
-      title: 'Level Daily ROI',
+      title: 'Vendor Level Benefits',
       amount: Number(walletOverview?.levelDailyRoi ?? walletOverview?.roiLevelBenefits ?? 0),
       description: 'Daily level team returns distributed over 100 days from active packages.',
       icon: <TrendingUpIcon sx={{ fontSize: { xs: 20, sm: 24 }, color: '#059669' }} />,

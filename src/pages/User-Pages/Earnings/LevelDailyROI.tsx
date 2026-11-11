@@ -64,12 +64,12 @@ const LevelDailyROI = () => {
     ? transactionsData
     : [];
 
-  // Filter for Level Daily ROI transactions
+  // Filter for Vendor Level Benefits transactions
   const levelRoiTxs: any[] = transactions.filter((tx: any) => {
     if (!tx || typeof tx !== 'object') return false;
     const txType = (tx.transaction_type || '').toLowerCase();
     const desc = (tx.description || '').toLowerCase();
-    return txType === 'level daily roi' || desc.includes('level daily roi') || tx.benefit_type === 'Level ROI';
+    return txType === 'level daily roi' || txType.includes('vendor level benefit') || desc.includes('level daily roi') || desc.includes('vendor level benefit') || tx.benefit_type === 'Level ROI' || tx.benefit_type === 'Vendor Level Benefits';
   });
 
   const schedules: any[] = Array.isArray(schedulesData) ? schedulesData : [];
@@ -301,7 +301,7 @@ const LevelDailyROI = () => {
           fontSize: { xs: '1.55rem', sm: '1.6rem', md: '1.9rem' },
           lineHeight: 1.2
         }}>
-          Level Daily ROI (50 Days)
+          Vendor Level Benefits (100 Days)
         </Typography>
         <Typography sx={{
           color: '#64748b',
@@ -529,7 +529,7 @@ const LevelDailyROI = () => {
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.4 }}>
               {paginatedMobileList.length === 0 ? (
                 <Box sx={{ p: 4, textAlign: 'center', color: '#64748b' }}>
-                  {isTxError || isSchError ? 'Error loading data' : 'No Level Daily ROI records found'}
+                  {isTxError || isSchError ? 'Error loading data' : 'No Vendor Level Benefits records found'}
                 </Box>
               ) : viewMode === 'transactions' ? (
                 /* Mobile Daily Payout Transaction Cards */
@@ -569,7 +569,7 @@ const LevelDailyROI = () => {
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 1.2 }}>
                       <Box sx={{ flex: 1, minWidth: 0 }}>
                         <Typography sx={{ fontSize: '0.88rem', fontWeight: 700, color: '#1e293b', lineHeight: 1.3 }}>
-                          {formatVendorDescription(tx.description || 'Level Daily ROI')}
+                          {formatVendorDescription(tx.description || 'Vendor Level Benefits')}
                         </Typography>
                         {tx.related_member_id && (
                           <Typography sx={{ fontSize: '0.75rem', color: '#64748b', mt: 0.3 }}>
@@ -733,7 +733,7 @@ const LevelDailyROI = () => {
                 highlightOnHover
                 noDataComponent={
                   <Box sx={{ p: 4, textAlign: 'center', color: '#64748b' }}>
-                    {isTxError || isSchError ? 'Error loading data' : 'No Level Daily ROI records found'}
+                    {isTxError || isSchError ? 'Error loading data' : 'No Vendor Level Benefits records found'}
                   </Box>
                 }
               />

@@ -66,12 +66,12 @@ export const UserSideBarMenuItems: SideBarMenuItemType[] = [
     isExpandable: true,
     subItems: [
       {
-        name: "Referral Commission",
+        name: "Referral Benefits",
         path: "/user/earnings/referral-bonus",
         icon: <PaymentsIcon />,
       },
       {
-        name: "Level Bonus",
+        name: "Vendor Benefits",
         path: "/user/earnings/level-benefits",
         icon: <TrendingUpIcon />,
       },
@@ -81,7 +81,7 @@ export const UserSideBarMenuItems: SideBarMenuItemType[] = [
         icon: <PaymentsIcon />,
       },
       {
-        name: "Level Daily ROI",
+        name: "Vendor Level Benefits",
         path: "/user/earnings/level-daily-roi",
         icon: <TrendingUpIcon />,
       },
@@ -231,12 +231,12 @@ export const AdminSideBarMenuItems: SideBarMenuItemType[] = [
     isExpandable: true,
     subItems: [
       {
-        name: "Referral Commission",
+        name: "Referral Benefits",
         path: "/admin/income/referral-income",
         icon: <PaymentsIcon />,
       },
       {
-        name: "Level Bonus",
+        name: "Vendor Benefits",
         path: "/admin/income/level-benefits",
         icon: <TrendingUpIcon />,
       },
@@ -246,7 +246,7 @@ export const AdminSideBarMenuItems: SideBarMenuItemType[] = [
         icon: <PaymentsIcon />,
       },
       {
-        name: "Level Daily ROI",
+        name: "Vendor Level Benefits",
         path: "/admin/income/level-daily-roi",
         icon: <TrendingUpIcon />,
       },

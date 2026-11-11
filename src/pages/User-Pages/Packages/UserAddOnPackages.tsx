@@ -26,9 +26,17 @@ export const UserAddOnPackages = () => {
   const { data: addOns = [], isLoading: addOnsLoading } = useGetMemberAddOns(user?.Member_id);
   const { data: walletOverview } = useGetWalletOverview(user?.Member_id || '');
 
+  const currentPackageAmount = Number(walletOverview?.primaryPackage || walletOverview?.packageAmount || user?.package_value || 0);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!packageAmount || !user?.Member_id) return;
+
+    // User Rule: Re-top up amount must be equal to or greater than current package
+    if (currentPackageAmount > 0 && Number(packageAmount) < currentPackageAmount) {
+      toast.error(`Re-top up amount cannot be lower than your current package of ₹${currentPackageAmount.toLocaleString('en-IN')}. Please enter ₹${currentPackageAmount.toLocaleString('en-IN')} or more.`);
+      return;
+    }
 
     if (Number(packageAmount) < 100) {
       toast.error("Minimum invest amount is ₹100");

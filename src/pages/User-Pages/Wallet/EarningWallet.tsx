@@ -10,7 +10,8 @@ import {
   Divider,
   InputAdornment,
   Alert,
-  Collapse
+  Collapse,
+  Chip
 } from '@mui/material';
 import DataTable from "react-data-table-component";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -19,6 +20,7 @@ import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import AutorenewIcon from '@mui/icons-material/Autorenew';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import TokenService from "../../../api/token/tokenService";
@@ -46,6 +48,17 @@ const EarningWallet: React.FC = () => {
   const maxLimit = parseFloat(earningData?.maxWithdrawalLimit || String(packageAmount * 1));
   const remainingLimit = parseFloat(earningData?.remainingWithdrawalLimit !== undefined ? earningData?.remainingWithdrawalLimit : String(Math.max(0, maxLimit - parseFloat(earningData?.totalWithdrawal || "0"))));
   const effectiveMaxWithdrawal = Math.min(availableBalance, remainingLimit > 0 ? remainingLimit : availableBalance);
+
+  // 3X Re-Topup logic: Combines Sale Value 2X (Vendor Wallet) + Earning Wallet 1X
+  const totalIncome = parseFloat(earningData?.totalIncome || "0");
+  const saleValueLimit = parseFloat(earningData?.saleValueLimit || String(packageAmount * 2));
+  const saleValueRoiIncome = parseFloat(earningData?.saleValueRoiIncome || "0");
+  const combinedTotalEarnings = parseFloat(earningData?.combinedTotalEarnings || String(totalIncome + saleValueRoiIncome));
+  const threeXLimit = parseFloat(earningData?.threeXLimit || String(packageAmount * 3));
+  const canReTopup = Boolean(
+    earningData?.canReTopup || 
+    (packageAmount > 0 && (combinedTotalEarnings >= threeXLimit || (totalIncome + availableBalance) >= threeXLimit))
+  );
 
   const dashboardTableCustomStyles = {
     table: {
@@ -290,6 +303,78 @@ const EarningWallet: React.FC = () => {
         </Box>
       </Box>
 
+      {/* 3X Re-Topup Banner: Shows when Earning Wallet gets 3X of package amount */}
+      {canReTopup && (
+        <Card sx={{
+          borderRadius: '20px',
+          background: 'linear-gradient(135deg, #FEF9E7 0%, #FEF3C7 100%)',
+          border: '2px solid #F59E0B',
+          p: { xs: 2.5, sm: 3 },
+          mb: 3,
+          boxShadow: '0 8px 25px rgba(245, 158, 11, 0.18)',
+          display: 'flex',
+          flexDirection: { xs: 'column', sm: 'row' },
+          alignItems: { xs: 'flex-start', sm: 'center' },
+          justifyContent: 'space-between',
+          gap: 2
+        }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Box sx={{
+              width: 52,
+              height: 52,
+              borderRadius: '16px',
+              bgcolor: '#D97706',
+              color: '#FFFFFF',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+              boxShadow: '0 4px 14px rgba(217, 119, 6, 0.35)'
+            }}>
+              <AutorenewIcon sx={{ fontSize: 32 }} />
+            </Box>
+            <Box>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5, flexWrap: 'wrap' }}>
+                <Chip
+                  label="3X Limit Reached"
+                  size="small"
+                  sx={{ bgcolor: '#D97706', color: '#FFF', fontWeight: 800, fontSize: '0.72rem' }}
+                />
+                <Typography sx={{ fontWeight: 900, color: '#78350F', fontSize: '1.15rem' }}>
+                  Re-Top Up Available
+                </Typography>
+              </Box>
+              <Typography variant="body2" sx={{ color: '#92400E', fontWeight: 600 }}>
+                Your combined earnings (Sale Value 2X: ₹{saleValueLimit.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} + Earning Wallet 1X: ₹{maxLimit.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}) have reached the 3X threshold (₹{threeXLimit.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}). Re-top up now to reactivate and scale your limits!
+              </Typography>
+            </Box>
+          </Box>
+          <Button
+            variant="contained"
+            onClick={() => navigate('/user/packages')}
+            startIcon={<AutorenewIcon />}
+            sx={{
+              py: 1.3,
+              px: 3.5,
+              borderRadius: '14px',
+              background: 'linear-gradient(135deg, #FE8001 0%, #EA580C 100%)',
+              color: '#FFFFFF',
+              fontWeight: 800,
+              fontSize: '0.95rem',
+              textTransform: 'none',
+              whiteSpace: 'nowrap',
+              boxShadow: '0 4px 14px rgba(234, 88, 12, 0.35)',
+              '&:hover': {
+                background: 'linear-gradient(135deg, #EA580C 0%, #C2410C 100%)',
+                boxShadow: '0 6px 18px rgba(234, 88, 12, 0.45)'
+              }
+            }}
+          >
+            Re-Top Up Now
+          </Button>
+        </Card>
+      )}
+
       {/* Withdrawal Action Section */}
       <Card sx={{
         p: { xs: 2.5, sm: 3 },
@@ -312,14 +397,14 @@ const EarningWallet: React.FC = () => {
           </Alert>
         ) : (
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-            {/* 1X Package Limit Info Box */}
+            {/* Combined 3X Info Box: Sale Value (2X) + Earning Wallet (1X) = Combined (3X) */}
             <Box sx={{
               p: 2,
               borderRadius: '16px',
               bgcolor: '#F0FDF4',
               border: '1.5px solid #A7F3D0',
               display: 'grid',
-              gridTemplateColumns: { xs: 'repeat(2, 1fr)', sm: 'repeat(3, 1fr)' },
+              gridTemplateColumns: { xs: 'repeat(2, 1fr)', sm: 'repeat(4, 1fr)' },
               gap: 1.5
             }}>
               <Box>
@@ -327,12 +412,19 @@ const EarningWallet: React.FC = () => {
                 <Typography variant="body1" sx={{ fontWeight: 900, color: '#1F333B' }}>₹{packageAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</Typography>
               </Box>
               <Box>
-                <Typography variant="caption" sx={{ color: '#065F46', fontWeight: 700, display: 'block' }}>1X Max Withdrawal Limit</Typography>
+                <Typography variant="caption" sx={{ color: '#065F46', fontWeight: 700, display: 'block' }}>Earning 1X Limit (Rem: ₹{remainingLimit.toFixed(0)})</Typography>
                 <Typography variant="body1" sx={{ fontWeight: 900, color: '#047857' }}>₹{maxLimit.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</Typography>
               </Box>
-              <Box sx={{ gridColumn: { xs: 'span 2', sm: 'auto' } }}>
-                <Typography variant="caption" sx={{ color: '#065F46', fontWeight: 700, display: 'block' }}>Remaining 1X Limit</Typography>
-                <Typography variant="body1" sx={{ fontWeight: 900, color: remainingLimit > 0 ? '#059669' : '#DC2626' }}>₹{remainingLimit.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</Typography>
+              <Box>
+                <Typography variant="caption" sx={{ color: '#065F46', fontWeight: 700, display: 'block' }}>Sale Value 2X Limit</Typography>
+                <Typography variant="body1" sx={{ fontWeight: 900, color: '#047857' }}>₹{saleValueLimit.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</Typography>
+              </Box>
+              <Box>
+                <Typography variant="caption" sx={{ color: '#065F46', fontWeight: 700, display: 'block' }}>Combined 3X Re-Topup</Typography>
+                <Typography variant="body1" sx={{ fontWeight: 900, color: canReTopup ? '#D97706' : '#047857' }}>
+                  ₹{threeXLimit.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  {canReTopup ? ' (Ready)' : ''}
+                </Typography>
               </Box>
             </Box>
 
@@ -438,6 +530,34 @@ const EarningWallet: React.FC = () => {
                 Payout will be disbursed to your linked bank account ({memberDetails?.bank_name || 'Bank'} - {memberDetails?.account_number ? `A/C ending in ...${String(memberDetails.account_number).slice(-4)}` : 'Bank Account'}).
               </Typography>
             </Box>
+
+            {/* Re-Topup Button (Shown when 3X reached) */}
+            {canReTopup && (
+              <Button
+                variant="outlined"
+                onClick={() => navigate('/user/packages')}
+                startIcon={<AutorenewIcon />}
+                fullWidth
+                sx={{
+                  py: 1.3,
+                  borderRadius: '14px',
+                  borderColor: '#F59E0B',
+                  color: '#B45309',
+                  bgcolor: '#FFFBEB',
+                  fontWeight: 800,
+                  fontSize: '0.95rem',
+                  textTransform: 'none',
+                  borderWidth: '2px',
+                  '&:hover': {
+                    borderWidth: '2px',
+                    borderColor: '#D97706',
+                    bgcolor: '#FEF3C7'
+                  }
+                }}
+              >
+                Re-Top Up Account (3X Limit Reached)
+              </Button>
+            )}
 
             {/* Submit Button */}
             <Button

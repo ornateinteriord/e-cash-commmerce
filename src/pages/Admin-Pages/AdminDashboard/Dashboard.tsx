@@ -430,7 +430,7 @@ const AdminDashboard = () => {
                   <Inventory2Icon sx={{ fontSize: 26 }} />
                 </Box>
                 <Chip
-                  label="Wallet 3: Level Commissions"
+                  label="Wallet 3: Vendor Benefits"
                   size="small"
                   sx={{ bgcolor: '#F0F9FF', color: '#0369A1', fontWeight: 800, fontSize: '0.72rem', borderRadius: '8px' }}
                 />
@@ -537,8 +537,8 @@ const AdminDashboard = () => {
           <Grid item xs={12} sm={6} md={4} lg={2.4}>
             <StatCard
               amount={activeSchedulesCount}
-              title="Level Daily ROI"
-              subTitle={`${activeSchedulesCount} Active 50-Day Schedules`}
+              title="Vendor Level Benefits"
+              subTitle={`${activeSchedulesCount} Active 100-Day Schedules`}
               icon={<TrendingUpIcon />}
               color="#6366f1"
               onClick={() => navigate('/admin/income/level-daily-roi')}

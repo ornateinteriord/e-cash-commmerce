@@ -109,7 +109,7 @@ const LevelBenifits = () => {
       {/* Page Header */}
       <Box sx={{ mb: 3 }}>
         <Typography variant="h4" sx={{ fontWeight: 700, color: '#1e293b' }}>
-          Level Bonus
+          Vendor Benefits
         </Typography>
         <Typography variant="body2" sx={{ color: '#64748b', mt: 0.5 }}>
           Track all multilevel commission payouts (Level 2 to Level 7), upline beneficiaries, downline vendors, rates, and statuses

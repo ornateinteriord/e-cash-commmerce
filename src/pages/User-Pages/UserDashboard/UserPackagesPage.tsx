@@ -134,6 +134,19 @@ const UserPackagesPage: React.FC = () => {
 
   const creditBalance = Number(walletOverview?.balance ?? walletOverview?.availableForWithdrawal ?? 0);
 
+  // User Rule: Re-top up should show ONLY the same package and packages greater than that package.
+  // Packages below the current package amount must NOT be shown.
+  const currentPackageAmount = Number(
+    walletOverview?.primaryPackage || 
+    walletOverview?.packageAmount || 
+    user?.package_value || 
+    0
+  );
+
+  const visiblePackages = currentPackageAmount > 0
+    ? PACKAGES.filter((pkg) => pkg.amount >= currentPackageAmount)
+    : PACKAGES;
+
   const isPurchased = (pkgAmount: number): boolean => {
     if (Number(walletOverview?.primaryPackage) === pkgAmount) return true;
     if (Number(user?.package_value) === pkgAmount) return true;
@@ -220,6 +233,29 @@ const UserPackagesPage: React.FC = () => {
           </Box>
         </Box>
 
+        {/* Re-Topup Info Notice */}
+        {currentPackageAmount > 0 && (
+          <Box sx={{
+            bgcolor: '#FFFBEB',
+            border: '1.5px solid #FDE68A',
+            borderRadius: '16px',
+            px: 2,
+            py: 1,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1.2
+          }}>
+            <Chip
+              label="Re-Top Up"
+              size="small"
+              sx={{ bgcolor: '#D97706', color: '#FFF', fontWeight: 800, fontSize: '0.72rem' }}
+            />
+            <Typography variant="caption" sx={{ color: '#92400E', fontWeight: 700 }}>
+              Current: <strong>₹{currentPackageAmount.toLocaleString('en-IN')}</strong>. Showing same or higher packages only.
+            </Typography>
+          </Box>
+        )}
+
         {/* Credit Balance & Deposit Pill */}
         <Box sx={{
           display: 'flex',
@@ -264,7 +300,7 @@ const UserPackagesPage: React.FC = () => {
 
       {/* Package Grid */}
       <Grid container spacing={3}>
-        {PACKAGES.map((pkg) => {
+        {visiblePackages.map((pkg) => {
           const purchased = isPurchased(pkg.amount);
 
           return (
@@ -402,7 +438,48 @@ const UserPackagesPage: React.FC = () => {
 
                   {/* Action Button */}
                   <Box sx={{ mt: 'auto', pt: 1 }}>
-                    {purchased ? (
+                    {currentPackageAmount > 0 ? (
+                      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                        <Button
+                          fullWidth
+                          variant="contained"
+                          onClick={(e) => handleBuyClick(e, pkg)}
+                          disabled={isPending}
+                          sx={{
+                            py: 1.2,
+                            borderRadius: '14px',
+                            background: pkg.amount === currentPackageAmount
+                              ? 'linear-gradient(135deg, #FE8001 0%, #EA580C 100%)'
+                              : 'linear-gradient(135deg, #059669 0%, #10B981 100%)',
+                            color: '#FFFFFF',
+                            fontWeight: 800,
+                            fontSize: '0.92rem',
+                            textTransform: 'none',
+                            boxShadow: '0 6px 18px rgba(254, 128, 1, 0.25)',
+                            '&:hover': {
+                              background: pkg.amount === currentPackageAmount
+                                ? 'linear-gradient(135deg, #EA580C 0%, #C2410C 100%)'
+                                : 'linear-gradient(135deg, #047857 0%, #059669 100%)',
+                              transform: 'translateY(-1.5px)'
+                            },
+                            transition: 'all 0.2s ease'
+                          }}
+                        >
+                          {pkg.amount === currentPackageAmount ? 'Re-Top Up Plan' : 'Upgrade & Re-Top Up'}
+                        </Button>
+                        {purchased && (
+                          <Button
+                            fullWidth
+                            size="small"
+                            variant="text"
+                            onClick={() => navigate(`/user/earnings/package-detail?package=${pkg.amount}`)}
+                            sx={{ color: '#64748B', fontWeight: 700, fontSize: '0.8rem', textTransform: 'none' }}
+                          >
+                            View Plan Details →
+                          </Button>
+                        )}
+                      </Box>
+                    ) : purchased ? (
                       <Button
                         fullWidth
                         variant="outlined"

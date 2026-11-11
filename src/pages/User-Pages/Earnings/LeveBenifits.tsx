@@ -46,16 +46,22 @@ const LevelBenifits = () => {
       return isLevelIncome;
     })
     .map((transaction: any) => {
-      let levelStr = transaction.description && transaction.description.toLowerCase().includes('level') 
-          ? transaction.description 
-          : transaction.level 
-            ? `Level ${transaction.level} Income` 
+      let levelStr = transaction.description && transaction.description.trim()
+          ? transaction.description
+          : transaction.level
+            ? `Level ${transaction.level} Vendor Benefits`
             : 'N/A';
 
       if (levelStr) {
         levelStr = levelStr.replace(/Product\s*Level/gi, 'Level');
-        levelStr = levelStr.replace(/Level Benefits?/gi, 'Level Income');
-        levelStr = levelStr.replace(/Level Bonus/gi, 'Level Income');
+        // Handle Level Daily ROI -> Vendor Level Benefits
+        levelStr = levelStr.replace(/\bLevel\s*(\d+)?\s*(?:Daily\s*)?ROI\b/gi, (_m: string, lvl?: string) => lvl ? `Level ${lvl} Vendor Level Benefits` : 'Vendor Level Benefits');
+        levelStr = levelStr.replace(/\bLevel\s*Daily\s*ROI\b/gi, 'Vendor Level Benefits');
+        // Replace "Level Benefits/Bonus/Income" only when NOT preceded by "Vendor "
+        levelStr = levelStr.replace(/(?<!Vendor\s)Level\s*(?:Benefits?|Bonus|Income)/gi, 'Vendor Benefits');
+        // Clean up any double "Vendor Vendor"
+        levelStr = levelStr.replace(/Vendor\s+Vendor\s+Benefits/gi, 'Vendor Level Benefits');
+        levelStr = levelStr.replace(/\bVendor\s+Vendor\b/gi, 'Vendor');
       }
 
       return {
@@ -93,7 +99,7 @@ const LevelBenifits = () => {
   return (
     <Card sx={{ margin: '2rem', mt: 10 }}>
       <CardContent>
-        <div style={{ marginBottom: "1rem", color: "#000", fontWeight: "bold", fontSize: "1.25rem" }}>List of Level Income ({levelBenefitsData.length})</div>
+        <div style={{ marginBottom: "1rem", color: "#000", fontWeight: "bold", fontSize: "1.25rem" }}>List of Vendor Benefits ({levelBenefitsData.length})</div>
           <DataTable
               columns={getLevelBenifitsColumns()}
               data={levelBenefitsData}
