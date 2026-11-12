@@ -99,7 +99,9 @@ export const extractTransactionAmount = (row: any): number => {
 export const formatVendorDescription = (desc: any): string => {
   if (!desc) return "-";
   let s = String(desc);
-  s = s.replace(/Vendor\s+Vendor\s+Benefits/gi, 'Vendor Level Benefits');
+  s = s.replace(/Vendor\s+Level\s+Benefits/gi, 'Vendor Benefits');
+  s = s.replace(/Vendor\s+Vendor\s+Benefits/gi, 'Vendor Benefits');
+  s = s.replace(/\bVendor(\s+Vendor)+\b/gi, 'Vendor');
   s = s.replace(/\bVendor\s+Vendor\b/gi, 'Vendor');
   return s;
 };
@@ -276,7 +278,14 @@ export const getLevelBenifitsColumns = () => [
   },
   {
     name: "Payout Level",
-    selector: (row: any) => row.payoutLevel,
+    selector: (row: any) => {
+      let val = String(row.payoutLevel || "");
+      val = val.replace(/Vendor\s+Level\s+Benefits/gi, 'Vendor Benefits');
+      val = val.replace(/Vendor\s+Vendor\s+Benefits/gi, 'Vendor Benefits');
+      val = val.replace(/\bVendor(\s+Vendor)+\b/gi, 'Vendor');
+      val = val.replace(/\bVendor\s+Vendor\b/gi, 'Vendor');
+      return val;
+    },
     sortable: true,
   },
   {

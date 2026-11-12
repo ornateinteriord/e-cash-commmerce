@@ -29,22 +29,35 @@ interface PayoutTableProps {
   };
 }
 
-const isVendorWithdrawal = (tx: any): boolean => {
+const isProductLevelWithdrawal = (tx: any): boolean => {
   const type = String(tx.transaction_type || '').toLowerCase();
   const desc = String(tx.description || '').toLowerCase();
-  return type.includes('vendor') || desc.includes('vendor');
+  return type.includes('product level') || desc.includes('product level');
 };
 
 const isEarningWithdrawal = (tx: any): boolean => {
   const type = String(tx.transaction_type || '').toLowerCase();
   const desc = String(tx.description || '').toLowerCase();
-  return type.includes('earning') || desc.includes('earning');
+  return (
+    type.includes('earning withdrawal') ||
+    type === 'earning withdrawal' ||
+    desc.includes('earning wallet') ||
+    desc.includes('earning withdrawal') ||
+    (type.includes('earning') && !desc.includes('sale value') && !desc.includes('vendor wallet'))
+  );
 };
 
-const isProductLevelWithdrawal = (tx: any): boolean => {
+const isVendorWithdrawal = (tx: any): boolean => {
+  if (isProductLevelWithdrawal(tx) || isEarningWithdrawal(tx)) return false;
   const type = String(tx.transaction_type || '').toLowerCase();
   const desc = String(tx.description || '').toLowerCase();
-  return type.includes('product level') || desc.includes('product level');
+  return (
+    type.includes('vendor withdrawal') ||
+    desc.includes('vendor wallet') ||
+    desc.includes('sale value') ||
+    parseFloat(tx.vw_debit || 0) > 0 ||
+    (type.includes('vendor') && !desc.includes('earning'))
+  );
 };
 
 const isMainWalletWithdrawal = (tx: any): boolean => {

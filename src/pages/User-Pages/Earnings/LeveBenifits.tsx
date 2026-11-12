@@ -54,13 +54,12 @@ const LevelBenifits = () => {
 
       if (levelStr) {
         levelStr = levelStr.replace(/Product\s*Level/gi, 'Level');
-        // Handle Level Daily ROI -> Vendor Level Benefits
-        levelStr = levelStr.replace(/\bLevel\s*(\d+)?\s*(?:Daily\s*)?ROI\b/gi, (_m: string, lvl?: string) => lvl ? `Level ${lvl} Vendor Level Benefits` : 'Vendor Level Benefits');
-        levelStr = levelStr.replace(/\bLevel\s*Daily\s*ROI\b/gi, 'Vendor Level Benefits');
-        // Replace "Level Benefits/Bonus/Income" only when NOT preceded by "Vendor "
-        levelStr = levelStr.replace(/(?<!Vendor\s)Level\s*(?:Benefits?|Bonus|Income)/gi, 'Vendor Benefits');
-        // Clean up any double "Vendor Vendor"
-        levelStr = levelStr.replace(/Vendor\s+Vendor\s+Benefits/gi, 'Vendor Level Benefits');
+        levelStr = levelStr.replace(/\bLevel\s*(\d+)?\s*(?:Vendor\s*)?(?:Daily\s*)?ROI\b/gi, (_m: string, lvl?: string) => lvl ? `Level ${lvl} Vendor Benefits` : 'Vendor Benefits');
+        levelStr = levelStr.replace(/\bLevel\s*Daily\s*ROI\b/gi, 'Vendor Benefits');
+        levelStr = levelStr.replace(/\bLevel\s*(\d+)?\s*(?:Level\s*)?(?:Benefits?|Bonus|Income)\b/gi, (_m: string, lvl?: string) => lvl ? `Level ${lvl} Vendor Benefits` : 'Vendor Benefits');
+        levelStr = levelStr.replace(/Vendor\s+Level\s+Benefits/gi, 'Vendor Benefits');
+        levelStr = levelStr.replace(/Vendor\s+Vendor\s+Benefits/gi, 'Vendor Benefits');
+        levelStr = levelStr.replace(/\bVendor(\s+Vendor)+\b/gi, 'Vendor');
         levelStr = levelStr.replace(/\bVendor\s+Vendor\b/gi, 'Vendor');
       }
 

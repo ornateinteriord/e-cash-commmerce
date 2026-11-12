@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import { Box, Typography, Button, Snackbar, Alert, Link as MuiLink } from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import ShareIcon from '@mui/icons-material/Share';
+import QrCode2Icon from '@mui/icons-material/QrCode2';
 import TokenService from '../../queries/token/tokenService';
+import ReferralQRDialog from '../Referral/ReferralQRDialog';
 
 const ReferralLinkCard: React.FC = () => {
     const [copied, setCopied] = useState(false);
+    const [qrOpen, setQrOpen] = useState(false);
     const memberId = TokenService.getMemberId() || '';
 
     // Generate referral URL
@@ -95,6 +98,25 @@ const ReferralLinkCard: React.FC = () => {
                     </Box>
 
                     <Button
+                        variant="contained"
+                        onClick={() => setQrOpen(true)}
+                        startIcon={<QrCode2Icon />}
+                        sx={{
+                            borderRadius: '8px',
+                            bgcolor: '#7c3aed',
+                            color: '#FFFFFF',
+                            textTransform: 'none',
+                            fontWeight: 600,
+                            minWidth: { xs: '100%', sm: 'auto' },
+                            '&:hover': {
+                                bgcolor: '#6d28d9',
+                            },
+                        }}
+                    >
+                        QR Code
+                    </Button>
+
+                    <Button
                         variant="outlined"
                         onClick={handleCopyLink}
                         startIcon={<ContentCopyIcon />}
@@ -144,9 +166,17 @@ const ReferralLinkCard: React.FC = () => {
                         fontSize: '0.875rem',
                     }}
                 >
-                    Share this link with friends and earn rewards when they join!
+                    Share this QR code or link with friends and earn rewards when they join!
                 </Typography>
             </Box>
+
+            <ReferralQRDialog
+                open={qrOpen}
+                onClose={() => setQrOpen(false)}
+                vendorName="Member"
+                vendorCode={memberId}
+                initialType="vendor"
+            />
 
             <Snackbar
                 open={copied}

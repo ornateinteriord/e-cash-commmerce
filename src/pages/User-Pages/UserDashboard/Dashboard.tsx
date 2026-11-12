@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Typography, Box, CircularProgress, Paper, Button, IconButton, Avatar, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Chip } from '@mui/material';
 
@@ -21,6 +21,9 @@ import ShowChartIcon from '@mui/icons-material/ShowChart';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import QrCode2Icon from '@mui/icons-material/QrCode2';
+import ReferralQRDialog from '../../../components/Referral/ReferralQRDialog';
+import { extractTransactionAmount } from '../../../utils/DataTableColumnsProvider';
 import { toast } from 'react-toastify';
 
 import TokenService from '../../../api/token/tokenService';
@@ -35,6 +38,13 @@ const UserDashboard = () => {
   const navigate = useNavigate();
   const [paymentProcessed, setPaymentProcessed] = useState(false);
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
+  const [referralQRDialogOpen, setReferralQRDialogOpen] = useState(false);
+  const [referralQRType, setReferralQRType] = useState<'vendor' | 'customer'>('vendor');
+
+  const handleOpenReferralQR = (type: 'vendor' | 'customer' = 'vendor') => {
+    setReferralQRType(type);
+    setReferralQRDialogOpen(true);
+  };
   const memberId = TokenService.getMemberId();
   const { data: walletOverview } = useGetWalletOverview(memberId);
   const { data: memberDetails, refetch: refetchMemberDetails } = useGetMemberDetails(memberId);
@@ -42,8 +52,29 @@ const UserDashboard = () => {
   const { data: earningWalletData } = useGetEarningWalletOverview(memberId);
   const referralCode = memberDetails?.member_code || memberDetails?.Member_code || memberDetails?.Member_id || memberDetails?.member_id || memberId || '';
   const { mutate: verifyPayment, isPending: isVerifyingPayment } = useVerifyPayment();
-  const { refetch: refetchTransactions } = useGetTransactionDetails("all");
+  const { data: transactionsData, refetch: refetchTransactions } = useGetTransactionDetails("all");
   useGetDailyPayout(memberId);
+
+  // Vendor Level Benefits (50/100-day Daily ROI) total calculated directly from user transactions as fallback
+  const calculatedLevelDailyRoi = useMemo(() => {
+    const rawList = transactionsData?.data || transactionsData;
+    const txList = Array.isArray(rawList) ? rawList : [];
+    const lroiTxs = txList.filter((tx: any) => {
+      if (!tx || typeof tx !== 'object') return false;
+      const txType = (tx.transaction_type || '').toLowerCase();
+      const desc = (tx.description || '').toLowerCase();
+      return (
+        txType === 'level daily roi' ||
+        txType === 'vendor level benefits' ||
+        txType.includes('vendor level benefit') ||
+        desc.includes('level daily roi') ||
+        desc.includes('vendor level benefit') ||
+        tx.benefit_type === 'Level ROI' ||
+        tx.benefit_type === 'Vendor Level Benefits'
+      );
+    });
+    return lroiTxs.reduce((sum: number, t: any) => sum + extractTransactionAmount(t), 0);
+  }, [transactionsData]);
 
   /*
   // Backend provides whether user has an initial investment (canReTopup / hasInvestment)
@@ -1105,7 +1136,7 @@ const UserDashboard = () => {
         {/* 1. Refer a Vendor Container (Royal Indigo-Violet Gradient) */}
         <Paper
           elevation={0}
-          onClick={handleCopyReferralLink}
+          onClick={() => handleOpenReferralQR('vendor')}
           sx={{
             display: 'flex',
             alignItems: 'center',
@@ -1201,8 +1232,35 @@ const UserDashboard = () => {
             </Box>
           </Box>
 
-          {/* Right: Copy & Share Buttons */}
+          {/* Right: QR, Copy & Share Buttons */}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 0.8, sm: 1 }, flexShrink: 0, zIndex: 1 }}>
+            <Button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleOpenReferralQR('vendor');
+              }}
+              startIcon={<QrCode2Icon sx={{ fontSize: '16px !important' }} />}
+              sx={{
+                bgcolor: '#FFFFFF',
+                color: '#4338CA',
+                borderRadius: '11px',
+                fontWeight: 850,
+                fontSize: { xs: '0.76rem', sm: '0.85rem' },
+                textTransform: 'none',
+                px: { xs: 1.3, sm: 1.8 },
+                py: { xs: 0.6, sm: 0.75 },
+                boxShadow: '0 4px 14px rgba(0,0,0,0.18)',
+                '&:hover': {
+                  bgcolor: '#F5F3FF',
+                  transform: 'translateY(-1px)',
+                  boxShadow: '0 6px 18px rgba(0,0,0,0.22)'
+                },
+                transition: 'all 0.2s ease',
+                whiteSpace: 'nowrap'
+              }}
+            >
+              QR Code
+            </Button>
             <Button
               onClick={(e) => {
                 e.stopPropagation();
@@ -1259,7 +1317,7 @@ const UserDashboard = () => {
         {/* 2. Refer a Customer Container (Fresh Emerald-Teal Gradient - Exact Same Dimensions) */}
         <Paper
           elevation={0}
-          onClick={handleCopyCustomerReferralLink}
+          onClick={() => handleOpenReferralQR('customer')}
           sx={{
             display: 'flex',
             alignItems: 'center',
@@ -1355,8 +1413,35 @@ const UserDashboard = () => {
             </Box>
           </Box>
 
-          {/* Right: Copy & Share Buttons */}
+          {/* Right: QR, Copy & Share Buttons */}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 0.8, sm: 1 }, flexShrink: 0, zIndex: 1 }}>
+            <Button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleOpenReferralQR('customer');
+              }}
+              startIcon={<QrCode2Icon sx={{ fontSize: '16px !important' }} />}
+              sx={{
+                bgcolor: '#FFFFFF',
+                color: '#059669',
+                borderRadius: '11px',
+                fontWeight: 850,
+                fontSize: { xs: '0.76rem', sm: '0.85rem' },
+                textTransform: 'none',
+                px: { xs: 1.3, sm: 1.8 },
+                py: { xs: 0.6, sm: 0.75 },
+                boxShadow: '0 4px 14px rgba(0,0,0,0.18)',
+                '&:hover': {
+                  bgcolor: '#ECFDF5',
+                  transform: 'translateY(-1px)',
+                  boxShadow: '0 6px 18px rgba(0,0,0,0.22)'
+                },
+                transition: 'all 0.2s ease',
+                whiteSpace: 'nowrap'
+              }}
+            >
+              QR Code
+            </Button>
             <Button
               onClick={(e) => {
                 e.stopPropagation();
@@ -1725,7 +1810,7 @@ const UserDashboard = () => {
                 boxShadow: '0 2px 6px rgba(217, 119, 6, 0.08)'
               }}>
                 <Typography sx={{ color: '#92400e', fontWeight: 900, fontSize: { xs: '0.8rem', sm: '0.92rem' }, letterSpacing: '-0.3px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                  ₹{Number(walletOverview?.data?.levelBenefits ?? walletOverview?.levelBenefits ?? 0).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                  ₹{Number(walletOverview?.data?.levelBenefits ?? walletOverview?.levelBenefits ?? 0).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 })}
                 </Typography>
               </Box>
             </Box>
@@ -1786,7 +1871,7 @@ const UserDashboard = () => {
                 boxShadow: '0 2px 6px rgba(79, 70, 229, 0.08)'
               }}>
                 <Typography sx={{ color: '#3730a3', fontWeight: 900, fontSize: { xs: '0.8rem', sm: '0.92rem' }, letterSpacing: '-0.3px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                  ₹{Number(walletOverview?.levelDailyRoi ?? walletOverview?.roiLevelBenefits ?? 0).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                  ₹{Number(Math.max(Number(walletOverview?.data?.levelDailyRoi ?? walletOverview?.levelDailyRoi ?? walletOverview?.data?.roiLevelBenefits ?? walletOverview?.roiLevelBenefits ?? 0), Number(calculatedLevelDailyRoi || 0))).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 })}
                 </Typography>
               </Box>
             </Box>
@@ -1999,6 +2084,13 @@ const UserDashboard = () => {
           <ReTopupDialog open={reTopupDialogOpen} onClose={() => setReTopupDialogOpen(false)} />
         </>
       )} */}
+      <ReferralQRDialog
+        open={referralQRDialogOpen}
+        onClose={() => setReferralQRDialogOpen(false)}
+        vendorName={memberDetails?.Name || 'Vendor'}
+        vendorCode={referralCode || memberDetails?.member_code || memberDetails?.Member_code || memberDetails?.Member_id || memberDetails?.member_id || memberId || ''}
+        initialType={referralQRType}
+      />
     </Box>
   );
 };

@@ -1,3 +1,4 @@
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import { Grid, Typography, Box, Paper, Avatar, CircularProgress, Button, Chip } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import '../../Dashboard/dashboard.scss';
@@ -45,44 +46,64 @@ const AdminDashboard = () => {
     member.status?.toLowerCase() === 'pending'
   ).length;
 
-  // Wallet 1: First / Deposit Wallet calculations across members & withdrawals
+  // Helper classifiers for unambiguous wallet matching
+  const isProdLvl = (tx: any) => {
+    const type = String(tx.transaction_type || '').toLowerCase();
+    const desc = String(tx.description || '').toLowerCase();
+    return type.includes('product level') || desc.includes('product level');
+  };
+
+  const isEarnWth = (tx: any) => {
+    const type = String(tx.transaction_type || '').toLowerCase();
+    const desc = String(tx.description || '').toLowerCase();
+    return (
+      type.includes('earning withdrawal') ||
+      type === 'earning withdrawal' ||
+      desc.includes('earning wallet') ||
+      desc.includes('earning withdrawal') ||
+      (type.includes('earning') && !desc.includes('sale value') && !desc.includes('vendor wallet'))
+    );
+  };
+
+  const isVendWth = (tx: any) => {
+    if (isProdLvl(tx) || isEarnWth(tx)) return false;
+    const type = String(tx.transaction_type || '').toLowerCase();
+    const desc = String(tx.description || '').toLowerCase();
+    return (
+      type.includes('vendor withdrawal') ||
+      desc.includes('vendor wallet') ||
+      desc.includes('sale value') ||
+      parseFloat(tx.vw_debit || 0) > 0 ||
+      (type.includes('vendor') && !desc.includes('earning'))
+    );
+  };
+
+  const isMainWth = (tx: any) => {
+    return !isVendWth(tx) && !isEarnWth(tx) && !isProdLvl(tx);
+  };
+
+  // Wallet 1: First / Deposit Wallet
   const totalDepositWalletBalance = members.reduce((acc: number, m: any) => acc + (parseFloat(m.wallet_balance) || 0), 0);
-  const pendingMainWithdrawals = (pendingWithdrawals || []).filter((tx: any) => {
-    const type = String(tx.transaction_type || '').toLowerCase();
-    const desc = String(tx.description || '').toLowerCase();
-    return !type.includes('vendor') && !desc.includes('vendor') && !type.includes('product level') && !desc.includes('product level');
-  });
+  const pendingMainWithdrawals = (pendingWithdrawals || []).filter(isMainWth);
   const pendingMainAmount = pendingMainWithdrawals.reduce((acc: number, tx: any) => acc + (parseFloat(tx.ew_debit) || parseFloat(tx.gross_amount) || 0), 0);
+  const completedMainAmount = (approvedWithdrawals || []).filter(isMainWth).reduce((acc: number, tx: any) => acc + (parseFloat(tx.net_amount) || parseFloat(tx.gross_amount) || parseFloat(tx.ew_debit) || 0), 0);
 
-  // Wallet 2: Sale Value Wallet calculations
+  // Wallet 2: Sale Value Wallet (Vendor Wallet)
   const totalVendorWalletBalance = members.reduce((acc: number, m: any) => acc + (parseFloat(m.vendor_wallet) || 0), 0);
-  const pendingVendorWithdrawals = (pendingWithdrawals || []).filter((tx: any) => {
-    const type = String(tx.transaction_type || '').toLowerCase();
-    const desc = String(tx.description || '').toLowerCase();
-    return type.includes('vendor') || desc.includes('vendor');
-  });
+  const pendingVendorWithdrawals = (pendingWithdrawals || []).filter(isVendWth);
   const pendingVendorAmount = pendingVendorWithdrawals.reduce((acc: number, tx: any) => acc + (parseFloat(tx.vw_debit) || parseFloat(tx.gross_amount) || 0), 0);
+  const completedVendorAmount = (approvedWithdrawals || []).filter(isVendWth).reduce((acc: number, tx: any) => acc + (parseFloat(tx.vw_debit) || parseFloat(tx.net_amount) || parseFloat(tx.gross_amount) || 0), 0);
 
-  // Wallet 3: Product Level Wallet calculations
-  const pendingProductLevelWithdrawals = (pendingWithdrawals || []).filter((tx: any) => {
-    const type = String(tx.transaction_type || '').toLowerCase();
-    const desc = String(tx.description || '').toLowerCase();
-    return type.includes('product level') || desc.includes('product level');
-  });
+  // Wallet 3: Earning Wallet
+  const totalEarningWalletBalance = members.reduce((acc: number, m: any) => acc + (parseFloat(m.earning_wallet) || 0), 0);
+  const pendingEarningWithdrawals = (pendingWithdrawals || []).filter(isEarnWth);
+  const pendingEarningAmount = pendingEarningWithdrawals.reduce((acc: number, tx: any) => acc + (parseFloat(tx.ew_debit) || parseFloat(tx.gross_amount) || 0), 0);
+  const completedEarningAmount = (approvedWithdrawals || []).filter(isEarnWth).reduce((acc: number, tx: any) => acc + (parseFloat(tx.net_amount) || parseFloat(tx.gross_amount) || parseFloat(tx.ew_debit) || 0), 0);
+
+  // Wallet 4: Product Level Wallet
+  const pendingProductLevelWithdrawals = (pendingWithdrawals || []).filter(isProdLvl);
   const pendingProductLevelAmount = pendingProductLevelWithdrawals.reduce((acc: number, tx: any) => acc + (parseFloat(tx.gross_amount) || parseFloat(tx.ew_debit) || 0), 0);
-
-  // Approved totals by wallet
-  const completedVendorAmount = (approvedWithdrawals || []).filter((tx: any) => {
-    const type = String(tx.transaction_type || '').toLowerCase();
-    const desc = String(tx.description || '').toLowerCase();
-    return type.includes('vendor') || desc.includes('vendor');
-  }).reduce((acc: number, tx: any) => acc + (parseFloat(tx.vw_debit) || parseFloat(tx.net_amount) || parseFloat(tx.gross_amount) || 0), 0);
-
-  const completedProductLevelAmount = (approvedWithdrawals || []).filter((tx: any) => {
-    const type = String(tx.transaction_type || '').toLowerCase();
-    const desc = String(tx.description || '').toLowerCase();
-    return type.includes('product level') || desc.includes('product level');
-  }).reduce((acc: number, tx: any) => acc + (parseFloat(tx.net_amount) || parseFloat(tx.gross_amount) || parseFloat(tx.ew_debit) || 0), 0);
+  const completedProductLevelAmount = (approvedWithdrawals || []).filter(isProdLvl).reduce((acc: number, tx: any) => acc + (parseFloat(tx.net_amount) || parseFloat(tx.gross_amount) || parseFloat(tx.ew_debit) || 0), 0);
 
   if (isLoading) {
     return (
@@ -242,7 +263,7 @@ const AdminDashboard = () => {
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
           <Box>
             <Typography variant="subtitle2" sx={{ fontWeight: 900, color: '#0F172A', letterSpacing: '0.8px', fontSize: '0.95rem' }}>
-              3-WALLET PLATFORM MANAGEMENT
+              4-WALLET PLATFORM MANAGEMENT
             </Typography>
             <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 600 }}>
               Separate oversight, live pool balances, and independent withdrawal request queues
@@ -268,7 +289,7 @@ const AdminDashboard = () => {
 
         <Grid container spacing={2.5}>
           {/* Card 1: Deposit / First Wallet */}
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={3}>
             <Paper
               elevation={0}
               sx={{
@@ -309,10 +330,16 @@ const AdminDashboard = () => {
                     {pendingMainWithdrawals.length} request(s)
                   </Typography>
                 </Box>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
                   <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 700 }}>Pending Amount:</Typography>
                   <Typography variant="caption" sx={{ color: '#0F172A', fontWeight: 900 }}>
                     ₹{pendingMainAmount.toFixed(2)}
+                  </Typography>
+                </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 700 }}>Total Paid Payouts:</Typography>
+                  <Typography variant="caption" sx={{ color: '#10B981', fontWeight: 900 }}>
+                    ₹{completedMainAmount.toFixed(2)}
                   </Typography>
                 </Box>
               </Box>
@@ -337,7 +364,7 @@ const AdminDashboard = () => {
           </Grid>
 
           {/* Card 2: Sale Value Wallet */}
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={3}>
             <Paper
               elevation={0}
               sx={{
@@ -411,8 +438,83 @@ const AdminDashboard = () => {
             </Paper>
           </Grid>
 
-          {/* Card 3: Product Level Wallet */}
-          <Grid item xs={12} md={4}>
+          {/* Card 3: Earning Wallet */}
+          <Grid item xs={12} sm={6} md={3}>
+            <Paper
+              elevation={0}
+              sx={{
+                p: 3,
+                borderRadius: '24px',
+                bgcolor: '#FFFFFF',
+                border: '1.5px solid #A7F3D0',
+                boxShadow: '0 4px 18px rgba(5, 150, 105, 0.08)',
+                position: 'relative',
+                overflow: 'hidden'
+              }}
+            >
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
+                <Box sx={{ width: 48, height: 48, borderRadius: '16px', bgcolor: 'rgba(5, 150, 105, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#059669' }}>
+                  <MonetizationOnIcon sx={{ fontSize: 26 }} />
+                </Box>
+                <Chip
+                  label="Wallet 3: 1X Referrals"
+                  size="small"
+                  sx={{ bgcolor: '#ECFDF5', color: '#065F46', fontWeight: 800, fontSize: '0.72rem', borderRadius: '8px' }}
+                />
+              </Box>
+
+              <Typography variant="body2" sx={{ color: '#64748B', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px', mb: 0.5, fontSize: '0.78rem' }}>
+                Earning Wallet
+              </Typography>
+              <Typography variant="h4" sx={{ color: '#0F172A', fontWeight: 900, mb: 1, fontSize: '1.75rem' }}>
+                ₹{totalEarningWalletBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </Typography>
+              <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 600, display: 'block', mb: 2 }}>
+                Direct referral & team commissions (1X Limit)
+              </Typography>
+
+              <Box sx={{ p: 1.5, bgcolor: '#F8FAFC', borderRadius: '14px', border: '1px solid #E2E8F0', mb: 2.5 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
+                  <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 700 }}>Pending Requests:</Typography>
+                  <Typography variant="caption" sx={{ color: pendingEarningWithdrawals.length > 0 ? '#DC2626' : '#10B981', fontWeight: 900 }}>
+                    {pendingEarningWithdrawals.length} request(s)
+                  </Typography>
+                </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
+                  <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 700 }}>Pending Amount:</Typography>
+                  <Typography variant="caption" sx={{ color: '#0F172A', fontWeight: 900 }}>
+                    ₹{pendingEarningAmount.toFixed(2)}
+                  </Typography>
+                </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 700 }}>Total Paid Payouts:</Typography>
+                  <Typography variant="caption" sx={{ color: '#059669', fontWeight: 900 }}>
+                    ₹{completedEarningAmount.toFixed(2)}
+                  </Typography>
+                </Box>
+              </Box>
+
+              <Button
+                fullWidth
+                variant="contained"
+                onClick={() => navigate('/admin/payout?wallet=EARNING')}
+                sx={{
+                  bgcolor: '#059669',
+                  color: '#FFFFFF',
+                  fontWeight: 800,
+                  borderRadius: '12px',
+                  textTransform: 'none',
+                  py: 1,
+                  '&:hover': { bgcolor: '#047857' }
+                }}
+              >
+                Manage Earning Payouts ({pendingEarningWithdrawals.length})
+              </Button>
+            </Paper>
+          </Grid>
+
+          {/* Card 4: Product Level Wallet */}
+          <Grid item xs={12} md={3}>
             <Paper
               elevation={0}
               sx={{
