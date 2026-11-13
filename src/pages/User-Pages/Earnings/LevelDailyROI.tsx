@@ -69,7 +69,17 @@ const LevelDailyROI = () => {
     if (!tx || typeof tx !== 'object') return false;
     const txType = (tx.transaction_type || '').toLowerCase();
     const desc = (tx.description || '').toLowerCase();
-    return txType === 'level daily roi' || txType.includes('vendor level benefit') || desc.includes('level daily roi') || desc.includes('vendor level benefit') || tx.benefit_type === 'Level ROI' || tx.benefit_type === 'Vendor Level Benefits';
+    const benefit = (tx.benefit_type || '').toLowerCase();
+    return (
+      txType === 'level daily roi' ||
+      txType === 'roi level benefit' ||
+      txType.includes('vendor level benefit') ||
+      desc.includes('level daily roi') ||
+      desc.includes('vendor level benefit') ||
+      (desc.includes('vendor benefits') && (desc.includes('/day') || desc.includes('/100') || desc.includes('/50') || desc.includes('day '))) ||
+      benefit === 'level roi' ||
+      benefit === 'vendor level benefits'
+    );
   });
 
   const schedules: any[] = Array.isArray(schedulesData) ? schedulesData : [];
