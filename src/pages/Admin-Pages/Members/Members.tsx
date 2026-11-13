@@ -468,7 +468,7 @@ export const PendingMembers = () => {
                   <Grid item xs={4}>
                     <Typography variant="caption" color="text.secondary">Daily ROI (400 Days)</Typography>
                     <Typography variant="body2" sx={{ fontWeight: 700, color: '#0369a1' }}>
-                      ₹{(effectiveAmount * 0.0005).toFixed(2)}/day
+                      ₹{(effectiveAmount * 0.005).toFixed(2)}/day
                     </Typography>
                   </Grid>
                   <Grid item xs={4}>
