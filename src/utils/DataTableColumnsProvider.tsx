@@ -543,34 +543,6 @@ export const getWalletColumns = () => [
     )
   },
   {
-    name: "Type",
-    selector: (row: any) => {
-      if (row.transaction_type === "Level Benefits") {
-        if (row.description && row.description.toLowerCase().includes('referral')) {
-          return "Referral Bonus";
-        }
-        return "Level Bonus";
-      }
-      return row.transaction_type || row.benefit_type || "Transaction";
-    },
-    sortable: true,
-    cell: (row: any) => {
-      let t = row.transaction_type || row.benefit_type || "Transaction";
-      if (t === "Level Benefits") {
-        if (row.description && row.description.toLowerCase().includes('referral')) {
-          t = "Referral Bonus";
-        } else {
-          t = "Level Bonus";
-        }
-      }
-      return (
-        <span style={{ fontSize: '0.83rem', color: '#FE8001', fontWeight: 800 }}>
-          {t}
-        </span>
-      );
-    }
-  },
-  {
     name: "Description",
     selector: (row: any) => row.description || "-",
     sortable: true,
@@ -2299,16 +2271,6 @@ export const getVendorWalletColumns = () => [
     )
   },
   {
-    name: "Type",
-    selector: (row: any) => row.transaction_type || "Vendor Withdrawal",
-    sortable: true,
-    cell: (row: any) => (
-      <span style={{ fontSize: '0.83rem', color: '#FE8001', fontWeight: 800 }}>
-        {row.transaction_type || "Vendor Withdrawal"}
-      </span>
-    )
-  },
-  {
     name: "Amount",
     selector: (row: any) => extractTransactionAmount(row),
     sortable: true,
@@ -2477,16 +2439,6 @@ export const getEarningWalletColumns = () => [
     cell: (row: any) => (
       <span style={{ fontFamily: 'monospace', fontSize: '0.78rem', color: '#64748B' }}>
         {row.tx_no || row.transaction_id || "-"}
-      </span>
-    )
-  },
-  {
-    name: "Type",
-    selector: (row: any) => row.transaction_type || "Referral Bonus",
-    sortable: true,
-    cell: (row: any) => (
-      <span style={{ fontSize: '0.83rem', color: '#7C3AED', fontWeight: 800 }}>
-        {row.transaction_type || "Referral Bonus"}
       </span>
     )
   },
