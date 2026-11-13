@@ -103,17 +103,6 @@ const SingleLevelIncomeHistory = () => {
       minWidth: "120px",
     },
     {
-      name: "Type",
-      selector: (row: any) => row.payoutLevel,
-      sortable: true,
-      minWidth: "140px",
-      cell: (row: any) => (
-        <span style={{ fontWeight: 600, color: "#881337" }}>
-          {row.payoutLevel}
-        </span>
-      ),
-    },
-    {
       name: "Description",
       selector: (row: any) => row.description,
       sortable: true,
