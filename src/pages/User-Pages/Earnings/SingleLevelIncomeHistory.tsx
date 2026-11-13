@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import DataTable from 'react-data-table-component';
 import { Card, CardContent, TextField, Box, Typography } from '@mui/material';
-import { DASHBOARD_CUTSOM_STYLE } from '../../../utils/DataTableColumnsProvider';
+import { DASHBOARD_CUTSOM_STYLE, extractTransactionAmount } from '../../../utils/DataTableColumnsProvider';
 import { useGetTransactionDetails } from '../../../api/Memeber';
 import { getFormattedDate } from '../../../utils/common';
 
@@ -31,21 +31,15 @@ const SingleLevelIncomeHistory = () => {
         const descStr = transaction.description?.toLowerCase() || "";
         const benefitType = transaction.benefit_type?.toLowerCase() || "";
 
-        // Match Daily Incentive, Single Level, Single Leg, Single Line Income, and ROI Payout
-        const isDailyOrSingle =
-          txType.includes('single') ||
-          descStr.includes('single') ||
-          benefitType.includes('single') ||
-          txType.includes('daily') ||
-          descStr.includes('daily') ||
-          benefitType.includes('daily') ||
-          txType.includes('roi payout') ||
-          descStr.includes('roi payout');
+        // Match ONLY Daily Incentive transactions
+        const isDailyIncentive =
+          descStr.includes('daily incentive') ||
+          txType.includes('daily incentive') ||
+          benefitType.includes('daily incentive');
 
-        const isNotLevelBonus = !txType.includes('level benefit') && !txType.includes('level bonus');
         const isNotWithdrawal = !txType.includes('withdrawal') && !descStr.includes('withdrawal');
 
-        return isDailyOrSingle && isNotLevelBonus && isNotWithdrawal;
+        return isDailyIncentive && isNotWithdrawal;
       })
       .map((transaction: any) => {
         let extractedMemberId = 'N/A';
@@ -64,6 +58,7 @@ const SingleLevelIncomeHistory = () => {
           parseFloat(transaction.gross_amount) ||
           parseFloat(transaction.net_amount) ||
           parseFloat(transaction.amount) ||
+          extractTransactionAmount(transaction) ||
           0;
 
         return {
