@@ -28,6 +28,9 @@ const LevelBenifits = () => {
 
       // Match Level Income (Levels 2-10)
       const isLevelIncome = (
+        txType === "vendor benefits" ||
+        benefitType === 'indirect' ||
+        (/level\s*\d+/i.test(descStr) && descStr.includes('vendor benefit')) ||
         txType.includes('level income') ||
         descStr.includes('level income') ||
         txType.includes('product level') ||
@@ -38,7 +41,7 @@ const LevelBenifits = () => {
         descStr.includes('level bonus') ||
         benefitType.includes('level income')
       ) && 
-      !txType.includes('roi') && !descStr.includes('roi') &&
+      !txType.includes('roi') && !descStr.includes('roi') && !benefitType.includes('roi') && !descStr.includes('/day') && !descStr.includes('/100') && !descStr.includes('vendor level benefit') &&
       !txType.includes('referral') && !descStr.includes('referral') &&
       !txType.includes('daily incentive') && !descStr.includes('daily incentive') &&
       !txType.includes('order margin') && !descStr.includes('order margin');

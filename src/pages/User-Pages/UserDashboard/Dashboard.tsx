@@ -76,6 +76,39 @@ const UserDashboard = () => {
     return lroiTxs.reduce((sum: number, t: any) => sum + extractTransactionAmount(t), 0);
   }, [transactionsData]);
 
+  // Vendor Benefits (One-time MLM Level progression) total calculated directly from user transactions as fallback
+  const calculatedLevelBenefits = useMemo(() => {
+    const rawList = transactionsData?.data || transactionsData;
+    const txList = Array.isArray(rawList) ? rawList : [];
+    const lvlTxs = txList.filter((tx: any) => {
+      if (!tx || typeof tx !== 'object') return false;
+      const txType = (tx.transaction_type || '').toLowerCase();
+      const descStr = (tx.description || '').toLowerCase();
+      const benefitType = (tx.benefit_type || '').toLowerCase();
+      const isLevelIncome = (
+        txType === "vendor benefits" ||
+        benefitType === 'indirect' ||
+        (/level\s*\d+/i.test(descStr) && descStr.includes('vendor benefit')) ||
+        txType.includes('level income') ||
+        descStr.includes('level income') ||
+        txType.includes('product level') ||
+        descStr.includes('product level') ||
+        txType.includes('level benefit') ||
+        descStr.includes('level benefit') ||
+        txType.includes('level bonus') ||
+        descStr.includes('level bonus') ||
+        benefitType.includes('level income')
+      ) &&
+      !txType.includes('roi') && !descStr.includes('roi') && !benefitType.includes('roi') &&
+      !descStr.includes('/day') && !descStr.includes('/100') && !descStr.includes('vendor level benefit') &&
+      !txType.includes('referral') && !descStr.includes('referral') && benefitType !== 'direct' &&
+      !txType.includes('daily incentive') && !descStr.includes('daily incentive') &&
+      !txType.includes('order margin') && !descStr.includes('order margin');
+      return isLevelIncome;
+    });
+    return lvlTxs.reduce((sum: number, t: any) => sum + extractTransactionAmount(t), 0);
+  }, [transactionsData]);
+
   /*
   // Backend provides whether user has an initial investment (canReTopup / hasInvestment)
   const hasInvestment = Boolean(
@@ -1810,7 +1843,7 @@ const UserDashboard = () => {
                 boxShadow: '0 2px 6px rgba(217, 119, 6, 0.08)'
               }}>
                 <Typography sx={{ color: '#92400e', fontWeight: 900, fontSize: { xs: '0.8rem', sm: '0.92rem' }, letterSpacing: '-0.3px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                  ₹{Number(walletOverview?.data?.levelBenefits ?? walletOverview?.levelBenefits ?? 0).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 })}
+                  ₹{Number(Math.max(Number(walletOverview?.data?.levelBenefits ?? walletOverview?.levelBenefits ?? 0), Number(calculatedLevelBenefits || 0))).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 })}
                 </Typography>
               </Box>
             </Box>
