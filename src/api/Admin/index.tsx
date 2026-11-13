@@ -50,6 +50,26 @@ export const useGetAllMembersDetails = () =>{
     })
 }
 
+export const useSyncReferralTokens = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async () => {
+      return await post("/user/sync-referral-tokens", {});
+    },
+    onSuccess: (response: any) => {
+      if (response.success) {
+        toast.success(response.message || "Tokens synced successfully!");
+        queryClient.invalidateQueries({ queryKey: ["allMembers"] });
+      } else {
+        toast.error(response.message || "Failed to sync tokens");
+      }
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || "Failed to sync tokens");
+    }
+  });
+};
+
 export const  useGetMemberDetails =(memberId:any)=>{
   return useQuery({
     queryKey:["members",memberId],

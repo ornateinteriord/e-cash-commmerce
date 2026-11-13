@@ -80,6 +80,13 @@ const AdminLevelDailyROI = lazy(
 
 const AdminPayout = lazy(() => import("./pages/Admin-Pages/Payout/Payout"));
 
+const AdminVendorTokens = lazy(
+  () => import("./pages/Admin-Pages/Tokens/VendorTokens")
+);
+const AdminCustomerTokens = lazy(
+  () => import("./pages/Admin-Pages/Tokens/CustomerTokens")
+);
+
 const AdminTransactions = lazy(
   () => import("./pages/Admin-Pages/Transactions/Transactions")
 );
@@ -459,6 +466,16 @@ const RoutesProvider = ({
               <Route
                 path="/admin/income/level-daily-roi"
                 element={<AdminLevelDailyROI />}
+              />
+
+              {/* admin token routes */}
+              <Route
+                path="/admin/tokens/vendor"
+                element={<AdminVendorTokens />}
+              />
+              <Route
+                path="/admin/tokens/customer"
+                element={<AdminCustomerTokens />}
               />
 
               <Route path="/admin/payout" element={<AdminPayout />} />

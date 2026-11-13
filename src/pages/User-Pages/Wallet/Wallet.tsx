@@ -529,7 +529,56 @@ const Wallet = () => {
         {/* Transaction History */}
         {!isWithdrawalView && (() => {
           const allTransactions: any[] = walletData?.transactions || walletData?.data?.transactions || [];
-          const filteredTransactions = allTransactions.filter((tx: any) => {
+          const depositTransactions = allTransactions.filter((tx: any) => {
+            const txType = (tx.transaction_type || "").toLowerCase();
+            const desc = (tx.description || "").toLowerCase();
+            const benefit = (tx.benefit_type || "").toLowerCase();
+
+            // Strictly exclude any earnings
+            const isEarning = (
+              txType.includes("incentive") ||
+              desc.includes("incentive") ||
+              txType.includes("roi") ||
+              desc.includes("roi") ||
+              txType.includes("benefit") ||
+              desc.includes("benefit") ||
+              txType.includes("referral") ||
+              desc.includes("referral") ||
+              txType.includes("level") ||
+              desc.includes("level") ||
+              txType.includes("bonus") ||
+              desc.includes("bonus") ||
+              txType.includes("commission") ||
+              desc.includes("commission") ||
+              txType.includes("income") ||
+              desc.includes("income") ||
+              txType.includes("margin") ||
+              desc.includes("margin") ||
+              benefit.includes("level") ||
+              benefit.includes("roi") ||
+              benefit.includes("benefit")
+            );
+
+            if (isEarning) return false;
+
+            const isDeposit = (
+              txType.includes("deposit") ||
+              desc.includes("deposit") ||
+              txType.includes("load fund") ||
+              desc.includes("load fund") ||
+              txType.includes("credit deposit") ||
+              desc.includes("add credits") ||
+              txType.includes("add money") ||
+              desc.includes("add money") ||
+              txType.includes("top up") ||
+              desc.includes("top up") ||
+              parseFloat(tx.ew_credit || 0) > 0
+            );
+
+            return isDeposit;
+          });
+
+          const filteredTransactions = depositTransactions.filter((tx: any) => {
             if (!searchQuery.trim()) return true;
             const q = searchQuery.toLowerCase().trim();
             const txAmt = extractTransactionAmount(tx);
@@ -546,7 +595,7 @@ const Wallet = () => {
           return (
             <>
               <div style={{ marginBottom: "1.2rem", color: "#1F333B", fontWeight: 800, fontSize: "1.25rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <span>Transaction History</span>
+                <span>Deposit Transactions</span>
                 <Button 
                   variant="contained" 
                   onClick={() => setSearchParams({ type: 'withdrawal' })}
