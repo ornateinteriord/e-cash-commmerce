@@ -50,6 +50,84 @@ export const useGetAllMembersDetails = () =>{
     })
 }
 
+export const useGetCustomerTokens = () => {
+  return useQuery({
+    queryKey: ["customerTokens"],
+    queryFn: async () => {
+      const response = await get("/admin/customer-tokens");
+      if (response.success) {
+        return response.customers || [];
+      } else {
+        throw new Error(response.message || "Failed to fetch customer tokens");
+      }
+    }
+  });
+};
+
+export const useGetVendorUplines = (vendorId: string | null) => {
+  return useQuery({
+    queryKey: ["vendorUplines", vendorId],
+    queryFn: async () => {
+      if (!vendorId) return null;
+      const response = await get(`/admin/upline-tree/vendor/${vendorId}`);
+      if (response.success) {
+        return response;
+      } else {
+        throw new Error(response.message || "Failed to fetch vendor uplines");
+      }
+    },
+    enabled: !!vendorId
+  });
+};
+
+export const useGetCustomerUplines = (customerId: string | null) => {
+  return useQuery({
+    queryKey: ["customerUplines", customerId],
+    queryFn: async () => {
+      if (!customerId) return null;
+      const response = await get(`/admin/upline-tree/customer/${customerId}`);
+      if (response.success) {
+        return response;
+      } else {
+        throw new Error(response.message || "Failed to fetch customer uplines");
+      }
+    },
+    enabled: !!customerId
+  });
+};
+
+export const useGetVendorTokenContributors = (vendorId: string | null) => {
+  return useQuery({
+    queryKey: ["vendorTokenContributors", vendorId],
+    queryFn: async () => {
+      if (!vendorId) return null;
+      const response = await get(`/admin/token-contributors/vendor/${vendorId}`);
+      if (response.success) {
+        return response;
+      } else {
+        throw new Error(response.message || "Failed to fetch vendor token contributors");
+      }
+    },
+    enabled: !!vendorId
+  });
+};
+
+export const useGetCustomerTokenContributors = (customerId: string | null) => {
+  return useQuery({
+    queryKey: ["customerTokenContributors", customerId],
+    queryFn: async () => {
+      if (!customerId) return null;
+      const response = await get(`/admin/token-contributors/customer/${customerId}`);
+      if (response.success) {
+        return response;
+      } else {
+        throw new Error(response.message || "Failed to fetch customer token contributors");
+      }
+    },
+    enabled: !!customerId
+  });
+};
+
 export const useSyncReferralTokens = () => {
   const queryClient = useQueryClient();
   return useMutation({

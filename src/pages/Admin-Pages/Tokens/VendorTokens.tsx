@@ -16,15 +16,28 @@ import SyncIcon from '@mui/icons-material/Sync';
 import GroupIcon from '@mui/icons-material/Group';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import DataTable, { TableColumn } from 'react-data-table-component';
 import { DASHBOARD_CUTSOM_STYLE } from '../../../utils/DataTableColumnsProvider';
-import { useGetAllMembersDetails, useSyncReferralTokens } from '../../../api/Admin';
+import { useGetAllMembersDetails, useGetVendorUplines, useGetVendorTokenContributors } from '../../../api/Admin';
 import TokenCoin from '../../../components/common/TokenCoin';
+import UplinerDialog from '../../../components/common/UplinerDialog';
 
 export const VendorTokens: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedVendor, setSelectedVendor] = useState<any>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
   const { data: allMembers = [], isLoading, refetch } = useGetAllMembersDetails();
-  const { mutate: syncTokens, isPending: isSyncing } = useSyncReferralTokens();
+
+  const vendorIdToQuery = selectedVendor?.Member_id || selectedVendor?.member_id || selectedVendor?.member_code || selectedVendor?.mobileno || null;
+  const { data: contributorsData, isLoading: isContributorsLoading } = useGetVendorTokenContributors(isDialogOpen ? vendorIdToQuery : null);
+  const { data: uplinesData, isLoading: isUplinesLoading } = useGetVendorUplines(isDialogOpen ? vendorIdToQuery : null);
+
+  const handleRowClick = (row: any) => {
+    setSelectedVendor(row);
+    setIsDialogOpen(true);
+  };
 
   // Filter for vendors
   const vendorsList = useMemo(() => {
@@ -65,14 +78,6 @@ export const VendorTokens: React.FC = () => {
     if (!vendorsList.length) return null;
     return [...vendorsList].sort((a: any, b: any) => getTokenVal(b) - getTokenVal(a))[0];
   }, [vendorsList]);
-
-  const handleSyncTokens = () => {
-    syncTokens(undefined, {
-      onSuccess: () => {
-        refetch();
-      }
-    });
-  };
 
   const columns: TableColumn<any>[] = [
     {
@@ -217,6 +222,34 @@ export const VendorTokens: React.FC = () => {
       },
     },
     {
+      name: 'Upliners',
+      center: true,
+      width: '130px',
+      cell: (row: any) => (
+        <Chip
+          icon={<AccountTreeIcon sx={{ fontSize: '14px !important' }} />}
+          label="Upliners"
+          size="small"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleRowClick(row);
+          }}
+          sx={{
+            fontWeight: 800,
+            fontSize: '0.74rem',
+            bgcolor: 'rgba(2, 132, 199, 0.12)',
+            color: '#0284c7',
+            border: '1px solid rgba(2, 132, 199, 0.35)',
+            cursor: 'pointer',
+            '&:hover': {
+              bgcolor: '#0284c7',
+              color: '#ffffff',
+            },
+          }}
+        />
+      ),
+    },
+    {
       name: 'Joined Date',
       selector: (row: any) => row.Date_of_joining || row.createdAt || 'N/A',
       sortable: true,
@@ -230,7 +263,7 @@ export const VendorTokens: React.FC = () => {
   ];
 
   return (
-    <Box sx={{ p: { xs: 2, md: 3 }, bgcolor: '#f8fafc', minHeight: '100vh' }}>
+    <Box sx={{ p: { xs: 1.5, sm: 2, md: 3 }, bgcolor: '#f8fafc', minHeight: '100vh' }}>
       {/* Header */}
       <Box
         sx={{
@@ -239,94 +272,99 @@ export const VendorTokens: React.FC = () => {
           justifyContent: 'space-between',
           alignItems: { xs: 'flex-start', sm: 'center' },
           gap: 2,
-          mb: 3,
+          mb: { xs: 2, sm: 3 },
         }}
       >
         <Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-            <TokenCoin value={totalTokens} size={36} />
-            <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.2 }}>
+            <TokenCoin value={totalTokens} size={32} />
+            <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.2rem', sm: '1.5rem' } }}>
               Vendor Tokens Management
             </Typography>
           </Box>
-          <Typography variant="body2" sx={{ color: '#64748b', mt: 0.5 }}>
+          <Typography variant="body2" sx={{ color: '#64748b', mt: 0.5, fontSize: { xs: '0.78rem', sm: '0.875rem' } }}>
             Track and monitor referral tokens awarded to vendors across all 20 upline referral tiers.
           </Typography>
         </Box>
 
         <Button
-          variant="contained"
-          onClick={handleSyncTokens}
-          disabled={isSyncing}
-          startIcon={isSyncing ? <CircularProgress size={18} color="inherit" /> : <SyncIcon />}
+          variant="outlined"
+          onClick={() => refetch()}
+          disabled={isLoading}
+          startIcon={isLoading ? <CircularProgress size={16} color="inherit" /> : <SyncIcon />}
           sx={{
-            background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
-            color: '#fff',
+            borderColor: '#cbd5e1',
+            color: '#334155',
             fontWeight: 700,
             borderRadius: '10px',
             textTransform: 'none',
-            px: 2.5,
-            py: 1,
-            boxShadow: '0 4px 12px rgba(245, 158, 11, 0.25)',
+            px: 2,
+            py: 0.8,
+            fontSize: { xs: '0.82rem', sm: '0.875rem' },
+            width: { xs: '100%', sm: 'auto' },
+            bgcolor: '#ffffff',
             '&:hover': {
-              background: 'linear-gradient(135deg, #d97706 0%, #b45309 100%)',
+              bgcolor: '#f8fafc',
+              borderColor: '#94a3b8',
             }
           }}
         >
-          {isSyncing ? 'Recalculating...' : 'Recalculate & Sync Tokens'}
+          Refresh Data
         </Button>
       </Box>
 
       {/* Summary KPI Cards */}
-      <Grid container spacing={2.5} sx={{ mb: 3 }}>
+      <Grid container spacing={{ xs: 1.5, sm: 2.5 }} sx={{ mb: { xs: 2, sm: 3 } }}>
         {/* Total Tokens Card */}
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid item xs={6} sm={6} md={3}>
           <Card
             sx={{
               borderRadius: '14px',
               border: '1.5px solid #fed7aa',
               background: 'linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)',
               boxShadow: '0 4px 12px rgba(245, 158, 11, 0.08)',
+              height: '100%',
             }}
           >
-            <CardContent sx={{ p: 2.5 }}>
+            <CardContent sx={{ p: { xs: 1.5, sm: 2.5 } }}>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <Box>
-                  <Typography variant="caption" sx={{ color: '#92400e', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                    Total Tokens Issued
+                  <Typography variant="caption" sx={{ color: '#92400e', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', fontSize: { xs: '0.68rem', sm: '0.75rem' } }}>
+                    Total Tokens
                   </Typography>
-                  <Typography variant="h4" sx={{ fontWeight: 900, color: '#b45309', mt: 0.5 }}>
+                  <Typography variant="h4" sx={{ fontWeight: 900, color: '#b45309', mt: 0.5, fontSize: { xs: '1.25rem', sm: '2rem' } }}>
                     {totalTokens.toLocaleString()}
                   </Typography>
                 </Box>
-                <TokenCoin value={totalTokens} size={48} />
+                <TokenCoin value={totalTokens} size={36} />
               </Box>
             </CardContent>
           </Card>
         </Grid>
 
         {/* Vendors with Tokens Card */}
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid item xs={6} sm={6} md={3}>
           <Card
             sx={{
               borderRadius: '14px',
               border: '1px solid #e2e8f0',
               background: '#ffffff',
               boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+              height: '100%',
             }}
           >
-            <CardContent sx={{ p: 2.5 }}>
+            <CardContent sx={{ p: { xs: 1.5, sm: 2.5 } }}>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <Box>
-                  <Typography variant="caption" sx={{ color: '#64748b', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                  <Typography variant="caption" sx={{ color: '#64748b', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', fontSize: { xs: '0.68rem', sm: '0.75rem' } }}>
                     Token Earners
                   </Typography>
-                  <Typography variant="h4" sx={{ fontWeight: 900, color: '#0369a1', mt: 0.5 }}>
+                  <Typography variant="h4" sx={{ fontWeight: 900, color: '#0369a1', mt: 0.5, fontSize: { xs: '1.25rem', sm: '2rem' } }}>
                     {vendorsWithTokens}
                   </Typography>
                 </Box>
-                <Box sx={{ p: 1.2, borderRadius: '12px', bgcolor: '#e0f2fe', color: '#0284c7' }}>
-                  <CheckCircleIcon sx={{ fontSize: 32 }} />
+                <Box sx={{ p: { xs: 0.8, sm: 1.2 }, borderRadius: '10px', bgcolor: '#e0f2fe', color: '#0284c7' }}>
+                  <CheckCircleIcon sx={{ fontSize: { xs: 24, sm: 32 } }} />
                 </Box>
               </Box>
             </CardContent>
@@ -334,27 +372,28 @@ export const VendorTokens: React.FC = () => {
         </Grid>
 
         {/* Total Vendors Card */}
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid item xs={6} sm={6} md={3}>
           <Card
             sx={{
               borderRadius: '14px',
               border: '1px solid #e2e8f0',
               background: '#ffffff',
               boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+              height: '100%',
             }}
           >
-            <CardContent sx={{ p: 2.5 }}>
+            <CardContent sx={{ p: { xs: 1.5, sm: 2.5 } }}>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <Box>
-                  <Typography variant="caption" sx={{ color: '#64748b', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                  <Typography variant="caption" sx={{ color: '#64748b', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', fontSize: { xs: '0.68rem', sm: '0.75rem' } }}>
                     Total Vendors
                   </Typography>
-                  <Typography variant="h4" sx={{ fontWeight: 900, color: '#334155', mt: 0.5 }}>
+                  <Typography variant="h4" sx={{ fontWeight: 900, color: '#334155', mt: 0.5, fontSize: { xs: '1.25rem', sm: '2rem' } }}>
                     {vendorsList.length}
                   </Typography>
                 </Box>
-                <Box sx={{ p: 1.2, borderRadius: '12px', bgcolor: '#f1f5f9', color: '#64748b' }}>
-                  <GroupIcon sx={{ fontSize: 32 }} />
+                <Box sx={{ p: { xs: 0.8, sm: 1.2 }, borderRadius: '10px', bgcolor: '#f1f5f9', color: '#64748b' }}>
+                  <GroupIcon sx={{ fontSize: { xs: 24, sm: 32 } }} />
                 </Box>
               </Box>
             </CardContent>
@@ -362,30 +401,31 @@ export const VendorTokens: React.FC = () => {
         </Grid>
 
         {/* Top Token Holder Card */}
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid item xs={6} sm={6} md={3}>
           <Card
             sx={{
               borderRadius: '14px',
               border: '1px solid #e2e8f0',
               background: '#ffffff',
               boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+              height: '100%',
             }}
           >
-            <CardContent sx={{ p: 2.5 }}>
+            <CardContent sx={{ p: { xs: 1.5, sm: 2.5 } }}>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <Box sx={{ minWidth: 0, pr: 1 }}>
-                  <Typography variant="caption" sx={{ color: '#64748b', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                <Box sx={{ minWidth: 0, pr: 0.5 }}>
+                  <Typography variant="caption" sx={{ color: '#64748b', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', fontSize: { xs: '0.68rem', sm: '0.75rem' } }}>
                     Top Earner
                   </Typography>
-                  <Typography variant="h6" sx={{ fontWeight: 800, color: '#16a34a', mt: 0.5, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  <Typography variant="h6" sx={{ fontWeight: 800, color: '#16a34a', mt: 0.5, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontSize: { xs: '0.9rem', sm: '1.1rem' } }}>
                     {topTokenVendor?.Name || topTokenVendor?.name || 'None'}
                   </Typography>
-                  <Typography variant="caption" sx={{ color: '#64748b', fontWeight: 600 }}>
+                  <Typography variant="caption" sx={{ color: '#64748b', fontWeight: 600, fontSize: { xs: '0.68rem', sm: '0.75rem' } }}>
                     {topTokenVendor ? `${topTokenVendor.tokens || 0} Tokens` : '-'}
                   </Typography>
                 </Box>
-                <Box sx={{ p: 1.2, borderRadius: '12px', bgcolor: '#dcfce7', color: '#16a34a', flexShrink: 0 }}>
-                  <EmojiEventsIcon sx={{ fontSize: 32 }} />
+                <Box sx={{ p: { xs: 0.8, sm: 1.2 }, borderRadius: '10px', bgcolor: '#dcfce7', color: '#16a34a', flexShrink: 0 }}>
+                  <EmojiEventsIcon sx={{ fontSize: { xs: 24, sm: 32 } }} />
                 </Box>
               </Box>
             </CardContent>
@@ -445,26 +485,56 @@ export const VendorTokens: React.FC = () => {
               <CircularProgress size={36} sx={{ color: '#f59e0b' }} />
             </Box>
           ) : (
-            <DataTable
-              columns={columns}
-              data={filteredVendors}
-              customStyles={DASHBOARD_CUTSOM_STYLE}
-              pagination
-              paginationPerPage={15}
-              paginationRowsPerPageOptions={[10, 15, 25, 50, 100]}
-              highlightOnHover
-              responsive
-              noDataComponent={
-                <Box sx={{ p: 4, textAlign: 'center' }}>
-                  <Typography variant="body1" sx={{ color: '#64748b' }}>
-                    No vendors found matching your criteria.
-                  </Typography>
-                </Box>
-              }
-            />
+            <Box sx={{ width: '100%', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+              <DataTable
+                columns={columns}
+                data={filteredVendors}
+                customStyles={DASHBOARD_CUTSOM_STYLE}
+                pagination
+                paginationPerPage={15}
+                paginationRowsPerPageOptions={[10, 15, 25, 50, 100]}
+                highlightOnHover
+                pointerOnHover
+                onRowClicked={handleRowClick}
+                responsive
+                noDataComponent={
+                  <Box sx={{ p: 4, textAlign: 'center' }}>
+                    <Typography variant="body1" sx={{ color: '#64748b' }}>
+                      No vendors found matching your criteria.
+                    </Typography>
+                  </Box>
+                }
+              />
+            </Box>
           )}
         </CardContent>
       </Card>
+
+      {/* Upliner Hierarchy Dialog */}
+      <UplinerDialog
+        open={isDialogOpen}
+        onClose={() => {
+          setIsDialogOpen(false);
+          setSelectedVendor(null);
+        }}
+        entityType="Vendor"
+        target={
+          selectedVendor
+            ? {
+                id: selectedVendor.Member_id || selectedVendor.member_id,
+                member_code: selectedVendor.member_code || selectedVendor.Member_id,
+                name: selectedVendor.Name || selectedVendor.name,
+                mobile: selectedVendor.mobileno || selectedVendor.contactno,
+                token: getTokenVal(selectedVendor),
+                status: selectedVendor.status,
+              }
+            : null
+        }
+        contributors={contributorsData?.contributors || []}
+        isContributorsLoading={isContributorsLoading}
+        uplines={uplinesData?.uplines || []}
+        isUplinesLoading={isUplinesLoading}
+      />
     </Box>
   );
 };

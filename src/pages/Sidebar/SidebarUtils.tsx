@@ -4,7 +4,7 @@ import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import QrCode2Icon from "@mui/icons-material/QrCode2";
 import SendIcon from "@mui/icons-material/Send";
 import StorefrontIcon from "@mui/icons-material/Storefront";
-// import TollIcon from "@mui/icons-material/Toll";
+import TollIcon from "@mui/icons-material/Toll";
 import { LucideIcons, MuiIcons } from '../Icons';
 
 export const UserSideBarMenuItems: SideBarMenuItemType[] = [
@@ -253,23 +253,23 @@ export const AdminSideBarMenuItems: SideBarMenuItemType[] = [
       },
     ],
   },
-  // {
-  //   name: "Token",
-  //   icon: <TollIcon />,
-  //   isExpandable: true,
-  //   subItems: [
-  //     {
-  //       name: "Vendor token",
-  //       path: "/admin/tokens/vendor",
-  //       icon: <StorefrontIcon />,
-  //     },
-  //     {
-  //       name: "Customer token",
-  //       path: "/admin/tokens/customer",
-  //       icon: <PeopleIcon />,
-  //     },
-  //   ],
-  // },
+  {
+    name: "Token",
+    icon: <TollIcon />,
+    isExpandable: true,
+    subItems: [
+      {
+        name: "Vendor token",
+        path: "/admin/tokens/vendor",
+        icon: <StorefrontIcon />,
+      },
+      {
+        name: "Customer token",
+        path: "/admin/tokens/customer",
+        icon: <PeopleIcon />,
+      },
+    ],
+  },
   {
     name: "Withdrawals",
     icon: <CreditCardIcon />,
