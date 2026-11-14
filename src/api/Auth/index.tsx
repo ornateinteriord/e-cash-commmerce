@@ -88,13 +88,6 @@ export const useLoginMutation = () => {
           toast.error("Invalid user role");
           return;
         }
-        // Prevent back button from navigating away after login
-        setTimeout(() => {
-          window.history.pushState(null, "", window.location.href);
-          window.addEventListener("popstate", () => {
-            window.history.pushState(null, "", window.location.href);
-          }, { once: true });
-        }, 100);
       } else {
         console.error("Login failed:", response.message);
         toast.error(response.message);

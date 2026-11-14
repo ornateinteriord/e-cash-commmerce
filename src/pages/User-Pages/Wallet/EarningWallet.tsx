@@ -25,7 +25,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import TokenService from "../../../api/token/tokenService";
 import { useGetEarningWalletOverview, useEarningWalletWithdraw, useGetMemberDetails } from '../../../api/Memeber';
-import { getEarningWalletColumns } from '../../../utils/DataTableColumnsProvider';
+import { getEarningWalletColumns, extractTransactionAmount } from '../../../utils/DataTableColumnsProvider';
 
 const EarningWallet: React.FC = () => {
   const navigate = useNavigate();
@@ -129,11 +129,14 @@ const EarningWallet: React.FC = () => {
   const filteredTransactions = transactions.filter((tx: any) => {
     if (!searchQuery.trim()) return true;
     const q = searchQuery.toLowerCase().trim();
+    const txAmt = extractTransactionAmount(tx);
     return (
       (tx.transaction_id && tx.transaction_id.toLowerCase().includes(q)) ||
       (tx.tx_no && tx.tx_no.toLowerCase().includes(q)) ||
       (tx.description && tx.description.toLowerCase().includes(q)) ||
       (tx.status && tx.status.toLowerCase().includes(q)) ||
+      (tx.transaction_type && tx.transaction_type.toLowerCase().includes(q)) ||
+      (txAmt > 0 && txAmt.toString().includes(q)) ||
       (tx.amount && tx.amount.toString().includes(q))
     );
   });
@@ -220,7 +223,7 @@ const EarningWallet: React.FC = () => {
             Earning Wallet
           </Typography>
           <Typography variant="body2" sx={{ color: '#64748B', fontWeight: 500 }}>
-            Dedicated to Referral Earnings (Pure Earnings Only - Deposits Excluded)
+            Dedicated to Referral Earnings & Vendor Level Benefits (Pure Earnings Only - Deposits Excluded)
           </Typography>
         </Box>
       </Box>
@@ -254,7 +257,7 @@ const EarningWallet: React.FC = () => {
               ₹{availableBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </Typography>
             <Typography variant="caption" sx={{ color: 'rgba(255, 255, 255, 0.85)', display: 'block', fontWeight: 500 }}>
-              Direct Referral Commission (Pure Earnings Only - Deposits Excluded)
+              Referral Commission & Vendor Level Benefits (Pure Earnings Only - Deposits Excluded)
             </Typography>
           </Box>
         </Card>

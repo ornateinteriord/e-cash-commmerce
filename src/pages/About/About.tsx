@@ -48,7 +48,7 @@ const About = () => {
                         <Box sx={{ mb: 3 }}>
                             <Box
                                 component="img"
-                                src="/e-shopy.jpeg"
+                                src="/e-shopy.svg"
                                 alt="E-shopy Logo"
                                 sx={{
                                     height: 48,

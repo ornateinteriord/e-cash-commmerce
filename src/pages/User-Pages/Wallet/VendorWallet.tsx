@@ -125,6 +125,22 @@ const VendorWallet: React.FC = () => {
   };
 
   const filteredTransactions = transactions.filter((tx: any) => {
+    const txType = (tx.transaction_type || "").toLowerCase();
+    const desc = (tx.description || "").toLowerCase();
+    const isVendorLevelBenefit = (
+      txType.includes("vendor level benefit") ||
+      desc.includes("vendor level benefit") ||
+      txType.includes("vendor benefit") ||
+      desc.includes("vendor benefit") ||
+      txType.includes("level daily roi") ||
+      desc.includes("level daily roi")
+    );
+    const isDailyIncentive = (txType.includes("daily incentive") || desc.includes("daily incentive")) && !isVendorLevelBenefit;
+    const isWithdrawal = txType.includes("withdrawal");
+
+    // Strictly show Daily Incentive transactions (and Vendor Withdrawals) only
+    if (!isDailyIncentive && !isWithdrawal) return false;
+
     if (!searchQuery.trim()) return true;
     const q = searchQuery.toLowerCase().trim();
     const txAmt = extractTransactionAmount(tx);

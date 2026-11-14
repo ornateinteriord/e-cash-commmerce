@@ -51,7 +51,7 @@ const PublicNavbar = () => {
             <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={() => navigate('/')}>
               <Box
                 component="img"
-                src="/e-shopy.jpeg"
+                src="/e-shopy.svg"
                 alt="E-shopy Logo"
                 sx={{
                   height: { xs: 36, md: 44 },
@@ -161,7 +161,7 @@ const PublicNavbar = () => {
           <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={() => { navigate('/'); handleDrawerToggle(); }}>
             <Box
               component="img"
-              src="/e-shopy.jpeg"
+              src="/e-shopy.svg"
               alt="E-shopy Logo"
               sx={{
                 height: 36,

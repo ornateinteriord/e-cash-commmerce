@@ -335,7 +335,7 @@ const EcashScanner: React.FC = () => {
           }}>
             <Box
               component="img"
-              src="/e-shopy.jpeg"
+              src="/e-shopy.svg"
               alt="E-shopy"
               sx={{
                 height: 22,

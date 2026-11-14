@@ -1,8 +1,8 @@
-import { ChevronDown, LogOutIcon, Menu as MenuIcon, Settings, User, Headphones, MessageCircle } from 'lucide-react';
+import { ChevronDown, LogOutIcon, Menu as MenuIcon, Settings, User, Headphones, MessageCircle, ArrowLeft } from 'lucide-react';
 // import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import "./navbar.scss";
 import { AppBar, Avatar, Box, Divider, Menu, MenuItem, Toolbar, Typography, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { IconButton } from '@mui/material';
 import useAuth from "../../hooks/use-auth";
 import TokenService from "../../api/token/tokenService";
@@ -19,8 +19,11 @@ interface NavbarProps {
 
 const Navbar = ({ shouldHide, onToggleSidebar }: NavbarProps) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { isLoggedIn, userRole } = useAuth();
   const isAdmin = userRole === "ADMIN" || userRole === "ADMIN_01" || userRole === "AGENT";
+  const isUserDashboard = location.pathname === "/user/dashboard";
+  const isAdminDashboard = location.pathname === "/admin/dashboard" || location.pathname === "/admin_01/dashboard" || location.pathname === "/agent/dashboard";
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
 
@@ -77,63 +80,92 @@ const Navbar = ({ shouldHide, onToggleSidebar }: NavbarProps) => {
           {isLoggedIn && userRole === "USER" ? (
             // USER mobile-app style layout
             <>
-              {/* Left Side: Avatar with Name & Menu Trigger */}
-              <Box 
-                onClick={handleMenuOpen} 
-                sx={{ 
-                  cursor: 'pointer', 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  gap: 1.2,
-                  padding: '4px 8px',
-                  borderRadius: '14px',
-                  transition: 'all 0.2s ease',
-                  '&:hover': {
-                    bgcolor: 'rgba(254, 128, 1, 0.08)'
-                  }
-                }}
-              >
-                <Avatar
-                  sx={{
-                    width: { xs: 38, md: 42 },
-                    height: { xs: 38, md: 42 },
-                    bgcolor: '#FFFFFF',
-                    border: '2px solid #FE8001',
-                    boxShadow: '0 3px 10px rgba(254, 128, 1, 0.25)',
-                    p: 0.5,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
+              {/* Left Side: Back Button (if inner page) + Avatar with Name & Menu Trigger */}
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                {!isUserDashboard && (
+                  <IconButton
+                    onClick={() => {
+                      if (window.history.length > 1) {
+                        navigate(-1);
+                      } else {
+                        navigate("/user/dashboard");
+                      }
+                    }}
+                    title="Go Back"
+                    sx={{
+                      color: "#1F333B",
+                      bgcolor: "rgba(31, 51, 59, 0.05)",
+                      border: "1px solid #E2E8F0",
+                      borderRadius: "12px",
+                      p: { xs: 0.8, sm: 1 },
+                      transition: "all 0.2s ease",
+                      '&:hover': {
+                        bgcolor: "rgba(254, 128, 1, 0.12)",
+                        color: "#FE8001"
+                      }
+                    }}
+                  >
+                    <ArrowLeft size={20} />
+                  </IconButton>
+                )}
+
+                <Box 
+                  onClick={handleMenuOpen} 
+                  sx={{ 
+                    cursor: 'pointer', 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    gap: 1.2,
+                    padding: '4px 8px',
+                    borderRadius: '14px',
+                    transition: 'all 0.2s ease',
+                    '&:hover': {
+                      bgcolor: 'rgba(254, 128, 1, 0.08)'
+                    }
                   }}
                 >
-                  <Box
-                    component="img"
-                    src={faviconPng}
-                    alt="Logo"
+                  <Avatar
                     sx={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'contain',
-                      display: 'block'
+                      width: { xs: 38, md: 42 },
+                      height: { xs: 38, md: 42 },
+                      bgcolor: '#FFFFFF',
+                      border: '2px solid #FE8001',
+                      boxShadow: '0 3px 10px rgba(254, 128, 1, 0.25)',
+                      p: 0.5,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
                     }}
-                  />
-                </Avatar>
+                  >
+                    <Box
+                      component="img"
+                      src={faviconPng}
+                      alt="Logo"
+                      sx={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'contain',
+                        display: 'block'
+                      }}
+                    />
+                  </Avatar>
 
-                <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-                  <Typography sx={{ fontWeight: 800, fontSize: '0.92rem', color: '#1F333B', lineHeight: 1.2 }}>
-                    {memberDetails?.Name || 'Member'}
-                  </Typography>
-                  <Typography sx={{ fontSize: '0.72rem', color: '#FE8001', fontWeight: 700 }}>
-                    ID: {memberDetails?.Member_id || userId || ''}
-                  </Typography>
+                  <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+                    <Typography sx={{ fontWeight: 800, fontSize: '0.92rem', color: '#1F333B', lineHeight: 1.2 }}>
+                      {memberDetails?.Name || 'Member'}
+                    </Typography>
+                    <Typography sx={{ fontSize: '0.72rem', color: '#FE8001', fontWeight: 700 }}>
+                      ID: {memberDetails?.Member_id || userId || ''}
+                    </Typography>
+                  </Box>
+                  <ChevronDown size={16} color="#64748B" />
                 </Box>
-                <ChevronDown size={16} color="#64748B" />
               </Box>
 
               {/* Center Brand Logo for User */}
               <Box
                 component="img"
-                src="/e-shopy.jpeg"
+                src="/e-shopy.svg"
                 alt="E-shopy Logo"
                 onClick={() => navigate('/user/dashboard')}
                 sx={{
@@ -141,7 +173,6 @@ const Navbar = ({ shouldHide, onToggleSidebar }: NavbarProps) => {
                   cursor: 'pointer',
                   objectFit: 'contain',
                   display: 'block',
-                  mixBlendMode: 'multiply'
                 }}
               />
 
@@ -215,6 +246,32 @@ const Navbar = ({ shouldHide, onToggleSidebar }: NavbarProps) => {
             // Default Admin/Agent/Admin01/Public layout
             <>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                {isAdmin && !isAdminDashboard && (
+                  <IconButton
+                    onClick={() => {
+                      if (window.history.length > 1) {
+                        navigate(-1);
+                      } else {
+                        navigate("/admin/dashboard");
+                      }
+                    }}
+                    title="Go Back"
+                    sx={{
+                      color: "#1F333B",
+                      bgcolor: "rgba(31, 51, 59, 0.05)",
+                      border: "1px solid #E2E8F0",
+                      borderRadius: "12px",
+                      p: { xs: 0.8, sm: 1 },
+                      transition: "all 0.2s ease",
+                      '&:hover': {
+                        bgcolor: "rgba(254, 128, 1, 0.12)",
+                        color: "#FE8001"
+                      }
+                    }}
+                  >
+                    <ArrowLeft size={20} />
+                  </IconButton>
+                )}
                 {isAdmin && onToggleSidebar && (
                   <IconButton
                     onClick={onToggleSidebar}
@@ -225,7 +282,7 @@ const Navbar = ({ shouldHide, onToggleSidebar }: NavbarProps) => {
                 )}
                 <Box
                   component="img"
-                  src="/e-shopy.jpeg"
+                  src="/e-shopy.svg"
                   alt="E-shopy Logo"
                   onClick={() => navigate(isLoggedIn ? (userRole === "USER" ? "/user/dashboard" : "/admin/dashboard") : "/")}
                   sx={{
@@ -233,7 +290,6 @@ const Navbar = ({ shouldHide, onToggleSidebar }: NavbarProps) => {
                     cursor: "pointer",
                     objectFit: "contain",
                     display: 'block',
-                    mixBlendMode: 'multiply'
                   }}
                 />
               </Box>
@@ -403,6 +459,15 @@ const Navbar = ({ shouldHide, onToggleSidebar }: NavbarProps) => {
               <Settings size={18} />
             </Box>
             Security & Password
+          </MenuItem>
+
+          <Divider />
+
+          <MenuItem onClick={handleLogout} sx={{ color: '#EF4444 !important' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 32, height: 32, borderRadius: '8px', bgcolor: 'rgba(239, 68, 68, 0.12)', color: '#EF4444', mr: 1.5 }}>
+              <LogOutIcon size={18} />
+            </Box>
+            Logout
           </MenuItem>
         </Menu>
 

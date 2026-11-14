@@ -476,7 +476,7 @@ const MyQR: React.FC = () => {
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.2 }}>
             <Box
               component="img"
-              src="/e-shopy.jpeg"
+              src="/e-shopy.svg"
               alt="E-shopy"
               sx={{ height: 26, objectFit: 'contain' }}
             />

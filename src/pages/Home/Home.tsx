@@ -127,7 +127,7 @@ const Home = () => {
               <Box sx={{ mb: 2 }}>
                 <Box
                   component="img"
-                  src="/e-shopy.jpeg"
+                  src="/e-shopy.svg"
                   alt="E-shopy Logo"
                   sx={{
                     height: 48,

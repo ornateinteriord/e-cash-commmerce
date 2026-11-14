@@ -403,7 +403,7 @@ const Register = () => {
         >
           <Box
             component="img"
-            src="/e-shopy.jpeg"
+            src="/e-shopy.svg"
             alt="E-shopy Logo"
             sx={{
               height: { xs: 52, lg: 68 },

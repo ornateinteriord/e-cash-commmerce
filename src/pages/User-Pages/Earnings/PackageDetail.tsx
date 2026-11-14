@@ -201,7 +201,7 @@ const PackageDetail: React.FC = () => {
         >
           <Box
             component="img"
-            src="/e-shopy.jpeg"
+            src="/e-shopy.svg"
             alt="E-shopy"
             sx={{
               maxHeight: { xs: 28, sm: 32 },

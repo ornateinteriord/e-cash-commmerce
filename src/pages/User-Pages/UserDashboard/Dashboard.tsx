@@ -212,6 +212,20 @@ const UserDashboard = () => {
   };
 
   useEffect(() => {
+    // Prevent back button from escaping dashboard into /login
+    const handlePopState = () => {
+      window.history.pushState(null, "", window.location.href);
+    };
+
+    window.history.pushState(null, "", window.location.href);
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
+
+  useEffect(() => {
     const paymentParams = parsePaymentRedirectParams(searchParams);
     if (paymentParams.order_id && paymentParams.payment_status && !paymentProcessed) {
       setPaymentProcessed(true);
