@@ -64,6 +64,37 @@ export const useGetCustomerTokens = () => {
   });
 };
 
+export const useGetCustomers = () => {
+  return useQuery({
+    queryKey: ["customers"],
+    queryFn: async () => {
+      const response = await get("/admin/customers");
+      if (response.success) {
+        return response.customers || [];
+      } else {
+        throw new Error(response.message || "Failed to fetch customers");
+      }
+    }
+  });
+};
+
+export const useUpdateCustomerStatus = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, status, isActive }: { id: string; status?: string; isActive?: boolean }) => {
+      return await put(`/admin/customer/status/${id}`, { status, isActive });
+    },
+    onSuccess: (data: any) => {
+      toast.success(data?.message || "Customer status updated successfully");
+      queryClient.invalidateQueries({ queryKey: ["customers"] });
+      queryClient.invalidateQueries({ queryKey: ["customerTokens"] });
+    },
+    onError: (err: any) => {
+      toast.error(err?.response?.data?.message || err?.message || "Failed to update customer status");
+    }
+  });
+};
+
 export const useGetVendorUplines = (vendorId: string | null) => {
   return useQuery({
     queryKey: ["vendorUplines", vendorId],

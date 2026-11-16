@@ -13,20 +13,21 @@ import {
 import SearchIcon from '@mui/icons-material/Search';
 import PeopleIcon from '@mui/icons-material/People';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
-import AccountTreeIcon from '@mui/icons-material/AccountTree';
+// import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import DataTable, { TableColumn } from 'react-data-table-component';
 import { DASHBOARD_CUTSOM_STYLE } from '../../../utils/DataTableColumnsProvider';
-import { useGetCustomerTokens, useGetCustomerUplines, useGetCustomerTokenContributors } from '../../../api/Admin';
+import { useGetCustomerTokens } from '../../../api/Admin';
 import TokenCoin from '../../../components/common/TokenCoin';
-import UplinerDialog from '../../../components/common/UplinerDialog';
+// import UplinerDialog from '../../../components/common/UplinerDialog';
 
 export const CustomerTokens: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  // const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
+  // const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const { data: rawCustomers = [], isLoading } = useGetCustomerTokens();
 
+  /*
   // Selected customer uplines & token contributors query
   const customerIdToQuery = selectedCustomer?.customerId || selectedCustomer?.customer_id || selectedCustomer?._id || null;
   const { data: contributorsData, isLoading: isContributorsLoading } = useGetCustomerTokenContributors(isDialogOpen ? customerIdToQuery : null);
@@ -36,6 +37,7 @@ export const CustomerTokens: React.FC = () => {
     setSelectedCustomer(row);
     setIsDialogOpen(true);
   };
+  */
 
   // Customer list from DB (db.customers / ornate_auth.customers)
   const customersList = useMemo(() => {
@@ -89,32 +91,34 @@ export const CustomerTokens: React.FC = () => {
       name: 'Customer ID',
       selector: (row: any) => row.customerId || row.customer_id || 'N/A',
       sortable: true,
+      minWidth: '150px',
+      wrap: true,
       cell: (row: any) => (
-        <Box sx={{ cursor: 'pointer' }}>
-          <Typography sx={{ fontWeight: 800, color: '#0d9488', fontSize: '0.88rem' }}>
+        <Box sx={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>
+          <Typography sx={{ fontWeight: 800, color: '#0d9488', fontSize: '0.88rem', whiteSpace: 'normal', wordBreak: 'break-word' }}>
             {row.customerId || row.customer_id || 'N/A'}
           </Typography>
         </Box>
       ),
-      minWidth: '130px',
     },
     {
       name: 'Customer Name',
       selector: (row: any) => row.name || row.fullName || 'N/A',
       sortable: true,
+      minWidth: '220px',
+      wrap: true,
       cell: (row: any) => (
-        <Box sx={{ cursor: 'pointer' }}>
-          <Typography sx={{ fontWeight: 700, color: '#1e293b', fontSize: '0.9rem' }}>
+        <Box sx={{ py: 0.5, whiteSpace: 'normal', wordBreak: 'break-word' }}>
+          <Typography sx={{ fontWeight: 700, color: '#1e293b', fontSize: '0.9rem', whiteSpace: 'normal', wordBreak: 'break-word' }}>
             {row.name || row.fullName || 'N/A'}
           </Typography>
           {row.email && (
-            <Typography variant="caption" sx={{ color: '#94a3b8', display: 'block' }}>
+            <Typography variant="caption" sx={{ color: '#94a3b8', display: 'block', whiteSpace: 'normal', wordBreak: 'break-word' }}>
               {row.email}
             </Typography>
           )}
         </Box>
       ),
-      minWidth: '180px',
     },
     {
       name: 'Mobile Number',
@@ -210,6 +214,7 @@ export const CustomerTokens: React.FC = () => {
         );
       },
     },
+    /*
     {
       name: 'Upliners',
       center: true,
@@ -221,7 +226,7 @@ export const CustomerTokens: React.FC = () => {
           size="small"
           onClick={(e) => {
             e.stopPropagation();
-            handleRowClick(row);
+            // handleRowClick(row);
           }}
           sx={{
             fontWeight: 800,
@@ -238,6 +243,7 @@ export const CustomerTokens: React.FC = () => {
         />
       ),
     },
+    */
     {
       name: 'Registered Date',
       selector: (row: any) => row.createdAt || 'N/A',
@@ -429,8 +435,8 @@ export const CustomerTokens: React.FC = () => {
                 paginationPerPage={15}
                 paginationRowsPerPageOptions={[10, 15, 25, 50, 100]}
                 highlightOnHover
-                pointerOnHover
-                onRowClicked={handleRowClick}
+                // pointerOnHover
+                // onRowClicked={handleRowClick}
                 responsive
                 noDataComponent={
                   <Box sx={{ p: 4, textAlign: 'center' }}>
@@ -445,7 +451,8 @@ export const CustomerTokens: React.FC = () => {
         </CardContent>
       </Card>
 
-      {/* Upliner Hierarchy Dialog */}
+      {/* Upliner Hierarchy Dialog - temporarily commented out per user request */}
+      {/*
       <UplinerDialog
         open={isDialogOpen}
         onClose={() => {
@@ -474,6 +481,7 @@ export const CustomerTokens: React.FC = () => {
         uplines={uplinesData?.uplines || []}
         isUplinesLoading={isUplinesLoading}
       />
+      */}
     </Box>
   );
 };

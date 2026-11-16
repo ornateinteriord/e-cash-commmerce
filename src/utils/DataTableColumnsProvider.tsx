@@ -628,11 +628,36 @@ export const getMembersColumns = (
       name: "SNo",
       selector: (row: any) => row.sNo,
       sortable: true,
+      width: "60px",
     },
     {
-      name: "Vendor Name (Code)",
-      selector: (row: any) => `${row.Name ?? "-"} (${row.member_code || row.Member_id})`,
+      name: "Vendor ID / Code",
+      selector: (row: any) => row.member_code || row.Member_id || "-",
       sortable: true,
+      minWidth: "150px",
+      wrap: true,
+      cell: (row: any) => (
+        <div style={{ whiteSpace: "normal", wordBreak: "break-word" }}>
+          <span style={{ fontWeight: 800, color: "#0284c7", fontSize: "13px" }}>
+            {row.member_code || row.Member_id || "-"}
+          </span>
+          {row.member_code && row.Member_id && row.member_code !== row.Member_id && (
+            <div style={{ fontSize: "11px", color: "#64748b" }}>ID: {row.Member_id}</div>
+          )}
+        </div>
+      ),
+    },
+    {
+      name: "Vendor Name",
+      selector: (row: any) => row.Name ?? "-",
+      sortable: true,
+      minWidth: "180px",
+      wrap: true,
+      cell: (row: any) => (
+        <div style={{ whiteSpace: "normal", wordBreak: "break-word", fontWeight: 700, color: "#1e293b", fontSize: "13px" }}>
+          {row.Name ?? "-"}
+        </div>
+      ),
     },
     {
       name: "Level",
@@ -758,12 +783,31 @@ export const getPermissionsColumns = (
       name: "SNo",
       selector: (row: any) => row.sNo,
       sortable: true,
-      width: "70px",
+      width: "60px",
     },
     {
-      name: "Vendor Name (Code)",
-      selector: (row: any) => `${row.Name ?? "-"} (${row.member_code || row.Member_id})`,
+      name: "Vendor ID / Code",
+      selector: (row: any) => row.member_code || row.Member_id || "-",
       sortable: true,
+      minWidth: "150px",
+      wrap: true,
+      cell: (row: any) => (
+        <span style={{ fontWeight: 800, color: "#0284c7", fontSize: "13px", whiteSpace: "normal", wordBreak: "break-word" }}>
+          {row.member_code || row.Member_id || "-"}
+        </span>
+      ),
+    },
+    {
+      name: "Vendor Name",
+      selector: (row: any) => row.Name ?? "-",
+      sortable: true,
+      minWidth: "180px",
+      wrap: true,
+      cell: (row: any) => (
+        <span style={{ fontWeight: 700, color: "#1e293b", fontSize: "13px", whiteSpace: "normal", wordBreak: "break-word" }}>
+          {row.Name ?? "-"}
+        </span>
+      ),
     },
     {
       name: "Package",
@@ -832,12 +876,31 @@ export const getPendingMembersColumns = (
       name: "SNo",
       selector: (row: any) => row.sNo,
       sortable: true,
-      width: "70px",
+      width: "60px",
     },
     {
-      name: "Vendor Name (Code)",
-      selector: (row: any) => `${row.Name ?? "-"} (${row.member_code || row.Member_id})`,
+      name: "Vendor ID / Code",
+      selector: (row: any) => row.member_code || row.Member_id || "-",
       sortable: true,
+      minWidth: "150px",
+      wrap: true,
+      cell: (row: any) => (
+        <span style={{ fontWeight: 800, color: "#0284c7", fontSize: "13px", whiteSpace: "normal", wordBreak: "break-word" }}>
+          {row.member_code || row.Member_id || "-"}
+        </span>
+      ),
+    },
+    {
+      name: "Vendor Name",
+      selector: (row: any) => row.Name ?? "-",
+      sortable: true,
+      minWidth: "180px",
+      wrap: true,
+      cell: (row: any) => (
+        <span style={{ fontWeight: 700, color: "#1e293b", fontSize: "13px", whiteSpace: "normal", wordBreak: "break-word" }}>
+          {row.Name ?? "-"}
+        </span>
+      ),
     },
     {
       name: "Level",
@@ -1118,8 +1181,15 @@ export const getAdminPageTransactionColumns = () => [
   },
   {
     name: "Vendor",
-    selector: (row: any) => row.member_code || row.member_id,
+    selector: (row: any) => row.member_code || row.member_id || "-",
     sortable: true,
+    minWidth: "150px",
+    wrap: true,
+    cell: (row: any) => (
+      <span style={{ fontWeight: 800, color: "#0284c7", fontSize: "13px", whiteSpace: "normal", wordBreak: "break-word" }}>
+        {row.member_code || row.member_id || "-"}
+      </span>
+    ),
   },
   {
     name: "Description",
@@ -1264,6 +1334,13 @@ export const getRequestColumns = (approveTrasaction: (id: any) => void) => [
     name: "Vendor",
     selector: (row: any) => row.member_id || "-",
     sortable: true,
+    minWidth: "150px",
+    wrap: true,
+    cell: (row: any) => (
+      <span style={{ fontWeight: 800, color: "#0284c7", fontSize: "13px", whiteSpace: "normal", wordBreak: "break-word" }}>
+        {row.member_id || "-"}
+      </span>
+    ),
   },
   {
     name: "Mobile No.",
@@ -1351,6 +1428,13 @@ export const getProccessedColumns = () => [
     name: "Vendor",
     selector: (row: any) => row.member_id || "-",
     sortable: true,
+    minWidth: "150px",
+    wrap: true,
+    cell: (row: any) => (
+      <span style={{ fontWeight: 800, color: "#0284c7", fontSize: "13px", whiteSpace: "normal", wordBreak: "break-word" }}>
+        {row.member_id || "-"}
+      </span>
+    ),
   },
   {
     name: "Mobile No.",
@@ -1820,7 +1904,7 @@ const TABLE_ROW_CUSTOM_STYLE = {
     },
   },
 };
-export const DASHBOARD_CUTSOM_STYLE = {
+export const DASHBOARD_CUTSOM_STYLE: any = {
   headCells: {
     style: {
       fontSize: "14px",
@@ -1828,6 +1912,19 @@ export const DASHBOARD_CUTSOM_STYLE = {
       backgroundColor: "#F1F5F7",
       color: "#1F333B",
       borderBottom: "2px solid #FE8001",
+      whiteSpace: "normal" as const,
+      wordBreak: "break-word" as const,
+    },
+  },
+  cells: {
+    style: {
+      whiteSpace: "normal" as const,
+      wordBreak: "break-word" as const,
+      overflow: "visible",
+      paddingTop: "10px",
+      paddingBottom: "10px",
+      fontSize: "13px",
+      color: "#1F333B",
     },
   },
   rows: {

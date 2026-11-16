@@ -226,3 +226,31 @@ body[class*="theme-"] .content-wrapper {
   animation: shimmer 1.5s infinite;
   border-radius: var(--radius-md);
 }
+
+/* ===== FULL VISIBILITY FOR ALL ADMIN TABLES (NO ELLIPSIS TRUNCATION) ===== */
+.rdt_TableCell {
+  white-space: normal !important;
+  word-break: break-word !important;
+  overflow: visible !important;
+  line-height: 1.4 !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+}
+
+.rdt_TableCell > div {
+  white-space: normal !important;
+  word-break: break-word !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
+.rdt_TableCol {
+  white-space: normal !important;
+  word-break: break-word !important;
+}
+
+.MuiTableCell-root {
+  white-space: normal !important;
+  word-break: break-word !important;
+  overflow: visible !important;
+}

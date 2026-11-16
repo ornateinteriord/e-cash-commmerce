@@ -16,20 +16,21 @@ import SyncIcon from '@mui/icons-material/Sync';
 import GroupIcon from '@mui/icons-material/Group';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import AccountTreeIcon from '@mui/icons-material/AccountTree';
+// import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import DataTable, { TableColumn } from 'react-data-table-component';
 import { DASHBOARD_CUTSOM_STYLE } from '../../../utils/DataTableColumnsProvider';
-import { useGetAllMembersDetails, useGetVendorUplines, useGetVendorTokenContributors } from '../../../api/Admin';
+import { useGetAllMembersDetails } from '../../../api/Admin';
 import TokenCoin from '../../../components/common/TokenCoin';
-import UplinerDialog from '../../../components/common/UplinerDialog';
+// import UplinerDialog from '../../../components/common/UplinerDialog';
 
 export const VendorTokens: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedVendor, setSelectedVendor] = useState<any>(null);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  // const [selectedVendor, setSelectedVendor] = useState<any>(null);
+  // const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const { data: allMembers = [], isLoading, refetch } = useGetAllMembersDetails();
 
+  /*
   const vendorIdToQuery = selectedVendor?.Member_id || selectedVendor?.member_id || selectedVendor?.member_code || selectedVendor?.mobileno || null;
   const { data: contributorsData, isLoading: isContributorsLoading } = useGetVendorTokenContributors(isDialogOpen ? vendorIdToQuery : null);
   const { data: uplinesData, isLoading: isUplinesLoading } = useGetVendorUplines(isDialogOpen ? vendorIdToQuery : null);
@@ -38,6 +39,7 @@ export const VendorTokens: React.FC = () => {
     setSelectedVendor(row);
     setIsDialogOpen(true);
   };
+  */
 
   // Filter for vendors
   const vendorsList = useMemo(() => {
@@ -90,35 +92,37 @@ export const VendorTokens: React.FC = () => {
       name: 'Vendor Code / ID',
       selector: (row: any) => row.member_code || row.Member_id || row.member_id || 'N/A',
       sortable: true,
+      minWidth: '160px',
+      wrap: true,
       cell: (row: any) => (
-        <Box>
-          <Typography sx={{ fontWeight: 800, color: '#0284c7', fontSize: '0.88rem' }}>
+        <Box sx={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>
+          <Typography sx={{ fontWeight: 800, color: '#0284c7', fontSize: '0.88rem', whiteSpace: 'normal', wordBreak: 'break-word' }}>
             {row.member_code || row.Member_id || row.member_id}
           </Typography>
           {row.member_code && row.Member_id && row.member_code !== row.Member_id && (
-            <Typography variant="caption" sx={{ color: '#64748b', display: 'block' }}>
+            <Typography variant="caption" sx={{ color: '#64748b', display: 'block', whiteSpace: 'normal', wordBreak: 'break-word' }}>
               ID: {row.Member_id}
             </Typography>
           )}
         </Box>
       ),
-      minWidth: '150px',
     },
     {
       name: 'Vendor Name',
       selector: (row: any) => row.Name || row.name || 'N/A',
       sortable: true,
+      minWidth: '220px',
+      wrap: true,
       cell: (row: any) => (
-        <Box>
-          <Typography sx={{ fontWeight: 700, color: '#1e293b', fontSize: '0.9rem' }}>
+        <Box sx={{ py: 0.5, whiteSpace: 'normal', wordBreak: 'break-word' }}>
+          <Typography sx={{ fontWeight: 700, color: '#1e293b', fontSize: '0.92rem', whiteSpace: 'normal', wordBreak: 'break-word' }}>
             {row.Name || row.name || 'N/A'}
           </Typography>
-          <Typography variant="caption" sx={{ color: '#94a3b8' }}>
+          <Typography variant="caption" sx={{ color: '#94a3b8', display: 'block', whiteSpace: 'normal', wordBreak: 'break-word' }}>
             {row.email || row.emailid || ''}
           </Typography>
         </Box>
       ),
-      minWidth: '180px',
     },
     {
       name: 'Mobile Number',
@@ -221,6 +225,7 @@ export const VendorTokens: React.FC = () => {
         );
       },
     },
+    /*
     {
       name: 'Upliners',
       center: true,
@@ -232,7 +237,7 @@ export const VendorTokens: React.FC = () => {
           size="small"
           onClick={(e) => {
             e.stopPropagation();
-            handleRowClick(row);
+            // handleRowClick(row);
           }}
           sx={{
             fontWeight: 800,
@@ -249,6 +254,7 @@ export const VendorTokens: React.FC = () => {
         />
       ),
     },
+    */
     {
       name: 'Joined Date',
       selector: (row: any) => row.Date_of_joining || row.createdAt || 'N/A',
@@ -494,8 +500,8 @@ export const VendorTokens: React.FC = () => {
                 paginationPerPage={15}
                 paginationRowsPerPageOptions={[10, 15, 25, 50, 100]}
                 highlightOnHover
-                pointerOnHover
-                onRowClicked={handleRowClick}
+                // pointerOnHover
+                // onRowClicked={handleRowClick}
                 responsive
                 noDataComponent={
                   <Box sx={{ p: 4, textAlign: 'center' }}>
@@ -510,7 +516,8 @@ export const VendorTokens: React.FC = () => {
         </CardContent>
       </Card>
 
-      {/* Upliner Hierarchy Dialog */}
+      {/* Upliner Hierarchy Dialog - temporarily commented out per user request */}
+      {/*
       <UplinerDialog
         open={isDialogOpen}
         onClose={() => {
@@ -535,6 +542,7 @@ export const VendorTokens: React.FC = () => {
         uplines={uplinesData?.uplines || []}
         isUplinesLoading={isUplinesLoading}
       />
+      */}
     </Box>
   );
 };

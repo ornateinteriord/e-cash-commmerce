@@ -87,6 +87,16 @@ const AdminCustomerTokens = lazy(
   () => import("./pages/Admin-Pages/Tokens/CustomerTokens")
 );
 
+const AdminCustomers = lazy(
+  () => import("./pages/Admin-Pages/Customers/Customers")
+);
+const AdminActiveCustomers = lazy(
+  () => import("./pages/Admin-Pages/Customers/Customers").then(m => ({ default: m.ActiveCustomers }))
+);
+const AdminInactiveCustomers = lazy(
+  () => import("./pages/Admin-Pages/Customers/Customers").then(m => ({ default: m.InactiveCustomers }))
+);
+
 const AdminTransactions = lazy(
   () => import("./pages/Admin-Pages/Transactions/Transactions")
 );
@@ -418,6 +428,11 @@ const RoutesProvider = ({
                 path="/admin/members/permissions"
                 element={<PermissionsMembers />}
               />
+
+              {/* admin customer routes */}
+              <Route path="/admin/customers" element={<AdminCustomers />} />
+              <Route path="/admin/customers/active" element={<AdminActiveCustomers />} />
+              <Route path="/admin/customers/inactive" element={<AdminInactiveCustomers />} />
 
               {/* admin addon routes */}
               <Route path="/admin/addon-approvals" element={<AdminAddOnRequests />} />

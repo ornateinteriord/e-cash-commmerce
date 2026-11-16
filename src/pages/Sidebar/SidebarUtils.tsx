@@ -4,7 +4,7 @@ import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import QrCode2Icon from "@mui/icons-material/QrCode2";
 import SendIcon from "@mui/icons-material/Send";
 import StorefrontIcon from "@mui/icons-material/Storefront";
-// import TollIcon from "@mui/icons-material/Toll";
+import TollIcon from "@mui/icons-material/Toll";
 import { LucideIcons, MuiIcons } from '../Icons';
 
 export const UserSideBarMenuItems: SideBarMenuItemType[] = [
@@ -226,6 +226,24 @@ export const AdminSideBarMenuItems: SideBarMenuItemType[] = [
       },
     ],
   },
+  // {
+  //   name: "Customer",
+  //   icon: <PeopleIcon />,
+  //   isExpandable: true,
+  //   subItems: [
+  //     { name: "All Customer", path: "/admin/customers", icon: <PeopleIcon /> },
+  //     {
+  //       name: "Active Customer",
+  //       path: "/admin/customers/active",
+  //       icon: <CheckCircleIcon />,
+  //     },
+  //     {
+  //       name: "Inactive Customer",
+  //       path: "/admin/customers/inactive",
+  //       icon: <PersonIcon />,
+  //     },
+  //   ],
+  // },
   {
     name: "Commission",
     icon: <MonetizationOnIcon />,
@@ -253,23 +271,23 @@ export const AdminSideBarMenuItems: SideBarMenuItemType[] = [
       },
     ],
   },
-  // {
-  //   name: "Token",
-  //   icon: <TollIcon />,
-  //   isExpandable: true,
-  //   subItems: [
-  //     {
-  //       name: "Vendor token",
-  //       path: "/admin/tokens/vendor",
-  //       icon: <StorefrontIcon />,
-  //     },
-  //     {
-  //       name: "Customer token",
-  //       path: "/admin/tokens/customer",
-  //       icon: <PeopleIcon />,
-  //     },
-  //   ],
-  // },
+  {
+    name: "Token",
+    icon: <TollIcon />,
+    isExpandable: true,
+    subItems: [
+      {
+        name: "Vendor token",
+        path: "/admin/tokens/vendor",
+        icon: <StorefrontIcon />,
+      },
+      {
+        name: "Customer token",
+        path: "/admin/tokens/customer",
+        icon: <PeopleIcon />,
+      },
+    ],
+  },
   {
     name: "Withdrawals",
     icon: <CreditCardIcon />,
@@ -360,6 +378,16 @@ export const Admin01SideBarMenuItems: SideBarMenuItemType[] = [
       { name: "Vendors", path: "/admin_01/members", icon: <PeopleIcon /> },
       // { name: "Agents", path: "/banking/agents", icon: <PersonIcon /> },
       // { name: "Interests", path: "/banking/interestrate", icon: <PercentIcon /> },
+    ],
+  },
+  {
+    name: "Customer",
+    icon: <PeopleIcon />,
+    isExpandable: true,
+    subItems: [
+      { name: "All Customer", path: "/admin/customers", icon: <PeopleIcon /> },
+      { name: "Active Customer", path: "/admin/customers/active", icon: <CheckCircleIcon /> },
+      { name: "Inactive Customer", path: "/admin/customers/inactive", icon: <PersonIcon /> },
     ],
   },
   {
