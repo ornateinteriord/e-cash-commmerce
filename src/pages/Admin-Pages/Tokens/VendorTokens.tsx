@@ -16,21 +16,20 @@ import SyncIcon from '@mui/icons-material/Sync';
 import GroupIcon from '@mui/icons-material/Group';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-// import AccountTreeIcon from '@mui/icons-material/AccountTree';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import DataTable, { TableColumn } from 'react-data-table-component';
 import { DASHBOARD_CUTSOM_STYLE } from '../../../utils/DataTableColumnsProvider';
-import { useGetAllMembersDetails } from '../../../api/Admin';
+import { useGetAllMembersDetails, useGetVendorTokenContributors, useGetVendorUplines } from '../../../api/Admin';
 import TokenCoin from '../../../components/common/TokenCoin';
-// import UplinerDialog from '../../../components/common/UplinerDialog';
+import UplinerDialog from '../../../components/common/UplinerDialog';
 
 export const VendorTokens: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  // const [selectedVendor, setSelectedVendor] = useState<any>(null);
-  // const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedVendor, setSelectedVendor] = useState<any>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const { data: allMembers = [], isLoading, refetch } = useGetAllMembersDetails();
 
-  /*
   const vendorIdToQuery = selectedVendor?.Member_id || selectedVendor?.member_id || selectedVendor?.member_code || selectedVendor?.mobileno || null;
   const { data: contributorsData, isLoading: isContributorsLoading } = useGetVendorTokenContributors(isDialogOpen ? vendorIdToQuery : null);
   const { data: uplinesData, isLoading: isUplinesLoading } = useGetVendorUplines(isDialogOpen ? vendorIdToQuery : null);
@@ -39,7 +38,6 @@ export const VendorTokens: React.FC = () => {
     setSelectedVendor(row);
     setIsDialogOpen(true);
   };
-  */
 
   // Filter for vendors
   const vendorsList = useMemo(() => {
@@ -225,7 +223,6 @@ export const VendorTokens: React.FC = () => {
         );
       },
     },
-    /*
     {
       name: 'Upliners',
       center: true,
@@ -237,7 +234,7 @@ export const VendorTokens: React.FC = () => {
           size="small"
           onClick={(e) => {
             e.stopPropagation();
-            // handleRowClick(row);
+            handleRowClick(row);
           }}
           sx={{
             fontWeight: 800,
@@ -254,7 +251,6 @@ export const VendorTokens: React.FC = () => {
         />
       ),
     },
-    */
     {
       name: 'Joined Date',
       selector: (row: any) => row.Date_of_joining || row.createdAt || 'N/A',
@@ -500,8 +496,8 @@ export const VendorTokens: React.FC = () => {
                 paginationPerPage={15}
                 paginationRowsPerPageOptions={[10, 15, 25, 50, 100]}
                 highlightOnHover
-                // pointerOnHover
-                // onRowClicked={handleRowClick}
+                pointerOnHover
+                onRowClicked={handleRowClick}
                 responsive
                 noDataComponent={
                   <Box sx={{ p: 4, textAlign: 'center' }}>
@@ -516,8 +512,7 @@ export const VendorTokens: React.FC = () => {
         </CardContent>
       </Card>
 
-      {/* Upliner Hierarchy Dialog - temporarily commented out per user request */}
-      {/*
+      {/* Upliner Hierarchy Dialog */}
       <UplinerDialog
         open={isDialogOpen}
         onClose={() => {
@@ -542,7 +537,6 @@ export const VendorTokens: React.FC = () => {
         uplines={uplinesData?.uplines || []}
         isUplinesLoading={isUplinesLoading}
       />
-      */}
     </Box>
   );
 };
