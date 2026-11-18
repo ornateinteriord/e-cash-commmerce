@@ -316,11 +316,20 @@ const KYC: React.FC = () => {
       return;
     }
 
+    const memberIdentifier = user?.Member_id || user?.member_id || user?.member_code || user?.mobileno || '';
+
     submitKYC.mutate({
+      ref_no: memberIdentifier,
+      Member_id: memberIdentifier,
+      member_id: memberIdentifier,
       accountName: formData.accountName,
+      bankAccount: formData.account_number,
       account_number: formData.account_number,
+      ifsc: formData.ifsc_code,
       ifsc_code: formData.ifsc_code,
+      bankName: formData.bank_name,
       bank_name: formData.bank_name,
+      upiId: formData.upi_id,
       upi_id: formData.upi_id,
       panImage: documents.panImage,
       profileImage: documents.profileImage,
