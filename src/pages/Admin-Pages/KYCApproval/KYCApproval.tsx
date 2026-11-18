@@ -14,6 +14,7 @@ interface KYCSubmission {
   ifsc_code: string;
   bank_name: string;
   Pan_no: string;
+  aadharcard_no?: string;
   kycStatus: 'PROCESSING' | 'APPROVED' | 'REJECTED' | 'PENDING';
   beneficiaryStatus: string;
   beneficiaryId: string;
@@ -205,6 +206,10 @@ const KYCApproval: React.FC = () => {
                 <Box>
                   <Typography variant="body2" color="textSecondary">PAN Number</Typography>
                   <Typography>{selectedKYC?.Pan_no || 'N/A'}</Typography>
+                </Box>
+                <Box>
+                  <Typography variant="body2" color="textSecondary">Aadhaar Number</Typography>
+                  <Typography>{selectedKYC?.aadharcard_no || 'N/A'}</Typography>
                 </Box>
               </Box>
 
