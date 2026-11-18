@@ -226,24 +226,24 @@ export const AdminSideBarMenuItems: SideBarMenuItemType[] = [
       },
     ],
   },
-  // {
-  //   name: "Customer",
-  //   icon: <PeopleIcon />,
-  //   isExpandable: true,
-  //   subItems: [
-  //     { name: "All Customer", path: "/admin/customers", icon: <PeopleIcon /> },
-  //     {
-  //       name: "Active Customer",
-  //       path: "/admin/customers/active",
-  //       icon: <CheckCircleIcon />,
-  //     },
-  //     {
-  //       name: "Inactive Customer",
-  //       path: "/admin/customers/inactive",
-  //       icon: <PersonIcon />,
-  //     },
-  //   ],
-  // },
+  {
+    name: "Customer",
+    icon: <PeopleIcon />,
+    isExpandable: true,
+    subItems: [
+      { name: "All Customer", path: "/admin/customers", icon: <PeopleIcon /> },
+      {
+        name: "Active Customer",
+        path: "/admin/customers/active",
+        icon: <CheckCircleIcon />,
+      },
+      {
+        name: "Inactive Customer",
+        path: "/admin/customers/inactive",
+        icon: <PersonIcon />,
+      },
+    ],
+  },
   {
     name: "Commission",
     icon: <MonetizationOnIcon />,
