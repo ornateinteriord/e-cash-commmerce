@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, CardContent, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Chip, Dialog, DialogTitle, DialogContent, DialogActions, Box, Snackbar, Alert } from '@mui/material';
+import { Card, CardContent, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Chip, Dialog, DialogTitle, DialogContent, DialogActions, Box, Snackbar, Alert, CircularProgress } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { useApproveKYC, useGetKYCSubmissions } from '../../../api/Admin';
 
@@ -14,10 +14,13 @@ interface KYCSubmission {
   ifsc_code: string;
   bank_name: string;
   Pan_no: string;
-  kycStatus: 'PROCESSING' | 'APPROVED' | 'REJECTED';
+  kycStatus: 'PROCESSING' | 'APPROVED' | 'REJECTED' | 'PENDING';
   beneficiaryStatus: string;
   beneficiaryId: string;
   address: string;
+  panImage?: string;
+  aadhaarImage?: string;
+  profile_image?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -29,9 +32,10 @@ const KYCApproval: React.FC = () => {
   const queryClient = useQueryClient();
 
   // Fetch KYC submissions
-  const { data: kycResponse } = useGetKYCSubmissions();
-  const kycSubmissions = kycResponse?.data || [];
-  console.log('KYC Submissions:', kycSubmissions);
+  const { data: kycResponse, isLoading } = useGetKYCSubmissions("ALL");
+  const kycSubmissions: KYCSubmission[] = Array.isArray(kycResponse)
+    ? kycResponse
+    : (Array.isArray(kycResponse?.data) ? kycResponse.data : []);
 
   // Handle approval
   const approveKYC = useApproveKYC();
@@ -117,7 +121,7 @@ const KYCApproval: React.FC = () => {
                     />
                   </TableCell>
                   <TableCell>
-                    {new Date(submission.updatedAt).toLocaleDateString()}
+                    {submission.updatedAt ? new Date(submission.updatedAt).toLocaleDateString() : (submission.createdAt ? new Date(submission.createdAt).toLocaleDateString() : 'N/A')}
                   </TableCell>
                   <TableCell>
                     <Button
@@ -132,7 +136,6 @@ const KYCApproval: React.FC = () => {
                         setSelectedKYC(submission);
                         setOpenDialog(true);
                       }}
-                      disabled={submission.kycStatus !== 'PROCESSING'}
                     >
                       View Details
                     </Button>
@@ -143,11 +146,16 @@ const KYCApproval: React.FC = () => {
           </Table>
         </TableContainer>
 
-        {kycSubmissions.length === 0 && (
+        {isLoading ? (
           <Box sx={{ textAlign: 'center', py: 4 }}>
-            <Typography>No KYC submissions found</Typography>
+            <CircularProgress sx={{ color: '#0a2558' }} />
+            <Typography variant="body2" sx={{ mt: 1, color: '#64748B' }}>Loading KYC submissions...</Typography>
           </Box>
-        )}
+        ) : kycSubmissions.length === 0 ? (
+          <Box sx={{ textAlign: 'center', py: 4 }}>
+            <Typography color="textSecondary">No KYC submissions found</Typography>
+          </Box>
+        ) : null}
       </CardContent>
 
       {/* Details Dialog */}
@@ -204,11 +212,45 @@ const KYCApproval: React.FC = () => {
               <Box sx={{ mb: 3 }}>
                 <Typography>{selectedKYC?.address || 'N/A'}</Typography>
               </Box>
+
+              <Typography variant="h6" gutterBottom>Uploaded Documents</Typography>
+              <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 2 }}>
+                {selectedKYC?.panImage ? (
+                  <Box sx={{ border: '1px solid #E2E8F0', borderRadius: '12px', p: 1.5, textAlign: 'center' }}>
+                    <Typography variant="caption" sx={{ fontWeight: 700, display: 'block', mb: 1 }}>Identity / PAN</Typography>
+                    <a href={selectedKYC.panImage} target="_blank" rel="noopener noreferrer">
+                      <img src={selectedKYC.panImage} alt="PAN Document" style={{ width: '100%', height: 140, objectFit: 'cover', borderRadius: '8px' }} />
+                    </a>
+                  </Box>
+                ) : null}
+
+                {selectedKYC?.profile_image ? (
+                  <Box sx={{ border: '1px solid #E2E8F0', borderRadius: '12px', p: 1.5, textAlign: 'center' }}>
+                    <Typography variant="caption" sx={{ fontWeight: 700, display: 'block', mb: 1 }}>Profile Photo</Typography>
+                    <a href={selectedKYC.profile_image} target="_blank" rel="noopener noreferrer">
+                      <img src={selectedKYC.profile_image} alt="Profile" style={{ width: '100%', height: 140, objectFit: 'cover', borderRadius: '8px' }} />
+                    </a>
+                  </Box>
+                ) : null}
+
+                {selectedKYC?.aadhaarImage ? (
+                  <Box sx={{ border: '1px solid #E2E8F0', borderRadius: '12px', p: 1.5, textAlign: 'center' }}>
+                    <Typography variant="caption" sx={{ fontWeight: 700, display: 'block', mb: 1 }}>Aadhaar</Typography>
+                    <a href={selectedKYC.aadhaarImage} target="_blank" rel="noopener noreferrer">
+                      <img src={selectedKYC.aadhaarImage} alt="Aadhaar Document" style={{ width: '100%', height: 140, objectFit: 'cover', borderRadius: '8px' }} />
+                    </a>
+                  </Box>
+                ) : null}
+
+                {!selectedKYC?.panImage && !selectedKYC?.profile_image && !selectedKYC?.aadhaarImage && (
+                  <Typography variant="body2" color="textSecondary">No document images attached</Typography>
+                )}
+              </Box>
             </Box>
           )}
         </DialogContent>
         <DialogActions>
-          {selectedKYC && selectedKYC.kycStatus === 'PROCESSING' && (
+          {selectedKYC && (selectedKYC.kycStatus === 'PROCESSING' || selectedKYC.kycStatus === 'PENDING') && (
             <>
               <Button
                 onClick={handleReject}

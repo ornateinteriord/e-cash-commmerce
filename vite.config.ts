@@ -9,13 +9,14 @@ export default defineConfig({
     headers: {
       "Content-Security-Policy": "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; script-src * 'unsafe-inline' 'unsafe-eval' data: blob:; script-src-elem * 'unsafe-inline' 'unsafe-eval' data: blob:; connect-src * 'unsafe-inline'; img-src * data: blob:; style-src * 'unsafe-inline'; frame-src *;"
     },
-    hmr: {
-      clientPort: 5173,
-    },
   },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+    dedupe: ["react", "react-dom"],
+  },
+  optimizeDeps: {
+    include: ["react", "react-dom", "@tanstack/react-query", "react-router-dom"],
   },
 })

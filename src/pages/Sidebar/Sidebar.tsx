@@ -7,7 +7,7 @@ import { Avatar, Toolbar, Typography } from '@mui/material';
 import { SideBarMenuItemType } from '../../store/store';
 import { ExpandMoreIcon, ExpandLessIcon } from '../Icons';
 import { useGetMemberDetails } from '../../api/Memeber';
-import { LoadingComponent } from '../../App';
+import LoadingComponent from '../../components/common/LoadingComponent';
 import { toast } from 'react-toastify';
 import TokenService from '../../api/token/tokenService';
 

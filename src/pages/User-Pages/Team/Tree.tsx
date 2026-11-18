@@ -2,7 +2,7 @@ import { Box, Typography, Avatar, Card, CardContent, ClickAwayListener,  } from 
 import { useEffect, useState } from 'react';
 import { useGetSponsers } from '../../../api/Memeber';
 import { toast } from 'react-toastify';
-import { LoadingComponent } from '../../../App';
+import LoadingComponent from '../../../components/common/LoadingComponent';
 import DataTable from "react-data-table-component";
 import "./Tree.scss";
 import { getFormattedDate } from '../../../utils/common';

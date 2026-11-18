@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { BrowserRouter as Router, Route, Routes, useLocation, Navigate } from 'react-router-dom';
 import "./App.css";
 import "./index.css";
-import { CircularProgress, Box, CssBaseline } from '@mui/material';
+import { CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from './theme';
 
@@ -27,6 +27,7 @@ import MembersUpdateForm from "./pages/Admin-Pages/UpdateForms";
 import ChatNotificationListener from "./components/Chat/ChatNotificationListener";
 import MobileBottomNav from "./components/common/MobileBottomNav";
 import ScrollToTop from "./components/common/ScrollToTop";
+import LoadingComponent from "./components/common/LoadingComponent";
 
 
 
@@ -254,26 +255,6 @@ const LoansMemberProcessed = lazy(() => import("./pages/Loans/Loansprocesssed/Pr
 const LoansRepaymentsList = lazy(() => import("./pages/Loans/Repaymentlist/LoansList"));
 // const LoansRepaymentsPlaceholder = lazy(() => import("./pages/Loans/Repayments/RepaymentPlaceholder"));
 
-export const LoadingComponent = () => {
-  return (
-    <Box sx={{ 
-      display: 'flex', 
-      justifyContent: 'center', 
-      alignItems: 'center', 
-      height: '100vh',
-      width: '100vw',
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      zIndex: 9999,
-      backgroundColor: 'rgba(248, 250, 252, 0.7)',
-      backdropFilter: 'blur(4px)'
-    }}>
-      <CircularProgress sx={{ color: '#FE8001' }} />
-    </Box>
-  );
-};
-
 const ShouldHideSidebar = () => {
   const location = useLocation();
   const noSidebarPaths = ["/login", "/register", "/forgot-password", "/recover-password", "/reset-password", "/", "/about", "/contact", "/services", "/gallery", "/terms", "/privacy-policy", "/refund-policy"];
@@ -297,11 +278,17 @@ const ShouldShowFooter = () => {
   return false;
 };
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 1,
+    },
+  },
+});
 
 function App() {
   const [isOpen, setIsOpen] = useState(() => window.innerWidth > 768);
-
-  const queryClient = new QueryClient();
 
   return (
     <ThemeProvider theme={theme}>

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Card, CardContent, Box, Typography, Grid, CircularProgress, IconButton, TextField, InputAdornment } from '@mui/material';
+import { Button, Card, CardContent, Box, Typography, Grid, CircularProgress, LinearProgress, IconButton, TextField, InputAdornment } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
@@ -11,11 +11,15 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import BadgeIcon from '@mui/icons-material/Badge';
 import QrCodeIcon from '@mui/icons-material/QrCode';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
+import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import UserContext from '../../../context/user/userContext';
-import { LoadingComponent } from '../../../App';
-import { useSubmitKYC, useUploadKYCDocument } from '../../../api/Memeber';
+import LoadingComponent from '../../../components/common/LoadingComponent';
+import { useSubmitKYC, useUploadKYCDocument, useGetMemberKycDetails } from '../../../api/Memeber';
+import TokenService from '../../../api/token/tokenService';
 import { toast } from 'react-toastify';
 
 const PaytmIconBadge: React.FC<{ children: React.ReactNode }> = ({ children }) => (
@@ -42,6 +46,21 @@ const PaytmIconBadge: React.FC<{ children: React.ReactNode }> = ({ children }) =
   </Box>
 );
 
+const formatImageUrl = (url: any): string | null => {
+  if (!url || typeof url !== 'string' || url === 'null' || url === 'undefined' || url.trim() === '' || url === '[object Object]') {
+    return null;
+  }
+  const cleanUrl = url.trim();
+  if (cleanUrl.startsWith('http://') || cleanUrl.startsWith('https://') || cleanUrl.startsWith('data:') || cleanUrl.startsWith('blob:')) {
+    return cleanUrl;
+  }
+  if (cleanUrl.startsWith('/kyc-documents/') || cleanUrl.startsWith('kyc-documents/')) {
+    return `https://ik.imagekit.io/ornateassets/${cleanUrl.replace(/^\//, '')}`;
+  }
+  const apiBase = (import.meta.env.VITE_MLM_API_URL || 'http://localhost:8080/').replace(/\/+$/, '');
+  return `${apiBase}/${cleanUrl.replace(/^\//, '')}`;
+};
+
 interface DocumentUploadProps {
   label: string;
   icon: React.ReactNode;
@@ -49,6 +68,7 @@ interface DocumentUploadProps {
   onUpload: (file: File) => void;
   onDelete: () => void;
   uploading: boolean;
+  optional?: boolean;
 }
 
 const DocumentUpload: React.FC<DocumentUploadProps> = ({
@@ -58,7 +78,15 @@ const DocumentUpload: React.FC<DocumentUploadProps> = ({
   onUpload,
   onDelete,
   uploading,
+  optional = false,
 }) => {
+  const [imgError, setImgError] = useState(false);
+  const formattedUrl = formatImageUrl(value);
+
+  useEffect(() => {
+    setImgError(false);
+  }, [value]);
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -97,17 +125,22 @@ const DocumentUpload: React.FC<DocumentUploadProps> = ({
             <Typography variant="subtitle2" fontWeight="800" ml={1} sx={{ color: '#0F172A' }}>
               {label}
             </Typography>
+            {optional && (
+              <Typography sx={{ ml: 1, fontSize: '0.68rem', fontWeight: 700, color: '#64748B', bgcolor: '#E2E8F0', px: 0.8, py: 0.1, borderRadius: '6px' }}>
+                Optional
+              </Typography>
+            )}
           </Box>
-          {value && (
+          {formattedUrl && !imgError && (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, bgcolor: '#E0F2FE', px: 1, py: 0.2, borderRadius: '20px' }}>
-              <CheckCircleIcon sx={{ fontSize: 13, color: '#FF9933' }} />
+              <CheckCircleIcon sx={{ fontSize: 13, color: '#0284C7' }} />
               <Typography sx={{ fontSize: '0.68rem', fontWeight: 800, color: '#0369A1' }}>Attached</Typography>
             </Box>
           )}
         </Box>
 
         <AnimatePresence mode="wait">
-          {value ? (
+          {formattedUrl ? (
             <motion.div
               key="preview"
               initial={{ opacity: 0, scale: 0.95 }}
@@ -115,18 +148,51 @@ const DocumentUpload: React.FC<DocumentUploadProps> = ({
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.2 }}
             >
-              <Box sx={{ position: 'relative', width: '100%', height: 160, borderRadius: '12px', overflow: 'hidden', border: '1.5px solid #FE8001' }}>
-                <img
-                  src={value}
-                  alt={label}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                  }}
-                />
+              <Box sx={{ position: 'relative', width: '100%', height: 180, borderRadius: '12px', overflow: 'hidden', border: '1.5px solid #FE8001', bgcolor: '#FFFFFF' }}>
+                {!imgError ? (
+                  <img
+                    src={formattedUrl}
+                    alt={label}
+                    onError={() => setImgError(true)}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'contain',
+                      display: 'block',
+                      backgroundColor: '#F8FAFC'
+                    }}
+                  />
+                ) : (
+                  <Box sx={{ p: 2, height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', bgcolor: '#FEF2F2' }}>
+                    <ErrorOutlineIcon sx={{ fontSize: 32, color: '#EF4444', mb: 0.5 }} />
+                    <Typography sx={{ fontSize: '0.8rem', fontWeight: 800, color: '#991B1B' }}>
+                      Image Preview Not Available
+                    </Typography>
+                    <Typography sx={{ fontSize: '0.7rem', color: '#64748B', mt: 0.3, mb: 1.5 }}>
+                      File attached. Tap below to upload a clear replacement.
+                    </Typography>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      component="label"
+                      startIcon={<CloudUploadIcon />}
+                      sx={{
+                        background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
+                        color: '#FFFFFF',
+                        fontSize: '0.72rem',
+                        fontWeight: 700,
+                        textTransform: 'none',
+                        borderRadius: '8px'
+                      }}
+                    >
+                      Replace Image
+                      <input type="file" hidden accept="image/*" onChange={handleFileChange} />
+                    </Button>
+                  </Box>
+                )}
                 <IconButton
                   onClick={onDelete}
+                  title="Remove document"
                   sx={{
                     position: 'absolute',
                     top: 8,
@@ -142,6 +208,30 @@ const DocumentUpload: React.FC<DocumentUploadProps> = ({
                 >
                   <DeleteIcon fontSize="small" />
                 </IconButton>
+                {!imgError && (
+                  <Button
+                    size="small"
+                    component="label"
+                    sx={{
+                      position: 'absolute',
+                      bottom: 8,
+                      right: 8,
+                      bgcolor: 'rgba(15, 23, 42, 0.75)',
+                      backdropFilter: 'blur(4px)',
+                      color: '#FFFFFF',
+                      fontSize: '0.7rem',
+                      fontWeight: 700,
+                      py: 0.3,
+                      px: 1,
+                      textTransform: 'none',
+                      borderRadius: '8px',
+                      '&:hover': { bgcolor: 'rgba(15, 23, 42, 0.9)' }
+                    }}
+                  >
+                    Change
+                    <input type="file" hidden accept="image/*" onChange={handleFileChange} />
+                  </Button>
+                )}
               </Box>
             </motion.div>
           ) : (
@@ -221,9 +311,13 @@ const DocumentUpload: React.FC<DocumentUploadProps> = ({
 
 const KYC: React.FC = () => {
   const navigate = useNavigate();
-  const { user } = useContext(UserContext);
+  const { user, setUser, getUser } = useContext(UserContext) || {};
   const submitKYC = useSubmitKYC();
   const uploadKYCDocument = useUploadKYCDocument();
+
+  const currentMemberId = (user as any)?.Member_id || (user as any)?.member_id || (user as any)?.member_code || TokenService.getMemberId() || TokenService.getUserId() || localStorage.getItem("memberId") || '';
+  const { data: memberDetails, isLoading: isDetailsLoading } = useGetMemberKycDetails(currentMemberId);
+  const currentUser = memberDetails || user;
 
   const [formData, setFormData] = useState({
     accountName: '',
@@ -231,6 +325,8 @@ const KYC: React.FC = () => {
     ifsc_code: '',
     bank_name: '',
     upi_id: '',
+    pan_no: '',
+    aadharcard_no: '',
   });
 
   const [documents, setDocuments] = useState({
@@ -241,29 +337,24 @@ const KYC: React.FC = () => {
   const [uploadingDoc, setUploadingDoc] = useState<string | null>(null);
 
   useEffect(() => {
-    if (user?.kyc_details) {
+    if (currentUser) {
+      const kyc = (currentUser as any).kyc_details || {};
+      const anyUser = currentUser as any;
       setFormData({
-        accountName: user.kyc_details.accountName || user.Name || '',
-        account_number: user.kyc_details.account_number || '',
-        ifsc_code: user.kyc_details.ifsc_code || '',
-        bank_name: user.kyc_details.bank_name || '',
-        upi_id: user.kyc_details.upi_id || '',
+        accountName: kyc.accountName || anyUser.accountName || anyUser.Name || anyUser.name || '',
+        account_number: kyc.account_number || anyUser.account_number || anyUser.bank_account_number || anyUser.bankAccount || '',
+        ifsc_code: kyc.ifsc_code || anyUser.ifsc_code || anyUser.ifsc || '',
+        bank_name: kyc.bank_name || anyUser.bank_name || anyUser.bankName || '',
+        upi_id: kyc.upi_id || anyUser.upi_id || anyUser.upiId || '',
+        pan_no: kyc.pan_no || kyc.Pan_no || anyUser.pan_no || anyUser.Pan_no || anyUser.pan || '',
+        aadharcard_no: kyc.aadharcard_no || anyUser.aadharcard_no || anyUser.aadhar_no || anyUser.adhaar || '',
       });
       setDocuments({
-        panImage: user.kyc_details.panImage || null,
-        profileImage: user.kyc_details.profileImage || null,
-      });
-    } else if (user) {
-      setFormData((prev) => ({
-        ...prev,
-        accountName: user.Name || '',
-      }));
-      setDocuments({
-        panImage: user.panImage || null,
-        profileImage: user.profileImage || null,
+        panImage: kyc.panImage || anyUser.panImage || anyUser.pan_image || null,
+        profileImage: kyc.profileImage || anyUser.profile_image || anyUser.profileImage || anyUser.member_image || null,
       });
     }
-  }, [user]);
+  }, [currentUser]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -278,10 +369,11 @@ const KYC: React.FC = () => {
     uploadKYCDocument.mutate(
       { documentType: docType, file },
       {
-        onSuccess: (data) => {
+        onSuccess: (data: any) => {
+          const docUrl = data?.url || data?.documentUrl || data?.fileUrl || null;
           setDocuments((prev) => ({
             ...prev,
-            [docType]: data.url,
+            [docType]: docUrl,
           }));
           toast.success(`${docType === 'panImage' ? 'ID Document' : 'Photo'} uploaded successfully`);
           setUploadingDoc(null);
@@ -307,38 +399,68 @@ const KYC: React.FC = () => {
       return;
     }
 
+    if (!formData.pan_no.trim()) {
+      toast.error('Please enter your PAN Card number');
+      return;
+    }
+
+    if (!formData.aadharcard_no.trim()) {
+      toast.error('Please enter your Aadhaar card number');
+      return;
+    }
+
     const missingDocs: string[] = [];
     if (!documents.panImage) missingDocs.push('Identity / PAN Document');
-    if (!documents.profileImage) missingDocs.push('Profile Photo');
+    // Passport photo is explicitly optional as requested
 
     if (missingDocs.length > 0) {
       toast.error(`Please upload required documents: ${missingDocs.join(', ')}`);
       return;
     }
 
-    const memberIdentifier = user?.Member_id || user?.member_id || user?.member_code || user?.mobileno || '';
+    const memberIdentifier = (user as any)?.Member_id || (user as any)?.member_id || (user as any)?.member_code || (user as any)?.mobileno || localStorage.getItem("memberId") || '';
 
-    submitKYC.mutate({
-      ref_no: memberIdentifier,
-      Member_id: memberIdentifier,
-      member_id: memberIdentifier,
-      accountName: formData.accountName,
-      bankAccount: formData.account_number,
-      account_number: formData.account_number,
-      ifsc: formData.ifsc_code,
-      ifsc_code: formData.ifsc_code,
-      bankName: formData.bank_name,
-      bank_name: formData.bank_name,
-      upiId: formData.upi_id,
-      upi_id: formData.upi_id,
-      panImage: documents.panImage,
-      profileImage: documents.profileImage,
-    });
+    submitKYC.mutate(
+      {
+        ref_no: memberIdentifier,
+        Member_id: memberIdentifier,
+        member_id: memberIdentifier,
+        memberId: memberIdentifier,
+        accountName: formData.accountName,
+        bankAccount: formData.account_number,
+        account_number: formData.account_number,
+        ifsc: formData.ifsc_code,
+        ifsc_code: formData.ifsc_code,
+        bankName: formData.bank_name,
+        bank_name: formData.bank_name,
+        upiId: formData.upi_id,
+        upi_id: formData.upi_id,
+        pan_no: formData.pan_no.trim().toUpperCase(),
+        Pan_no: formData.pan_no.trim().toUpperCase(),
+        pan: formData.pan_no.trim().toUpperCase(),
+        aadharcard_no: formData.aadharcard_no.trim(),
+        aadhar_no: formData.aadharcard_no.trim(),
+        panImage: documents.panImage,
+        profileImage: documents.profileImage,
+        profile_image: documents.profileImage,
+      },
+      {
+        onSuccess: () => {
+          if (memberIdentifier && getUser) {
+            getUser(memberIdentifier).then((res: any) => {
+              if (res?.data && setUser) {
+                setUser(res.data);
+              }
+            }).catch(() => {});
+          }
+        }
+      }
+    );
   };
 
   const documentConfigs = [
-    { key: 'panImage', label: 'PAN / Aadhaar / National ID', icon: <PaytmIconBadge><BadgeIcon /></PaytmIconBadge> },
-    { key: 'profileImage', label: 'Passport Photo', icon: <PaytmIconBadge><ImageIcon /></PaytmIconBadge> },
+    { key: 'panImage', label: 'PAN / Aadhaar / National ID Document', icon: <PaytmIconBadge><BadgeIcon /></PaytmIconBadge>, optional: false },
+    { key: 'profileImage', label: 'Passport Size Photo', icon: <PaytmIconBadge><ImageIcon /></PaytmIconBadge>, optional: true },
   ];
 
   const modernInputStyles = {
@@ -418,42 +540,150 @@ const KYC: React.FC = () => {
           borderRadius: '24px', 
           overflow: 'hidden'
         }}>
+          {isDetailsLoading && !currentUser && (
+            <LinearProgress sx={{ height: 3, bgcolor: '#F1F5F9', '& .MuiLinearProgress-bar': { bgcolor: '#FE8001' } }} />
+          )}
           <CardContent sx={{ p: { xs: 2.5, sm: 3.5 } }}>
             
             {/* Top Verification Status Banner */}
-            {/* <Box sx={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 2,
-              p: 2.2,
-              borderRadius: '18px',
-              background: 'linear-gradient(135deg, #002970 0%, #E06F00 60%, #FE8001 100%)',
-              color: '#FFFFFF',
-              boxShadow: '0 8px 24px rgba(0, 186, 242, 0.22)',
-              mb: 3
-            }}>
-              <Box sx={{
-                width: 48,
-                height: 48,
-                borderRadius: '14px',
-                bgcolor: 'rgba(255, 255, 255, 0.2)',
-                backdropFilter: 'blur(6px)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexShrink: 0
-              }}>
-                <VerifiedUserIcon sx={{ fontSize: 28, color: '#FFFFFF' }} />
+            {(() => {
+              const status = String((currentUser as any)?.kycStatus || (currentUser as any)?.kyc_details?.kycStatus || 'PENDING').toUpperCase();
+              const isApproved = status === 'APPROVED';
+              const isProcessing = status === 'PROCESSING';
+              const isRejected = status === 'REJECTED';
+
+              const gradient = isApproved
+                ? 'linear-gradient(135deg, #059669 0%, #10B981 100%)'
+                : isProcessing
+                ? 'linear-gradient(135deg, #D97706 0%, #F59E0B 100%)'
+                : isRejected
+                ? 'linear-gradient(135deg, #DC2626 0%, #EF4444 100%)'
+                : 'linear-gradient(135deg, #002970 0%, #E06F00 60%, #FE8001 100%)';
+
+              const IconComponent = isApproved
+                ? VerifiedUserIcon
+                : isProcessing
+                ? HourglassEmptyIcon
+                : isRejected
+                ? ErrorOutlineIcon
+                : VerifiedUserIcon;
+
+              const titleText = isApproved
+                ? 'KYC Verified & Approved'
+                : isProcessing
+                ? 'KYC Under Review (Processing)'
+                : isRejected
+                ? 'KYC Verification Rejected'
+                : 'Identity & Bank Verification';
+
+              const subtitleText = isApproved
+                ? 'Your bank account and identity documents have been approved.'
+                : isProcessing
+                ? 'Your KYC documents have been submitted and are under verification.'
+                : isRejected
+                ? 'Your previous submission was rejected. Please re-upload verified details.'
+                : 'Required for payout settlements and account security';
+
+              return (
+                <Box sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 2,
+                  p: 2.2,
+                  borderRadius: '18px',
+                  background: gradient,
+                  color: '#FFFFFF',
+                  boxShadow: '0 8px 24px rgba(0, 0, 0, 0.12)',
+                  mb: 3
+                }}>
+                  <Box sx={{
+                    width: 48,
+                    height: 48,
+                    borderRadius: '14px',
+                    bgcolor: 'rgba(255, 255, 255, 0.2)',
+                    backdropFilter: 'blur(6px)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0
+                  }}>
+                    <IconComponent sx={{ fontSize: 28, color: '#FFFFFF' }} />
+                  </Box>
+                  <Box>
+                    <Typography sx={{ fontWeight: 900, fontSize: '1rem', color: '#FFFFFF', lineHeight: 1.2 }}>
+                      {titleText}
+                    </Typography>
+                    <Typography sx={{ fontSize: '0.76rem', color: '#E0F2FE', mt: 0.3 }}>
+                      {subtitleText}
+                    </Typography>
+                  </Box>
+                </Box>
+              );
+            })()}
+
+            {/* Identity & Government ID Details */}
+            <Box sx={{ mb: 3.5 }}>
+              <Typography variant="subtitle2" sx={{ color: '#0F172A', fontWeight: 900, mb: 2, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                Identity & Tax Details
+              </Typography>
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                <Box>
+                  <Typography variant="caption" sx={{ mb: 0.8, color: '#334155', fontWeight: 800, ml: 0.5, display: 'block', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                    PAN Card Number *
+                  </Typography>
+                  <TextField
+                    name="pan_no"
+                    value={formData.pan_no}
+                    onChange={(e) => {
+                      const val = e.target.value.toUpperCase();
+                      setFormData(prev => ({ ...prev, pan_no: val }));
+                    }}
+                    fullWidth
+                    variant="outlined"
+                    placeholder="e.g. ABCDE1234F"
+                    inputProps={{ maxLength: 10 }}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <PaytmIconBadge>
+                            <BadgeIcon />
+                          </PaytmIconBadge>
+                        </InputAdornment>
+                      ),
+                    }}
+                    sx={modernInputStyles}
+                  />
+                </Box>
+
+                <Box>
+                  <Typography variant="caption" sx={{ mb: 0.8, color: '#334155', fontWeight: 800, ml: 0.5, display: 'block', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                    Aadhaar Card Number *
+                  </Typography>
+                  <TextField
+                    name="aadharcard_no"
+                    value={formData.aadharcard_no}
+                    onChange={(e) => {
+                      const val = e.target.value.replace(/\D/g, '').slice(0, 12);
+                      setFormData(prev => ({ ...prev, aadharcard_no: val }));
+                    }}
+                    fullWidth
+                    variant="outlined"
+                    placeholder="12-digit Aadhaar number"
+                    inputProps={{ maxLength: 12 }}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <PaytmIconBadge>
+                            <ConfirmationNumberIcon />
+                          </PaytmIconBadge>
+                        </InputAdornment>
+                      ),
+                    }}
+                    sx={modernInputStyles}
+                  />
+                </Box>
               </Box>
-              <Box>
-                <Typography sx={{ fontWeight: 900, fontSize: '1rem', color: '#FFFFFF', lineHeight: 1.2 }}>
-                  Identity & Bank Verification
-                </Typography>
-                <Typography sx={{ fontSize: '0.76rem', color: '#E0F2FE', mt: 0.3 }}>
-                  Required for payout settlements and account security
-                </Typography>
-              </Box>
-            </Box> */}
+            </Box>
 
             <Box sx={{ mb: 3 }}>
               <Typography variant="subtitle2" sx={{ color: '#0F172A', fontWeight: 900, mb: 2, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
@@ -598,6 +828,7 @@ const KYC: React.FC = () => {
                       onUpload={(file) => handleDocumentUpload(config.key, file)}
                       onDelete={() => handleDocumentDelete(config.key)}
                       uploading={uploadingDoc === config.key}
+                      optional={config.optional}
                     />
                   </Grid>
                 ))}

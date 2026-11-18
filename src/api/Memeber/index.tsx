@@ -1037,11 +1037,29 @@ export const useSubmitKYC = () => {
     onSuccess: () => {
       toast.success("KYC submitted successfully!");
       queryClient.invalidateQueries({ queryKey: ["memberDetails"] });
+      queryClient.invalidateQueries({ queryKey: ["memberKycDetails"] });
     },
     onError: (error: any) => {
       const errorMessage = error.response?.data?.message || "Failed to submit KYC";
       toast.error(errorMessage);
     },
+  });
+};
+
+export const useGetMemberKycDetails = (memberId: string | null) => {
+  return useQuery({
+    queryKey: ["memberKycDetails", memberId],
+    queryFn: async () => {
+      try {
+        const response = await get(`/kyc/details/${memberId || ''}`);
+        return response?.data || response;
+      } catch {
+        const res = await get(`/user/member/${memberId}`);
+        return res?.data || res;
+      }
+    },
+    enabled: !!memberId,
+    staleTime: 30000,
   });
 };
 

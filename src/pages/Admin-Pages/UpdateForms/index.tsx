@@ -9,7 +9,7 @@ import { BankDetails } from './updated-forms/BankDetails';
 import { KYCDocuments } from './updated-forms/KYCDocuments';
 import { NomineeDetails } from './updated-forms/NomineeDetails';
 import { JoiningDetails } from './updated-forms/JoiningDetails';
-import { LoadingComponent } from '../../../App';
+import LoadingComponent from '../../../components/common/LoadingComponent';
 import { useParams } from 'react-router-dom';
 
 const MembersUpdateForm: React.FC = () => {

@@ -12,7 +12,7 @@ import { getEpinsSummary, useGeneratePackage } from '../../../api/Admin';
 import { toast } from 'react-toastify';
 import useSearch from '../../../hooks/SearchQuery';
 import UserContext from '../../../context/user/userContext';
-import { LoadingComponent } from '../../../App';
+import LoadingComponent from '../../../components/common/LoadingComponent';
 
 interface PackageTableProps {
   title: string;

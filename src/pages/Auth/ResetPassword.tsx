@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { MuiOtpInput } from 'mui-one-time-password-input';
 import LogBg from "../../assets/log_bg.jpg"; // Import the logo
 import { useResetpassword } from '../../api/Auth';
-import { LoadingComponent } from '../../App';
+import LoadingComponent from '../../components/common/LoadingComponent';
 
 const ResetPassword = () => {
   const [step, setStep] = useState(1);

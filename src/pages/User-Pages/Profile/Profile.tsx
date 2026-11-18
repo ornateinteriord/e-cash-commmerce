@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import UserContext from "../../../context/user/userContext";
 import { useGetMemberDetails, useUpdateMember } from '../../../api/Memeber';
 import TokenService from '../../../api/token/tokenService';
-import { LoadingComponent } from '../../../App';
+import LoadingComponent from '../../../components/common/LoadingComponent';
 
 const Profile: React.FC = () => {
   const navigate = useNavigate();

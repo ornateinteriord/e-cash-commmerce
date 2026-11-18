@@ -15,7 +15,7 @@ import {
 } from '@mui/icons-material';
 import { toast } from 'react-toastify';
 import { post } from '../../api/Api';
-import { LoadingComponent } from '../../App';
+import LoadingComponent from '../../components/common/LoadingComponent';
 import { useLoginMutation } from '../../api/Auth';
 import ForgotPasswordForm from "./components/ForgotPasswordForm";
 

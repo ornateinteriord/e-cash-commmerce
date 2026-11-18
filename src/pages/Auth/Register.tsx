@@ -24,7 +24,7 @@ import PublicIcon from '@mui/icons-material/Public';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import { useGetSponserRef, useSignupMutation } from '../../api/Auth';
 import { post } from '../../api/Api';
-import { LoadingComponent } from '../../App';
+import LoadingComponent from '../../components/common/LoadingComponent';
 import { MuiOtpInput } from 'mui-one-time-password-input';
 import { toast } from 'react-toastify';
 import { auth } from '../../firebase';

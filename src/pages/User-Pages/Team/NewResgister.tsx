@@ -9,7 +9,7 @@ import LockIcon from '@mui/icons-material/Lock';
 import PublicIcon from '@mui/icons-material/Public';
 import UserContext from '../../../context/user/userContext';
 import { useSignupMutation } from '../../../api/Auth';
-import { LoadingComponent } from '../../../App';
+import LoadingComponent from '../../../components/common/LoadingComponent';
 import { toast } from 'react-toastify';
 
 const COUNTRIES = [

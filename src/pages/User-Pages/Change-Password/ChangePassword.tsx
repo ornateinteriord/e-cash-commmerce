@@ -11,7 +11,7 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useUpdateMember } from '../../../api/Memeber';
 import { toast } from 'react-toastify';
-import { LoadingComponent } from '../../../App';
+import LoadingComponent from '../../../components/common/LoadingComponent';
 
 const ChangePassword: React.FC = () => {
   const navigate = useNavigate();
