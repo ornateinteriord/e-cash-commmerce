@@ -409,6 +409,8 @@ const KYC: React.FC = () => {
       return;
     }
 
+    // Document upload validation commented out per user request
+    /*
     const missingDocs: string[] = [];
     if (!documents.panImage) missingDocs.push('Identity / PAN Document');
     // Passport photo is explicitly optional as requested
@@ -417,6 +419,7 @@ const KYC: React.FC = () => {
       toast.error(`Please upload required documents: ${missingDocs.join(', ')}`);
       return;
     }
+    */
 
     const memberIdentifier = (user as any)?.Member_id || (user as any)?.member_id || (user as any)?.member_code || (user as any)?.mobileno || localStorage.getItem("memberId") || '';
 
@@ -813,7 +816,8 @@ const KYC: React.FC = () => {
               </form>
             </Box>
 
-            {/* KYC Documents */}
+            {/* KYC Documents - commented out per user request */}
+            {/*
             <Box sx={{ mt: 3.5 }}>
               <Typography variant="subtitle2" sx={{ color: '#0F172A', fontWeight: 900, mb: 2, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                 Upload Identity Documents
@@ -833,17 +837,29 @@ const KYC: React.FC = () => {
                   </Grid>
                 ))}
               </Grid>
+            </Box>
+            */}
 
-              <Box mt={3.5}>
-                <motion.div
-                  whileHover={{ scale: 1.01 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <Button
-                    variant="contained"
-                    onClick={handleSubmit}
-                    disabled={submitKYC.isPending}
-                    fullWidth
+            {(() => {
+              void DocumentUpload;
+              void Grid;
+              void documentConfigs;
+              void uploadingDoc;
+              void handleDocumentUpload;
+              void handleDocumentDelete;
+              return null;
+            })()}
+
+            <Box mt={3.5}>
+              <motion.div
+                whileHover={{ scale: 1.01 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Button
+                  variant="contained"
+                  onClick={handleSubmit}
+                  disabled={submitKYC.isPending}
+                  fullWidth
                     sx={{
                       background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
                       color: '#FFFFFF',
@@ -868,7 +884,6 @@ const KYC: React.FC = () => {
                   </Button>
                 </motion.div>
               </Box>
-            </Box>
           </CardContent>
           {submitKYC.isPending && <LoadingComponent />}
         </Card>
