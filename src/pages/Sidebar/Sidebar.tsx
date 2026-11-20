@@ -3,7 +3,8 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { UserSideBarMenuItems, AdminSideBarMenuItems, Admin01SideBarMenuItems, AgentSideBarMenuItems } from './SidebarUtils';
-import { Avatar, Toolbar, Typography } from '@mui/material';
+import { Avatar, Toolbar, Typography, IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import { SideBarMenuItemType } from '../../store/store';
 import { ExpandMoreIcon, ExpandLessIcon } from '../Icons';
 import { useGetMemberDetails } from '../../api/Memeber';
@@ -38,7 +39,7 @@ const Sidebar = ({ isOpen, onClose, role }: { isOpen: boolean, onClose: () => vo
   const handleSelect = (itemName: string) => {
     setSelectedItem(itemName);
     // Close sidebar on mobile regardless of submenu state
-    if (window.innerWidth <= 768) {
+    if (window.innerWidth < 900) {
       onClose();
     }
   };
@@ -69,7 +70,7 @@ const Sidebar = ({ isOpen, onClose, role }: { isOpen: boolean, onClose: () => vo
       animate={{ width: isOpen ? 250 : 0 }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
       style={{
-        zIndex: 100,
+        zIndex: 1200,
         background: isNidhiRole ? '#1F333B' : undefined,
         boxShadow: isOpen && isNidhiRole ? '4px 0 20px rgba(31, 51, 59, 0.4)' : 'none',
         overflow: 'hidden',
@@ -86,44 +87,66 @@ const Sidebar = ({ isOpen, onClose, role }: { isOpen: boolean, onClose: () => vo
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.2 }}
             style={{
-              padding: isNidhiRole ? '10px 20px 0px 20px' : undefined,
-              flexDirection: isNidhiRole ? undefined : 'column',
-              alignItems: isNidhiRole ? undefined : 'flex-start',
+              padding: isNidhiRole ? '10px 16px 0px 16px' : '15px 16px',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
               gap: '5px'
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <Avatar
-                alt="User Avatar"
-                src={fethedUser?.profile_image || ''}
-                sx={isNidhiRole ? {
-                  width: 44,
-                  height: 44,
-                  background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
-                  boxShadow: '0 4px 12px rgba(254, 128, 1, 0.3)',
-                  border: '2px solid rgba(254, 128, 1, 0.5)',
-                } : { width: 50, height: 50, bgcolor: '#FE8001', color: '#FFFFFF' }}
-              >
-                {!fethedUser?.profileImage && name?.charAt(0).toUpperCase()}
-              </Avatar>
-              <div className="welcome-text" style={{ padding: '0 10px', color: isNidhiRole ? '#FFFFFF' : undefined }}>
-                <Typography style={isNidhiRole ? {
-                  fontWeight: 'bold',
-                  color: '#FE8001',
-                  fontSize: '0.9rem',
-                  textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)',
-                  lineHeight: '1.2',
-                } : {}}>Welcome,</Typography>
-                <Typography style={isNidhiRole ? {
-                  color: 'rgba(255, 255, 255, 0.85)',
-                  fontSize: '0.75rem',
-                  fontWeight: '400',
-                  marginTop: '0px',
-                } : { fontWeight: 'bold' }}>
-                  {fethedUser?.Name || name}
-                  {isNidhiRole && <><br />ID: {fethedUser?.member_code || fethedUser?.Member_id || fethedUser?.member_id || fethedUser?.username || ''}</>}
-                </Typography>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <Avatar
+                  alt="User Avatar"
+                  src={fethedUser?.profile_image || ''}
+                  sx={isNidhiRole ? {
+                    width: 44,
+                    height: 44,
+                    background: 'linear-gradient(135deg, #FE8001 0%, #FF9933 100%)',
+                    boxShadow: '0 4px 12px rgba(254, 128, 1, 0.3)',
+                    border: '2px solid rgba(254, 128, 1, 0.5)',
+                  } : { width: 44, height: 44, bgcolor: '#FE8001', color: '#FFFFFF' }}
+                >
+                  {!fethedUser?.profileImage && name?.charAt(0).toUpperCase()}
+                </Avatar>
+                <div className="welcome-text" style={{ padding: '0 4px', color: isNidhiRole ? '#FFFFFF' : undefined }}>
+                  <Typography style={isNidhiRole ? {
+                    fontWeight: 'bold',
+                    color: '#FE8001',
+                    fontSize: '0.85rem',
+                    textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)',
+                    lineHeight: '1.2',
+                  } : { fontWeight: 'bold', color: '#FE8001', fontSize: '0.85rem' }}>Welcome,</Typography>
+                  <Typography style={isNidhiRole ? {
+                    color: 'rgba(255, 255, 255, 0.85)',
+                    fontSize: '0.75rem',
+                    fontWeight: '400',
+                    marginTop: '0px',
+                  } : { fontWeight: '600', fontSize: '0.8rem', color: '#1F333B' }}>
+                    {fethedUser?.Name || name}
+                    {isNidhiRole && <><br />ID: {fethedUser?.member_code || fethedUser?.Member_id || fethedUser?.member_id || fethedUser?.username || ''}</>}
+                  </Typography>
+                </div>
               </div>
+
+              {/* Mobile Close Button */}
+              <IconButton
+                onClick={onClose}
+                size="small"
+                sx={{
+                  display: { xs: 'flex', md: 'none' },
+                  color: isNidhiRole ? '#FE8001' : '#64748B',
+                  bgcolor: isNidhiRole ? 'rgba(254, 128, 1, 0.12)' : 'rgba(0, 0, 0, 0.05)',
+                  borderRadius: '10px',
+                  p: 0.6,
+                  '&:hover': {
+                    bgcolor: 'rgba(254, 128, 1, 0.25)',
+                    color: '#FE8001'
+                  }
+                }}
+                aria-label="Close menu"
+              >
+                <CloseIcon fontSize="small" />
+              </IconButton>
             </div>
           </motion.div>
         )}
@@ -252,6 +275,9 @@ const Sidebar = ({ isOpen, onClose, role }: { isOpen: boolean, onClose: () => vo
                               className={`sub-item ${isSubItemActive ? 'selected' : ''}`}
                               onClick={() => {
                                 handleSelect(item.name);
+                                if (window.innerWidth < 900) {
+                                  onClose();
+                                }
                               }}
                               style={isNidhiRole ? {
                                 display: 'flex',

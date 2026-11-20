@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { Typography, Box, CircularProgress, Paper, Button, IconButton, Avatar, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Chip } from '@mui/material';
+import { Typography, Box, CircularProgress, Paper, Button, IconButton, Avatar, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Chip, useMediaQuery } from '@mui/material';
 
 import SettingsIcon from '@mui/icons-material/Settings';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
@@ -34,6 +34,7 @@ import TokenCoin from '../../../components/common/TokenCoin';
 
 
 const UserDashboard = () => {
+  const isMobile = useMediaQuery('(max-width: 600px)');
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const [paymentProcessed, setPaymentProcessed] = useState(false);
@@ -262,11 +263,11 @@ const UserDashboard = () => {
 
   return (
     <Box sx={{
-      pb: 8,
+      pb: { xs: 9, md: 8 },
       bgcolor: '#FFFFFF',
       minHeight: '100vh',
-      px: { xs: 2, sm: 3, md: 5, lg: 8 },
-      pt: { xs: 2, md: 3 },
+      px: { xs: 1.5, sm: 2.5, md: 5, lg: 8 },
+      pt: { xs: 1.5, md: 3 },
       maxWidth: '1200px',
       margin: '0 auto'
     }}>
@@ -283,11 +284,11 @@ const UserDashboard = () => {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        gap: { xs: 1.8, sm: 2.2 },
-        mb: 3.5,
-        mt: 1,
-        p: { xs: 2.2, sm: 2.8 },
-        borderRadius: '24px',
+        gap: { xs: 1.5, sm: 2.2 },
+        mb: { xs: 2.5, sm: 3.5 },
+        mt: { xs: 0.5, sm: 1 },
+        p: { xs: 1.8, sm: 2.8 },
+        borderRadius: { xs: '20px', sm: '24px' },
         background: 'linear-gradient(135deg, #15242A 0%, #1F333B 65%, #2B444E 100%)',
         boxShadow: '0 12px 32px rgba(21, 36, 42, 0.35)',
         border: '1px solid rgba(254, 128, 1, 0.3)',
@@ -317,17 +318,17 @@ const UserDashboard = () => {
           zIndex: 1
         }}>
           {/* User Identity: Avatar, Name, Member ID & User ID badge */}
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1.8, sm: 2.5 } }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1.5, sm: 2.5 } }}>
             <Avatar
               src={(memberDetails as any)?.profile_image || (memberDetails as any)?.photo || (memberDetails as any)?.avatar || undefined}
               onClick={() => navigate('/user/account/profile')}
               sx={{
-                width: { xs: 54, sm: 62 },
-                height: { xs: 54, sm: 62 },
+                width: { xs: 50, sm: 62 },
+                height: { xs: 50, sm: 62 },
                 background: 'linear-gradient(135deg, #FE8001 0%, #FFA033 100%)',
                 color: '#FFFFFF',
                 fontWeight: 900,
-                fontSize: { xs: '1.45rem', sm: '1.7rem' },
+                fontSize: { xs: '1.35rem', sm: '1.7rem' },
                 cursor: 'pointer',
                 boxShadow: '0 8px 22px rgba(254, 128, 1, 0.45)',
                 border: '2.5px solid rgba(255, 255, 255, 0.25)',
@@ -476,7 +477,7 @@ const UserDashboard = () => {
               transform: 'translateY(-2px) scale(1.03)'
             }
           }}>
-            <TokenCoin value={memberDetails?.tokens ?? memberDetails?.token ?? 0} size={68} />
+            <TokenCoin value={memberDetails?.tokens ?? memberDetails?.token ?? 0} size={isMobile ? 52 : 68} />
             <Typography sx={{
               color: '#FCD34D',
               fontSize: { xs: '0.84rem', sm: '0.92rem' },
@@ -657,13 +658,13 @@ const UserDashboard = () => {
         {/* 1. Main Wallet Section */}
         <Box sx={{
           display: 'flex',
-          flexDirection: 'row',
+          flexDirection: { xs: 'column', sm: 'row' },
           alignItems: 'stretch',
           justifyContent: 'space-between',
-          gap: { xs: 2, sm: 3, md: 4 },
+          gap: { xs: 1.8, sm: 3, md: 4 },
           width: '100%'
         }}>
-          {/* Left Side: Wallet Balance & Credits info (Parallel Left) */}
+          {/* Left Side: Wallet Balance & Credits info */}
           <Box 
             onClick={() => navigate('/user/wallet')}
             sx={{
@@ -672,12 +673,12 @@ const UserDashboard = () => {
               flexDirection: 'column',
               justifyContent: 'space-between',
               minWidth: 0,
-              gap: { xs: 1.2, sm: 1.6, md: 2 },
+              gap: { xs: 1, sm: 1.6, md: 2 },
               bgcolor: '#FFFFFF',
               border: '1.5px solid #D1FAE5',
-              borderRadius: { xs: '20px', sm: '24px' },
-              p: { xs: 2.2, sm: 3.2, md: 3.8 },
-              minHeight: { xs: '170px', sm: '200px', md: '220px' },
+              borderRadius: { xs: '18px', sm: '24px' },
+              p: { xs: 2, sm: 3.2, md: 3.8 },
+              minHeight: { xs: 'auto', sm: '200px', md: '220px' },
               boxShadow: '0 4px 16px rgba(16, 185, 129, 0.05)',
               transition: 'all 0.2s ease',
               position: 'relative',
@@ -691,9 +692,9 @@ const UserDashboard = () => {
             }}
           >
             {/* Icon + Title */}
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1.2, sm: 1.6 } }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1, sm: 1.6 } }}>
               <Box sx={{
-                p: { xs: 0.5, sm: 1.1 },
+                p: { xs: 0.6, sm: 1.1 },
                 borderRadius: '12px',
                 bgcolor: 'rgba(254, 128, 1, 0.12)',
                 display: 'flex',
@@ -718,12 +719,12 @@ const UserDashboard = () => {
               </Typography>
             </Box>
 
-            {/* Rupee Balance (Main Wallet: for Add Credit, Withdrawal, New Subscription) */}
-            <Box sx={{ display: 'flex', alignItems: 'baseline', gap: { xs: 0.5, sm: 0.8 }, my: { xs: 0.5, sm: 0.8 } }}>
+            {/* Rupee Balance */}
+            <Box sx={{ display: 'flex', alignItems: 'baseline', gap: { xs: 0.5, sm: 0.8 }, my: { xs: 0.8, sm: 0.8 } }}>
               <Typography sx={{
                 color: '#FE8001',
                 fontWeight: 800,
-                fontSize: { xs: '1.45rem', sm: '1.85rem', md: '2.2rem' },
+                fontSize: { xs: '1.65rem', sm: '1.85rem', md: '2.2rem' },
                 lineHeight: 1.1,
                 letterSpacing: '-0.5px'
               }}>
@@ -733,8 +734,8 @@ const UserDashboard = () => {
 
             <Typography sx={{
               color: '#475569',
-              lineHeight: 1.5,
-              fontSize: { xs: '0.88rem', sm: '0.96rem', md: '1.05rem' },
+              lineHeight: 1.45,
+              fontSize: { xs: '0.82rem', sm: '0.96rem', md: '1.05rem' },
               fontWeight: 500,
               display: '-webkit-box',
               WebkitLineClamp: 2,
@@ -745,12 +746,12 @@ const UserDashboard = () => {
             </Typography>
           </Box>
 
-          {/* Right Side: 3 Action Buttons Stacked Parallel on Right */}
+          {/* Action Buttons: 3 in a row on mobile, stacked on desktop */}
           <Box sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: { xs: 1.2, sm: 1.6, md: 2 },
-            width: { xs: '135px', sm: '175px', md: '210px' },
+            display: 'grid',
+            gridTemplateColumns: { xs: 'repeat(3, 1fr)', sm: '1fr' },
+            gap: { xs: 1, sm: 1.4, md: 2 },
+            width: { xs: '100%', sm: '175px', md: '210px' },
             flexShrink: 0,
             justifyContent: 'space-between'
           }}>
@@ -758,19 +759,19 @@ const UserDashboard = () => {
             <Button
               variant="contained"
               onClick={() => navigate('/user/load-fund')}
-              startIcon={<AddIcon sx={{ fontSize: { xs: '20px !important', sm: '23px !important' }, color: '#15803D' }} />}
+              startIcon={<AddIcon sx={{ fontSize: { xs: '18px !important', sm: '23px !important' }, color: '#15803D' }} />}
               fullWidth
               sx={{
                 flex: 1,
-                minHeight: { xs: '46px', sm: '54px', md: '60px' },
+                minHeight: { xs: '44px', sm: '54px', md: '60px' },
                 background: 'linear-gradient(135deg, #DCFCE7 0%, #BBF7D0 100%)',
                 color: '#15803D',
                 border: '1.5px solid #86EFAC',
                 borderRadius: { xs: '12px', sm: '16px' },
-                px: { xs: 1.5, sm: 2.2 },
-                py: { xs: 1, sm: 1.3 },
+                px: { xs: 0.8, sm: 2.2 },
+                py: { xs: 0.9, sm: 1.3 },
                 fontWeight: 800,
-                fontSize: { xs: '0.9rem', sm: '1rem', md: '1.05rem' },
+                fontSize: { xs: '0.82rem', sm: '1rem', md: '1.05rem' },
                 textTransform: 'none',
                 justifyContent: 'center',
                 boxShadow: '0 4px 12px rgba(34, 197, 94, 0.15)',
@@ -789,19 +790,19 @@ const UserDashboard = () => {
             <Button
               variant="contained"
               onClick={() => navigate('/user/wallet?type=withdrawal')}
-              startIcon={<PaymentsIcon sx={{ fontSize: { xs: '20px !important', sm: '23px !important' }, color: '#0369A1' }} />}
+              startIcon={<PaymentsIcon sx={{ fontSize: { xs: '18px !important', sm: '23px !important' }, color: '#0369A1' }} />}
               fullWidth
               sx={{
                 flex: 1,
-                minHeight: { xs: '46px', sm: '54px', md: '60px' },
+                minHeight: { xs: '44px', sm: '54px', md: '60px' },
                 background: 'linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 100%)',
                 color: '#0369A1',
                 border: '1.5px solid #7DD3FC',
                 borderRadius: { xs: '12px', sm: '16px' },
-                px: { xs: 1.5, sm: 2.2 },
-                py: { xs: 1, sm: 1.3 },
+                px: { xs: 0.8, sm: 2.2 },
+                py: { xs: 0.9, sm: 1.3 },
                 fontWeight: 800,
-                fontSize: { xs: '0.9rem', sm: '1rem', md: '1.05rem' },
+                fontSize: { xs: '0.82rem', sm: '1rem', md: '1.05rem' },
                 textTransform: 'none',
                 justifyContent: 'center',
                 boxShadow: '0 4px 12px rgba(14, 165, 233, 0.15)',
@@ -820,19 +821,19 @@ const UserDashboard = () => {
             <Button
               variant="contained"
               onClick={() => navigate('/user/new-subscription')}
-              startIcon={<BoltIcon sx={{ fontSize: { xs: '20px !important', sm: '23px !important' }, color: '#B45309' }} />}
+              startIcon={<BoltIcon sx={{ fontSize: { xs: '18px !important', sm: '23px !important' }, color: '#B45309' }} />}
               fullWidth
               sx={{
                 flex: 1,
-                minHeight: { xs: '46px', sm: '54px', md: '60px' },
+                minHeight: { xs: '44px', sm: '54px', md: '60px' },
                 background: 'linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%)',
                 color: '#B45309',
                 border: '1.5px solid #FCD34D',
                 borderRadius: { xs: '12px', sm: '16px' },
-                px: { xs: 1.5, sm: 2.2 },
-                py: { xs: 1, sm: 1.3 },
+                px: { xs: 0.8, sm: 2.2 },
+                py: { xs: 0.9, sm: 1.3 },
                 fontWeight: 800,
-                fontSize: { xs: '0.88rem', sm: '0.98rem', md: '1.02rem' },
+                fontSize: { xs: '0.8rem', sm: '0.98rem', md: '1.02rem' },
                 textTransform: 'none',
                 justifyContent: 'center',
                 boxShadow: '0 4px 12px rgba(245, 158, 11, 0.15)',
@@ -1186,10 +1187,11 @@ const UserDashboard = () => {
           onClick={() => handleOpenReferralQR('vendor')}
           sx={{
             display: 'flex',
-            alignItems: 'center',
+            flexDirection: { xs: 'column', sm: 'row' },
+            alignItems: { xs: 'stretch', sm: 'center' },
             justifyContent: 'space-between',
-            gap: { xs: 1, sm: 1.5 },
-            p: { xs: '12px 14px', sm: '14px 20px' },
+            gap: { xs: 1.5, sm: 1.5 },
+            p: { xs: '14px 16px', sm: '14px 20px' },
             borderRadius: '18px',
             background: 'linear-gradient(135deg, #4338CA 0%, #6366F1 50%, #8B5CF6 100%)',
             boxShadow: '0 8px 24px rgba(99, 102, 241, 0.24)',
@@ -1242,7 +1244,7 @@ const UserDashboard = () => {
                   noWrap
                   sx={{
                     fontWeight: 900,
-                    fontSize: { xs: '0.9rem', sm: '1.05rem' },
+                    fontSize: { xs: '0.92rem', sm: '1.05rem' },
                     color: '#FFFFFF',
                     lineHeight: 1.2,
                   }}
@@ -1280,7 +1282,15 @@ const UserDashboard = () => {
           </Box>
 
           {/* Right: QR, Copy & Share Buttons */}
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 0.8, sm: 1 }, flexShrink: 0, zIndex: 1 }}>
+          <Box sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: { xs: 1, sm: 1 },
+            flexShrink: 0,
+            zIndex: 1,
+            width: { xs: '100%', sm: 'auto' },
+            justifyContent: { xs: 'space-between', sm: 'flex-end' }
+          }}>
             <Button
               onClick={(e) => {
                 e.stopPropagation();
@@ -1288,14 +1298,15 @@ const UserDashboard = () => {
               }}
               startIcon={<QrCode2Icon sx={{ fontSize: '16px !important' }} />}
               sx={{
+                flex: { xs: 1, sm: 'none' },
                 bgcolor: '#FFFFFF',
                 color: '#4338CA',
                 borderRadius: '11px',
                 fontWeight: 850,
-                fontSize: { xs: '0.76rem', sm: '0.85rem' },
+                fontSize: { xs: '0.78rem', sm: '0.85rem' },
                 textTransform: 'none',
                 px: { xs: 1.3, sm: 1.8 },
-                py: { xs: 0.6, sm: 0.75 },
+                py: { xs: 0.7, sm: 0.75 },
                 boxShadow: '0 4px 14px rgba(0,0,0,0.18)',
                 '&:hover': {
                   bgcolor: '#F5F3FF',
@@ -1315,14 +1326,15 @@ const UserDashboard = () => {
               }}
               startIcon={<ContentCopyIcon sx={{ fontSize: '15px !important' }} />}
               sx={{
+                flex: { xs: 1, sm: 'none' },
                 bgcolor: '#FFFFFF',
                 color: '#4338CA',
                 borderRadius: '11px',
                 fontWeight: 850,
-                fontSize: { xs: '0.76rem', sm: '0.85rem' },
+                fontSize: { xs: '0.78rem', sm: '0.85rem' },
                 textTransform: 'none',
                 px: { xs: 1.3, sm: 1.8 },
-                py: { xs: 0.6, sm: 0.75 },
+                py: { xs: 0.7, sm: 0.75 },
                 boxShadow: '0 4px 14px rgba(0,0,0,0.18)',
                 '&:hover': {
                   bgcolor: '#F5F3FF',
@@ -1345,8 +1357,8 @@ const UserDashboard = () => {
                 bgcolor: 'rgba(255, 255, 255, 0.2)',
                 color: '#FFFFFF',
                 borderRadius: '11px',
-                width: { xs: 34, sm: 38 },
-                height: { xs: 34, sm: 38 },
+                width: { xs: 36, sm: 38 },
+                height: { xs: 36, sm: 38 },
                 border: '1px solid rgba(255, 255, 255, 0.35)',
                 '&:hover': {
                   bgcolor: 'rgba(255, 255, 255, 0.32)',
@@ -1356,7 +1368,7 @@ const UserDashboard = () => {
                 flexShrink: 0
               }}
             >
-              <ShareIcon sx={{ fontSize: { xs: 17, sm: 19 } }} />
+              <ShareIcon sx={{ fontSize: { xs: 18, sm: 19 } }} />
             </IconButton>
           </Box>
         </Paper>
@@ -1367,10 +1379,11 @@ const UserDashboard = () => {
           onClick={() => handleOpenReferralQR('customer')}
           sx={{
             display: 'flex',
-            alignItems: 'center',
+            flexDirection: { xs: 'column', sm: 'row' },
+            alignItems: { xs: 'stretch', sm: 'center' },
             justifyContent: 'space-between',
-            gap: { xs: 1, sm: 1.5 },
-            p: { xs: '12px 14px', sm: '14px 20px' },
+            gap: { xs: 1.5, sm: 1.5 },
+            p: { xs: '14px 16px', sm: '14px 20px' },
             borderRadius: '18px',
             background: 'linear-gradient(135deg, #059669 0%, #10B981 50%, #14B8A6 100%)',
             boxShadow: '0 8px 24px rgba(16, 185, 129, 0.24)',
@@ -1423,7 +1436,7 @@ const UserDashboard = () => {
                   noWrap
                   sx={{
                     fontWeight: 900,
-                    fontSize: { xs: '0.9rem', sm: '1.05rem' },
+                    fontSize: { xs: '0.92rem', sm: '1.05rem' },
                     color: '#FFFFFF',
                     lineHeight: 1.2,
                   }}
@@ -1461,7 +1474,15 @@ const UserDashboard = () => {
           </Box>
 
           {/* Right: QR, Copy & Share Buttons */}
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 0.8, sm: 1 }, flexShrink: 0, zIndex: 1 }}>
+          <Box sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: { xs: 1, sm: 1 },
+            flexShrink: 0,
+            zIndex: 1,
+            width: { xs: '100%', sm: 'auto' },
+            justifyContent: { xs: 'space-between', sm: 'flex-end' }
+          }}>
             <Button
               onClick={(e) => {
                 e.stopPropagation();
@@ -1469,14 +1490,15 @@ const UserDashboard = () => {
               }}
               startIcon={<QrCode2Icon sx={{ fontSize: '16px !important' }} />}
               sx={{
+                flex: { xs: 1, sm: 'none' },
                 bgcolor: '#FFFFFF',
                 color: '#059669',
                 borderRadius: '11px',
                 fontWeight: 850,
-                fontSize: { xs: '0.76rem', sm: '0.85rem' },
+                fontSize: { xs: '0.78rem', sm: '0.85rem' },
                 textTransform: 'none',
                 px: { xs: 1.3, sm: 1.8 },
-                py: { xs: 0.6, sm: 0.75 },
+                py: { xs: 0.7, sm: 0.75 },
                 boxShadow: '0 4px 14px rgba(0,0,0,0.18)',
                 '&:hover': {
                   bgcolor: '#ECFDF5',
@@ -1496,14 +1518,15 @@ const UserDashboard = () => {
               }}
               startIcon={<ContentCopyIcon sx={{ fontSize: '15px !important' }} />}
               sx={{
+                flex: { xs: 1, sm: 'none' },
                 bgcolor: '#FFFFFF',
                 color: '#059669',
                 borderRadius: '11px',
                 fontWeight: 850,
-                fontSize: { xs: '0.76rem', sm: '0.85rem' },
+                fontSize: { xs: '0.78rem', sm: '0.85rem' },
                 textTransform: 'none',
                 px: { xs: 1.3, sm: 1.8 },
-                py: { xs: 0.6, sm: 0.75 },
+                py: { xs: 0.7, sm: 0.75 },
                 boxShadow: '0 4px 14px rgba(0,0,0,0.18)',
                 '&:hover': {
                   bgcolor: '#ECFDF5',
@@ -1526,8 +1549,8 @@ const UserDashboard = () => {
                 bgcolor: 'rgba(255, 255, 255, 0.2)',
                 color: '#FFFFFF',
                 borderRadius: '11px',
-                width: { xs: 34, sm: 38 },
-                height: { xs: 34, sm: 38 },
+                width: { xs: 36, sm: 38 },
+                height: { xs: 36, sm: 38 },
                 border: '1px solid rgba(255, 255, 255, 0.35)',
                 '&:hover': {
                   bgcolor: 'rgba(255, 255, 255, 0.32)',
@@ -1537,7 +1560,7 @@ const UserDashboard = () => {
                 flexShrink: 0
               }}
             >
-              <ShareIcon sx={{ fontSize: { xs: 17, sm: 19 } }} />
+              <ShareIcon sx={{ fontSize: { xs: 18, sm: 19 } }} />
             </IconButton>
           </Box>
         </Paper>

@@ -46,10 +46,10 @@ const ProductsContainer: React.FC = () => {
         flexDirection: { xs: 'column', sm: 'row' },
         justifyContent: 'space-between',
         alignItems: { xs: 'stretch', sm: 'center' },
-        gap: 2,
-        p: { xs: 2.2, sm: 2.8 },
+        gap: { xs: 1.5, sm: 2 },
+        p: { xs: 1.8, sm: 2.8 },
         bgcolor: '#FFFFFF',
-        borderRadius: '20px',
+        borderRadius: { xs: '18px', sm: '20px' },
         border: '1.5px solid #FED7AA',
         boxShadow: '0 4px 18px rgba(254, 128, 1, 0.06)'
       }}>

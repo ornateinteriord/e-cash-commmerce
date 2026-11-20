@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { BrowserRouter as Router, Route, Routes, useLocation, Navigate } from 'react-router-dom';
 import "./App.css";
 import "./index.css";
-import { CssBaseline } from '@mui/material';
+import { CssBaseline, useMediaQuery } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from './theme';
 
@@ -331,6 +331,7 @@ const RoutesProvider = ({
   const isAgent = userRole === "AGENT";
   const isAdmin01 = userRole === "ADMIN_01";
   const showSidebar = isAdmin || isAgent || isAdmin01;
+  const isMobile = useMediaQuery('(max-width: 899px)');
 
   const showPublicNavbar = ShouldShowPublicNavbar();
 
@@ -345,9 +346,29 @@ const RoutesProvider = ({
           display: "flex",
           maxWidth: "100vw",
           overflowX: "hidden",
-          minHeight: "100vh"
+          minHeight: "100vh",
+          position: "relative"
         }}
       >
+        {!hideSidebar && showSidebar && isOpen && isMobile && (
+          <div
+            className="sidebar-backdrop"
+            onClick={() => setIsOpen(false)}
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100vw",
+              height: "100vh",
+              backgroundColor: "rgba(0, 0, 0, 0.45)",
+              backdropFilter: "blur(2px)",
+              zIndex: 1150,
+              cursor: "pointer",
+              transition: "opacity 0.25s ease",
+            }}
+          />
+        )}
+
         {!hideSidebar && showSidebar && (
           <Sidebar
             isOpen={isOpen}
@@ -360,7 +381,7 @@ const RoutesProvider = ({
           className="content-wrapper"
           style={{
             flex: 1,
-            marginLeft: !hideSidebar && showSidebar && isOpen ? "250px" : "0",
+            marginLeft: !hideSidebar && showSidebar && isOpen && !isMobile ? "250px" : "0",
 
             transition: "margin-left 0.3s ease-in-out",
             width: "100%",
@@ -369,7 +390,7 @@ const RoutesProvider = ({
             backgroundColor: (hideNavbar || document.body.className.includes("theme-")) ? "transparent" : "inherit",
             minHeight: "100vh",
             // No padding offset when navbar is hidden (public pages)
-            paddingTop: hideNavbar ? "0" : (!hideSidebar ? (window.innerWidth < 900 ? "56px" : "64px") : "0"),
+            paddingTop: hideNavbar ? "0" : (!hideSidebar ? (isMobile ? "56px" : "64px") : "0"),
             paddingBottom: !isAdmin && isLoggedIn ? "10px" : "0"
           }}
         >

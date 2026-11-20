@@ -128,8 +128,8 @@ const AdminDashboard = () => {
       elevation={0}
       onClick={onClick}
       sx={{
-        p: 2.8,
-        borderRadius: '22px',
+        p: { xs: 2, sm: 2.5, md: 2.8 },
+        borderRadius: { xs: '18px', md: '22px' },
         bgcolor: '#FFFFFF',
         border: '1.5px solid #E2E8F0',
         boxShadow: '0 4px 18px rgba(0, 0, 0, 0.04)',
@@ -145,11 +145,11 @@ const AdminDashboard = () => {
         height: '100%'
       }}
     >
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: { xs: 1.5, md: 2 } }}>
         <Box sx={{ 
-          width: 48, 
-          height: 48, 
-          borderRadius: '16px', 
+          width: { xs: 42, sm: 48 }, 
+          height: { xs: 42, sm: 48 }, 
+          borderRadius: '14px', 
           bgcolor: color ? `${color}15` : 'rgba(254, 128, 1, 0.12)',
           display: 'flex',
           alignItems: 'center',
@@ -159,14 +159,14 @@ const AdminDashboard = () => {
           {icon}
         </Box>
       </Box>
-      <Typography variant="body2" sx={{ color: '#64748B', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', mb: 0.8, fontSize: '0.78rem' }}>
+      <Typography variant="body2" sx={{ color: '#64748B', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', mb: 0.5, fontSize: { xs: '0.72rem', sm: '0.78rem' } }}>
         {title}
       </Typography>
-      <Typography variant="h4" sx={{ color: '#0F172A', fontWeight: 900, mb: 0.8, fontSize: { xs: '1.5rem', md: '1.85rem' } }}>
+      <Typography variant="h4" sx={{ color: '#0F172A', fontWeight: 900, mb: 0.8, fontSize: { xs: '1.35rem', sm: '1.6rem', md: '1.85rem' } }}>
         {amount}
       </Typography>
       {subTitle && (
-        <Typography variant="caption" sx={{ color: '#94A3B8', fontWeight: 600 }}>
+        <Typography variant="caption" sx={{ color: '#94A3B8', fontWeight: 600, fontSize: { xs: '0.7rem', sm: '0.75rem' } }}>
           {subTitle}
         </Typography>
       )}
@@ -175,19 +175,19 @@ const AdminDashboard = () => {
 
   return (
     <Box sx={{
-      pb: 6,
+      pb: { xs: 4, md: 6 },
       background: '#FFFFFF',
       minHeight: '100vh',
-      px: { xs: 2.5, md: 5, lg: 8, xl: 12 },
-      pt: { xs: 2, md: 4 },
+      px: { xs: 1.5, sm: 2.5, md: 4, lg: 6, xl: 8 },
+      pt: { xs: 1.5, sm: 2.5, md: 4 },
       maxWidth: '1800px',
       margin: '0 auto'
     }}>
       {/* Header Section */}
       <Paper elevation={0} sx={{
-        mb: 4,
-        p: { xs: 2.5, md: 3.5 },
-        borderRadius: '24px',
+        mb: { xs: 3, md: 4 },
+        p: { xs: 2, sm: 2.5, md: 3.5 },
+        borderRadius: { xs: '18px', md: '24px' },
         bgcolor: '#FFFFFF',
         border: '1.5px solid #E2E8F0',
         boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
@@ -195,77 +195,83 @@ const AdminDashboard = () => {
         flexDirection: { xs: 'column', md: 'row' },
         justifyContent: 'space-between',
         alignItems: { xs: 'flex-start', md: 'center' },
-        gap: 3
+        gap: { xs: 2, md: 3 }
       }}>
         {/* Welcome Text */}
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2.5 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1.8, md: 2.5 } }}>
           <Avatar
             sx={{
-              width: { xs: 58, md: 68 },
-              height: { xs: 58, md: 68 },
+              width: { xs: 48, sm: 58, md: 68 },
+              height: { xs: 48, sm: 58, md: 68 },
               bgcolor: 'rgba(254, 128, 1, 0.12)',
               border: '2px solid rgba(254, 128, 1, 0.35)',
             }}
           >
-            <AdminPanelSettingsIcon sx={{ fontSize: { xs: 32, md: 38 }, color: '#FE8001' }} />
+            <AdminPanelSettingsIcon sx={{ fontSize: { xs: 26, sm: 32, md: 38 }, color: '#FE8001' }} />
           </Avatar>
           <Box>
-            <Typography variant="h5" sx={{ color: '#0F172A', fontWeight: 900, letterSpacing: '-0.5px', lineHeight: 1.2, mb: 0.5, fontSize: { xs: '1.35rem', md: '1.75rem' } }}>
+            <Typography variant="h5" sx={{ color: '#0F172A', fontWeight: 900, letterSpacing: '-0.5px', lineHeight: 1.2, mb: 0.5, fontSize: { xs: '1.2rem', sm: '1.45rem', md: '1.75rem' } }}>
               Admin Dashboard
             </Typography>
-            <Typography variant="body2" sx={{ color: '#64748B', fontWeight: 600 }}>
+            <Typography variant="body2" sx={{ color: '#64748B', fontWeight: 600, fontSize: { xs: '0.78rem', sm: '0.85rem' } }}>
               Complete network oversight and 3-Wallet payout separation
             </Typography>
           </Box>
         </Box>
 
-        {/* Quick Stats in Header */}
+        {/* Quick Stats in Header - 2x2 on mobile, 4 columns on tablet & desktop */}
         <Box sx={{ 
-          display: 'flex', 
-          gap: { xs: 2.5, md: 4.5 }, 
-          alignItems: 'center',
-          alignSelf: { xs: 'stretch', md: 'auto' },
-          justifyContent: { xs: 'space-between', md: 'center' },
+          display: 'grid',
+          gridTemplateColumns: { xs: 'repeat(2, 1fr)', sm: 'repeat(4, 1fr)' },
+          gap: { xs: 1.5, sm: 2, md: 3.5 },
+          width: { xs: '100%', md: 'auto' },
           bgcolor: '#F8FAFC',
-          p: { xs: 1.5, md: 2 },
-          borderRadius: '18px',
+          p: { xs: 1.5, sm: 2 },
+          borderRadius: { xs: '14px', md: '18px' },
           border: '1px solid #E2E8F0'
         }}>
-          <Box sx={{ textAlign: 'center' }}>
-            <Typography variant="h5" sx={{ color: '#0F172A', fontWeight: 900, lineHeight: 1 }}>{totalMembers}</Typography>
-            <Typography variant="caption" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5, color: '#64748B', fontWeight: 700, mt: 0.5 }}>
-              <PeopleIcon sx={{ fontSize: 14 }} /> Total
+          <Box sx={{ textAlign: 'center', p: { xs: 0.5, sm: 0 } }}>
+            <Typography variant="h5" sx={{ color: '#0F172A', fontWeight: 900, lineHeight: 1, fontSize: { xs: '1.15rem', sm: '1.4rem', md: '1.5rem' } }}>{totalMembers}</Typography>
+            <Typography variant="caption" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5, color: '#64748B', fontWeight: 700, mt: 0.5, fontSize: '0.72rem' }}>
+              <PeopleIcon sx={{ fontSize: 13 }} /> Total
             </Typography>
           </Box>
-          <Box sx={{ textAlign: 'center' }}>
-            <Typography variant="h5" sx={{ color: '#10b981', fontWeight: 900, lineHeight: 1 }}>{activeMembers}</Typography>
-            <Typography variant="caption" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5, color: '#64748B', fontWeight: 700, mt: 0.5 }}>
-              <PersonAddIcon sx={{ fontSize: 14 }} /> Active
+          <Box sx={{ textAlign: 'center', p: { xs: 0.5, sm: 0 } }}>
+            <Typography variant="h5" sx={{ color: '#10b981', fontWeight: 900, lineHeight: 1, fontSize: { xs: '1.15rem', sm: '1.4rem', md: '1.5rem' } }}>{activeMembers}</Typography>
+            <Typography variant="caption" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5, color: '#64748B', fontWeight: 700, mt: 0.5, fontSize: '0.72rem' }}>
+              <PersonAddIcon sx={{ fontSize: 13 }} /> Active
             </Typography>
           </Box>
-          <Box sx={{ textAlign: 'center' }}>
-            <Typography variant="h5" sx={{ color: '#f59e0b', fontWeight: 900, lineHeight: 1 }}>{pendingMembers}</Typography>
-            <Typography variant="caption" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5, color: '#64748B', fontWeight: 700, mt: 0.5 }}>
-              <HistoryIcon sx={{ fontSize: 14 }} /> Pending
+          <Box sx={{ textAlign: 'center', p: { xs: 0.5, sm: 0 } }}>
+            <Typography variant="h5" sx={{ color: '#f59e0b', fontWeight: 900, lineHeight: 1, fontSize: { xs: '1.15rem', sm: '1.4rem', md: '1.5rem' } }}>{pendingMembers}</Typography>
+            <Typography variant="caption" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5, color: '#64748B', fontWeight: 700, mt: 0.5, fontSize: '0.72rem' }}>
+              <HistoryIcon sx={{ fontSize: 13 }} /> Pending
             </Typography>
           </Box>
-          <Box sx={{ textAlign: 'center' }}>
-            <Typography variant="h5" sx={{ color: '#FE8001', fontWeight: 900, lineHeight: 1 }}>₹{(roiSummary?.totalROIDistributed || 0).toLocaleString()}</Typography>
-            <Typography variant="caption" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5, color: '#64748B', fontWeight: 700, mt: 0.5 }}>
-              <PaymentsIcon sx={{ fontSize: 14 }} /> Incentive
+          <Box sx={{ textAlign: 'center', p: { xs: 0.5, sm: 0 } }}>
+            <Typography variant="h5" sx={{ color: '#FE8001', fontWeight: 900, lineHeight: 1, fontSize: { xs: '1.15rem', sm: '1.4rem', md: '1.5rem' } }}>₹{(roiSummary?.totalROIDistributed || 0).toLocaleString()}</Typography>
+            <Typography variant="caption" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5, color: '#64748B', fontWeight: 700, mt: 0.5, fontSize: '0.72rem' }}>
+              <PaymentsIcon sx={{ fontSize: 13 }} /> Incentive
             </Typography>
           </Box>
         </Box>
       </Paper>
 
       {/* 3-WALLET DEDICATED ADMIN SECTION */}
-      <Box sx={{ mb: 5 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+      <Box sx={{ mb: { xs: 3.5, md: 5 } }}>
+        <Box sx={{
+          display: 'flex',
+          flexDirection: { xs: 'column', sm: 'row' },
+          justifyContent: 'space-between',
+          alignItems: { xs: 'flex-start', sm: 'center' },
+          gap: 1.5,
+          mb: 2.5
+        }}>
           <Box>
-            <Typography variant="subtitle2" sx={{ fontWeight: 900, color: '#0F172A', letterSpacing: '0.8px', fontSize: '0.95rem' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 900, color: '#0F172A', letterSpacing: '0.8px', fontSize: { xs: '0.85rem', sm: '0.95rem' } }}>
               4-WALLET PLATFORM MANAGEMENT
             </Typography>
-            <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 600 }}>
+            <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 600, fontSize: { xs: '0.72rem', sm: '0.78rem' }, display: 'block' }}>
               Separate oversight, live pool balances, and independent withdrawal request queues
             </Typography>
           </Box>
@@ -275,11 +281,13 @@ const AdminDashboard = () => {
             onClick={() => navigate('/admin/payout')}
             endIcon={<ArrowForwardIcon sx={{ fontSize: 16 }} />}
             sx={{
+              alignSelf: { xs: 'stretch', sm: 'auto' },
               borderColor: '#FE8001',
               color: '#FE8001',
               fontWeight: 800,
               textTransform: 'none',
               borderRadius: '12px',
+              py: { xs: 0.8, sm: 0.5 },
               '&:hover': { borderColor: '#E07100', bgcolor: 'rgba(254, 128, 1, 0.05)' }
             }}
           >
@@ -287,14 +295,14 @@ const AdminDashboard = () => {
           </Button>
         </Box>
 
-        <Grid container spacing={2.5}>
+        <Grid container spacing={{ xs: 2, sm: 2.5 }}>
           {/* Card 1: Deposit / First Wallet */}
-          <Grid item xs={12} md={3}>
+          <Grid item xs={12} sm={6} lg={3}>
             <Paper
               elevation={0}
               sx={{
-                p: 3,
-                borderRadius: '24px',
+                p: { xs: 2, sm: 2.5, md: 3 },
+                borderRadius: { xs: '18px', md: '24px' },
                 bgcolor: '#FFFFFF',
                 border: '1.5px solid #A7F3D0',
                 boxShadow: '0 4px 18px rgba(16, 185, 129, 0.08)',
@@ -303,23 +311,23 @@ const AdminDashboard = () => {
               }}
             >
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
-                <Box sx={{ width: 48, height: 48, borderRadius: '16px', bgcolor: 'rgba(16, 185, 129, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#10B981' }}>
-                  <AccountBalanceWalletIcon sx={{ fontSize: 26 }} />
+                <Box sx={{ width: 44, height: 44, borderRadius: '14px', bgcolor: 'rgba(16, 185, 129, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#10B981' }}>
+                  <AccountBalanceWalletIcon sx={{ fontSize: 24 }} />
                 </Box>
                 <Chip
                   label="Wallet 1: Deposits"
                   size="small"
-                  sx={{ bgcolor: '#ECFDF5', color: '#065F46', fontWeight: 800, fontSize: '0.72rem', borderRadius: '8px' }}
+                  sx={{ bgcolor: '#ECFDF5', color: '#065F46', fontWeight: 800, fontSize: '0.7rem', borderRadius: '8px' }}
                 />
               </Box>
 
-              <Typography variant="body2" sx={{ color: '#64748B', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px', mb: 0.5, fontSize: '0.78rem' }}>
+              <Typography variant="body2" sx={{ color: '#64748B', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px', mb: 0.5, fontSize: '0.74rem' }}>
                 First / Deposit Wallet
               </Typography>
-              <Typography variant="h4" sx={{ color: '#0F172A', fontWeight: 900, mb: 1, fontSize: '1.75rem' }}>
+              <Typography variant="h4" sx={{ color: '#0F172A', fontWeight: 900, mb: 1, fontSize: { xs: '1.4rem', sm: '1.55rem', md: '1.75rem' } }}>
                 ₹{totalDepositWalletBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </Typography>
-              <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 600, display: 'block', mb: 2 }}>
+              <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 600, display: 'block', mb: 2, fontSize: '0.72rem' }}>
                 Live user funds for package activation & deposits
               </Typography>
 
@@ -355,6 +363,7 @@ const AdminDashboard = () => {
                   borderRadius: '12px',
                   textTransform: 'none',
                   py: 1,
+                  fontSize: '0.85rem',
                   '&:hover': { bgcolor: '#059669' }
                 }}
               >
@@ -364,12 +373,12 @@ const AdminDashboard = () => {
           </Grid>
 
           {/* Card 2: Sale Value Wallet */}
-          <Grid item xs={12} md={3}>
+          <Grid item xs={12} sm={6} lg={3}>
             <Paper
               elevation={0}
               sx={{
-                p: 3,
-                borderRadius: '24px',
+                p: { xs: 2, sm: 2.5, md: 3 },
+                borderRadius: { xs: '18px', md: '24px' },
                 bgcolor: '#FFFFFF',
                 border: '1.5px solid #FFEDD5',
                 boxShadow: '0 4px 18px rgba(254, 128, 1, 0.08)',
@@ -378,23 +387,23 @@ const AdminDashboard = () => {
               }}
             >
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
-                <Box sx={{ width: 48, height: 48, borderRadius: '16px', bgcolor: 'rgba(254, 128, 1, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FE8001' }}>
-                  <StorefrontIcon sx={{ fontSize: 26 }} />
+                <Box sx={{ width: 44, height: 44, borderRadius: '14px', bgcolor: 'rgba(254, 128, 1, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FE8001' }}>
+                  <StorefrontIcon sx={{ fontSize: 24 }} />
                 </Box>
                 <Chip
                   label="Wallet 2: Vendor Earnings"
                   size="small"
-                  sx={{ bgcolor: '#FFF7ED', color: '#C2410C', fontWeight: 800, fontSize: '0.72rem', borderRadius: '8px' }}
+                  sx={{ bgcolor: '#FFF7ED', color: '#C2410C', fontWeight: 800, fontSize: '0.7rem', borderRadius: '8px' }}
                 />
               </Box>
 
-              <Typography variant="body2" sx={{ color: '#64748B', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px', mb: 0.5, fontSize: '0.78rem' }}>
+              <Typography variant="body2" sx={{ color: '#64748B', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px', mb: 0.5, fontSize: '0.74rem' }}>
                 Sale Value Wallet
               </Typography>
-              <Typography variant="h4" sx={{ color: '#0F172A', fontWeight: 900, mb: 1, fontSize: '1.75rem' }}>
+              <Typography variant="h4" sx={{ color: '#0F172A', fontWeight: 900, mb: 1, fontSize: { xs: '1.4rem', sm: '1.55rem', md: '1.75rem' } }}>
                 ₹{totalVendorWalletBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </Typography>
-              <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 600, display: 'block', mb: 2 }}>
+              <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 600, display: 'block', mb: 2, fontSize: '0.72rem' }}>
                 Vendor incentives, ROI, referral & daily income
               </Typography>
 
@@ -430,6 +439,7 @@ const AdminDashboard = () => {
                   borderRadius: '12px',
                   textTransform: 'none',
                   py: 1,
+                  fontSize: '0.85rem',
                   '&:hover': { bgcolor: '#EA580C' }
                 }}
               >
@@ -439,12 +449,12 @@ const AdminDashboard = () => {
           </Grid>
 
           {/* Card 3: Earning Wallet */}
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={12} sm={6} lg={3}>
             <Paper
               elevation={0}
               sx={{
-                p: 3,
-                borderRadius: '24px',
+                p: { xs: 2, sm: 2.5, md: 3 },
+                borderRadius: { xs: '18px', md: '24px' },
                 bgcolor: '#FFFFFF',
                 border: '1.5px solid #A7F3D0',
                 boxShadow: '0 4px 18px rgba(5, 150, 105, 0.08)',
@@ -453,23 +463,23 @@ const AdminDashboard = () => {
               }}
             >
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
-                <Box sx={{ width: 48, height: 48, borderRadius: '16px', bgcolor: 'rgba(5, 150, 105, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#059669' }}>
-                  <MonetizationOnIcon sx={{ fontSize: 26 }} />
+                <Box sx={{ width: 44, height: 44, borderRadius: '14px', bgcolor: 'rgba(5, 150, 105, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#059669' }}>
+                  <MonetizationOnIcon sx={{ fontSize: 24 }} />
                 </Box>
                 <Chip
                   label="Wallet 3: 1X Referrals"
                   size="small"
-                  sx={{ bgcolor: '#ECFDF5', color: '#065F46', fontWeight: 800, fontSize: '0.72rem', borderRadius: '8px' }}
+                  sx={{ bgcolor: '#ECFDF5', color: '#065F46', fontWeight: 800, fontSize: '0.7rem', borderRadius: '8px' }}
                 />
               </Box>
 
-              <Typography variant="body2" sx={{ color: '#64748B', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px', mb: 0.5, fontSize: '0.78rem' }}>
+              <Typography variant="body2" sx={{ color: '#64748B', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px', mb: 0.5, fontSize: '0.74rem' }}>
                 Earning Wallet
               </Typography>
-              <Typography variant="h4" sx={{ color: '#0F172A', fontWeight: 900, mb: 1, fontSize: '1.75rem' }}>
+              <Typography variant="h4" sx={{ color: '#0F172A', fontWeight: 900, mb: 1, fontSize: { xs: '1.4rem', sm: '1.55rem', md: '1.75rem' } }}>
                 ₹{totalEarningWalletBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </Typography>
-              <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 600, display: 'block', mb: 2 }}>
+              <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 600, display: 'block', mb: 2, fontSize: '0.72rem' }}>
                 Direct referral & team commissions (1X Limit)
               </Typography>
 
@@ -505,6 +515,7 @@ const AdminDashboard = () => {
                   borderRadius: '12px',
                   textTransform: 'none',
                   py: 1,
+                  fontSize: '0.85rem',
                   '&:hover': { bgcolor: '#047857' }
                 }}
               >
@@ -514,12 +525,12 @@ const AdminDashboard = () => {
           </Grid>
 
           {/* Card 4: Product Level Wallet */}
-          <Grid item xs={12} md={3}>
+          <Grid item xs={12} sm={6} lg={3}>
             <Paper
               elevation={0}
               sx={{
-                p: 3,
-                borderRadius: '24px',
+                p: { xs: 2, sm: 2.5, md: 3 },
+                borderRadius: { xs: '18px', md: '24px' },
                 bgcolor: '#FFFFFF',
                 border: '1.5px solid #BAE6FD',
                 boxShadow: '0 4px 18px rgba(2, 132, 199, 0.08)',
@@ -528,23 +539,23 @@ const AdminDashboard = () => {
               }}
             >
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
-                <Box sx={{ width: 48, height: 48, borderRadius: '16px', bgcolor: 'rgba(2, 132, 199, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#0284C7' }}>
-                  <Inventory2Icon sx={{ fontSize: 26 }} />
+                <Box sx={{ width: 44, height: 44, borderRadius: '14px', bgcolor: 'rgba(2, 132, 199, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#0284C7' }}>
+                  <Inventory2Icon sx={{ fontSize: 24 }} />
                 </Box>
                 <Chip
                   label="Wallet 3: Vendor Benefits"
                   size="small"
-                  sx={{ bgcolor: '#F0F9FF', color: '#0369A1', fontWeight: 800, fontSize: '0.72rem', borderRadius: '8px' }}
+                  sx={{ bgcolor: '#F0F9FF', color: '#0369A1', fontWeight: 800, fontSize: '0.7rem', borderRadius: '8px' }}
                 />
               </Box>
 
-              <Typography variant="body2" sx={{ color: '#64748B', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px', mb: 0.5, fontSize: '0.78rem' }}>
+              <Typography variant="body2" sx={{ color: '#64748B', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px', mb: 0.5, fontSize: '0.74rem' }}>
                 Product Level Wallet
               </Typography>
-              <Typography variant="h4" sx={{ color: '#0F172A', fontWeight: 900, mb: 1, fontSize: '1.75rem' }}>
+              <Typography variant="h4" sx={{ color: '#0F172A', fontWeight: 900, mb: 1, fontSize: { xs: '1.4rem', sm: '1.55rem', md: '1.75rem' } }}>
                 ₹{((roiSummary?.totalROIDistributed || 0) * 0.45).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </Typography>
-              <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 600, display: 'block', mb: 2 }}>
+              <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 600, display: 'block', mb: 2, fontSize: '0.72rem' }}>
                 Dedicated multi-tier product level MLM bonus pool
               </Typography>
 
@@ -580,6 +591,7 @@ const AdminDashboard = () => {
                   borderRadius: '12px',
                   textTransform: 'none',
                   py: 1,
+                  fontSize: '0.85rem',
                   '&:hover': { bgcolor: '#0369A1' }
                 }}
               >
@@ -591,11 +603,11 @@ const AdminDashboard = () => {
       </Box>
 
       {/* Main Stats Grid */}
-      <Box sx={{ mb: 5 }}>
-        <Typography variant="subtitle2" sx={{ fontWeight: 900, color: '#0F172A', mb: 2, letterSpacing: '0.8px', fontSize: '0.92rem' }}>
+      <Box sx={{ mb: { xs: 3.5, md: 5 } }}>
+        <Typography variant="subtitle2" sx={{ fontWeight: 900, color: '#0F172A', mb: 2, letterSpacing: '0.8px', fontSize: { xs: '0.85rem', sm: '0.92rem' } }}>
           PLATFORM OVERVIEW
         </Typography>
-        <Grid container spacing={2.5}>
+        <Grid container spacing={{ xs: 1.5, sm: 2, md: 2.5 }}>
           <Grid item xs={12} sm={6} md={4} lg={2.4}>
             <StatCard
               amount={totalMembers}
@@ -651,18 +663,18 @@ const AdminDashboard = () => {
 
       {/* Member Statistics Table */}
       <Box>
-        <Typography variant="subtitle2" sx={{ fontWeight: 900, color: '#0F172A', mb: 2, letterSpacing: '0.8px', fontSize: '0.92rem' }}>
+        <Typography variant="subtitle2" sx={{ fontWeight: 900, color: '#0F172A', mb: 2, letterSpacing: '0.8px', fontSize: { xs: '0.85rem', sm: '0.92rem' } }}>
           VENDOR STATISTICS ({sortedMembers.length} VENDORS)
         </Typography>
         <Paper elevation={0} sx={{ 
-          p: { xs: 1.5, sm: 2.5 }, 
-          borderRadius: '24px', 
+          p: { xs: 1.5, sm: 2, md: 2.5 }, 
+          borderRadius: { xs: '18px', md: '24px' }, 
           bgcolor: '#FFFFFF', 
           border: '1.5px solid #E2E8F0',
           boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
           overflow: 'hidden'
         }}>
-          <Box sx={{ width: '100%', overflowX: 'auto', bgcolor: '#FFFFFF', borderRadius: '16px' }}>
+          <Box sx={{ width: '100%', overflowX: 'auto', WebkitOverflowScrolling: 'touch', bgcolor: '#FFFFFF', borderRadius: '16px' }}>
             <DashboardTable
               data={sortedMembers}
               columns={getAdminDashboardTableColumns()}

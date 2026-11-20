@@ -23,10 +23,10 @@ const MySubscriptions: React.FC = () => {
 
   return (
     <Box sx={{ 
-      p: { xs: 2, sm: 3 }, 
+      p: { xs: 1.5, sm: 3 }, 
       bgcolor: '#FFFFFF', 
       minHeight: '100vh',
-      maxWidth: '480px',
+      maxWidth: { xs: '100%', sm: '520px' },
       margin: '0 auto',
       pb: 10
     }}>
