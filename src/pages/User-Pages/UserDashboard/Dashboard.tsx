@@ -658,10 +658,10 @@ const UserDashboard = () => {
         {/* 1. Main Wallet Section */}
         <Box sx={{
           display: 'flex',
-          flexDirection: { xs: 'column', sm: 'row' },
+          flexDirection: 'row',
           alignItems: 'stretch',
           justifyContent: 'space-between',
-          gap: { xs: 1.8, sm: 3, md: 4 },
+          gap: { xs: 1.2, sm: 2.5, md: 3.5 },
           width: '100%'
         }}>
           {/* Left Side: Wallet Balance & Credits info */}
@@ -673,12 +673,12 @@ const UserDashboard = () => {
               flexDirection: 'column',
               justifyContent: 'space-between',
               minWidth: 0,
-              gap: { xs: 1, sm: 1.6, md: 2 },
+              gap: { xs: 0.8, sm: 1.4, md: 2 },
               bgcolor: '#FFFFFF',
               border: '1.5px solid #D1FAE5',
-              borderRadius: { xs: '18px', sm: '24px' },
-              p: { xs: 2, sm: 3.2, md: 3.8 },
-              minHeight: { xs: 'auto', sm: '200px', md: '220px' },
+              borderRadius: { xs: '16px', sm: '22px' },
+              p: { xs: 1.6, sm: 2.8, md: 3.5 },
+              minHeight: { xs: '150px', sm: '190px', md: '210px' },
               boxShadow: '0 4px 16px rgba(16, 185, 129, 0.05)',
               transition: 'all 0.2s ease',
               position: 'relative',
@@ -692,10 +692,10 @@ const UserDashboard = () => {
             }}
           >
             {/* Icon + Title */}
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1, sm: 1.6 } }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 0.8, sm: 1.4 } }}>
               <Box sx={{
-                p: { xs: 0.6, sm: 1.1 },
-                borderRadius: '12px',
+                p: { xs: 0.5, sm: 0.9 },
+                borderRadius: '10px',
                 bgcolor: 'rgba(254, 128, 1, 0.12)',
                 display: 'flex',
                 alignItems: 'center',
@@ -703,28 +703,28 @@ const UserDashboard = () => {
                 border: '1px solid rgba(254, 128, 1, 0.4)',
                 flexShrink: 0
               }}>
-                <PaymentsIcon sx={{ fontSize: { xs: 22, sm: 26, md: 30 }, color: '#FE8001' }} />
+                <PaymentsIcon sx={{ fontSize: { xs: 20, sm: 26, md: 28 }, color: '#FE8001' }} />
               </Box>
               <Typography sx={{
                 color: '#FE8001',
                 fontWeight: 900,
-                fontSize: { xs: '1.05rem', sm: '1.2rem', md: '1.35rem' },
+                fontSize: { xs: '0.95rem', sm: '1.15rem', md: '1.3rem' },
                 lineHeight: 1.2,
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
-                letterSpacing: '0.8px'
+                letterSpacing: '0.6px'
               }}>
                 Wallet
               </Typography>
             </Box>
 
             {/* Rupee Balance */}
-            <Box sx={{ display: 'flex', alignItems: 'baseline', gap: { xs: 0.5, sm: 0.8 }, my: { xs: 0.8, sm: 0.8 } }}>
+            <Box sx={{ display: 'flex', alignItems: 'baseline', gap: { xs: 0.5, sm: 0.8 }, my: { xs: 0.4, sm: 0.8 } }}>
               <Typography sx={{
                 color: '#FE8001',
-                fontWeight: 800,
-                fontSize: { xs: '1.65rem', sm: '1.85rem', md: '2.2rem' },
+                fontWeight: 900,
+                fontSize: { xs: '1.45rem', sm: '1.85rem', md: '2.2rem' },
                 lineHeight: 1.1,
                 letterSpacing: '-0.5px'
               }}>
@@ -734,8 +734,8 @@ const UserDashboard = () => {
 
             <Typography sx={{
               color: '#475569',
-              lineHeight: 1.45,
-              fontSize: { xs: '0.82rem', sm: '0.96rem', md: '1.05rem' },
+              lineHeight: 1.4,
+              fontSize: { xs: '0.74rem', sm: '0.9rem', md: '1rem' },
               fontWeight: 500,
               display: '-webkit-box',
               WebkitLineClamp: 2,
@@ -746,12 +746,12 @@ const UserDashboard = () => {
             </Typography>
           </Box>
 
-          {/* Action Buttons: 3 in a row on mobile, stacked on desktop */}
+          {/* Right Side: 3 Action Buttons Stacked Vertically One by One */}
           <Box sx={{
-            display: 'grid',
-            gridTemplateColumns: { xs: 'repeat(3, 1fr)', sm: '1fr' },
-            gap: { xs: 1, sm: 1.4, md: 2 },
-            width: { xs: '100%', sm: '175px', md: '210px' },
+            display: 'flex',
+            flexDirection: 'column',
+            gap: { xs: 1, sm: 1.4, md: 1.8 },
+            width: { xs: '115px', sm: '160px', md: '190px' },
             flexShrink: 0,
             justifyContent: 'space-between'
           }}>
@@ -759,26 +759,26 @@ const UserDashboard = () => {
             <Button
               variant="contained"
               onClick={() => navigate('/user/load-fund')}
-              startIcon={<AddIcon sx={{ fontSize: { xs: '18px !important', sm: '23px !important' }, color: '#15803D' }} />}
+              startIcon={<AddIcon sx={{ fontSize: { xs: '17px !important', sm: '21px !important' }, color: '#15803D' }} />}
               fullWidth
               sx={{
                 flex: 1,
-                minHeight: { xs: '44px', sm: '54px', md: '60px' },
+                minHeight: { xs: '38px', sm: '48px', md: '56px' },
                 background: 'linear-gradient(135deg, #DCFCE7 0%, #BBF7D0 100%)',
                 color: '#15803D',
                 border: '1.5px solid #86EFAC',
-                borderRadius: { xs: '12px', sm: '16px' },
-                px: { xs: 0.8, sm: 2.2 },
-                py: { xs: 0.9, sm: 1.3 },
+                borderRadius: { xs: '12px', sm: '14px' },
+                px: { xs: 0.8, sm: 1.8 },
+                py: { xs: 0.6, sm: 1 },
                 fontWeight: 800,
-                fontSize: { xs: '0.82rem', sm: '1rem', md: '1.05rem' },
+                fontSize: { xs: '0.8rem', sm: '0.94rem', md: '1.02rem' },
                 textTransform: 'none',
                 justifyContent: 'center',
-                boxShadow: '0 4px 12px rgba(34, 197, 94, 0.15)',
+                boxShadow: '0 3px 10px rgba(34, 197, 94, 0.15)',
                 '&:hover': {
                   background: 'linear-gradient(135deg, #BBF7D0 0%, #86EFAC 100%)',
-                  boxShadow: '0 6px 16px rgba(34, 197, 94, 0.25)',
-                  transform: 'translateY(-2px)'
+                  boxShadow: '0 5px 14px rgba(34, 197, 94, 0.25)',
+                  transform: 'translateY(-1px)'
                 },
                 transition: 'all 0.2s ease'
               }}
@@ -790,26 +790,26 @@ const UserDashboard = () => {
             <Button
               variant="contained"
               onClick={() => navigate('/user/wallet?type=withdrawal')}
-              startIcon={<PaymentsIcon sx={{ fontSize: { xs: '18px !important', sm: '23px !important' }, color: '#0369A1' }} />}
+              startIcon={<PaymentsIcon sx={{ fontSize: { xs: '17px !important', sm: '21px !important' }, color: '#0369A1' }} />}
               fullWidth
               sx={{
                 flex: 1,
-                minHeight: { xs: '44px', sm: '54px', md: '60px' },
+                minHeight: { xs: '38px', sm: '48px', md: '56px' },
                 background: 'linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 100%)',
                 color: '#0369A1',
                 border: '1.5px solid #7DD3FC',
-                borderRadius: { xs: '12px', sm: '16px' },
-                px: { xs: 0.8, sm: 2.2 },
-                py: { xs: 0.9, sm: 1.3 },
+                borderRadius: { xs: '12px', sm: '14px' },
+                px: { xs: 0.8, sm: 1.8 },
+                py: { xs: 0.6, sm: 1 },
                 fontWeight: 800,
-                fontSize: { xs: '0.82rem', sm: '1rem', md: '1.05rem' },
+                fontSize: { xs: '0.78rem', sm: '0.94rem', md: '1.02rem' },
                 textTransform: 'none',
                 justifyContent: 'center',
-                boxShadow: '0 4px 12px rgba(14, 165, 233, 0.15)',
+                boxShadow: '0 3px 10px rgba(14, 165, 233, 0.15)',
                 '&:hover': {
                   background: 'linear-gradient(135deg, #BAE6FD 0%, #7DD3FC 100%)',
-                  boxShadow: '0 6px 16px rgba(14, 165, 233, 0.25)',
-                  transform: 'translateY(-2px)'
+                  boxShadow: '0 5px 14px rgba(14, 165, 233, 0.25)',
+                  transform: 'translateY(-1px)'
                 },
                 transition: 'all 0.2s ease'
               }}
@@ -821,26 +821,26 @@ const UserDashboard = () => {
             <Button
               variant="contained"
               onClick={() => navigate('/user/new-subscription')}
-              startIcon={<BoltIcon sx={{ fontSize: { xs: '18px !important', sm: '23px !important' }, color: '#B45309' }} />}
+              startIcon={<BoltIcon sx={{ fontSize: { xs: '17px !important', sm: '21px !important' }, color: '#B45309' }} />}
               fullWidth
               sx={{
                 flex: 1,
-                minHeight: { xs: '44px', sm: '54px', md: '60px' },
+                minHeight: { xs: '38px', sm: '48px', md: '56px' },
                 background: 'linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%)',
                 color: '#B45309',
                 border: '1.5px solid #FCD34D',
-                borderRadius: { xs: '12px', sm: '16px' },
-                px: { xs: 0.8, sm: 2.2 },
-                py: { xs: 0.9, sm: 1.3 },
+                borderRadius: { xs: '12px', sm: '14px' },
+                px: { xs: 0.6, sm: 1.8 },
+                py: { xs: 0.6, sm: 1 },
                 fontWeight: 800,
-                fontSize: { xs: '0.8rem', sm: '0.98rem', md: '1.02rem' },
+                fontSize: { xs: '0.74rem', sm: '0.9rem', md: '0.98rem' },
                 textTransform: 'none',
                 justifyContent: 'center',
-                boxShadow: '0 4px 12px rgba(245, 158, 11, 0.15)',
+                boxShadow: '0 3px 10px rgba(245, 158, 11, 0.15)',
                 '&:hover': {
                   background: 'linear-gradient(135deg, #FDE68A 0%, #FBBF24 100%)',
-                  boxShadow: '0 6px 16px rgba(245, 158, 11, 0.25)',
-                  transform: 'translateY(-2px)'
+                  boxShadow: '0 5px 14px rgba(245, 158, 11, 0.25)',
+                  transform: 'translateY(-1px)'
                 },
                 transition: 'all 0.2s ease'
               }}
