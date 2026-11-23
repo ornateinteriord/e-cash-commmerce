@@ -1,11 +1,30 @@
-import React, { useState } from 'react';
-import { Card, CardContent, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Chip, Dialog, DialogTitle, DialogContent, DialogActions, Box, Snackbar, Alert, CircularProgress } from '@mui/material';
+import React, { useState, useMemo } from 'react';
+import {
+  Card,
+  CardContent,
+  Typography,
+  Button,
+  Chip,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Box,
+  Snackbar,
+  Alert,
+  CircularProgress,
+  TextField,
+  IconButton
+} from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import DataTable, { TableColumn } from 'react-data-table-component';
 import { useQueryClient } from '@tanstack/react-query';
 import { useApproveKYC, useGetKYCSubmissions } from '../../../api/Admin';
+import { DASHBOARD_CUTSOM_STYLE } from '../../../utils/DataTableColumnsProvider';
 
-// Updated Type
 interface KYCSubmission {
   _id: string;
+  sNo?: number;
   Member_id: string;
   Name: string;
   mobileno: string;
@@ -29,14 +48,48 @@ interface KYCSubmission {
 const KYCApproval: React.FC = () => {
   const [selectedKYC, setSelectedKYC] = useState<KYCSubmission | null>(null);
   const [openDialog, setOpenDialog] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' | 'warning' | 'info' });
   const queryClient = useQueryClient();
 
   // Fetch KYC submissions
   const { data: kycResponse, isLoading } = useGetKYCSubmissions("ALL");
-  const kycSubmissions: KYCSubmission[] = Array.isArray(kycResponse)
-    ? kycResponse
-    : (Array.isArray(kycResponse?.data) ? kycResponse.data : []);
+  const rawSubmissions: KYCSubmission[] = useMemo(() => {
+    if (Array.isArray(kycResponse)) return kycResponse;
+    if (Array.isArray(kycResponse?.data)) return kycResponse.data;
+    return [];
+  }, [kycResponse]);
+
+  const kycSubmissions = useMemo(() => {
+    return rawSubmissions.map((item, idx) => ({
+      ...item,
+      sNo: idx + 1
+    }));
+  }, [rawSubmissions]);
+
+  // Search filter
+  const filteredData = useMemo(() => {
+    if (!searchQuery.trim()) return kycSubmissions;
+    const term = searchQuery.toLowerCase().trim();
+    return kycSubmissions.filter(sub => {
+      const id = (sub.Member_id || '').toLowerCase();
+      const name = (sub.Name || '').toLowerCase();
+      const combined = `${id}(${name})`;
+      const mobile = (sub.mobileno || '').toLowerCase();
+      const pan = (sub.Pan_no || '').toLowerCase();
+      const bank = (sub.bank_name || '').toLowerCase();
+      const acc = (sub.account_number || '').toLowerCase();
+      return (
+        id.includes(term) ||
+        name.includes(term) ||
+        combined.includes(term) ||
+        mobile.includes(term) ||
+        pan.includes(term) ||
+        bank.includes(term) ||
+        acc.includes(term)
+      );
+    });
+  }, [kycSubmissions, searchQuery]);
 
   // Handle approval
   const approveKYC = useApproveKYC();
@@ -73,7 +126,6 @@ const KYCApproval: React.FC = () => {
     });
   };
 
-  // Updated Status Chip Color
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'approved': return 'success';
@@ -83,184 +135,288 @@ const KYCApproval: React.FC = () => {
     }
   };
 
+  const columns: TableColumn<KYCSubmission>[] = [
+    {
+      name: 'S.No',
+      selector: (row) => row.sNo || 0,
+      width: '70px',
+      sortable: true
+    },
+    {
+      name: 'Vendor (Name)',
+      cell: (row) => (
+        <span style={{ fontWeight: 700, color: '#0a2558' }}>
+          {row.Member_id}({row.Name})
+        </span>
+      ),
+      sortable: true,
+      minWidth: '180px'
+    },
+    {
+      name: 'Account Number',
+      selector: (row) => row.account_number || '-',
+      sortable: true,
+      minWidth: '150px'
+    },
+    {
+      name: 'IFSC Code',
+      selector: (row) => row.ifsc_code || '-',
+      sortable: true,
+      minWidth: '120px'
+    },
+    {
+      name: 'Bank Name',
+      selector: (row) => row.bank_name || '-',
+      sortable: true,
+      minWidth: '150px'
+    },
+    {
+      name: 'PAN Number',
+      selector: (row) => row.Pan_no || 'N/A',
+      sortable: true,
+      minWidth: '130px'
+    },
+    {
+      name: 'Status',
+      cell: (row) => (
+        <Chip
+          label={row.kycStatus ? row.kycStatus.charAt(0).toUpperCase() + row.kycStatus.slice(1).toLowerCase() : 'Unknown'}
+          color={getStatusColor(row.kycStatus?.toLowerCase() || 'processing') as any}
+          size="small"
+        />
+      ),
+      sortable: true,
+      minWidth: '120px'
+    },
+    {
+      name: 'Submitted At',
+      selector: (row) => row.updatedAt ? new Date(row.updatedAt).toLocaleDateString() : (row.createdAt ? new Date(row.createdAt).toLocaleDateString() : 'N/A'),
+      sortable: true,
+      minWidth: '130px'
+    },
+    {
+      name: 'Actions',
+      cell: (row) => (
+        <Button
+          variant="contained"
+          size="small"
+          sx={{
+            backgroundColor: '#0a2558',
+            '&:hover': { backgroundColor: '#581c87' },
+            textTransform: 'none',
+            fontSize: '12px',
+            borderRadius: '6px'
+          }}
+          onClick={() => {
+            setSelectedKYC(row);
+            setOpenDialog(true);
+          }}
+        >
+          View Details
+        </Button>
+      ),
+      minWidth: '120px',
+      center: true
+    }
+  ];
+
   return (
-    <Card sx={{ margin: '2rem', mt: 10, boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}>
-      <CardContent>
-        <Typography variant="h5" gutterBottom sx={{ mb: 3, fontWeight: 'bold' }}>
+    <>
+      <Box sx={{ margin: '2rem', mt: 2 }}>
+        <Typography variant="h4" sx={{ fontWeight: 700, color: '#1F333B' }}>
           KYC Approval
         </Typography>
+      </Box>
 
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow sx={{ backgroundColor: '#0a2558' }}>
-                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Vendor ID</TableCell>
-                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Name</TableCell>
-                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Account Number</TableCell>
-                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>IFSC Code</TableCell>
-                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Bank Name</TableCell>
-                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>PAN Number</TableCell>
-                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Status</TableCell>
-                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Submitted At</TableCell>
-                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Actions</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {kycSubmissions.map((submission: KYCSubmission) => (
-                <TableRow key={submission._id} hover>
-                  <TableCell>{submission.Member_id}</TableCell>
-                  <TableCell>{submission.Name}</TableCell>
-                  <TableCell>{submission.account_number}</TableCell>
-                  <TableCell>{submission.ifsc_code}</TableCell>
-                  <TableCell>{submission.bank_name}</TableCell>
-                  <TableCell>{submission.Pan_no || 'N/A'}</TableCell>
-                  <TableCell>
-                    <Chip
-                      label={submission.kycStatus ? submission.kycStatus.charAt(0).toUpperCase() + submission.kycStatus.slice(1).toLowerCase() : 'Unknown'}
-                      color={getStatusColor(submission.kycStatus?.toLowerCase() || 'processing') as any}
-                      size="small"
-                    />
-                  </TableCell>
-                  <TableCell>
-                    {submission.updatedAt ? new Date(submission.updatedAt).toLocaleDateString() : (submission.createdAt ? new Date(submission.createdAt).toLocaleDateString() : 'N/A')}
-                  </TableCell>
-                  <TableCell>
-                    <Button
-                      variant="contained"
-                      size="small"
-                      sx={{
-                        backgroundColor: '#0a2558',
-                        '&:hover': { backgroundColor: '#581c87' },
-                        mr: 1
-                      }}
-                      onClick={() => {
-                        setSelectedKYC(submission);
-                        setOpenDialog(true);
-                      }}
-                    >
-                      View Details
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+      <Card sx={{ margin: '2rem', mt: 2, borderRadius: '12px', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}>
+        <CardContent>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 2, mb: 2 }}>
+            <Typography sx={{ color: '#000', fontWeight: 'bold', fontSize: '1.25rem' }}>
+              List of KYC Submissions
+            </Typography>
+            <TextField
+              size="small"
+              placeholder="Search..."
+              sx={{ minWidth: 220 }}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </Box>
 
-        {isLoading ? (
-          <Box sx={{ textAlign: 'center', py: 4 }}>
-            <CircularProgress sx={{ color: '#0a2558' }} />
-            <Typography variant="body2" sx={{ mt: 1, color: '#64748B' }}>Loading KYC submissions...</Typography>
-          </Box>
-        ) : kycSubmissions.length === 0 ? (
-          <Box sx={{ textAlign: 'center', py: 4 }}>
-            <Typography color="textSecondary">No KYC submissions found</Typography>
-          </Box>
-        ) : null}
-      </CardContent>
+          <DataTable
+            columns={columns}
+            data={filteredData}
+            pagination
+            customStyles={DASHBOARD_CUTSOM_STYLE}
+            paginationPerPage={25}
+            progressPending={isLoading}
+            progressComponent={
+              <CircularProgress size={"4rem"} sx={{ color: "#0a2558" }} />
+            }
+            paginationRowsPerPageOptions={[25, 50, 100]}
+            highlightOnHover
+            responsive
+          />
+        </CardContent>
+      </Card>
 
       {/* Details Dialog */}
-      <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="md" fullWidth>
-        <DialogTitle>KYC Submission Details</DialogTitle>
-        <DialogContent>
+      <Dialog
+        open={openDialog}
+        onClose={() => setOpenDialog(false)}
+        maxWidth="md"
+        fullWidth
+        PaperProps={{ sx: { borderRadius: '16px' } }}
+      >
+        <DialogTitle sx={{ backgroundColor: '#0a2558', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center', py: 2 }}>
+          <Box>
+            <Typography variant="h6" sx={{ fontWeight: 700, color: 'white' }}>
+              KYC Submission Details
+            </Typography>
+            {selectedKYC && (
+              <Typography variant="caption" sx={{ color: '#93c5fd' }}>
+                {selectedKYC.Member_id}({selectedKYC.Name})
+              </Typography>
+            )}
+          </Box>
+          <IconButton size="small" onClick={() => setOpenDialog(false)} sx={{ color: 'white' }}>
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+
+        <DialogContent dividers sx={{ p: 3 }}>
           {selectedKYC && (
-            <Box sx={{ py: 2 }}>
-              <Typography variant="h6" gutterBottom>Vendor Information</Typography>
-              <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2, mb: 3 }}>
+            <Box>
+              <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#0a2558', mb: 1.5 }}>
+                Vendor Information
+              </Typography>
+              <Box
+                sx={{
+                  display: 'grid',
+                  gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
+                  gap: 2,
+                  p: 2,
+                  backgroundColor: '#F8FAFC',
+                  borderRadius: '10px',
+                  mb: 3
+                }}
+              >
                 <Box>
-                  <Typography variant="body2" color="textSecondary">Vendor ID</Typography>
-                  <Typography>{selectedKYC?.Member_id}</Typography>
+                  <Typography variant="caption" color="textSecondary">Vendor (Name)</Typography>
+                  <Typography sx={{ fontWeight: 700, color: '#0a2558' }}>{selectedKYC.Member_id}({selectedKYC.Name})</Typography>
                 </Box>
                 <Box>
-                  <Typography variant="body2" color="textSecondary">Vendor Name</Typography>
-                  <Typography>{selectedKYC?.Name}</Typography>
+                  <Typography variant="caption" color="textSecondary">Status</Typography>
+                  <Box sx={{ mt: 0.5 }}>
+                    <Chip
+                      label={selectedKYC.kycStatus ? selectedKYC.kycStatus.charAt(0).toUpperCase() + selectedKYC.kycStatus.slice(1).toLowerCase() : 'Unknown'}
+                      color={getStatusColor(selectedKYC.kycStatus?.toLowerCase() || 'processing') as any}
+                      size="small"
+                    />
+                  </Box>
                 </Box>
                 <Box>
-                  <Typography variant="body2" color="textSecondary">Submitted At</Typography>
-                  <Typography>{selectedKYC?.updatedAt ? new Date(selectedKYC.updatedAt).toLocaleString() : 'N/A'}</Typography>
+                  <Typography variant="caption" color="textSecondary">Mobile Number</Typography>
+                  <Typography variant="body2" sx={{ fontWeight: 600 }}>{selectedKYC.mobileno || 'N/A'}</Typography>
                 </Box>
                 <Box>
-                  <Typography variant="body2" color="textSecondary">Status</Typography>
-                  <Chip
-                    label={selectedKYC?.kycStatus ? selectedKYC.kycStatus.charAt(0).toUpperCase() + selectedKYC.kycStatus.slice(1).toLowerCase() : 'Unknown'}
-                    color={getStatusColor(selectedKYC?.kycStatus?.toLowerCase() || 'processing') as any}
-                    size="small"
-                  />
-                </Box>
-              </Box>
-
-              <Typography variant="h6" gutterBottom>Bank Details</Typography>
-              <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2, mb: 3 }}>
-                <Box>
-                  <Typography variant="body2" color="textSecondary">Account Number</Typography>
-                  <Typography>{selectedKYC?.account_number || 'N/A'}</Typography>
+                  <Typography variant="caption" color="textSecondary">Email Address</Typography>
+                  <Typography variant="body2" sx={{ fontWeight: 600 }}>{selectedKYC.email || 'N/A'}</Typography>
                 </Box>
                 <Box>
-                  <Typography variant="body2" color="textSecondary">IFSC Code</Typography>
-                  <Typography>{selectedKYC?.ifsc_code || 'N/A'}</Typography>
-                </Box>
-                <Box>
-                  <Typography variant="body2" color="textSecondary">Bank Name</Typography>
-                  <Typography>{selectedKYC?.bank_name || 'N/A'}</Typography>
-                </Box>
-                <Box>
-                  <Typography variant="body2" color="textSecondary">PAN Number</Typography>
-                  <Typography>{selectedKYC?.Pan_no || 'N/A'}</Typography>
-                </Box>
-                <Box>
-                  <Typography variant="body2" color="textSecondary">Aadhaar Number</Typography>
-                  <Typography>{selectedKYC?.aadharcard_no || 'N/A'}</Typography>
+                  <Typography variant="caption" color="textSecondary">Submitted At</Typography>
+                  <Typography variant="body2">{selectedKYC.updatedAt ? new Date(selectedKYC.updatedAt).toLocaleString() : 'N/A'}</Typography>
                 </Box>
               </Box>
 
-              <Typography variant="h6" gutterBottom>Address</Typography>
-              <Box sx={{ mb: 3 }}>
-                <Typography>{selectedKYC?.address || 'N/A'}</Typography>
+              <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#0a2558', mb: 1.5 }}>
+                Bank Details
+              </Typography>
+              <Box
+                sx={{
+                  display: 'grid',
+                  gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
+                  gap: 2,
+                  p: 2,
+                  backgroundColor: '#F8FAFC',
+                  borderRadius: '10px',
+                  mb: 3
+                }}
+              >
+                <Box>
+                  <Typography variant="caption" color="textSecondary">Account Number</Typography>
+                  <Typography sx={{ fontWeight: 600, fontFamily: 'monospace' }}>{selectedKYC.account_number || 'N/A'}</Typography>
+                </Box>
+                <Box>
+                  <Typography variant="caption" color="textSecondary">IFSC Code</Typography>
+                  <Typography sx={{ fontWeight: 600, fontFamily: 'monospace' }}>{selectedKYC.ifsc_code || 'N/A'}</Typography>
+                </Box>
+                <Box>
+                  <Typography variant="caption" color="textSecondary">Bank Name</Typography>
+                  <Typography sx={{ fontWeight: 600 }}>{selectedKYC.bank_name || 'N/A'}</Typography>
+                </Box>
+                <Box>
+                  <Typography variant="caption" color="textSecondary">PAN Number</Typography>
+                  <Typography sx={{ fontWeight: 600, fontFamily: 'monospace' }}>{selectedKYC.Pan_no || 'N/A'}</Typography>
+                </Box>
+                <Box>
+                  <Typography variant="caption" color="textSecondary">Aadhaar Number</Typography>
+                  <Typography sx={{ fontWeight: 600, fontFamily: 'monospace' }}>{selectedKYC.aadharcard_no || 'N/A'}</Typography>
+                </Box>
+                <Box sx={{ gridColumn: { xs: '1', sm: '1 / -1' } }}>
+                  <Typography variant="caption" color="textSecondary">Address</Typography>
+                  <Typography variant="body2">{selectedKYC.address || 'N/A'}</Typography>
+                </Box>
               </Box>
 
-              <Typography variant="h6" gutterBottom>Uploaded Documents</Typography>
-              <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 2 }}>
-                {selectedKYC?.panImage ? (
+              <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#0a2558', mb: 1.5 }}>
+                Uploaded Documents
+              </Typography>
+              <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(auto-fit, minmax(200px, 1fr))' }, gap: 2 }}>
+                {selectedKYC.panImage ? (
                   <Box sx={{ border: '1px solid #E2E8F0', borderRadius: '12px', p: 1.5, textAlign: 'center' }}>
                     <Typography variant="caption" sx={{ fontWeight: 700, display: 'block', mb: 1 }}>Identity / PAN</Typography>
                     <a href={selectedKYC.panImage} target="_blank" rel="noopener noreferrer">
-                      <img src={selectedKYC.panImage} alt="PAN Document" style={{ width: '100%', height: 140, objectFit: 'cover', borderRadius: '8px' }} />
+                      <img src={selectedKYC.panImage} alt="PAN Document" style={{ width: '100%', height: 140, objectFit: 'contain', borderRadius: '8px', backgroundColor: '#f8fafc' }} />
                     </a>
                   </Box>
                 ) : null}
 
-                {selectedKYC?.profile_image ? (
+                {selectedKYC.profile_image ? (
                   <Box sx={{ border: '1px solid #E2E8F0', borderRadius: '12px', p: 1.5, textAlign: 'center' }}>
                     <Typography variant="caption" sx={{ fontWeight: 700, display: 'block', mb: 1 }}>Profile Photo</Typography>
                     <a href={selectedKYC.profile_image} target="_blank" rel="noopener noreferrer">
-                      <img src={selectedKYC.profile_image} alt="Profile" style={{ width: '100%', height: 140, objectFit: 'cover', borderRadius: '8px' }} />
+                      <img src={selectedKYC.profile_image} alt="Profile" style={{ width: '100%', height: 140, objectFit: 'contain', borderRadius: '8px', backgroundColor: '#f8fafc' }} />
                     </a>
                   </Box>
                 ) : null}
 
-                {selectedKYC?.aadhaarImage ? (
+                {selectedKYC.aadhaarImage ? (
                   <Box sx={{ border: '1px solid #E2E8F0', borderRadius: '12px', p: 1.5, textAlign: 'center' }}>
                     <Typography variant="caption" sx={{ fontWeight: 700, display: 'block', mb: 1 }}>Aadhaar</Typography>
                     <a href={selectedKYC.aadhaarImage} target="_blank" rel="noopener noreferrer">
-                      <img src={selectedKYC.aadhaarImage} alt="Aadhaar Document" style={{ width: '100%', height: 140, objectFit: 'cover', borderRadius: '8px' }} />
+                      <img src={selectedKYC.aadhaarImage} alt="Aadhaar Document" style={{ width: '100%', height: 140, objectFit: 'contain', borderRadius: '8px', backgroundColor: '#f8fafc' }} />
                     </a>
                   </Box>
                 ) : null}
 
-                {!selectedKYC?.panImage && !selectedKYC?.profile_image && !selectedKYC?.aadhaarImage && (
-                  <Typography variant="body2" color="textSecondary">No document images attached</Typography>
+                {!selectedKYC.panImage && !selectedKYC.profile_image && !selectedKYC.aadhaarImage && (
+                  <Box sx={{ gridColumn: '1 / -1', textAlign: 'center', py: 2 }}>
+                    <Typography variant="body2" color="textSecondary">No document images attached</Typography>
+                  </Box>
                 )}
               </Box>
             </Box>
           )}
         </DialogContent>
-        <DialogActions>
+        <DialogActions sx={{ p: 2 }}>
           {selectedKYC && (selectedKYC.kycStatus === 'PROCESSING' || selectedKYC.kycStatus === 'PENDING') && (
             <>
               <Button
                 onClick={handleReject}
                 variant="outlined"
                 color="error"
+                sx={{ borderRadius: '8px', textTransform: 'none', fontWeight: 600 }}
               >
                 Reject
               </Button>
@@ -269,14 +425,17 @@ const KYCApproval: React.FC = () => {
                 variant="contained"
                 sx={{
                   backgroundColor: '#0a2558',
-                  '&:hover': { backgroundColor: '#581c87' }
+                  '&:hover': { backgroundColor: '#581c87' },
+                  borderRadius: '8px',
+                  textTransform: 'none',
+                  fontWeight: 600
                 }}
               >
                 Approve
               </Button>
             </>
           )}
-          <Button onClick={() => setOpenDialog(false)}>Close</Button>
+          <Button onClick={() => setOpenDialog(false)} sx={{ textTransform: 'none' }}>Close</Button>
         </DialogActions>
       </Dialog>
 
@@ -295,7 +454,7 @@ const KYCApproval: React.FC = () => {
           {snackbar.message}
         </Alert>
       </Snackbar>
-    </Card>
+    </>
   );
 };
 
