@@ -285,14 +285,16 @@ interface PackageOptionItem {
   name: string;
   amount: number;
   tag?: string;
+  isNonIncome?: boolean;
 }
 
 const PRESENT_PACKAGES: PackageOptionItem[] = [
-  { value: 'Ecash_25000',  name: 'Starter Store',       amount: 25000,  tag: '₹25,000' },
-  { value: 'Ecash_50000',  name: 'Prime Merchant',       amount: 50000,  tag: '₹50,000' },
-  { value: 'Ecash_100000', name: 'Power Seller Hub',     amount: 100000, tag: '₹1,00,000' },
-  { value: 'Ecash_200000', name: 'Super Store Partner',  amount: 200000, tag: '₹2,00,000' },
-  { value: 'Ecash_500000', name: 'Mega Flagship Store',  amount: 500000, tag: '₹5,00,000' },
+  { value: 'Ecash_25000',           name: 'Starter Store',              amount: 25000,  tag: '₹25,000' },
+  { value: 'Ecash_25000_NonIncome', name: '25000 Package (Non Income)', amount: 25000,  tag: '₹25,000 (Non Income)', isNonIncome: true },
+  { value: 'Ecash_50000',           name: 'Prime Merchant',              amount: 50000,  tag: '₹50,000' },
+  { value: 'Ecash_100000',          name: 'Power Seller Hub',            amount: 100000, tag: '₹1,00,000' },
+  { value: 'Ecash_200000',          name: 'Super Store Partner',         amount: 200000, tag: '₹2,00,000' },
+  { value: 'Ecash_500000',          name: 'Mega Flagship Store',         amount: 500000, tag: '₹5,00,000' },
 ];
 
 export const PendingMembers = () => {
@@ -308,7 +310,8 @@ export const PendingMembers = () => {
   const handleActivateClick = (member: any) => {
     setSelectedMember(member);
     const existingVal = Number(member?.package_value || member?.amount || 0);
-    const matched = PRESENT_PACKAGES.find(p => p.amount === existingVal);
+    const isMemberNonIncome = member?.is_non_income || String(member?.spackage || '').toLowerCase().includes('non income');
+    const matched = PRESENT_PACKAGES.find(p => p.amount === existingVal && (isMemberNonIncome ? p.isNonIncome : !p.isNonIncome));
     if (matched) {
       setSelectedPackage(matched.value);
     } else {
@@ -430,9 +433,24 @@ export const PendingMembers = () => {
                 {PRESENT_PACKAGES.map((pkg) => (
                   <MenuItem key={pkg.value} value={pkg.value} sx={{ py: 1 }}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-                      <Typography sx={{ fontWeight: 600, fontSize: '0.9rem' }}>
-                        {pkg.name}
-                      </Typography>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <Typography sx={{ fontWeight: 600, fontSize: '0.9rem' }}>
+                          {pkg.name}
+                        </Typography>
+                        {pkg.isNonIncome && (
+                          <Chip
+                            label="Non-Income"
+                            size="small"
+                            sx={{
+                              height: 18,
+                              fontSize: '0.65rem',
+                              fontWeight: 700,
+                              backgroundColor: '#ffedd5',
+                              color: '#c2410c'
+                            }}
+                          />
+                        )}
+                      </Box>
                       <Chip
                         label={pkg.tag || `₹${pkg.amount.toLocaleString('en-IN')}`}
                         size="small"
@@ -441,8 +459,8 @@ export const PendingMembers = () => {
                           height: 22,
                           fontSize: '0.72rem',
                           fontWeight: 700,
-                          backgroundColor: '#e0e7ff',
-                          color: '#3730a3'
+                          backgroundColor: pkg.isNonIncome ? '#fed7aa' : '#e0e7ff',
+                          color: pkg.isNonIncome ? '#9a3412' : '#3730a3'
                         }}
                       />
                     </Box>
@@ -453,32 +471,64 @@ export const PendingMembers = () => {
 
             {/* Live Benefits Breakdown Preview */}
             {effectiveAmount > 0 ? (
-              <Box sx={{ mt: 2.5, p: 2, borderRadius: 2, bgcolor: '#f0fdf4', border: '1px solid #bbf7d0' }}>
-                <Typography variant="caption" sx={{ fontWeight: 800, color: '#166534', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                  Package Benefits Preview
-                </Typography>
-                <Divider sx={{ my: 1, borderColor: '#bbf7d0' }} />
-                <Grid container spacing={1.5}>
-                  <Grid item xs={4}>
-                    <Typography variant="caption" color="text.secondary">Package Value</Typography>
-                    <Typography variant="body2" sx={{ fontWeight: 800, color: '#15803d' }}>
-                      ₹{effectiveAmount.toLocaleString('en-IN')}
-                    </Typography>
+              selectedPkgObj?.isNonIncome ? (
+                <Box sx={{ mt: 2.5, p: 2, borderRadius: 2, bgcolor: '#fff7ed', border: '1px solid #fed7aa' }}>
+                  <Typography variant="caption" sx={{ fontWeight: 800, color: '#c2410c', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                    Non-Income Package (Display Only)
+                  </Typography>
+                  <Divider sx={{ my: 1, borderColor: '#fed7aa' }} />
+                  <Grid container spacing={1.5}>
+                    <Grid item xs={4}>
+                      <Typography variant="caption" color="text.secondary">Package Value</Typography>
+                      <Typography variant="body2" sx={{ fontWeight: 800, color: '#ea580c' }}>
+                        ₹{effectiveAmount.toLocaleString('en-IN')}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={4}>
+                      <Typography variant="caption" color="text.secondary">Daily ROI</Typography>
+                      <Typography variant="body2" sx={{ fontWeight: 700, color: '#64748b' }}>
+                        No ROI (₹0)
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={4}>
+                      <Typography variant="caption" color="text.secondary">Level Income</Typography>
+                      <Typography variant="body2" sx={{ fontWeight: 700, color: '#64748b' }}>
+                        No Income (₹0)
+                      </Typography>
+                    </Grid>
                   </Grid>
-                  <Grid item xs={4}>
-                    <Typography variant="caption" color="text.secondary">Daily ROI (400 Days)</Typography>
-                    <Typography variant="body2" sx={{ fontWeight: 700, color: '#0369a1' }}>
-                      ₹{(effectiveAmount * 0.005).toFixed(2)}/day
-                    </Typography>
+                  <Typography variant="caption" sx={{ display: 'block', mt: 1, color: '#9a3412', fontWeight: 600 }}>
+                    ℹ️ Package shows on user profile. No daily ROI or MLM level commissions will be distributed.
+                  </Typography>
+                </Box>
+              ) : (
+                <Box sx={{ mt: 2.5, p: 2, borderRadius: 2, bgcolor: '#f0fdf4', border: '1px solid #bbf7d0' }}>
+                  <Typography variant="caption" sx={{ fontWeight: 800, color: '#166534', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                    Package Benefits Preview
+                  </Typography>
+                  <Divider sx={{ my: 1, borderColor: '#bbf7d0' }} />
+                  <Grid container spacing={1.5}>
+                    <Grid item xs={4}>
+                      <Typography variant="caption" color="text.secondary">Package Value</Typography>
+                      <Typography variant="body2" sx={{ fontWeight: 800, color: '#15803d' }}>
+                        ₹{effectiveAmount.toLocaleString('en-IN')}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={4}>
+                      <Typography variant="caption" color="text.secondary">Daily ROI (400 Days)</Typography>
+                      <Typography variant="body2" sx={{ fontWeight: 700, color: '#0369a1' }}>
+                        ₹{(effectiveAmount * 0.005).toFixed(2)}/day
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={4}>
+                      <Typography variant="caption" color="text.secondary">Direct Sponsor (5%)</Typography>
+                      <Typography variant="body2" sx={{ fontWeight: 700, color: '#7c3aed' }}>
+                        ₹{(effectiveAmount * 0.05).toLocaleString('en-IN')}
+                      </Typography>
+                    </Grid>
                   </Grid>
-                  <Grid item xs={4}>
-                    <Typography variant="caption" color="text.secondary">Direct Sponsor (5%)</Typography>
-                    <Typography variant="body2" sx={{ fontWeight: 700, color: '#7c3aed' }}>
-                      ₹{(effectiveAmount * 0.05).toLocaleString('en-IN')}
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </Box>
+                </Box>
+              )
             ) : (
               <Alert severity="warning" sx={{ mt: 2, borderRadius: 2 }}>
                 Vendor activation requires selecting a package. Activation without a package is disabled.
