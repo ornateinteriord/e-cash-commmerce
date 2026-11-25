@@ -73,11 +73,108 @@ interface Props {
   label: string
 }
 
+export const parseAnyDate = (dateVal: any): Date | null => {
+  if (!dateVal) return null;
+  if (dateVal instanceof Date) {
+    return isNaN(dateVal.getTime()) ? null : dateVal;
+  }
+  if (typeof dateVal === 'number') {
+    const d = new Date(dateVal);
+    return isNaN(d.getTime()) ? null : d;
+  }
+  if (typeof dateVal === 'string') {
+    const trimmed = dateVal.trim();
+    if (!trimmed || trimmed === '-' || trimmed === 'N/A' || trimmed === 'null' || trimmed === 'undefined') {
+      return null;
+    }
+    // Check if numeric timestamp as string
+    if (/^\d{10,13}$/.test(trimmed)) {
+      const d = new Date(Number(trimmed));
+      if (!isNaN(d.getTime())) return d;
+    }
+    // Check if DD-MM-YYYY or DD/MM/YYYY
+    const dmyMatch = trimmed.match(/^(\d{1,2})[-/](\d{1,2})[-/](\d{4})/);
+    if (dmyMatch) {
+      const day = parseInt(dmyMatch[1], 10);
+      const month = parseInt(dmyMatch[2], 10) - 1;
+      const year = parseInt(dmyMatch[3], 10);
+      const d = new Date(year, month, day);
+      if (!isNaN(d.getTime())) return d;
+    }
+    // Standard ISO or YYYY-MM-DD parse
+    const parsed = new Date(trimmed);
+    if (!isNaN(parsed.getTime())) return parsed;
+  }
+  return null;
+};
+
+export const isWithinDateRange = (
+  itemDateRaw: any,
+  fromDateStr: string | null | undefined,
+  toDateStr: string | null | undefined
+): boolean => {
+  if (!fromDateStr && !toDateStr) return true;
+
+  const itemDate = parseAnyDate(itemDateRaw);
+  if (!itemDate) return false;
+
+  if (fromDateStr) {
+    const fromDate = parseAnyDate(fromDateStr);
+    if (fromDate) {
+      fromDate.setHours(0, 0, 0, 0);
+      if (itemDate < fromDate) return false;
+    }
+  }
+
+  if (toDateStr) {
+    const toDate = parseAnyDate(toDateStr);
+    if (toDate) {
+      toDate.setHours(23, 59, 59, 999);
+      if (itemDate > toDate) return false;
+    }
+  }
+
+  return true;
+};
+
+export const getItemDateValue = (item: any): any => {
+  if (!item || typeof item !== 'object') return null;
+  return (
+    item.Date_of_joining ||
+    item.transaction_date ||
+    item.created_at ||
+    item.createdAt ||
+    item.date ||
+    item.payout_date ||
+    item.dateOfOpening ||
+    item.roi_start_date ||
+    item.updatedAt ||
+    item.updated_at
+  );
+};
+
+export const filterByDateRange = <T,>(
+  items: T[],
+  fromDate: string | null | undefined,
+  toDate: string | null | undefined,
+  getDateFn?: (item: T) => any
+): T[] => {
+  if (!items || !Array.isArray(items)) return [];
+  if (!fromDate && !toDate) return items;
+
+  return items.filter((item: any) => {
+    const dateVal = getDateFn ? getDateFn(item) : getItemDateValue(item);
+    return isWithinDateRange(dateVal, fromDate, toDate);
+  });
+};
+
 export const MuiDatePicker: React.FC<Props> = ({ date, setDate, label }) => {
-  const handleChange = (date: Date | null) => {
-    if (date) {
-      const formatted = moment(date).format('YYYY-MM-DD') // yyyy-mm-dd
+  const handleChange = (newDate: Date | null) => {
+    if (newDate && !isNaN(newDate.getTime())) {
+      const formatted = moment(newDate).format('YYYY-MM-DD'); // yyyy-mm-dd
       setDate(formatted);
+    } else {
+      setDate('');
     }
   };
 

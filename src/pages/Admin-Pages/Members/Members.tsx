@@ -38,9 +38,18 @@ const MemberTable = ({
 }: MemberTableProps) => {
   const [isEdit, setIsEdit] = useState(false);
   const [selectedMemberId, setSelectedMemberId] = useState<string | null>(null);
-  const [fromDate, setFromDate] = useState<string | null>(null);
-  const [toDate, setToDate] = useState<string | null>(null);
-  const { searchQuery, setSearchQuery, filteredData } = useSearch(data)
+  const {
+    searchQuery,
+    setSearchQuery,
+    fromDate,
+    setFromDate,
+    toDate,
+    setToDate,
+    appliedDates,
+    handleDateSearch,
+    handleDateReset,
+    filteredData,
+  } = useSearch(data);
 
   const [dashboardDialogOpen, setDashboardDialogOpen] = useState(false);
   const [memberToImpersonate, setMemberToImpersonate] = useState<any>(null);
@@ -110,11 +119,12 @@ const MemberTable = ({
         <Typography variant="h4">
           {title}
         </Typography>
-        <Grid className="filter-actions" >
+        <Grid className="filter-actions" sx={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
           <MuiDatePicker date={fromDate} setDate={setFromDate} label="From Date" />
           <MuiDatePicker date={toDate} setDate={setToDate} label="To Date" />
           <Button
             variant="contained"
+            onClick={handleDateSearch}
             sx={{
               backgroundColor: '#0a2558',
               '&:hover': { backgroundColor: '#0a2558' }
@@ -122,6 +132,19 @@ const MemberTable = ({
           >
             Search
           </Button>
+          {(fromDate || toDate || appliedDates.from || appliedDates.to) && (
+            <Button
+              variant="outlined"
+              onClick={handleDateReset}
+              sx={{
+                borderColor: '#0a2558',
+                color: '#0a2558',
+                '&:hover': { borderColor: '#0a2558', backgroundColor: 'rgba(10, 37, 88, 0.04)' }
+              }}
+            >
+              Reset
+            </Button>
+          )}
         </Grid>
       </Grid>
       <Card sx={{ margin: '2rem', mt: 2 }}>

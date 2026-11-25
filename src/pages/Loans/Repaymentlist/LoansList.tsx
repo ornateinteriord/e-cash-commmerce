@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Box, Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, TableSortLabel, TextField, InputAdornment, Card, CardContent, Grid, Button, CircularProgress, Alert, Dialog, DialogTitle, DialogContent, DialogActions, FormControl, InputLabel, Select, MenuItem, DialogContentText, Tabs, Tab,  } from '@mui/material';
 import { Search as SearchIcon,  } from '@mui/icons-material';
 
-import { MuiDatePicker } from '../../../components/common/DateFilterComponent';
+import { MuiDatePicker, isWithinDateRange } from '../../../components/common/DateFilterComponent';
 import { getLoansListColumns } from '../../../utils/DataTableColumnsProvider';
 import { useGetAllTransactionDetails } from '../../../api/Admin';
 import { useCreatePaymentOrder } from '../../../api/Memeber';
@@ -146,7 +146,21 @@ export default function LoansList() {
     });
   };
 
-  const handleSearch = () => refetch();
+  const [appliedDates, setAppliedDates] = useState<{ from: string | null; to: string | null }>({ from: null, to: null });
+
+  const handleSearch = () => {
+    setAppliedDates({ from: fromDate || null, to: toDate || null });
+    setPage(0);
+    refetch();
+  };
+
+  const handleReset = () => {
+    setFromDate(null);
+    setToDate(null);
+    setAppliedDates({ from: null, to: null });
+    setPage(0);
+  };
+
   const columns = getLoansListColumns(handleRepayClick);
 
   const handleSort = (property: string) => {
@@ -161,9 +175,19 @@ export default function LoansList() {
     setPage(0);
   };
 
-  const filteredData = loanTransactions.filter((row: any) =>
-    Object.values(row).some(v => v?.toString().toLowerCase().includes(searchTerm.toLowerCase()))
-  );
+  const filteredData = loanTransactions.filter((row: any) => {
+    if (searchTerm) {
+      const matches = Object.values(row).some(v => v?.toString().toLowerCase().includes(searchTerm.toLowerCase()));
+      if (!matches) return false;
+    }
+    if (appliedDates.from || appliedDates.to) {
+      const itemDate = row.transaction_date || row.created_at || row.originalData?.createdAt || row.originalData?.transaction_date;
+      if (!isWithinDateRange(itemDate, appliedDates.from, appliedDates.to)) {
+        return false;
+      }
+    }
+    return true;
+  });
 
   const sortedData = [...filteredData].sort((a, b) => {
     if (!orderBy) return 0;
@@ -208,6 +232,20 @@ export default function LoansList() {
           >
             Search
           </Button>
+          {(fromDate || toDate || appliedDates.from || appliedDates.to) && (
+            <Button
+              variant="outlined"
+              onClick={handleReset}
+              sx={{
+                textTransform: 'capitalize',
+                borderColor: '#0a2558',
+                color: '#0a2558',
+                '&:hover': { borderColor: '#0a2558', backgroundColor: 'rgba(10, 37, 88, 0.04)' },
+              }}
+            >
+              Reset
+            </Button>
+          )}
         </Grid>
       </Grid>
 
