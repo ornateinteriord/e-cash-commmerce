@@ -774,7 +774,6 @@ export const useActivatePackage = () => {
     },
     onSuccess: (response) => {
       if (response.success) {
-        toast.success(response.message || "Package activated successfully!");
         queryClient.invalidateQueries({ queryKey: ["allMembers"] });
       } else {
         const errorMessage = response.message || "Activation failed";

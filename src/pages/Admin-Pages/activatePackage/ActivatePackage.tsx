@@ -5,6 +5,7 @@ import { Cancel, CheckCircle, Search, Warning, AttachMoney, Person,  } from '@mu
 import { useGetMemberDetails } from '../../../api/Admin';
 import { useActivatePackage } from '../../../api/Memeber';
 import { useLocation } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 interface PackageOption {
   value: string;
@@ -113,6 +114,7 @@ const ActivatePackage: React.FC = () => {
 
             // Show success dialog
             setShowSuccessDialog(true);
+            toast.success(response.message || "Package activated successfully!");
 
             // Reset form fields (these are the editable inputs). We DO NOT clear activatedMember / activatedPackage.
             setMemberId('');

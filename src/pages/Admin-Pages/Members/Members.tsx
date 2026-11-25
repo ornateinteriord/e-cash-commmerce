@@ -337,12 +337,14 @@ export const PendingMembers = () => {
       { memberId: selectedMember.Member_id, packageType },
       {
         onSuccess: () => {
+          toast.dismiss();
           toast.success(`Vendor ${selectedMember.Name || selectedMember.Member_id} activated successfully with ₹${effectiveAmount.toLocaleString('en-IN')} package!`);
           setDialogOpen(false);
           setSelectedMember(null);
           setSelectedPackage('');
         },
         onError: (err: any) => {
+          toast.dismiss();
           toast.error(err?.response?.data?.message || 'Failed to activate vendor');
         },
       }
