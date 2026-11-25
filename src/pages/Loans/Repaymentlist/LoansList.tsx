@@ -212,118 +212,151 @@ export default function LoansList() {
 
   return (
     <>
-      <Grid sx={{ margin: '2rem', mt: 12 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-          <Typography variant="h4" fontWeight="bold">
-            Loans List
-          </Typography>
-        </Box>
-        <Grid sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-          <MuiDatePicker date={fromDate} setDate={setFromDate} label="From Date" />
-          <MuiDatePicker date={toDate} setDate={setToDate} label="To Date" />
-          <Button
-            variant="contained"
-            onClick={handleSearch}
-            sx={{
-              textTransform: 'capitalize',
-              backgroundColor: '#0a2558',
-              '&:hover': { backgroundColor: '#0a2558' },
-            }}
-          >
-            Search
-          </Button>
-          {(fromDate || toDate || appliedDates.from || appliedDates.to) && (
+      <Grid
+        className="filter-container"
+        sx={{
+          margin: { xs: '0.75rem', sm: '1rem', md: '1.5rem' },
+          mt: { xs: 8, sm: 10, md: 12 },
+        }}
+      >
+        <Typography variant="h4" fontWeight="bold">
+          Loans List
+        </Typography>
+        <Grid className="filter-actions">
+          <Box className="date-filter-group">
+            <MuiDatePicker date={fromDate} setDate={setFromDate} label="From Date" />
+            <MuiDatePicker date={toDate} setDate={setToDate} label="To Date" />
+          </Box>
+          <Box className="btn-group">
             <Button
-              variant="outlined"
-              onClick={handleReset}
+              variant="contained"
+              onClick={handleSearch}
               sx={{
                 textTransform: 'capitalize',
-                borderColor: '#0a2558',
-                color: '#0a2558',
-                '&:hover': { borderColor: '#0a2558', backgroundColor: 'rgba(10, 37, 88, 0.04)' },
+                backgroundColor: '#0a2558',
+                '&:hover': { backgroundColor: '#0a2558' },
+                whiteSpace: "nowrap",
+                minWidth: "80px",
               }}
             >
-              Reset
+              Search
             </Button>
-          )}
+            {(fromDate || toDate || appliedDates.from || appliedDates.to) && (
+              <Button
+                variant="outlined"
+                onClick={handleReset}
+                sx={{
+                  textTransform: 'capitalize',
+                  borderColor: '#0a2558',
+                  color: '#0a2558',
+                  '&:hover': { borderColor: '#0a2558', backgroundColor: 'rgba(10, 37, 88, 0.04)' },
+                  whiteSpace: "nowrap",
+                  minWidth: "80px",
+                }}
+              >
+                Reset
+              </Button>
+            )}
+          </Box>
         </Grid>
       </Grid>
 
-      <Card sx={{ margin: '2rem', mt: 2 }}>
-        <CardContent>
-          <div style={{ marginBottom: "1rem", color: "#000", fontWeight: "bold", fontSize: "1.25rem"     }}>List of Approved Loan Transactions {isLoading && <CircularProgress size={16} sx={{ color: '#fff', ml: 2 }} />}</div>
+      <Card
+        sx={{
+          margin: { xs: '0.75rem', sm: '1rem', md: '1.5rem' },
+          mt: 2,
+          borderRadius: 2,
+          boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)',
+          overflow: 'hidden',
+        }}
+      >
+        <CardContent sx={{ p: { xs: 1.5, sm: 2, md: 2.5 } }}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: { xs: 'column', sm: 'row' },
+              justifyContent: 'space-between',
+              alignItems: { xs: 'stretch', sm: 'center' },
+              gap: 1.5,
+              mb: 2,
+            }}
+          >
+            <Typography variant="h6" sx={{ fontWeight: 700, color: '#1e293b', fontSize: { xs: '1.1rem', sm: '1.25rem' } }}>
+              List of Approved Loan Transactions {isLoading && <CircularProgress size={16} sx={{ color: '#0a2558', ml: 1 }} />}
+            </Typography>
+            <TextField
+              size="small"
+              placeholder="Search loans..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              sx={{ width: { xs: '100%', sm: 220, md: 260 } }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon color="action" />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </Box>
           {isLoading ? (
-                <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
-                  <CircularProgress />
-                </Box>
-              ) : loanTransactions.length === 0 ? (
-                <Typography textAlign="center" color="textSecondary" py={4}>
-                  No approved loan transactions found
-                </Typography>
-              ) : (
-                <>
-                  <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
-                    <TextField
-                      size="small"
-                      placeholder="Search loans..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <SearchIcon color="action" />
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                  </Box>
-
-                  <TableContainer component={Paper}>
-                    <Table>
-                      <TableHead>
-                        <TableRow sx={{ backgroundColor: '#0a2558' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
+              <CircularProgress />
+            </Box>
+          ) : loanTransactions.length === 0 ? (
+            <Typography textAlign="center" color="textSecondary" py={4}>
+              No approved loan transactions found
+            </Typography>
+          ) : (
+            <>
+              <Box sx={{ width: '100%', overflowX: 'auto' }}>
+                <TableContainer component={Paper} elevation={0}>
+                  <Table>
+                    <TableHead>
+                      <TableRow sx={{ backgroundColor: '#0a2558' }}>
+                        {columns.map((col) => (
+                          <TableCell key={col.name} sx={{ color: 'white', fontWeight: 'bold', whiteSpace: 'nowrap' }}>
+                            {col.sortable ? (
+                              <TableSortLabel
+                                active={orderBy === col.name}
+                                onClick={() => handleSort(col.name)}
+                                sx={{ color: 'white !important' }}
+                              >
+                                {col.name}
+                              </TableSortLabel>
+                            ) : (
+                              col.name
+                            )}
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {paginatedData.map((row) => (
+                        <TableRow key={row.id}>
                           {columns.map((col) => (
-                            <TableCell key={col.name} sx={{ color: 'white', fontWeight: 'bold' }}>
-                              {col.sortable ? (
-                                <TableSortLabel
-                                  active={orderBy === col.name}
-                                  onClick={() => handleSort(col.name)}
-                                  sx={{ color: 'white !important' }}
-                                >
-                                  {col.name}
-                                </TableSortLabel>
-                              ) : (
-                                col.name
-                              )}
+                            <TableCell key={`${row.id}-${col.name}`}>
+                              {col.cell ? col.cell(row) : renderCellContent(row, col)}
                             </TableCell>
                           ))}
                         </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {paginatedData.map((row) => (
-                          <TableRow key={row.id}>
-                            {columns.map((col) => (
-                              <TableCell key={`${row.id}-${col.name}`}>
-                                {col.cell ? col.cell(row) : renderCellContent(row, col)}
-                              </TableCell>
-                            ))}
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Box>
 
-                  <TablePagination
-                    rowsPerPageOptions={[5, 10, 25]}
-                    component="div"
-                    count={filteredData.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                  />
-                </>
-              )}
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={filteredData.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
+            </>
+          )}
         </CardContent>
       </Card>
 

@@ -318,7 +318,7 @@ const LevelDailyROI = () => {
           mt: 0.5,
           fontSize: { xs: '0.78rem', sm: '0.88rem' }
         }}>
-          Your 100-day multi-tier daily earnings generated from your downline vendors' package investments
+          Multi-level daily revenue share distributed across 10 upline tiers for 100 days (Levels 1 to 10, Level Matching: Level ≥ N)
         </Typography>
       </Box>
 

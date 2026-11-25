@@ -265,7 +265,7 @@ export const VendorTokens: React.FC = () => {
   ];
 
   return (
-    <Box sx={{ p: { xs: 1.5, sm: 2, md: 3 }, bgcolor: '#f8fafc', minHeight: '100vh' }}>
+    <Box sx={{ p: { xs: 1.5, sm: 2, md: 3 }, mt: { xs: 4, sm: 10, md: 11 }, bgcolor: '#f8fafc', minHeight: '100vh' }}>
       {/* Header */}
       <Box
         sx={{
@@ -280,7 +280,15 @@ export const VendorTokens: React.FC = () => {
         <Box>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.2 }}>
             <TokenCoin value={totalTokens} size={32} />
-            <Typography variant="h5" sx={{ fontWeight: 800, color: '#0f172a', fontSize: { xs: '1.2rem', sm: '1.5rem' } }}>
+            <Typography
+              variant="h5"
+              sx={{
+                fontWeight: 700,
+                color: '#1e293b',
+                fontSize: { xs: '1.35rem', sm: '1.55rem', md: '1.75rem' },
+                letterSpacing: '-0.02em',
+              }}
+            >
               Vendor Tokens Management
             </Typography>
           </Box>

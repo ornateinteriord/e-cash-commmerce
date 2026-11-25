@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { TextField, Button, Card, CardContent, InputAdornment, Select, MenuItem, FormControl, InputLabel, IconButton, CircularProgress,  } from '@mui/material';
+import { Box, TextField, Button, Card, CardContent, InputAdornment, Select, MenuItem, FormControl, InputLabel, IconButton, CircularProgress,  } from '@mui/material';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import PersonIcon from '@mui/icons-material/Person';
 import InventoryIcon from '@mui/icons-material/Inventory';
@@ -179,10 +179,20 @@ const PackageTable: React.FC<PackageTableProps> = ({ title, summaryTitle, data, 
   const { searchQuery, setSearchQuery, filteredData } = useSearch(data)
   return (
     <>
-      <Typography variant="h4" sx={{ margin: '2rem', mt: 10 }}>
-        {title}
-      </Typography>
-      <Card sx={{ margin: '2rem', mt: 2 }}>
+      <Box sx={{ margin: { xs: '0.75rem', sm: '1rem', md: '1.5rem' }, mt: { xs: 4, sm: 10, md: 11 } }}>
+        <Typography
+          variant="h4"
+          sx={{
+            fontWeight: 700,
+            color: '#1e293b',
+            fontSize: { xs: '1.35rem', sm: '1.55rem', md: '1.75rem' },
+            letterSpacing: '-0.02em',
+          }}
+        >
+          {title}
+        </Typography>
+      </Box>
+      <Card sx={{ margin: { xs: '0.75rem', sm: '1rem', md: '1.5rem' }, mt: 2 }}>
         <CardContent>
           <div style={{ marginBottom: "1rem", color: "#000", fontWeight: "bold", fontSize: "1.25rem"     }}>{summaryTitle}</div>
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end', marginBottom: '1rem' }}>

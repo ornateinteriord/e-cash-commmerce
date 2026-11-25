@@ -118,9 +118,6 @@ export const formatVendorCode = (id: any, code?: any): string => {
   if (!idStr || idStr === '-' || idStr === 'N/A') return 'N/A';
   if (idStr === '9004478100') return '564080';
   if (idStr === '9740406962') return '566962';
-  if (/^[6-9]\d{9}$/.test(idStr)) {
-    return `56${idStr.slice(-4)}`;
-  }
   return idStr;
 };
 

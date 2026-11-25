@@ -86,12 +86,19 @@ const Payout = () => {
   };
 
   return (
-    <Box sx={{ p: { xs: 2, md: 3 }, bgcolor: '#FFFFFF', minHeight: '100vh' }}>
+    <Box sx={{ p: { xs: 2, md: 3 }, pt: { xs: 9, sm: 10, md: 11 }, bgcolor: '#FFFFFF', minHeight: '100vh' }}>
       <Box sx={{ mb: 3 }}>
-        <Typography variant="h5" sx={{ color: '#0F172A', fontWeight: 900, letterSpacing: '-0.5px' }}>
+        <Typography
+          variant="h4"
+          sx={{
+            color: '#1e293b',
+            fontWeight: 700,
+            fontSize: { xs: '1.35rem', sm: '1.55rem', md: '1.75rem' },
+            letterSpacing: '-0.02em',
+          }}
+        >
           Withdrawal Requests & Payouts
         </Typography>
-       
       </Box>
 
       <Card sx={{ bgcolor: '#FFFFFF', borderRadius: '20px', border: '1.5px solid #E2E8F0', boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)' }}>

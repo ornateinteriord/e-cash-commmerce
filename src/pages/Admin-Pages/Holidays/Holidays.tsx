@@ -41,9 +41,24 @@ const Holidays = () => {
         display="flex"
         justifyContent="space-between"
         alignItems="center"
-        sx={{ margin: "1rem", mt: 12 }}
+        sx={{
+          margin: { xs: "0.75rem", sm: "1rem", md: "1.5rem" },
+          mt: { xs: 4, sm: 10, md: 11 },
+          flexWrap: 'wrap',
+          gap: 2
+        }}
       >
-        <Typography variant="h4">Holiday Details</Typography>
+        <Typography
+          variant="h4"
+          sx={{
+            fontWeight: 700,
+            color: '#1e293b',
+            fontSize: { xs: '1.35rem', sm: '1.55rem', md: '1.75rem' },
+            letterSpacing: '-0.02em',
+          }}
+        >
+          Holiday Details
+        </Typography>
         <Button
           variant="contained"
           onClick={() => setIsModalOpen(true)}
@@ -56,7 +71,7 @@ const Holidays = () => {
         </Button>
       </Grid>
 
-      <Card sx={{ margin: "1rem", mt: 2 }}>
+      <Card sx={{ margin: { xs: "0.75rem", sm: "1rem", md: "1.5rem" }, mt: 2 }}>
         <CardContent>
           <div style={{ marginBottom: "1rem", color: "#000", fontWeight: "bold", fontSize: "1.25rem"     }}>List of Holidays</div>
           <div

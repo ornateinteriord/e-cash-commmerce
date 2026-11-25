@@ -222,7 +222,13 @@ export default function AdminChat() {
   };
 
   return (
-    <Box sx={{ height: 'calc(100vh - 64px)', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+    <Box sx={{
+      height: { xs: 'calc(100vh - 58px)', md: 'calc(100vh - 64px)' },
+      mt: { xs: '58px', md: '64px' },
+      display: 'flex',
+      flexDirection: 'column',
+      overflow: 'hidden'
+    }}>
       <Paper 
         elevation={0} 
         sx={{ 

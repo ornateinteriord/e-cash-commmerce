@@ -107,8 +107,17 @@ const AdminAddOnRequests = () => {
   ];
 
   return (
-    <Box sx={{ p: { xs: 2, md: 4 }, mt: { xs: 8, md: 8 } }}>
-      <Typography variant="h4" sx={{ mb: { xs: 2, md: 4 }, fontSize: { xs: '1.5rem', md: '2.125rem' } }}>
+    <Box sx={{ p: { xs: 2, md: 3 }, mt: { xs: 4, sm: 10, md: 11 } }}>
+      <Typography
+        variant="h4"
+        sx={{
+          mb: { xs: 2, md: 3 },
+          fontWeight: 700,
+          color: '#1e293b',
+          fontSize: { xs: '1.35rem', sm: '1.55rem', md: '1.75rem' },
+          letterSpacing: '-0.02em',
+        }}
+      >
         Deposit Requests
       </Typography>
 

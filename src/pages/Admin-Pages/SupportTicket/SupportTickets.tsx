@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { TextField, Button, Card, CardContent, Dialog, DialogTitle, DialogContent, DialogActions, CircularProgress,  } from '@mui/material';
+import { Box, TextField, Button, Card, CardContent, Dialog, DialogTitle, DialogContent, DialogActions, CircularProgress,  } from '@mui/material';
 import { Typography } from '@mui/material';
 import DataTable from 'react-data-table-component';
 import { DASHBOARD_CUTSOM_STYLE, getSupportTicketColumns } from '../../../utils/DataTableColumnsProvider';
@@ -78,8 +78,25 @@ const SupportTickets = () => {
 
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '2rem', marginTop: '5rem' }}>
-        <Typography variant="h4" sx={{ margin: 0 }}>
+      <Box sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        margin: { xs: '0.75rem', sm: '1rem', md: '1.5rem' },
+        mt: { xs: 4, sm: 10, md: 11 },
+        flexWrap: 'wrap',
+        gap: 2
+      }}>
+        <Typography
+          variant="h4"
+          sx={{
+            fontWeight: 700,
+            color: '#1e293b',
+            fontSize: { xs: '1.35rem', sm: '1.55rem', md: '1.75rem' },
+            letterSpacing: '-0.02em',
+            margin: 0,
+          }}
+        >
           Support Tickets
         </Typography>
         <Button 
@@ -89,7 +106,7 @@ const SupportTickets = () => {
           disabled={triggerAutoUpgradesMutation.isPending}
           sx={{ 
             backgroundColor: '#ffff', 
-            color: '#000', 
+            color: '#fff', 
             textTransform: 'capitalize', 
             fontWeight: 'bold',
             '&.Mui-disabled': {
@@ -98,10 +115,10 @@ const SupportTickets = () => {
             }
           }}
         >
-          {triggerAutoUpgradesMutation.isPending ? "Processing..." : "Trigger Auto Upgrades"}
+        {triggerAutoUpgradesMutation.isPending ? "Processing..." : "Trigger Auto Upgrades"}
         </Button>
-      </div>
-      <Card sx={{ margin: '2rem', mt: 2 }}>
+      </Box>
+      <Card sx={{ margin: { xs: '0.75rem', sm: '1rem', md: '1.5rem' }, mt: 2 }}>
         <CardContent>
           <div style={{ marginBottom: "1rem", color: "#000", fontWeight: "bold", fontSize: "1.25rem"     }}>List of Support Tickets</div>
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end', marginBottom: '1rem', alignItems: 'center' }}>

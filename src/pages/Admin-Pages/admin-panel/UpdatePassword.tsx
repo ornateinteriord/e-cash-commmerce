@@ -52,11 +52,24 @@ const UpdatePassword: React.FC = () => {
         display="flex"
         justifyContent="space-between"
         alignItems="center"
-        sx={{ margin: "1rem", mt: 12 }}
+        sx={{
+          margin: { xs: "0.75rem", sm: "1rem", md: "1.5rem" },
+          mt: { xs: 4, sm: 10, md: 11 },
+        }}
       >
-        <Typography variant="h4">Account Settings</Typography>
+        <Typography
+          variant="h4"
+          sx={{
+            fontWeight: 700,
+            color: '#1e293b',
+            fontSize: { xs: '1.35rem', sm: '1.55rem', md: '1.75rem' },
+            letterSpacing: '-0.02em',
+          }}
+        >
+          Account Settings
+        </Typography>
       </Grid>
-      <Card sx={{ margin: "1rem", mt: 2 }}>
+      <Card sx={{ margin: { xs: "0.75rem", sm: "1rem", md: "1.5rem" }, mt: 2 }}>
         <CardContent>
           <div>
             <div style={{ marginBottom: "1rem", color: "#000", fontWeight: "bold", fontSize: "1.25rem", display: "flex", alignItems: "center", gap: "8px"     }}>

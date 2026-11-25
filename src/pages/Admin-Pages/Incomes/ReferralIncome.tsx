@@ -103,10 +103,18 @@ const ReferralIncome = () => {
   }
 
   return (
-    <Box sx={{ p: { xs: 2, md: 3 }, mt: 8 }}>
+    <Box sx={{ p: { xs: 2, md: 3 }, mt: { xs: 4, sm: 10, md: 11 } }}>
       {/* Page Header */}
       <Box sx={{ mb: 3 }}>
-        <Typography variant="h4" sx={{ fontWeight: 700, color: '#1e293b' }}>
+        <Typography
+          variant="h4"
+          sx={{
+            fontWeight: 700,
+            color: '#1e293b',
+            fontSize: { xs: '1.35rem', sm: '1.55rem', md: '1.75rem' },
+            letterSpacing: '-0.02em',
+          }}
+        >
           Referral Benefits
         </Typography>
         <Typography variant="body2" sx={{ color: '#64748b', mt: 0.5 }}>

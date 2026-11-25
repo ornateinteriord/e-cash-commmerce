@@ -51,8 +51,18 @@ const ROIBenifits = () => {
 
   return (
     <>
-      <Box sx={{ margin: "1rem", mt: 10 }}>
-        <Typography variant="h4">ROI Benefits</Typography>
+      <Box sx={{ margin: { xs: "0.75rem", sm: "1rem", md: "1.5rem" }, mt: { xs: 4, sm: 10, md: 11 } }}>
+        <Typography
+          variant="h4"
+          sx={{
+            fontWeight: 700,
+            color: '#1e293b',
+            fontSize: { xs: '1.35rem', sm: '1.55rem', md: '1.75rem' },
+            letterSpacing: '-0.02em',
+          }}
+        >
+          ROI Benefits
+        </Typography>
       </Box>
 
       <Card sx={{ margin: "1rem", mt: 2 }}>

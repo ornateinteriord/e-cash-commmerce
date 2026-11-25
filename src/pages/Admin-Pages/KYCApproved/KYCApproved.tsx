@@ -247,13 +247,21 @@ const KYCApproved: React.FC = () => {
 
   return (
     <>
-      <Box sx={{ margin: '2rem', mt: 2 }}>
-        <Typography variant="h4" sx={{ fontWeight: 700, color: '#1F333B' }}>
+      <Box sx={{ margin: { xs: '0.75rem', sm: '1rem', md: '1.5rem' }, mt: { xs: 4, sm: 10, md: 11 } }}>
+        <Typography
+          variant="h4"
+          sx={{
+            fontWeight: 700,
+            color: '#1e293b',
+            fontSize: { xs: '1.35rem', sm: '1.55rem', md: '1.75rem' },
+            letterSpacing: '-0.02em',
+          }}
+        >
           KYC Approved
         </Typography>
       </Box>
 
-      <Card sx={{ margin: '2rem', mt: 2, borderRadius: '12px', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}>
+      <Card sx={{ margin: { xs: '0.75rem', sm: '1rem', md: '1.5rem' }, mt: 2, borderRadius: '12px', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}>
         <CardContent>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 2, mb: 2 }}>
             <Typography sx={{ color: '#000', fontWeight: 'bold', fontSize: '1.25rem' }}>

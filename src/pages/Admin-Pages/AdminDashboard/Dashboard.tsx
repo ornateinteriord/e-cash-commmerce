@@ -1,20 +1,22 @@
+import { useMemo } from 'react';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import { Grid, Typography, Box, Paper, Avatar, CircularProgress, Button, Chip } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import '../../Dashboard/dashboard.scss';
 import DashboardTable from '../../Dashboard/DashboardTable';
-import { getAdminDashboardTableColumns } from '../../../utils/DataTableColumnsProvider';
+import { getAdminDashboardTableColumns, extractTransactionAmount } from '../../../utils/DataTableColumnsProvider';
 import PeopleIcon from '@mui/icons-material/People';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import HistoryIcon from '@mui/icons-material/History';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import Inventory2Icon from '@mui/icons-material/Inventory2';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { useGetAllMembersDetails, useGetROISummary, useGetLevelRoiSchedules } from '../../../api/Admin';
+import { useGetAllMembersDetails, useGetROISummary, useGetLevelRoiSchedules, useGetAllTransactionDetails } from '../../../api/Admin';
 import { useGetPendingWithdrawals, useGetApprovedWithdrawals } from '../../../api/Memeber';
 
 const AdminDashboard = () => {
@@ -24,6 +26,23 @@ const AdminDashboard = () => {
   const { data: levelRoiSchedules = [] } = useGetLevelRoiSchedules();
   const { data: pendingWithdrawals = [] } = useGetPendingWithdrawals();
   const { data: approvedWithdrawals = [] } = useGetApprovedWithdrawals();
+  const { data: allTransactions = [] } = useGetAllTransactionDetails();
+
+  const levelBenefits = useMemo(() => {
+    if (!Array.isArray(allTransactions)) return [];
+    return allTransactions.filter((transaction: any) => {
+      if (!transaction || typeof transaction !== 'object') return false;
+      const txType = (transaction.transaction_type || transaction.transactionType || transaction.type || "").toLowerCase();
+      return txType.includes('level bonus') && !txType.includes('referral') && !txType.includes('roi');
+    });
+  }, [allTransactions]);
+
+  const totalLevelBenefits = useMemo(() => {
+    return levelBenefits.reduce(
+      (sum: number, t: any) => sum + extractTransactionAmount(t),
+      0
+    );
+  }, [levelBenefits]);
 
   const activeSchedulesCount = Array.isArray(levelRoiSchedules)
     ? levelRoiSchedules.filter((s: any) => s.status === 'Active').length
@@ -128,8 +147,8 @@ const AdminDashboard = () => {
       elevation={0}
       onClick={onClick}
       sx={{
-        p: { xs: 2, sm: 2.5, md: 2.8 },
-        borderRadius: { xs: '18px', md: '22px' },
+        p: { xs: 1.5, sm: 2, md: 2.8 },
+        borderRadius: { xs: '14px', sm: '18px', md: '22px' },
         bgcolor: '#FFFFFF',
         border: '1.5px solid #E2E8F0',
         boxShadow: '0 4px 18px rgba(0, 0, 0, 0.04)',
@@ -145,11 +164,11 @@ const AdminDashboard = () => {
         height: '100%'
       }}
     >
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: { xs: 1.5, md: 2 } }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: { xs: 1, md: 1.5 } }}>
         <Box sx={{ 
-          width: { xs: 42, sm: 48 }, 
-          height: { xs: 42, sm: 48 }, 
-          borderRadius: '14px', 
+          width: { xs: 34, sm: 42, md: 48 }, 
+          height: { xs: 34, sm: 42, md: 48 }, 
+          borderRadius: { xs: '10px', sm: '14px' }, 
           bgcolor: color ? `${color}15` : 'rgba(254, 128, 1, 0.12)',
           display: 'flex',
           alignItems: 'center',
@@ -159,14 +178,14 @@ const AdminDashboard = () => {
           {icon}
         </Box>
       </Box>
-      <Typography variant="body2" sx={{ color: '#64748B', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', mb: 0.5, fontSize: { xs: '0.72rem', sm: '0.78rem' } }}>
+      <Typography variant="body2" sx={{ color: '#64748B', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', mb: 0.5, fontSize: { xs: '0.65rem', sm: '0.72rem', md: '0.78rem' } }}>
         {title}
       </Typography>
-      <Typography variant="h4" sx={{ color: '#0F172A', fontWeight: 900, mb: 0.8, fontSize: { xs: '1.35rem', sm: '1.6rem', md: '1.85rem' } }}>
+      <Typography variant="h4" sx={{ color: '#0F172A', fontWeight: 900, mb: 0.8, fontSize: { xs: '1.15rem', sm: '1.4rem', md: '1.85rem' } }}>
         {amount}
       </Typography>
       {subTitle && (
-        <Typography variant="caption" sx={{ color: '#94A3B8', fontWeight: 600, fontSize: { xs: '0.7rem', sm: '0.75rem' } }}>
+        <Typography variant="caption" sx={{ color: '#94A3B8', fontWeight: 600, fontSize: { xs: '0.62rem', sm: '0.7rem', md: '0.75rem' }, lineHeight: 1.2 }}>
           {subTitle}
         </Typography>
       )}
@@ -179,7 +198,7 @@ const AdminDashboard = () => {
       background: '#FFFFFF',
       minHeight: '100vh',
       px: { xs: 1.5, sm: 2.5, md: 4, lg: 6, xl: 8 },
-      pt: { xs: 1.5, sm: 2.5, md: 4 },
+      pt: { xs: 4, sm: 10, md: 11 },
       maxWidth: '1800px',
       margin: '0 auto'
     }}>
@@ -210,7 +229,7 @@ const AdminDashboard = () => {
             <AdminPanelSettingsIcon sx={{ fontSize: { xs: 26, sm: 32, md: 38 }, color: '#FE8001' }} />
           </Avatar>
           <Box>
-            <Typography variant="h5" sx={{ color: '#0F172A', fontWeight: 900, letterSpacing: '-0.5px', lineHeight: 1.2, mb: 0.5, fontSize: { xs: '1.2rem', sm: '1.45rem', md: '1.75rem' } }}>
+            <Typography variant="h5" sx={{ color: '#0F172A', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.25, mb: 0.5, fontSize: { xs: '1.35rem', sm: '1.55rem', md: '1.75rem' } }}>
               Admin Dashboard
             </Typography>
             <Typography variant="body2" sx={{ color: '#64748B', fontWeight: 600, fontSize: { xs: '0.78rem', sm: '0.85rem' } }}>
@@ -608,7 +627,7 @@ const AdminDashboard = () => {
           PLATFORM OVERVIEW
         </Typography>
         <Grid container spacing={{ xs: 1.5, sm: 2, md: 2.5 }}>
-          <Grid item xs={12} sm={6} md={4} lg={2.4}>
+          <Grid item xs={6} sm={6} md={4} lg={2}>
             <StatCard
               amount={totalMembers}
               title="Total Vendors"
@@ -618,7 +637,7 @@ const AdminDashboard = () => {
               onClick={() => navigate('/admin/members')}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4} lg={2.4}>
+          <Grid item xs={6} sm={6} md={4} lg={2}>
             <StatCard
               amount={activeMembers}
               title="Active Vendors"
@@ -628,7 +647,7 @@ const AdminDashboard = () => {
               onClick={() => navigate('/admin/members/active')}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4} lg={2.4}>
+          <Grid item xs={6} sm={6} md={4} lg={2}>
             <StatCard
               amount={pendingMembers}
               title="Pending Vendors"
@@ -638,7 +657,7 @@ const AdminDashboard = () => {
               onClick={() => navigate('/admin/members/pending')}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4} lg={2.4}>
+          <Grid item xs={6} sm={6} md={4} lg={2}>
             <StatCard
               amount={`₹${(roiSummary?.totalROIDistributed || 0).toLocaleString()}`}
               title="Daily Incentive"
@@ -648,12 +667,22 @@ const AdminDashboard = () => {
               onClick={() => navigate('/admin/income/daily-payouts')}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4} lg={2.4}>
+          <Grid item xs={6} sm={6} md={4} lg={2}>
+            <StatCard
+              amount={`₹${totalLevelBenefits.toLocaleString()}`}
+              title="Vendor Benefits"
+              subTitle={`${levelBenefits.length} Level Bonus payouts`}
+              icon={<TrendingUpIcon />}
+              color="#8b5cf6"
+              onClick={() => navigate('/admin/income/level-benefits')}
+            />
+          </Grid>
+          <Grid item xs={6} sm={6} md={4} lg={2}>
             <StatCard
               amount={activeSchedulesCount}
               title="Vendor Level Benefits"
-              subTitle={`${activeSchedulesCount} Active 100-Day Schedules`}
-              icon={<TrendingUpIcon />}
+              subTitle={`${activeSchedulesCount} Active 100-Day Schedules (Levels 1–10, Level ≥ N)`}
+              icon={<AccountTreeIcon />}
               color="#6366f1"
               onClick={() => navigate('/admin/income/level-daily-roi')}
             />

@@ -30,10 +30,19 @@ const WithdrawalRequests: React.FC = () => {
     };
 
     return (
-        <Container maxWidth="xl" sx={{ py: { xs: 2, sm: 3, md: 4 }, mt: { xs: 3, sm: 6 }, px: { xs: 1, sm: 2, md: 3 } }}>
+        <Container maxWidth="xl" sx={{ py: { xs: 2, sm: 3, md: 4 }, mt: { xs: 4, sm: 10, md: 11 }, px: { xs: 1, sm: 2, md: 3 } }}>
             {/* Page Header */}
             <Box sx={{ mb: 4 }}>
-                <Typography variant="h4" sx={{ fontWeight: 700, color: '#1a237e', mb: 1, fontSize: { xs: '1.5rem', sm: '1.75rem', md: '2rem' } }}>
+                <Typography
+                    variant="h4"
+                    sx={{
+                        fontWeight: 700,
+                        color: '#1e293b',
+                        mb: 1,
+                        fontSize: { xs: '1.35rem', sm: '1.55rem', md: '1.75rem' },
+                        letterSpacing: '-0.02em',
+                    }}
+                >
                     Withdrawal Requests
                 </Typography>
                 <Typography variant="body1" sx={{ color: '#64748b', fontSize: { xs: '0.875rem', sm: '1rem' } }}>

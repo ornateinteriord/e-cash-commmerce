@@ -15,10 +15,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Divider,
   Tooltip,
-  useMediaQuery,
-  useTheme,
   Stack,
   Switch,
   FormControlLabel,
@@ -32,9 +29,6 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import PhoneIcon from '@mui/icons-material/Phone';
-import EmailIcon from '@mui/icons-material/Email';
-import ViewListIcon from '@mui/icons-material/ViewList';
-import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import DataTable, { TableColumn } from 'react-data-table-component';
 import { DASHBOARD_CUTSOM_STYLE } from '../../../utils/DataTableColumnsProvider';
@@ -58,12 +52,8 @@ export const CustomerBase: React.FC<CustomerViewProps> = ({
   pageTitle = 'Customer Directory',
   pageSubtitle = 'Manage and monitor all platform customer accounts',
 }) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'inactive'>(initialStatusFilter);
-  const [viewMode, setViewMode] = useState<'table' | 'cards'>(isMobile ? 'cards' : 'table');
 
   // Customer Detail Dialog State
   const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
@@ -363,6 +353,7 @@ export const CustomerBase: React.FC<CustomerViewProps> = ({
     <Box
       sx={{
         p: { xs: 1.5, sm: 2.5, md: 3 },
+        mt: { xs: 4, sm: 10, md: 11 },
         maxWidth: '1600px',
         margin: '0 auto',
         width: '100%',
@@ -385,9 +376,9 @@ export const CustomerBase: React.FC<CustomerViewProps> = ({
             <Typography
               variant="h5"
               sx={{
-                fontWeight: 800,
-                color: '#0f172a',
-                fontSize: { xs: '1.25rem', sm: '1.5rem', md: '1.75rem' },
+                fontWeight: 700,
+                color: '#1e293b',
+                fontSize: { xs: '1.35rem', sm: '1.55rem', md: '1.75rem' },
                 letterSpacing: '-0.02em',
               }}
             >
@@ -410,44 +401,6 @@ export const CustomerBase: React.FC<CustomerViewProps> = ({
         </Box>
 
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, alignSelf: { xs: 'stretch', sm: 'auto' } }}>
-          {/* View Mode Toggle (Cards vs Table) */}
-          <Box
-            sx={{
-              display: 'flex',
-              bgcolor: '#f1f5f9',
-              p: 0.4,
-              borderRadius: '10px',
-              border: '1px solid #e2e8f0',
-            }}
-          >
-            <IconButton
-              size="small"
-              onClick={() => setViewMode('table')}
-              sx={{
-                borderRadius: '8px',
-                bgcolor: viewMode === 'table' ? '#fff' : 'transparent',
-                boxShadow: viewMode === 'table' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
-                color: viewMode === 'table' ? '#0d9488' : '#64748b',
-                p: 0.6,
-              }}
-            >
-              <ViewListIcon sx={{ fontSize: '18px' }} />
-            </IconButton>
-            <IconButton
-              size="small"
-              onClick={() => setViewMode('cards')}
-              sx={{
-                borderRadius: '8px',
-                bgcolor: viewMode === 'cards' ? '#fff' : 'transparent',
-                boxShadow: viewMode === 'cards' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
-                color: viewMode === 'cards' ? '#0d9488' : '#64748b',
-                p: 0.6,
-              }}
-            >
-              <ViewModuleIcon sx={{ fontSize: '18px' }} />
-            </IconButton>
-          </Box>
-
           {/* Refresh Button */}
           <Button
             variant="outlined"
@@ -743,167 +696,8 @@ export const CustomerBase: React.FC<CustomerViewProps> = ({
             {searchQuery ? 'Try adjusting your search criteria' : 'No customer records available for this filter.'}
           </Typography>
         </Card>
-      ) : viewMode === 'cards' || (isMobile && viewMode !== 'table') ? (
-        /* ── Mobile & Card Grid View ── */
-        <Grid container spacing={1.5}>
-          {filteredCustomers.map((cust: any) => {
-            const isActive = cust.status?.toLowerCase() === 'active' || cust.isActive === true;
-            const tokenVal = Number(cust.token !== undefined && cust.token !== null ? cust.token : cust.tokens || 0);
-
-            return (
-              <Grid item xs={12} sm={6} md={4} key={cust.customerId || cust._id}>
-                <Card
-                  sx={{
-                    borderRadius: '16px',
-                    border: '1px solid #e2e8f0',
-                    boxShadow: '0 2px 10px rgba(0,0,0,0.03)',
-                    transition: 'all 0.2s ease',
-                    bgcolor: '#fff',
-                    '&:hover': {
-                      boxShadow: '0 6px 20px rgba(0,0,0,0.07)',
-                      borderColor: '#cbd5e1',
-                    },
-                  }}
-                >
-                  <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
-                    {/* Top Row: Name, ID & Status Badge */}
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1 }}>
-                      <Box sx={{ pr: 1 }}>
-                        <Typography sx={{ fontWeight: 800, color: '#1e293b', fontSize: '0.95rem', lineHeight: 1.2 }}>
-                          {cust.name || cust.fullName || 'Customer'}
-                        </Typography>
-                        <Typography
-                          variant="caption"
-                          sx={{
-                            fontFamily: 'monospace',
-                            color: '#0d9488',
-                            fontWeight: 800,
-                            fontSize: '0.78rem',
-                          }}
-                        >
-                          ID: {cust.customerId || cust.customer_id || 'N/A'}
-                        </Typography>
-                      </Box>
-                      <Chip
-                        label={isActive ? 'Active' : 'Inactive'}
-                        size="small"
-                        color={isActive ? 'success' : 'default'}
-                        variant={isActive ? 'filled' : 'outlined'}
-                        sx={{
-                          height: '22px',
-                          fontSize: '0.68rem',
-                          fontWeight: 800,
-                          bgcolor: isActive ? '#dcfce7' : '#f1f5f9',
-                          color: isActive ? '#15803d' : '#64748b',
-                        }}
-                      />
-                    </Box>
-
-                    <Divider sx={{ my: 1, borderColor: '#f1f5f9' }} />
-
-                    {/* Middle Info Grid */}
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.8, my: 1 }}>
-                      {/* Mobile */}
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <PhoneIcon sx={{ fontSize: '15px', color: '#64748b' }} />
-                        <Typography sx={{ fontSize: '0.82rem', color: '#334155', fontWeight: 600 }}>
-                          {cust.mobileNumber || cust.phone || 'N/A'}
-                        </Typography>
-                      </Box>
-
-                      {/* Email if present */}
-                      {cust.email && (
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                          <EmailIcon sx={{ fontSize: '15px', color: '#64748b' }} />
-                          <Typography
-                            sx={{
-                              fontSize: '0.78rem',
-                              color: '#64748b',
-                              overflow: 'hidden',
-                              textOverflow: 'ellipsis',
-                              whiteSpace: 'nowrap',
-                            }}
-                          >
-                            {cust.email}
-                          </Typography>
-                        </Box>
-                      )}
-
-                      {/* Referred Vendor Info */}
-                      {(cust.vendor_name || cust.vendor_id || cust.referralName) && (
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                          <StorefrontIcon sx={{ fontSize: '15px', color: '#0284c7' }} />
-                          <Typography sx={{ fontSize: '0.78rem', color: '#0369a1', fontWeight: 700 }}>
-                            Vendor: {cust.vendor_name || cust.vendor_id || cust.referralName}
-                          </Typography>
-                        </Box>
-                      )}
-                    </Box>
-
-                    {/* Bottom Action Footer */}
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        mt: 1.5,
-                        pt: 1.2,
-                        borderTop: '1px solid #f1f5f9',
-                      }}
-                    >
-                      {/* Tokens Coin Indicator */}
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.8 }}>
-                        <TokenCoin value={tokenVal} size={20} />
-                        <Typography sx={{ fontWeight: 900, color: '#0f766e', fontSize: '0.85rem' }}>
-                          {tokenVal} Tokens
-                        </Typography>
-                      </Box>
-
-                      {/* Quick Action Buttons */}
-                      <Box sx={{ display: 'flex', gap: 0.8 }}>
-                        <Tooltip title="View Hierarchy & Upliners">
-                          <IconButton
-                            size="small"
-                            onClick={(e) => handleOpenUpliner(cust, e)}
-                            sx={{
-                              bgcolor: '#f0f9ff',
-                              color: '#0284c7',
-                              p: 0.7,
-                              borderRadius: '8px',
-                              '&:hover': { bgcolor: '#e0f2fe' },
-                            }}
-                          >
-                            <AccountTreeIcon sx={{ fontSize: '16px' }} />
-                          </IconButton>
-                        </Tooltip>
-
-                        <Button
-                          size="small"
-                          variant="outlined"
-                          onClick={() => handleOpenDetail(cust)}
-                          sx={{
-                            borderRadius: '8px',
-                            textTransform: 'none',
-                            fontWeight: 700,
-                            fontSize: '0.75rem',
-                            py: 0.4,
-                            px: 1.2,
-                            borderColor: '#cbd5e1',
-                            color: '#1e293b',
-                          }}
-                        >
-                          Details
-                        </Button>
-                      </Box>
-                    </Box>
-                  </CardContent>
-                </Card>
-              </Grid>
-            );
-          })}
-        </Grid>
       ) : (
-        /* ── Full Responsive DataTable View (for desktop / tablet) ── */
+        /* ── Full Responsive DataTable Row Table View ── */
         <Card
           sx={{
             borderRadius: '16px',

@@ -18,6 +18,7 @@ import {
   DASHBOARD_CUTSOM_STYLE,
   getAdminLevelBonusColumns,
   getAdminAggregatedIncomeColumns,
+  extractTransactionAmount,
 } from '../../../utils/DataTableColumnsProvider';
 import { useGetAllTransactionDetails } from '../../../api/Admin';
 
@@ -37,7 +38,7 @@ const LevelBenifits = () => {
 
   // Calculate summary statistics
   const totalAmount = levelBenefits.reduce(
-    (sum, t) => sum + parseFloat(t.ew_credit || t.amount || 0),
+    (sum, t) => sum + extractTransactionAmount(t),
     0
   );
   const uniqueUplines = new Set(
@@ -55,7 +56,7 @@ const LevelBenifits = () => {
         txCount: 0,
       };
     }
-    acc[memberId].totalAmount += parseFloat(curr.ew_credit || curr.amount || 0);
+    acc[memberId].totalAmount += extractTransactionAmount(curr);
     acc[memberId].txCount += 1;
     return acc;
   }, {});
@@ -105,10 +106,18 @@ const LevelBenifits = () => {
   }
 
   return (
-    <Box sx={{ p: { xs: 2, md: 3 }, mt: 8 }}>
+    <Box sx={{ p: { xs: 2, md: 3 }, mt: { xs: 4, sm: 10, md: 11 } }}>
       {/* Page Header */}
       <Box sx={{ mb: 3 }}>
-        <Typography variant="h4" sx={{ fontWeight: 700, color: '#1e293b' }}>
+        <Typography
+          variant="h4"
+          sx={{
+            fontWeight: 700,
+            color: '#1e293b',
+            fontSize: { xs: '1.35rem', sm: '1.55rem', md: '1.75rem' },
+            letterSpacing: '-0.02em',
+          }}
+        >
           Vendor Benefits
         </Typography>
         <Typography variant="body2" sx={{ color: '#64748b', mt: 0.5 }}>

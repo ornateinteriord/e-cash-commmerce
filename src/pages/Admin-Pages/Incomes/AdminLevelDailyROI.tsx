@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import {
   Box,
   Card,
@@ -11,20 +11,15 @@ import {
   ToggleButtonGroup,
   Chip,
   LinearProgress,
-  Paper,
-  Pagination,
-  useTheme,
-  useMediaQuery,
 } from '@mui/material';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import DataTable from 'react-data-table-component';
-import { DASHBOARD_CUTSOM_STYLE, formatVendorDescription, formatVendorCode } from '../../../utils/DataTableColumnsProvider';
+import { DASHBOARD_CUTSOM_STYLE, formatVendorDescription, extractTransactionAmount } from '../../../utils/DataTableColumnsProvider';
 import { getFormattedDate } from '../../../utils/common';
-import { useGetAllTransactionDetails } from '../../../api/Admin';
-import { useGetLevelRoiSchedules } from '../../../api/Admin';
+import { useGetAllTransactionDetails, useGetLevelRoiSchedules, useGetAllMembersDetails } from '../../../api/Admin';
 import { TriggerMissingROIButton } from '../../../components/Dialogs/TriggerMissingROIDialog';
 
 const getLevelBadgeStyles = (level: number) => {
@@ -48,16 +43,43 @@ const getLevelBadgeStyles = (level: number) => {
 };
 
 const AdminLevelDailyROI = () => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-
   const [searchQuery, setSearchQuery] = useState('');
   const [viewMode, setViewMode] = useState<'transactions' | 'schedules'>('transactions');
-  const [mobilePage, setMobilePage] = useState(1);
-  const mobilePageSize = 10;
 
   const { data: allTransactions, isLoading: isTxLoading, isError: isTxError } = useGetAllTransactionDetails();
   const { data: allSchedules, isLoading: isSchLoading, isError: isSchError } = useGetLevelRoiSchedules();
+  const { data: members = [] } = useGetAllMembersDetails();
+
+  // Create lookup dictionary for real registration member_code
+  const memberCodeMap = useMemo(() => {
+    const map = new Map<string, string>();
+    (members || []).forEach((m: any) => {
+      const code = String(m.member_code || '').trim();
+      if (code) {
+        if (m.Member_id) map.set(String(m.Member_id).trim(), code);
+        if (m.member_id) map.set(String(m.member_id).trim(), code);
+        if (m.mobileno) map.set(String(m.mobileno).trim(), code);
+        map.set(code, code);
+      }
+    });
+    return map;
+  }, [members]);
+
+  // Resolves the real original member_code created at the time of registration
+  const getOriginalMemberCode = (id: any, code?: any): string => {
+    const codeStr = String(code || '').trim();
+    if (codeStr && !/^[6-9]\d{9}$/.test(codeStr)) {
+      return codeStr;
+    }
+    const idStr = String(id || '').trim();
+    if (!idStr || idStr === '-' || idStr === 'N/A') return '-';
+    // Match in all registered members
+    const matched = memberCodeMap.get(idStr);
+    if (matched) return matched;
+    // If id itself is a 6-digit vendor code
+    if (/^56\d{4}$/.test(idStr)) return idStr;
+    return idStr;
+  };
 
   // Filter transactions for Vendor Level Benefits
   const levelRoiTransactions: any[] = (allTransactions || []).filter((tx: any) => {
@@ -71,7 +93,7 @@ const AdminLevelDailyROI = () => {
 
   // Summary statistics
   const totalDistributed = levelRoiTransactions.reduce(
-    (sum, t) => sum + parseFloat(t.ew_credit || t.amount || 0),
+    (sum, t) => sum + extractTransactionAmount(t),
     0
   );
   const activeSchedulesCount = schedules.filter((s: any) => s.status === 'Active').length;
@@ -85,13 +107,15 @@ const AdminLevelDailyROI = () => {
   const filteredTransactions = levelRoiTransactions.filter((tx: any) => {
     if (!searchQuery) return true;
     const q = searchQuery.toLowerCase();
+    const amtStr = extractTransactionAmount(tx).toString();
     return (
       (tx.transaction_id && tx.transaction_id.toLowerCase().includes(q)) ||
       (tx.member_id && tx.member_id.toLowerCase().includes(q)) ||
       (tx.Name && tx.Name.toLowerCase().includes(q)) ||
       (tx.related_member_id && tx.related_member_id.toLowerCase().includes(q)) ||
       (tx.level && tx.level.toString().includes(q)) ||
-      (tx.description && tx.description.toLowerCase().includes(q))
+      (tx.description && tx.description.toLowerCase().includes(q)) ||
+      amtStr.includes(q)
     );
   });
 
@@ -109,14 +133,6 @@ const AdminLevelDailyROI = () => {
     );
   });
 
-  // Mobile pagination
-  const currentMobileList = viewMode === 'transactions' ? filteredTransactions : filteredSchedules;
-  const totalMobilePages = Math.max(1, Math.ceil(currentMobileList.length / mobilePageSize));
-  const paginatedMobileList = currentMobileList.slice(
-    (mobilePage - 1) * mobilePageSize,
-    mobilePage * mobilePageSize
-  );
-
   // Transaction Table Columns (Desktop)
   const transactionColumns = [
     {
@@ -127,7 +143,7 @@ const AdminLevelDailyROI = () => {
     },
     {
       name: 'Beneficiary (Sponsor)',
-      selector: (row: any) => `${row.Name || '-'} (${row.member_code || formatVendorCode(row.member_id)})`,
+      selector: (row: any) => `${row.Name || '-'} (${getOriginalMemberCode(row.member_id, row.member_code)})`,
       sortable: true,
       minWidth: '180px',
     },
@@ -148,7 +164,7 @@ const AdminLevelDailyROI = () => {
     },
     {
       name: 'Downline Vendor',
-      selector: (row: any) => row.related_member_code || formatVendorCode(row.related_member_id),
+      selector: (row: any) => getOriginalMemberCode(row.related_member_id, row.related_member_code),
       sortable: true,
       width: '140px',
     },
@@ -160,10 +176,10 @@ const AdminLevelDailyROI = () => {
     },
     {
       name: 'Amount (₹)',
-      selector: (row: any) => parseFloat(row.ew_credit || row.amount || 0),
+      selector: (row: any) => extractTransactionAmount(row),
       cell: (row: any) => (
         <Typography sx={{ fontWeight: 800, color: '#059669' }}>
-          +₹{parseFloat(row.ew_credit || row.amount || 0).toFixed(2)}
+          +₹{extractTransactionAmount(row).toFixed(2)}
         </Typography>
       ),
       sortable: true,
@@ -200,13 +216,13 @@ const AdminLevelDailyROI = () => {
     },
     {
       name: 'Sponsor (Beneficiary)',
-      selector: (row: any) => `${row.sponsor_name || '-'} (${row.sponsor_code || formatVendorCode(row.sponsor_id)})`,
+      selector: (row: any) => `${row.sponsor_name || '-'} (${getOriginalMemberCode(row.sponsor_id, row.sponsor_code)})`,
       sortable: true,
       minWidth: '170px',
     },
     {
       name: 'From Vendor (Investor)',
-      selector: (row: any) => `${row.from_member_name || '-'} (${row.from_member_code || formatVendorCode(row.from_member_id)})`,
+      selector: (row: any) => `${row.from_member_name || '-'} (${getOriginalMemberCode(row.from_member_id, row.from_member_code)})`,
       sortable: true,
       minWidth: '170px',
     },
@@ -301,7 +317,7 @@ const AdminLevelDailyROI = () => {
   return (
     <Box sx={{
       p: { xs: 1.5, sm: 2.5, md: 3 },
-      mt: { xs: 8, md: 9 },
+      mt: { xs: 4, sm: 10, md: 11 },
       maxWidth: '1600px',
       mx: 'auto',
       width: '100%',
@@ -311,10 +327,11 @@ const AdminLevelDailyROI = () => {
       <Box sx={{ mb: { xs: 2, sm: 3 }, display: 'flex', justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, flexDirection: { xs: 'column', sm: 'row' }, gap: 2 }}>
         <Box>
           <Typography sx={{
-            fontWeight: 900,
+            fontWeight: 700,
             color: '#1e293b',
-            fontSize: { xs: '1.25rem', sm: '1.6rem', md: '1.9rem' },
-            lineHeight: 1.2
+            fontSize: { xs: '1.35rem', sm: '1.55rem', md: '1.75rem' },
+            letterSpacing: '-0.02em',
+            lineHeight: 1.25
           }}>
             Vendor Level Benefits (100 Days)
           </Typography>
@@ -323,7 +340,7 @@ const AdminLevelDailyROI = () => {
             mt: 0.5,
             fontSize: { xs: '0.78rem', sm: '0.88rem' }
           }}>
-            Multi-level daily revenue share distributed across 7 upline tiers for 100 days (Levels 1 to 7, Rank ≥ 3)
+            Multi-level daily revenue share distributed across 10 upline tiers for 100 days (Levels 1 to 10, Level Matching: Level ≥ N)
           </Typography>
         </Box>
         <TriggerMissingROIButton defaultType="level_roi" pageTitle="Vendor Level Benefits" label="Trigger Missing Benefits" />
@@ -513,7 +530,6 @@ const AdminLevelDailyROI = () => {
               onChange={(_, val) => {
                 if (val) {
                   setViewMode(val);
-                  setMobilePage(1);
                 }
               }}
               size="small"
@@ -543,10 +559,10 @@ const AdminLevelDailyROI = () => {
               }}
             >
               <ToggleButton value="transactions">
-                {isMobile ? `Transactions (${filteredTransactions.length})` : `Daily Transactions (${filteredTransactions.length})`}
+                {`Daily Transactions (${filteredTransactions.length})`}
               </ToggleButton>
               <ToggleButton value="schedules">
-                {isMobile ? `Schedules (${filteredSchedules.length})` : `100-Day Active Schedules (${filteredSchedules.length})`}
+                {`100-Day Active Schedules (${filteredSchedules.length})`}
               </ToggleButton>
             </ToggleButtonGroup>
 
@@ -554,10 +570,7 @@ const AdminLevelDailyROI = () => {
               size="small"
               placeholder={viewMode === 'transactions' ? "Search sponsor, vendor, tx..." : "Search sponsor, investor..."}
               value={searchQuery}
-              onChange={(e) => {
-                setSearchQuery(e.target.value);
-                setMobilePage(1);
-              }}
+              onChange={(e) => setSearchQuery(e.target.value)}
               sx={{
                 width: { xs: '100%', sm: 280 },
                 '& .MuiOutlinedInput-root': {
@@ -569,227 +582,24 @@ const AdminLevelDailyROI = () => {
             />
           </Box>
 
-          {/* Conditional Layout: Mobile Cards vs Desktop DataTable */}
-          {isMobile ? (
-            /* MOBILE VIEW: Cards for Admin */
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.4 }}>
-              {paginatedMobileList.length === 0 ? (
+          {/* Table View with Horizontal Scroll */}
+          <Box sx={{ overflowX: 'auto', width: '100%', WebkitOverflowScrolling: 'touch' }}>
+            <DataTable
+              columns={viewMode === 'transactions' ? transactionColumns : scheduleColumns}
+              data={viewMode === 'transactions' ? filteredTransactions : filteredSchedules}
+              customStyles={DASHBOARD_CUTSOM_STYLE}
+              pagination
+              paginationPerPage={15}
+              paginationRowsPerPageOptions={[10, 15, 25, 50]}
+              responsive
+              highlightOnHover
+              noDataComponent={
                 <Box sx={{ p: 4, textAlign: 'center', color: '#64748b' }}>
                   {isTxError || isSchError ? 'Error loading data' : 'No Vendor Level Benefits records found'}
                 </Box>
-              ) : viewMode === 'transactions' ? (
-                /* Mobile Admin Daily Payout Transaction Cards */
-                paginatedMobileList.map((tx: any, idx: number) => (
-                  <Paper
-                    key={tx.transaction_id || tx._id || idx}
-                    elevation={0}
-                    sx={{
-                      p: 1.8,
-                      borderRadius: '16px',
-                      border: '1px solid #e2e8f0',
-                      bgcolor: '#ffffff',
-                      boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: 1.2,
-                    }}
-                  >
-                    {/* Top Row: Level & Date */}
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <Chip
-                        label={`Level ${tx.level || 1}`}
-                        size="small"
-                        sx={{
-                          fontWeight: 800,
-                          fontSize: '0.72rem',
-                          height: 24,
-                          ...getLevelBadgeStyles(tx.level || 1),
-                        }}
-                      />
-                      <Typography sx={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 600 }}>
-                        {getFormattedDate(tx.transaction_date || tx.createdAt)}
-                      </Typography>
-                    </Box>
-
-                    {/* Middle: Sponsor + Downline + Amount */}
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 1.2 }}>
-                      <Box sx={{ flex: 1, minWidth: 0 }}>
-                        <Typography sx={{ fontSize: '0.88rem', fontWeight: 800, color: '#1e293b' }}>
-                          Beneficiary: {tx.Name || '-'} ({tx.member_id})
-                        </Typography>
-                        {tx.related_member_id && (
-                          <Typography sx={{ fontSize: '0.75rem', color: '#64748b', mt: 0.2 }}>
-                            Downline: <strong style={{ color: '#0f172a' }}>{tx.related_member_code || formatVendorCode(tx.related_member_id)}</strong>
-                          </Typography>
-                        )}
-                        <Typography sx={{ fontSize: '0.75rem', color: '#64748b', mt: 0.2 }}>
-                          {formatVendorDescription(tx.description || 'Vendor Level Benefits')}
-                        </Typography>
-                        {tx.transaction_id && (
-                          <Typography sx={{ fontSize: '0.7rem', color: '#94a3b8', fontFamily: 'monospace', mt: 0.2 }}>
-                            ID: {tx.transaction_id}
-                          </Typography>
-                        )}
-                      </Box>
-
-                      <Typography sx={{ fontSize: '1.15rem', fontWeight: 900, color: '#059669', whiteSpace: 'nowrap' }}>
-                        +₹{parseFloat(tx.ew_credit || tx.amount || 0).toFixed(2)}
-                      </Typography>
-                    </Box>
-
-                    {/* Bottom: Status */}
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', pt: 0.8, borderTop: '1px dashed #f1f5f9' }}>
-                      <Chip
-                        label={tx.status || 'Completed'}
-                        size="small"
-                        color="success"
-                        variant="outlined"
-                        sx={{ fontWeight: 800, height: 22, fontSize: '0.68rem' }}
-                      />
-                    </Box>
-                  </Paper>
-                ))
-              ) : (
-                /* Mobile Admin Schedule Cards */
-                paginatedMobileList.map((sch: any, idx: number) => {
-                  const count = sch.payout_count || 0;
-                  const target = sch.target_days || 100;
-                  const percent = Math.min(100, Math.round((count / target) * 100));
-
-                  return (
-                    <Paper
-                      key={sch.schedule_id || sch._id || idx}
-                      elevation={0}
-                      sx={{
-                        p: 1.8,
-                        borderRadius: '16px',
-                        border: '1px solid #e0e7ff',
-                        bgcolor: '#ffffff',
-                        boxShadow: '0 2px 8px rgba(79, 70, 229, 0.04)',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: 1.4,
-                      }}
-                    >
-                      {/* Top: Level & Status */}
-                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <Chip
-                          label={`Level ${sch.level} (${sch.total_percentage}%)`}
-                          size="small"
-                          sx={{ fontWeight: 800, bgcolor: '#e0e7ff', color: '#4338ca', fontSize: '0.74rem' }}
-                        />
-                        <Chip
-                          label={sch.status || 'Active'}
-                          size="small"
-                          color={sch.status === 'Completed' ? 'success' : 'primary'}
-                          sx={{ fontWeight: 800, height: 24, fontSize: '0.72rem' }}
-                        />
-                      </Box>
-
-                      {/* Sponsor & Downline info */}
-                      <Box sx={{ bgcolor: '#f8fafc', p: 1.2, borderRadius: '12px' }}>
-                        <Box sx={{ mb: 0.8 }}>
-                          <Typography sx={{ fontSize: '0.68rem', color: '#64748b', fontWeight: 600, textTransform: 'uppercase' }}>
-                            Sponsor (Beneficiary)
-                          </Typography>
-                          <Typography sx={{ fontSize: '0.85rem', fontWeight: 800, color: '#1e293b' }}>
-                            {sch.sponsor_name || '-'} ({sch.sponsor_id})
-                          </Typography>
-                        </Box>
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                          <Box>
-                            <Typography sx={{ fontSize: '0.68rem', color: '#64748b', fontWeight: 600, textTransform: 'uppercase' }}>
-                              Investor (Downline)
-                            </Typography>
-                            <Typography sx={{ fontSize: '0.82rem', fontWeight: 700, color: '#334155' }}>
-                              {sch.from_member_name || '-'} ({sch.from_member_code || formatVendorCode(sch.from_member_id)})
-                            </Typography>
-                            <Typography sx={{ fontSize: '0.72rem', color: '#64748b', mt: 0.2 }}>
-                              Package: <strong style={{ color: '#0f172a' }}>₹{parseFloat(sch.package_amount || 0).toLocaleString()}</strong>
-                            </Typography>
-                          </Box>
-                          <Box sx={{ textAlign: 'right' }}>
-                            <Typography sx={{ fontSize: '0.68rem', color: '#64748b', fontWeight: 600, textTransform: 'uppercase' }}>
-                              Daily Payout
-                            </Typography>
-                            <Typography sx={{ fontSize: '1rem', fontWeight: 900, color: '#2563eb' }}>
-                              ₹{parseFloat(sch.daily_amount || 0).toFixed(2)}
-                            </Typography>
-                            <Typography sx={{ fontSize: '0.68rem', color: '#94a3b8' }}>/ day</Typography>
-                          </Box>
-                        </Box>
-                      </Box>
-
-                      {/* Progress Bar */}
-                      <Box>
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
-                          <Typography sx={{ fontSize: '0.75rem', fontWeight: 700, color: '#475569' }}>
-                            Day {count} of {target}
-                          </Typography>
-                          <Typography sx={{ fontSize: '0.75rem', fontWeight: 800, color: '#2563eb' }}>
-                            {percent}%
-                          </Typography>
-                        </Box>
-                        <LinearProgress
-                          variant="determinate"
-                          value={percent}
-                          sx={{
-                            height: 7,
-                            borderRadius: 4,
-                            bgcolor: '#e2e8f0',
-                            '& .MuiLinearProgress-bar': {
-                              bgcolor: percent >= 100 ? '#10b981' : '#3b82f6',
-                              borderRadius: 4,
-                            },
-                          }}
-                        />
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 0.8 }}>
-                          <Typography sx={{ fontSize: '0.72rem', color: '#64748b' }}>
-                            Paid: <strong style={{ color: '#059669' }}>₹{parseFloat(sch.total_paid || 0).toLocaleString()}</strong>
-                          </Typography>
-                          <Typography sx={{ fontSize: '0.72rem', color: '#64748b' }}>
-                            Target: <strong style={{ color: '#1e293b' }}>₹{parseFloat(sch.total_amount || 0).toLocaleString()}</strong>
-                          </Typography>
-                        </Box>
-                      </Box>
-                    </Paper>
-                  );
-                })
-              )}
-
-              {/* Mobile Pagination */}
-              {totalMobilePages > 1 && (
-                <Box sx={{ display: 'flex', justifyContent: 'center', pt: 1.5 }}>
-                  <Pagination
-                    count={totalMobilePages}
-                    page={mobilePage}
-                    onChange={(_, page) => setMobilePage(page)}
-                    color="primary"
-                    size="small"
-                  />
-                </Box>
-              )}
-            </Box>
-          ) : (
-            /* DESKTOP / TABLET VIEW: Full DataTable with Horizontal Overflow Support */
-            <Box sx={{ overflowX: 'auto', width: '100%', WebkitOverflowScrolling: 'touch' }}>
-              <DataTable
-                columns={viewMode === 'transactions' ? transactionColumns : scheduleColumns}
-                data={viewMode === 'transactions' ? filteredTransactions : filteredSchedules}
-                customStyles={DASHBOARD_CUTSOM_STYLE}
-                pagination
-                paginationPerPage={15}
-                paginationRowsPerPageOptions={[10, 15, 25, 50]}
-                responsive
-                highlightOnHover
-                noDataComponent={
-                  <Box sx={{ p: 4, textAlign: 'center', color: '#64748b' }}>
-                    {isTxError || isSchError ? 'Error loading data' : 'No Vendor Level Benefits records found'}
-                  </Box>
-                }
-              />
-            </Box>
-          )}
+              }
+            />
+          </Box>
         </CardContent>
       </Card>
     </Box>

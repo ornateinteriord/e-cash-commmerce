@@ -1,6 +1,6 @@
 import DataTable from "react-data-table-component";
-import { Card, CardContent, TextField, Typography, Button, Grid, CircularProgress } from '@mui/material';
-import './Transactions.scss'
+import { Card, CardContent, TextField, Typography, Button, Grid, CircularProgress, Box } from '@mui/material';
+import './Transactions.scss';
 import { DASHBOARD_CUTSOM_STYLE, getAdminPageTransactionColumns } from '../../../utils/DataTableColumnsProvider';
 import { MuiDatePicker } from '../../../components/common/DateFilterComponent';
 import { useGetAllTransactionDetails } from '../../../api/Admin';
@@ -105,83 +105,125 @@ export const TransactionDataTable = ({
   return (
     <>
       <Grid
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
         className="transaction-container"
-        sx={{ margin: "1rem", mt: 12 }}
+        sx={{
+          margin: { xs: "0.75rem", sm: "1rem", md: "1.5rem" },
+          mt: { xs: 4, sm: 10, md: 11 },
+        }}
       >
-        <Typography variant="h4">{title}</Typography>
-        <Grid className="transaction-content" sx={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+        <Typography
+          variant="h4"
+          sx={{
+            fontSize: { xs: '1.35rem', sm: '1.55rem', md: '1.75rem' },
+            fontWeight: 700,
+            color: '#1e293b',
+            letterSpacing: '-0.02em',
+          }}
+        >
+          {title}
+        </Typography>
+        <Grid className="transaction-content">
           <TextField
             size="small"
             placeholder="Vendor Id"
             className="member-id"
             value={vendorId}
             onChange={(e) => setVendorId(e.target.value)}
-            onKeyDown={(e) => { if (e.key === 'Enter') onSearchClick(); }}
-          />
-          <MuiDatePicker date={fromDate} setDate={setFromDate} label="From Date" />
-          <MuiDatePicker date={toDate} setDate={setToDate} label="To Date" />
-          <Button
-            variant="contained"
-            onClick={onSearchClick}
-            sx={{
-              backgroundColor: "#0a2558",
-              "&:hover": { backgroundColor: "#0a2558" },
+            onKeyDown={(e) => {
+              if (e.key === "Enter") onSearchClick();
             }}
-          >
-            Search
-          </Button>
-          {(fromDate || toDate || vendorId || appliedDates.from || appliedDates.to || appliedVendorId) && (
+          />
+          <Box className="date-filter-group">
+            <MuiDatePicker date={fromDate} setDate={setFromDate} label="From Date" />
+            <MuiDatePicker date={toDate} setDate={setToDate} label="To Date" />
+          </Box>
+          <Box className="btn-group">
             <Button
-              variant="outlined"
-              onClick={onResetClick}
+              variant="contained"
+              onClick={onSearchClick}
               sx={{
-                borderColor: '#0a2558',
-                color: '#0a2558',
-                '&:hover': { borderColor: '#0a2558', backgroundColor: 'rgba(10, 37, 88, 0.04)' },
+                backgroundColor: "#0a2558",
+                "&:hover": { backgroundColor: "#0a2558" },
+                whiteSpace: "nowrap",
+                minWidth: "80px",
               }}
             >
-              Reset
+              Search
             </Button>
-          )}
+            {(fromDate || toDate || vendorId || appliedDates.from || appliedDates.to || appliedVendorId) && (
+              <Button
+                variant="outlined"
+                onClick={onResetClick}
+                sx={{
+                  borderColor: "#0a2558",
+                  color: "#0a2558",
+                  "&:hover": { borderColor: "#0a2558", backgroundColor: "rgba(10, 37, 88, 0.04)" },
+                  whiteSpace: "nowrap",
+                  minWidth: "80px",
+                }}
+              >
+                Reset
+              </Button>
+            )}
+          </Box>
         </Grid>
       </Grid>
-      <Card sx={{ margin: "1rem", mt: 2 }}>
-        <CardContent>
-          <div style={{ marginBottom: "1rem", color: "#000", fontWeight: "bold", fontSize: "1.25rem" }}>
-            {summaryTitle}
-          </div>
-          <div
-            style={{
+      <Card
+        sx={{
+          margin: { xs: "0.75rem", sm: "1rem", md: "1.5rem" },
+          mt: 2,
+          borderRadius: 2,
+          boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)",
+          overflow: "hidden",
+        }}
+      >
+        <CardContent sx={{ p: { xs: 1.5, sm: 2, md: 2.5 } }}>
+          <Box
+            sx={{
               display: "flex",
-              gap: "1rem",
-              justifyContent: "flex-end",
-              marginBottom: "1rem",
+              flexDirection: { xs: "column", sm: "row" },
+              justifyContent: "space-between",
+              alignItems: { xs: "stretch", sm: "center" },
+              gap: 1.5,
+              mb: 2,
             }}
           >
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: 700,
+                color: "#1e293b",
+                fontSize: { xs: "1.1rem", sm: "1.25rem" },
+              }}
+            >
+              {summaryTitle}
+            </Typography>
             <TextField
               size="small"
               placeholder="Search..."
-              sx={{ minWidth: 200 }}
               value={activeSearchQuery}
               onChange={(e) => handleSearchChange(e.target.value)}
+              sx={{
+                width: { xs: "100%", sm: 220, md: 260 },
+              }}
             />
-          </div>
-          <DataTable
-            columns={columns}
-            data={finalData}
-            pagination
-            customStyles={DASHBOARD_CUTSOM_STYLE}
-            paginationPerPage={25}
-            progressPending={isLoading}
-            progressComponent={
-              <CircularProgress size={"4rem"} sx={{ color: "#0a2558" }} />
-            }
-            paginationRowsPerPageOptions={[25, 50, 100]}
-            highlightOnHover
-          />
+          </Box>
+          <Box sx={{ width: "100%", overflowX: "auto" }}>
+            <DataTable
+              columns={columns}
+              data={finalData}
+              pagination
+              customStyles={DASHBOARD_CUTSOM_STYLE}
+              paginationPerPage={25}
+              progressPending={isLoading}
+              progressComponent={
+                <CircularProgress size={"4rem"} sx={{ color: "#0a2558" }} />
+              }
+              paginationRowsPerPageOptions={[25, 50, 100]}
+              highlightOnHover
+              responsive
+            />
+          </Box>
         </CardContent>
       </Card>
     </>
