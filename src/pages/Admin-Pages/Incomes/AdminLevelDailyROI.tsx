@@ -231,7 +231,7 @@ const AdminLevelDailyROI = () => {
       name: 'Progress',
       cell: (row: any) => {
         const count = row.payout_count || 0;
-        const target = row.target_days || 50;
+        const target = row.target_days || 100;
         const percent = Math.min(100, Math.round((count / target) * 100));
         return (
           <Box sx={{ width: '100%', pr: 2 }}>
@@ -323,7 +323,7 @@ const AdminLevelDailyROI = () => {
             mt: 0.5,
             fontSize: { xs: '0.78rem', sm: '0.88rem' }
           }}>
-            Multi-level daily revenue share distributed across 7 upline tiers for 50 days (Levels 1 to 7, Rank ≥ 3)
+            Multi-level daily revenue share distributed across 7 upline tiers for 100 days (Levels 1 to 7, Rank ≥ 3)
           </Typography>
         </Box>
         <TriggerMissingROIButton defaultType="level_roi" pageTitle="Vendor Level Benefits" label="Trigger Missing Benefits" />
@@ -396,7 +396,7 @@ const AdminLevelDailyROI = () => {
               </Box>
               <Box sx={{ minWidth: 0 }}>
                 <Typography sx={{ fontSize: { xs: '0.68rem', sm: '0.75rem' }, color: '#1d4ed8', fontWeight: 700, textTransform: 'uppercase' }}>
-                  Active (50d)
+                  Active (100d)
                 </Typography>
                 <Typography sx={{
                   fontSize: { xs: '1.1rem', sm: '1.25rem', md: '1.35rem' },
@@ -546,7 +546,7 @@ const AdminLevelDailyROI = () => {
                 {isMobile ? `Transactions (${filteredTransactions.length})` : `Daily Transactions (${filteredTransactions.length})`}
               </ToggleButton>
               <ToggleButton value="schedules">
-                {isMobile ? `Schedules (${filteredSchedules.length})` : `50-Day Active Schedules (${filteredSchedules.length})`}
+                {isMobile ? `Schedules (${filteredSchedules.length})` : `100-Day Active Schedules (${filteredSchedules.length})`}
               </ToggleButton>
             </ToggleButtonGroup>
 
@@ -653,7 +653,7 @@ const AdminLevelDailyROI = () => {
                 /* Mobile Admin Schedule Cards */
                 paginatedMobileList.map((sch: any, idx: number) => {
                   const count = sch.payout_count || 0;
-                  const target = sch.target_days || 50;
+                  const target = sch.target_days || 100;
                   const percent = Math.min(100, Math.round((count / target) * 100));
 
                   return (

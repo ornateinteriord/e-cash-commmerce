@@ -1876,7 +1876,7 @@ const UserDashboard = () => {
             </Box>
           </Box>
 
-          {/* Card: Vendor Level Benefits (50-Day ROI) */}
+          {/* Card: Vendor Level Benefits (100-Day ROI) */}
           <Box
             onClick={() => navigate('/user/earnings/level-daily-roi')}
             sx={{
@@ -1902,7 +1902,7 @@ const UserDashboard = () => {
                 Vendor Level Benefits
               </Typography>
               <Typography sx={{ color: '#475569', fontSize: '9.5px', fontWeight: 600, display: { xs: 'none', sm: 'block' } }}>
-                50-day payout
+                100-day payout
               </Typography>
             </Box>
 

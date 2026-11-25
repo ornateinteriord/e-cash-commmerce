@@ -318,7 +318,7 @@ const LevelDailyROI = () => {
           mt: 0.5,
           fontSize: { xs: '0.78rem', sm: '0.88rem' }
         }}>
-          Your 50-day multi-tier daily earnings generated from your downline vendors' package investments
+          Your 100-day multi-tier daily earnings generated from your downline vendors' package investments
         </Typography>
       </Box>
 
